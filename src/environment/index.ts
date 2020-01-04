@@ -1,0 +1,4 @@
+
+var environment = {};
+
+export { environment };

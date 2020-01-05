@@ -38,7 +38,7 @@ module.exports = {
         title: 'Cody S. Carlson',
         filename: 'index.html',
         template: './src/index.html',
-        baseUrl: BASE_HREF,
+        base: BASE_HREF,
         favicon: './src/assets/shadow.jpg',
       }),
       new CopyPlugin([

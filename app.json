@@ -1,0 +1,11 @@
+
+{
+    "environments": {
+        "production": {
+            "baseUrl": "/"
+        },
+        "development": {
+            "baseUrl": "/dist"
+        }
+    }
+}

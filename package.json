@@ -8,7 +8,8 @@
     "dev": "webpack-dev-server --mode development",
     "dev:build": "webpack --mode development",
     "prod": "webpack-dev-server --mode production",
-    "prod:build": "webpack --mode production"
+    "prod:build": "webpack --mode production",
+    "prod:deploy": "npm run prod:build && git add . && git commit -am 'Deploying...' && git push origin master"
   },
   "repository": {
     "type": "git",

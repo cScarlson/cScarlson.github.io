@@ -2,10 +2,13 @@
 {
     "environments": {
         "production": {
-            "baseUrl": "/"
+            "baseUrl": "/dist/"
         },
         "development": {
-            "baseUrl": "/dist/"
+            "baseUrl": "/"
         }
+    },
+    "modules": {
+        "main": [ "./src/main.ts", "./src/main.scss" ]
     }
 }

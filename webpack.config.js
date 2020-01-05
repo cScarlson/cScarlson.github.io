@@ -11,7 +11,6 @@ var config = require('./app.json');
 var { env: __env__ } = process
   , { NODE_ENV: __type__ } = __env__
   ;
-console.log('?\n\n', __type__);
 var { environments: env } = config;
 var { production, development } = env;
 var OPTIONS = env[ __type__ ];

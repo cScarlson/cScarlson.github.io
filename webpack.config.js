@@ -2,29 +2,36 @@
 // https://webpack.js.org/configuration/dev-server/
 require('dotenv').config();
 var path = require('path');
+var webpack = require("webpack");
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CopyPlugin = require('copy-webpack-plugin');
 var { CleanWebpackPlugin } = require('clean-webpack-plugin');
+var { ProvidePlugin, NormalModuleReplacementPlugin } = webpack;
 //
 var config = require('./app.json');
 
-var { env: __env__ } = process
-  , { NODE_ENV: __type__ } = __env__
-  ;
-var { environments, modules } = config;
-
 module.exports = (env, argv) => {
-    const MODE = argv.mode || __type__;
-    var OPTIONS = environments[ MODE ];
-    var BASE_HREF = OPTIONS.baseUrl
-      , X
+    var { env: ENV } = process  // alias
+      , { TYPE = 'development' } = ENV  // default to
+      , { mode: TYPE = TYPE } = argv  // alias and default to
       ;
+    var { environments, modules, proxy } = config;
+    var ENV = { ...process.env, TYPE };  // override with defaults
+    var OPTIONS = environments[ TYPE ];
+    var { baseUrl, replacements } = OPTIONS;
+    var REPLACEMENTS = replacements.map(mapReplacements);
     
-    console.log(`Building as ${MODE}`);
+    function mapReplacements({ target, replacement }) {
+        var exp = target.replace(/\//g, '[\\\\\\\/]'), re = new RegExp(exp);
+        var plugin = new NormalModuleReplacementPlugin(re, `./${replacement}`);
+        return plugin;
+    }
+    
+    process.env = ENV;
+    console.log(`Building as ${process.env.TYPE}`);
     
     return {
-        mode: MODE,
-        // entry: path.resolve(__dirname, './src/main.ts'),
+        mode: TYPE,
         entry: modules,
         output: {
             filename: '[name].bundle.[hash].js',
@@ -45,26 +52,23 @@ module.exports = (env, argv) => {
                 title: 'Cody S. Carlson',
                 filename: 'index.html',
                 template: './src/index.html',
-                base: BASE_HREF,
+                base: baseUrl,
                 favicon: './src/assets/shadow.jpg',
             }),
             new CopyPlugin([
-                { from: './src/assets', to: './assets' }
+                { from: './src/assets', to: './assets' },
+                { from: './src/mocks', to: './mocks' },
             ]),
+            ...REPLACEMENTS,
         ],
         devServer: {
-        contentBase: path.resolve(__dirname, './dist'),
-        index: './index.html',
-        hot: true,
-        hotOnly: true,
-        open: true,
-        port: 8080,
-        //   proxy: {
-        //     '/api': {
-        //       target: 'http://localhost:3000',
-        //       pathRewrite: {'^/api' : ''}
-        //     }
-        //   },
+            contentBase: path.resolve(__dirname, './dist'),
+            index: './index.html',
+            hot: true,
+            hotOnly: true,
+            open: true,
+            port: 8080,
+            proxy: proxy,
         },
     };
 };

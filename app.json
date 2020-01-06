@@ -2,13 +2,25 @@
 {
     "environments": {
         "production": {
-            "baseUrl": "/dist/"
+            "baseUrl": "/dist/",
+            "replacements": [
+                { "target": "./environments/environment.ts", "replacement": "environment.prod.ts" }
+            ]
         },
         "development": {
-            "baseUrl": "/"
+            "baseUrl": "/",
+            "replacements": [
+                { "target": "./environments/environment.ts", "replacement": "environment.dev.ts" }
+            ]
         }
     },
     "modules": {
         "main": [ "./src/main.ts", "./src/main.scss" ]
+    },
+    "proxy": {
+        "/api": {
+            "target": "http://localhost:8080",
+            "pathRewrite": { "^/api" : "mocks/api" }
+        }
     }
 }

@@ -1,4 +1,0 @@
-
-var environment = {};
-
-export { environment };

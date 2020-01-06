@@ -6,7 +6,8 @@ var webpack = require("webpack");
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CopyPlugin = require('copy-webpack-plugin');
 var { CleanWebpackPlugin } = require('clean-webpack-plugin');
-var { ProvidePlugin, NormalModuleReplacementPlugin } = webpack;
+var TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+var { NormalModuleReplacementPlugin } = webpack;
 //
 var config = require('./app.json');
 
@@ -45,6 +46,12 @@ module.exports = (env, argv) => {
         },
         resolve: {
             extensions: [ '.ts', '.js' ],
+            plugins: [
+                new TsconfigPathsPlugin({ configFile: './tsconfig.json' }),
+            ],
+            // alias: {
+            //     '@motorman/*': './src/core/*',
+            // },
         },
         plugins: [
             new CleanWebpackPlugin(),

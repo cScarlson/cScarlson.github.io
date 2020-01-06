@@ -1,6 +1,6 @@
 
 var environment = {
-    type: 'default',
+    type: 'DEFAULT',
 };
 
 export { environment };

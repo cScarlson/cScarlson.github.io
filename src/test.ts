@@ -1,4 +1,0 @@
-
-class Core {}
-
-export { Core };

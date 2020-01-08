@@ -1,0 +1,4 @@
+
+interface IEventAggregator {}
+
+export { IEventAggregator };

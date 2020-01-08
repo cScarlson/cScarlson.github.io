@@ -1,0 +1,4 @@
+
+class LinkedList {}
+
+export { LinkedList };

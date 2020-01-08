@@ -5,8 +5,8 @@ var path = require('path');
 var webpack = require("webpack");
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CopyPlugin = require('copy-webpack-plugin');
-var { CleanWebpackPlugin } = require('clean-webpack-plugin');
 var TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+var { CleanWebpackPlugin } = require('clean-webpack-plugin');
 var { NormalModuleReplacementPlugin } = webpack;
 //
 var config = require('./app.json');
@@ -68,6 +68,7 @@ module.exports = (env, argv) => {
             ]),
             ...REPLACEMENTS,
         ],
+        devtool: 'source-map',
         devServer: {
             contentBase: path.resolve(__dirname, './dist'),
             index: './index.html',

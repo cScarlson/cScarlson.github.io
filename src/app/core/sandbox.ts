@@ -19,7 +19,7 @@ class ServiceSandbox extends Sandbox {
 
 class ComponentSandbox extends Sandbox {
     
-    constructor(private element: HTMLElement) {
+    constructor(public element: HTMLElement) {
         super(director);
         return this;
     }

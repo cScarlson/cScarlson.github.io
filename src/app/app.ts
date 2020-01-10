@@ -2,6 +2,7 @@
 import { filter } from 'rxjs/operators';
 //
 import { Environment } from '@motorman/models';
+import { ElementEngine } from '@motorman/vertices/core';
 import { environment } from '../environments/environment';
 import { Sandbox, ServiceSandbox, ComponentSandbox } from './core';
 import { CONSTANTS, bootstrap } from './core';
@@ -54,6 +55,44 @@ window.addEventListener( 'load', V.bootstrap.bind(V, { target: document }) );
 // // });
 
 console.log('V', V);
+
+
+
+;(function iif() {
+    
+    var core = new ElementEngine(ComponentSandbox);
+    
+    const template = `<h2>This is a template for {name}</h2>`;
+    class Component {
+        static observedAttributes: string[] = ['name'];
+        static template: string = template;
+        private name: any = '';
+        private ['$on:click']: Function = this.handleClick;
+        
+        
+        constructor(private $: ComponentSandbox) {
+            console.log('@ Component # $', $, $.element);
+            setTimeout( () => this.name = 'CLICK ME', (1000 * 3) );
+        }
+        
+        attributeChangedCallback(attrName, oldVal, newVal) {
+            console.log('@ Custom # attributeChangedCallback', attrName, oldVal, newVal);
+        }
+        
+        handleClick(e: Event) {
+            console.log('# click', e);
+            this.name = 'now-this!!!';
+            setTimeout( () => this.name = 'CLICK ME', (1000 * 3) );
+        }
+        
+    }
+    
+    core.define('v-custom', Component);
+    
+})();
+
+
+
 
 var app = new (class Application {
     

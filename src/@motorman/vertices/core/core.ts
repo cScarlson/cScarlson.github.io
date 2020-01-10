@@ -45,6 +45,11 @@ class Core {
         this.components[id] = this.components[id] || component;
         return this;
     }
+    define(name, Class, options?: any) {
+        if ( !!customElements.get(name) ) return this;
+        customElements.define(name, Class);
+        return this;
+    }
     
     arm(options) {  // automatically register modules
         var config = this.configuration

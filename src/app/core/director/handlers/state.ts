@@ -34,7 +34,7 @@ class StateHandlers {
     
     log(e: CustomEvent, ...more: any[]) {
         var { type, detail } = e;
-        console.log('@ STATE', type, detail);
+        // console.log('@ STATE', type, detail);
     }
 
     // 'token': log,

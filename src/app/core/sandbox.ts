@@ -6,7 +6,9 @@ import { Director, ActionHandlers, StateHandlers, channels } from './director';
 class Dependencies {};  // mock
 var director = new Director({ channels, Dependencies, ActionHandlers, StateHandlers });
 
-class Sandbox extends CommonSandbox {}
+class Sandbox extends CommonSandbox {
+    
+}
 
 class ServiceSandbox extends Sandbox {
     public http: any = { };
@@ -19,7 +21,7 @@ class ServiceSandbox extends Sandbox {
 
 class ComponentSandbox extends Sandbox {
     
-    constructor(public element: HTMLElement) {
+    constructor(public element: any) {
         super(director);
         return this;
     }

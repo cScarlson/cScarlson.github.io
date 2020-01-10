@@ -1,6 +1,7 @@
 
 import { Utilities } from '@motorman/core/utilities';
 import { bootstrap, $bootstrap, DefaultComponentSandbox, DefaultServicesSandbox } from './defaults';
+import { ElementEngine } from './element-engine';
 
 
 var DEFAULT_CONFIG = {  // ... defaults
@@ -12,6 +13,7 @@ var DEFAULT_CONFIG = {  // ... defaults
 
 class Core {
     private utils: Utilities = new Utilities();
+    private engine: ElementEngine = new ElementEngine(DefaultComponentSandbox);
     private services: any = { };
     private components: any = { };
     private configuration: any = DEFAULT_CONFIG;
@@ -31,6 +33,7 @@ class Core {
     
     configure(config) {
         this.utils.extend(this.configuration, config);
+        this.engine = new ElementEngine(this.configuration.decorators.components);
         return this.utils.extend({ }, this.configuration);
     }
     registerService(Service) {
@@ -46,8 +49,7 @@ class Core {
         return this;
     }
     define(name, Class, options?: any) {
-        if ( !!customElements.get(name) ) return this;
-        customElements.define(name, Class);
+        this.engine.define(name, Class, options);
         return this;
     }
     

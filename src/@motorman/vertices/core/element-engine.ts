@@ -14,16 +14,18 @@ class ElementEngine {
         private template: any = Class.template;
         private component: any = new Class(this.$);
         private listeners: ListenerMap[] = [ ];
-        private get content() { return this.$utils.interpolate(this.template)(this.component); }
-        private set content(value: any) { this.innerHTML = value; }
+        get content() { return this.$utils.interpolate(this.template)(this.component); }
+        set content(value: any) { this.innerHTML = value; }
         
         constructor() {
             super();
-            var { component } = this, { observedAttributes: attributes } = Element;
+            var { component, dataset } = this, { observedAttributes: attributes } = Element;
             var re = /^\$on:(.+)/
               , keys = Object.keys(component).filter( (k) => re.test(k) )
               , listeners = keys.map( (key) => ({ key, type: key.replace(re, '$1'), handler: (...splat: any[]) => component[key].call(component, ...splat) }) )
               ;
+            
+            if (component.init) component.init(dataset);
             this.listeners = listeners;
             this.bind(component, attributes, listeners);
             

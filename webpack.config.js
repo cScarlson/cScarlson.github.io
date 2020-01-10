@@ -73,7 +73,7 @@ module.exports = (env, argv) => {
             contentBase: path.resolve(__dirname, './dist'),
             index: './index.html',
             hot: true,
-            hotOnly: true,
+            // hotOnly: true,
             open: true,
             port: 8080,
             proxy: proxy,

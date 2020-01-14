@@ -14,7 +14,7 @@ class Sandbox {
     in(channel: string) {
         return this.director.in(channel);
     }
-    publish(channel: string, data: any) {
+    publish(channel: string, data?: any) {
         return this.director.publish(channel, data);
     }
     subscribe(channel: string, handler: () => {}) {

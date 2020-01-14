@@ -68,6 +68,14 @@ module.exports = (env, argv) => {
             ]),
             ...REPLACEMENTS,
         ],
+        optimization: {
+            runtimeChunk: 'single',
+            splitChunks: {
+                cacheGroups: {
+                    // vendor: { test: /node_modules/, name: 'v', chunks: 'all', },
+                },
+            },
+        },
         devtool: 'source-map',
         devServer: {
             contentBase: path.resolve(__dirname, './dist'),

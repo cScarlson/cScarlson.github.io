@@ -3,8 +3,8 @@ import { Reactive as CommonSandbox } from '@motorman/core/sandbox';
 import { Utilities } from '@motorman/core/utilities';
 import { Director, ActionHandlers, StateHandlers, channels } from './director';
 
-class Dependencies {};  // mock
-var director = new Director({ channels, Dependencies, ActionHandlers, StateHandlers });
+// class Dependencies {};  // mock
+// var director = new Director({ channels, Dependencies, ActionHandlers, StateHandlers });
 
 class Sandbox extends CommonSandbox {
     
@@ -13,15 +13,16 @@ class Sandbox extends CommonSandbox {
 class ServiceSandbox extends Sandbox {
     public http: any = { };
     
-    constructor(utils: Utilities) {
+    constructor(utils: Utilities, director: Director) {
         super(director);
+        return this;
     }
     
 }
 
 class ComponentSandbox extends Sandbox {
     
-    constructor(public element: any) {
+    constructor(public element: any, director: Director) {
         super(director);
         return this;
     }

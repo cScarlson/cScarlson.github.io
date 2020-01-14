@@ -1,4 +1,5 @@
 
+import { ActionHandlers as CommonHandlers } from '@motorman/vertices/director';
 import { channels as e } from '../channels';
 import { Director } from '../director';
 
@@ -8,9 +9,11 @@ class Dependencies {
     constructor(private Director: Director) {}
 }
 
-class ActionHandlers {
+class ActionHandlers extends CommonHandlers {
     
-    constructor(private director: Director, private $: Dependencies) {}
+    constructor(director: Director, $: Dependencies) {
+        super(director, $);
+    }
     
     [ e['JOHN:WILL:LIKE:THIS:STRATEGY'] ](channel: string, data: { id: number, datum: string }) {
         var { id, datum } = data;

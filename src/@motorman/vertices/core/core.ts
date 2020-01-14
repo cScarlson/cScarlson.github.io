@@ -1,10 +1,11 @@
 
-import { Utilities } from '@motorman/core/utilities';
-import { bootstrap, $bootstrap, DefaultComponentSandbox, DefaultServicesSandbox } from './defaults';
+import { Utilities, Deferred } from '@motorman/core/utilities';
+import { bootstrap, $bootstrap, DefaultDirector, DefaultComponentSandbox, DefaultServicesSandbox } from './defaults';
 import { ElementEngine } from './element-engine';
 
-
+var director = new DefaultDirector();
 var DEFAULT_CONFIG = {  // ... defaults
+    director,
     selector: '[data-v]' || '[data-behavior]',
     datasets: '[v-attribute]',  // includes <script type="application/json"> { items: [...] } </scrpt>
     bootstrap: bootstrap,
@@ -12,13 +13,26 @@ var DEFAULT_CONFIG = {  // ... defaults
 };
 
 class Core {
+    private dConfiguration: Deferred<any> = new Deferred();
+    private pConfiguration: Promise<any> = this.dConfiguration.promise;
+    private dInitialization: Deferred<any> = new Deferred();
+    private pInitialization: Promise<any> = this.dInitialization.promise;
     private utils: Utilities = new Utilities();
-    private engine: ElementEngine = new ElementEngine(DefaultComponentSandbox);
+    private engine: ElementEngine = new ElementEngine(DefaultComponentSandbox, director);
     private services: any = { };
     private components: any = { };
+    private elements: any = { };
     private configuration: any = DEFAULT_CONFIG;
     
     constructor() {
+        var { pInitialization, elements } = this;
+        
+        pInitialization
+            .then( (options) => console.log('INIT', options) )
+            ;
+        this.pConfiguration
+            .then( (config) => this.dInitialization.resolve({ target: document }) )
+            ;
         return this;
     }
     
@@ -27,29 +41,35 @@ class Core {
         this.arm(options);
         // this.registerComponent = this.utils.noop;
         // this.registerService = this.utils.noop;
+        // this.dInitialization.resolve(options);
         
         return this;
     }
     
     configure(config) {
         this.utils.extend(this.configuration, config);
-        this.engine = new ElementEngine(this.configuration.decorators.components);
+        this.engine = new ElementEngine(this.configuration.decorators.components, this.configuration.director);
+        this.dConfiguration.resolve(this.configuration);
         return this.utils.extend({ }, this.configuration);
     }
     registerService(Service) {
         var id = Service.constructor;
-        var service = { id: id, Constructor: Service };
+        var service = { id, Constructor: Service };
         this.services[id] = this.services[id] || service;
         
         return this;
     }
     registerComponent(id, Component) {
-        var component = { id: id, Constructor: Component };
+        var component = { id, Constructor: Component };
         this.components[id] = this.components[id] || component;
         return this;
     }
     define(name, Class, options?: any) {
-        this.engine.define(name, Class, options);
+        var { dConfiguration } = this, { promise: pConfiguration } = dConfiguration;
+        
+        pConfiguration
+            .then( (config) => this.engine.define(name, Class, options) )
+            ;
         return this;
     }
     
@@ -69,10 +89,10 @@ class Core {
         return this;
     }
     private startService(_service, id, services) {
-        var { configuration, utils } = this, { decorators } = configuration;
+        var { configuration, utils } = this, { director, decorators } = configuration;
         var { services: ServiceSandbox = DefaultServicesSandbox } = decorators;
         var Service = _service.Constructor
-          , sandbox = new ServiceSandbox(utils)
+          , sandbox = new ServiceSandbox(utils, director)
           , service = new Service(sandbox)
           ;
         service.init();
@@ -87,12 +107,12 @@ class Core {
         if (!this.components[id]) return this.utils.console.warn("Unregistered Component: " + id) && null || null;
         
         var { configuration: config } = this
-          , { decorators } = config
+          , { director, decorators } = config
           , { components: ComponentSandbox = DefaultComponentSandbox } = decorators
           ;
         var component = this.components[id]
           , Component = component.Constructor
-          , sandbox = new ComponentSandbox(element)
+          , sandbox = new ComponentSandbox(element, director)
           , instance = new Component(sandbox)
           , data = data || { }
           ;

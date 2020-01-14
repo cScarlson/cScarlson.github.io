@@ -34,7 +34,7 @@ class Director extends Store implements IEventAggregator {
         var action = handlers[type];
 
         if (action) action.call(handlers, e);
-        else setTimeout( () => console.log('@ OBSERVED STATE', type, detail), (1000 * 10) );
+        // else setTimeout( () => console.log('@ OBSERVED STATE', type, detail), (1000 * 10) );
     };
 
     emit(channel: string, data: any) {

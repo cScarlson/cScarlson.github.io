@@ -5,12 +5,12 @@ type ListenerMap = { key: string, type: any, handler: (e: any) => {} };
 
 class ElementEngine {
     
-    constructor(private Sandbox: any) {}
+    constructor(private Sandbox: any, private director: any) {}
     
-    private prepare = (Class, Sandbox) => class Element extends HTMLElement {  // https://alligator.io/web-components/attributes-properties/
+    private prepare = (Class, Sandbox, director) => class Element extends HTMLElement {  // https://alligator.io/web-components/attributes-properties/
         static observedAttributes: string[] = Class.observedAttributes;
         protected $utils: Utilities = new Utilities();
-        private $: typeof Sandbox = new Sandbox(this);
+        private $: typeof Sandbox = new Sandbox(this, director);
         private template: any = Class.template;
         private component: any = new Class(this.$);
         private listeners: ListenerMap[] = [ ];
@@ -62,7 +62,12 @@ class ElementEngine {
         }
         attributeChangedCallback(attrName, oldVal, newVal) {
             var { component, content } = this;
+            var action = `[${attrName}]`, handler = component[action];
+            var any = `[*]`, all = component[any];
+            
             if (component.attributeChangedCallback) component.attributeChangedCallback(attrName, oldVal, newVal);
+            if (all) all.call(component, attrName, oldVal, newVal);
+            if (handler) handler.call(component, newVal, oldVal);
             this.content = content;
         }
         detachedCallback() {
@@ -75,7 +80,8 @@ class ElementEngine {
     
     define(name, Class, options?: any) {
         if ( !!customElements.get(name) ) return this;
-        var Element = this.prepare(Class, this.Sandbox);
+        var { Sandbox, director } = this;
+        var Element = this.prepare(Class, Sandbox, director);
         customElements.define(name, Element, options);
         
         return this;

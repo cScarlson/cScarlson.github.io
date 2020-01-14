@@ -55,7 +55,9 @@ function $bootstrap(root, medium) {
 
 }
 
+class DefaultDirector {}
+
 function DefaultServicesSandbox(utils) { return utils; }
 function DefaultComponentSandbox(element) { return element; }
 
-export { bootstrap, $bootstrap, DefaultServicesSandbox, DefaultComponentSandbox };
+export { bootstrap, $bootstrap, DefaultDirector, DefaultServicesSandbox, DefaultComponentSandbox };

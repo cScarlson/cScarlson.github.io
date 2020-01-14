@@ -15,6 +15,8 @@
         }
     },
     "modules": {
+        "v": [ "./src/@motorman/vertices" ],
+        "v.sdk.backdrop": [ "./src/@motorman/vertices/sdk/components/backdrop/backdrop.component.ts", "./src/@motorman/vertices/sdk/components/backdrop/backdrop.component.scss" ],
         "main": [ "./src/main.ts", "./src/main.scss" ]
     },
     "proxy": {

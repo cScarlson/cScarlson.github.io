@@ -1,32 +1,28 @@
 
-import { V } from '@motorman/vertices';
+import { Element, attr, handler, message } from '@motorman/vertices';
 import { Sandbox } from '@motorman/core';
 
-V('v-backdrop', class BackdropComponent {
-    static observedAttributes: string[] = [ 'active', 'options' ];
-    static template: string = '';
-    private active: boolean = false;
-    private options: any = { };
-    ['$on:click']: Function = this.handleInteraction;
+@Element({ name: 'v-backdrop', template: `` })
+export class BackdropComponent {
+    @attr() active: boolean = false;
+    @attr() options: any = { };
     
-    constructor(private $: Sandbox) {
-        $.in($.channels['BACKDROP:REQUESTED']).subscribe(this.handleRequest);
-    }
+    constructor(private $: Sandbox) {}
     
     ['[options]'](val, old) {
         console.log('>', val, old);
     }
     
-    handleInteraction(e: Event) {
+    @handler('click') handleInteraction(e: Event) {
         var { $ } = this;
         this.active = false;
         $.publish($.channels['BACKDROP:DISMISSED']);
     }
     
-    public handleRequest = (e: CustomEvent) => {
+    @message('BACKDROP:REQUESTED') handleRequest(e: CustomEvent) {
         var { type, detail } = e;
         console.log('@ BackdropComponent', type, detail);
         this.active = true;
-    };
+    }
     
-});
+}

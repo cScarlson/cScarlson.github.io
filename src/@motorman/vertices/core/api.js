@@ -12,21 +12,18 @@ var Facade = function Facade(core) {
         core.registerService.apply(core, arguments);
         return this;
     }
-    function component(id, Component) {
-        core.define.apply(core, arguments);
+    function element(definition) {
+        core.define(definition);
         return this;
     }
-    function directive(id, Directive) {
+    function component(id, Directive) {
         core.registerComponent.apply(core, arguments);
         return this;
     }
     
-    function register(id, Component) {
-        var method = { '$component': 'component', '$service': 'service', '$directive': 'directive' }[ id ]
-          , method = method || { 'function': 'service', 'string': 'component' }[ typeof id ]
-          ;
-        this[method].apply(this, arguments);
-        
+    function register(item, Class) {
+        var type = { 'string': 'component', 'function': 'service', 'object': item.type }[ typeof item ];
+        this[type].call(this, item, Class);
         return this;
     }
     
@@ -39,8 +36,8 @@ var Facade = function Facade(core) {
     this.utils = core.utils;
     this.config = configure;
     this.service = service;
+    this.element = element;
     this.component = component;
-    this.directive = directive;
     this.register = register;
     this.bootstrap = bootstrap;
     

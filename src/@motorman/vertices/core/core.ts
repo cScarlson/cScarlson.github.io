@@ -64,7 +64,8 @@ class Core {
         this.components[id] = this.components[id] || component;
         return this;
     }
-    define(name, Class, options?: any) {
+    define(definition) {
+        var { name, Class, options } = definition;
         var { dConfiguration } = this, { promise: pConfiguration } = dConfiguration;
         
         pConfiguration

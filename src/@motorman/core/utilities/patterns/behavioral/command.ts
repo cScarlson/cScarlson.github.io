@@ -14,7 +14,7 @@ class Command {
         this.action = action;
     }
     
-    execute(...splat) {
+    execute(...splat: any[]) {
         var { context, action } = this;
         var value = context[action](...splat);
         return value;
@@ -22,4 +22,10 @@ class Command {
     
 }
 
-export { Command };
+class StrictCommand extends Command {
+    
+    public execute = (...splat: any[]) => super.execute(...splat);
+    
+}
+
+export { Command, StrictCommand };

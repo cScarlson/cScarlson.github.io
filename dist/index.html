@@ -2,17 +2,17 @@
 <!DOCTYPE html>
 <html data-v="document">
   <head>
-    <base href="/dist/" />
+    <base href="<%= htmlWebpackPlugin.options.base %>" />
     <meta charset="utf-8" />
-    <title>Cody S. Carlson</title>
+    <title><%= htmlWebpackPlugin.options.title %></title>
   <link rel="shortcut icon" href="shadow.jpg"></head>
   <body>
     <h1>Cody S. Carlson</h1>
     <p>Coming sooooooooon...</p>
     <v-custom name="this" data-test="x">... custom element ...</v-custom>
     <v-other>... other element ...</v-other>
-    <v-backdrop options="{ dismissable: false }"></v-backdrop>
+    <v-backdrop options='{ "dismissable": "false" }'></v-backdrop>
     <v-modal></v-modal>
     <img src="assets/shadow.jpg" alt="avatar" />
-  <script type="text/javascript" src="runtime.bundle.8863a53281e5886b771c.js"></script><script type="text/javascript" src="v.bundle.8863a53281e5886b771c.js"></script><script type="text/javascript" src="v.sdk.backdrop.bundle.8863a53281e5886b771c.js"></script><script type="text/javascript" src="main.bundle.8863a53281e5886b771c.js"></script></body>
+  <script type="text/javascript" src="runtime.bundle.892811ea06aac4adf917.js"></script><script type="text/javascript" src="v.bundle.892811ea06aac4adf917.js"></script><script type="text/javascript" src="v.sdk.backdrop.bundle.892811ea06aac4adf917.js"></script><script type="text/javascript" src="v.sdk.modal.bundle.892811ea06aac4adf917.js"></script><script type="text/javascript" src="main.bundle.892811ea06aac4adf917.js"></script></body>
 </html>

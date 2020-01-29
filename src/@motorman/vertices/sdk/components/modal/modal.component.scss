@@ -1,0 +1,25 @@
+
+$offset: 8%;
+
+v-modal {
+    position: fixed;
+    top: $offset;
+    bottom: $offset;
+    left: $offset;
+    right: $offset;
+    background-color: transparent;
+    border: solid 1px #444;  // test
+    display: none;
+    justify-content: center;
+    
+    &[active="true"] {
+        display: flex;
+    }
+    
+    .vertices.modal {
+        background-color: #fff;
+        border: solid 1px #444;
+        border-radius: 3px;
+    }
+    
+}

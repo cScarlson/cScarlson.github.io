@@ -1,12 +1,7 @@
 
-var creational = require('./creational');
-var structural = require('./structural');
-var behavioral = require('./behavioral');
-var other = require('./other');
+// import * as creational from './creational';
+// import * as structural from './structural';
+import * as behavioral from './behavioral';
+import * as other from './other';
 
-module.exports = {
-    creational, ...creational,
-    structural, ...structural,
-    behavioral, ...behavioral,
-    other, ...other,
-};
+export { behavioral, other };

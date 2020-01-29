@@ -4,6 +4,7 @@ import { filter } from 'rxjs/operators';
 import { Environment } from '@motorman/models';
 import { V, Element, attr, watch, handler, message, pipe } from '@motorman/vertices';
 import { BackdropComponent } from '@motorman/vertices/sdk/components/backdrop/backdrop.component';
+import { ModalComponent } from '@motorman/vertices/sdk/components/modal/modal.component';
 //
 import { environment } from '../environments/environment';
 import { ServiceSandbox, ComponentSandbox as Sandbox } from './core';
@@ -30,10 +31,6 @@ class Component {
     @attr() name: any = '';
     public id: number = +'998';
     
-    @watch('name') watchName(val, old) {
-        console.log(`@v-custom: this.name was ${old} and is now ${val}`);
-    }
-    
     constructor(private $: Sandbox) {
         var filterId = filter( (e: CustomEvent) => e.detail.id === this.id )
           // , latest = last()
@@ -52,6 +49,10 @@ class Component {
     
     attributeChangedCallback(attrName, oldVal, newVal) {
         console.log('@ Custom # attributeChangedCallback', attrName, oldVal, newVal);
+    }
+    
+    @watch('name') watchName(val, old) {
+        console.log(`@v-custom: this.name was ${old} and is now ${val}`);
     }
     
     @handler('click') handleClick(e: Event) {
@@ -94,6 +95,7 @@ class OtherComponent {
     
     constructor(private $: Sandbox) {
         setTimeout( () => this.wait(), (1000 * 3) );
+        setTimeout( () => $.publish($.channels['MODAL:REQUESTED'], { active: '???' }), (1000 * 2) );
     }
     
     wait() {
@@ -101,33 +103,6 @@ class OtherComponent {
         $.publish($.channels['JOHN:WILL:LIKE:THIS:STRATEGY'], { id: 998, datum: 'A' });
         $.publish($.channels['JOHN:WILL:LIKE:THIS:STRATEGY'], { id: 999, datum: 'B' });
     }
-    
-}
-
-@Element({ name: 'v-modal', template: `` })
-class ModalComponent {
-    @attr() options: any = { };
-    
-    constructor(private $: Sandbox) {
-        $.in($.channels['BACKDROP:DISMISSED']).subscribe(this.handleDismissed);
-        setTimeout( () => $.publish($.channels['BACKDROP:REQUESTED'], { test: true }), (1000 * 3) );
-    }
-    
-    attachedCallback() {
-        var { $ } = this;
-        $.publish($.channels['BACKDROP:REQUESTED'], { test: true });
-        setTimeout( () => $.publish($.channels['BACKDROP:REQUESTED'], { test: true }), (1000 * 5) );
-    }
-    
-    public handleDismissed = (e: CustomEvent) => {
-        var { type, detail } = e;
-        console.log('@ ModalComponent', type, detail);
-    };
-    
-    public handleRequest = (e: CustomEvent) => {
-        var { type, detail } = e;
-        console.log('@ ModalComponent', type, detail);
-    };
     
 }
 

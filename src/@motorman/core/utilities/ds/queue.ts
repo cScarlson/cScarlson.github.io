@@ -4,12 +4,12 @@
  * @intention
  *  * FIFO (First-In, First-Out)
  */
-class Queue {
-    private data: any[] = [ ];
+class Queue<T> {
+    private data: T[] = [ ];
     get length() { return this.size(); }
     get index() { return 0; }
     
-    constructor(data) {
+    constructor(data: T[] = []) {
         this.clear();
         this.data = [ ...data ];
         return this;

@@ -245,7 +245,7 @@ class Utilities {
     interpolate(str) {
         return (o) => {
             return str.replace(/{([^{}]*)}/g, (a, b) => {
-                var r = o[b], val = (typeof r === 'string' || typeof r === 'number' ? r : a);
+                var val = ''+o[b];
                 return this.escapeHTML(val);  // TODO: escape HTML-Entities
             });
         };
@@ -258,7 +258,7 @@ class Utilities {
     INSECURE_INTERPOLATE(str) {
         return function interpolate(o) {
             return str.replace(/{([^{}]*)}/g, function (a, b) {
-                var r = o[b], val = (typeof r === 'string' || typeof r === 'number' ? r : a);
+                var val = ''+o[b];
                 return val;  // TODO: escape HTML-Entities
             });
         }

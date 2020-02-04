@@ -54,7 +54,7 @@ function watch(attr: string): any {
     };
 }
 
-function handler(type: string): any {
+function handler(type: string, selector?: string): any {  // TODO: rename to "event"
     
     return function get(target: any, name: string, descriptor: any): any {
         var { constructor } = target;

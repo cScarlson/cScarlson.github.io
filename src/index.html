@@ -12,7 +12,7 @@
     <v-custom name="this" data-test="x">... custom element ...</v-custom>
     <v-other>... other element ...</v-other>
     <v-backdrop options='{ "dismissable": "false" }'></v-backdrop>
-    <v-modal></v-modal>
+    <v-modal (click)="handleClick($event, active, 'other')"></v-modal>
     <img src="assets/shadow.jpg" alt="avatar" />
   </body>
 </html>

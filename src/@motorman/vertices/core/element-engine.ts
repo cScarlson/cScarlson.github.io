@@ -243,6 +243,7 @@ class ElementEngine {
             private comm: EventHub = this.config.comm;
             private $: any = this.config.sandbox;
             private component: any = this.config.component;
+            private surrogate: any = this.config.surrogate;
             private listeners: ListenerMap[] = this.config.listeners;
             private subscriptions: any[] = this.config.subscriptions;
             private operators: any[] = this.config.operators;
@@ -268,6 +269,28 @@ class ElementEngine {
                 
                 return this;
             }
+            
+            private getBindingName(attr: Attr): any {
+                var { name, value, ownerElement: element } = attr;
+                var matches = name.match(/\((\w*)\)/), [ match, type ] = !!matches && matches.length && matches || [];
+                return type;
+            }
+            private isEventBinding(attr: Attr): boolean {
+                var { ownerElement: element } = attr;
+                var type = this.getBindingName(attr), namespace = `on${type}`, has = !!(namespace in element);
+                return has;
+            }
+            private getEventBindingInvoker(attr: Attr, component: any): any {
+                var { name, value } = attr;
+                var [ match, method, args ] = value.match(/(\w*)\((.*)\)/);
+                var params = args.match(/([^,\s]+)/g);
+                var op = `with($_) return eval("$_['${method}'](${args})");`;
+                var fn = new Function('$_', '$event', `with($_) return eval("$_['${method}'](${args})");`);
+                var f = (e) => fn(component, e);
+                // console.log('>', method, args, params, args, op);
+                
+                return f;
+            }
     
             private init({ component, dataset, attributes }: Element) {
                 // console.log('@ributes', this.tagName, attributes);
@@ -281,9 +304,12 @@ class ElementEngine {
             }
             private initAttribute(component, attribute: Attr, i?: number, attributes?: NamedNodeMap) {
                 var { attrs } = this;
-                var { name } = attribute, value = component[name];
+                var { name, value: attr } = attribute, value = component[name];
                 
-                this.setAttribute(name, value);
+                if ( this.isEventBinding(attribute) ) this.addEventListener( this.getBindingName(attribute), this.getEventBindingInvoker(attribute, component), false );
+                if (!{ undefined: true, null: true, '': true }[ value ]) this.setAttribute(name, value);
+                // attribute.addEventListener('change', (e) => console.log('$$$$$$$$$$$', e), false);
+                // attribute.dispatchEvent( new CustomEvent('change', { detail: { name, value } }) );
                 this.initAttributeComparitors(component, attrs);
                 
                 return this;
@@ -314,13 +340,12 @@ class ElementEngine {
                   ;
                 var value = this.getAttribute(k);
                 if (!value) this.setAttribute(k, component[k]);
-                // setTimeout( () => component[k] = component[k], (1000 * 6) );
                 if (descriptor.get && descriptor.set) descriptor = { get, set };
                 else if (!descriptor.get && !descriptor.set) descriptor = { get: () => this.getAttribute(k), set: (v) => this.setAttribute(k, v) };
                 else if (!descriptor.get && descriptor.set) descriptor = { get: () => this.getAttribute(k), set };
                 else if (descriptor.get && !descriptor.set) descriptor = { get, set: () => this.setAttribute(k, component[k]) };
                 Object.defineProperty(component, k, descriptor);
-                // console.log(this.tagName, k, this[k], component[k]);
+                
                 return this;
             }
             private bindListener(component: any, map: ListenerMap) {
@@ -340,7 +365,7 @@ class ElementEngine {
                 // $.in(type).unsubscribe(handler);
             }
             
-            getAttributeChanges(comparitors: Comparitor[]): Comparitor[] {
+            getDirtyAttributeStates(comparitors: Comparitor[]): Comparitor[] {
                 var inequalities = comparitors.filter( (comparitor) => this.compareAttributeValues(comparitor) );
                 return inequalities;
             }
@@ -381,10 +406,11 @@ class ElementEngine {
             }
             
             private handleProxyInvokation = (e: CustomEvent) => {
-                var { component, attributes } = this;
+                var { component, attributes, content } = this;
                 var { type, detail } = e, { type: method } = detail;
-                var dirty = this.getAttributeChanges(this.comparitors);
+                var dirty = this.getDirtyAttributeStates(this.comparitors);
                 dirty.forEach( ({ name }) => this.initAttribute(component, attributes[name]) );
+                this.content = content;
             };
             
         };

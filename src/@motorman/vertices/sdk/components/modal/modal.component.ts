@@ -26,20 +26,25 @@ class ModalRequest extends SingletonComponentRequest {
     // lazy: !true,  // tells Vertices to expect a url
 })
 class ModalComponent {
-    @attr() options: any = { };  // get options() { return new Function(`return ${value};`); }???
-    // @attr() active: boolean = true;
+    @attr() options: any = { };
+    // @attr() get options() { return new Function(`return ${value};`); }
+    //         set options(value: string) { this.config = `${value}`; }
     @attr() get active(): boolean { return !this.requests.isEmpty(); }
-    // @attr() get active(): string { return ''+!this.requests.isEmpty(); }
-    // set active(value: boolean) {  }
+    //         set active(value: boolean) {  }
+    //         set active(value: boolean) { if (!value) this.requests.dequeue(); }
     protected requests: Queue<ModalRequest> = new Queue();
-    // private request: ModalRequest = new ModalRequest({});
     get request(): ModalRequest { return this.requests.front(); }
+    // @attr() ['onclick']: Function = () => {};
     
     constructor(private $: Sandbox) {}
     
-    @handler('click') handleClick(e: Event) {
-        var { $, requests } = this;
-        console.log('@modal # click', e);
+    // @handler('click', '.close.icon') handleClick(e: Event) {  // needs option for selector?
+    //     var { $, requests } = this;
+    //     console.log('@modal # click', e);
+    // }
+    
+    handleClick(e, active, adHoc) {
+        console.log('@event', e.type, active, adHoc);
     }
     
     @message('MODAL:REQUESTED') handleRequest(e: CustomEvent) {

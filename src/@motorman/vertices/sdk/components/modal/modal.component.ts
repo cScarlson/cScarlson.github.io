@@ -38,13 +38,16 @@ class ModalComponent {
     
     constructor(private $: Sandbox) {}
     
-    // @handler('click', '.close.icon') handleClick(e: Event) {  // needs option for selector?
+    // @handler('click', '.close.icon') handleClique(e: Event) {  // needs option for selector?
     //     var { $, requests } = this;
     //     console.log('@modal # click', e);
     // }
     
-    handleClick(e, active, adHoc) {
-        console.log('@event', e.type, active, adHoc);
+    handleClique(e, active, adHoc) {
+        var { $, requests } = this;
+        console.log('\n\n @event', e.type, active, adHoc, '\n\n');
+        requests.dequeue();
+        $.publish($.channels['BACKDROP:DISMISSED'], { test: true });
     }
     
     @message('MODAL:REQUESTED') handleRequest(e: CustomEvent) {

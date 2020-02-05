@@ -82,7 +82,7 @@ function message(channel: string, operators?: any|any[]): any {
         return descriptor;
     };
 }
-function pipe(operator: any): any {
+function pipe(operator: any): any {  // rename to @operand so that @pipes/@filters can be used for views like Angular
     
     return function get(target: any, name: string, descriptor: any): any {
         var { constructor } = target;

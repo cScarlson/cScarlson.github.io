@@ -1,4 +1,4 @@
 
-<div class="vertices modal">
-    <div class="modal container">Modal is active: {active}</div>
-</div class>
+<div #container id="test" class="vertices modal">
+    <div class="modal container" (click)="handleClique($event, active, 'other')">Modal ({container.id}) is active: {active}</div>
+</div>

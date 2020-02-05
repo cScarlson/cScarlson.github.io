@@ -3,14 +3,6 @@ import { Utilities } from "@motorman/core/utilities";
 import { StrictCommand as Command } from "@motorman/core/utilities/patterns/behavioral";
 
 type ListenerMap = { type: string, name: string, handler: (e: Event, ...splat: any[]) => any };
-type Comparitor = { name: string, compare: Function };
-
-interface ValueComparison {
-    name: string;
-    equal: boolean;
-    previous: any;
-    current: any;
-}
 
 class ConstructorProxy {
     private comm: any;
@@ -65,7 +57,8 @@ class MemberProxy {
     }
 
     get(target: any, key: any, receiver: any) {
-        var { source, comm } = this;
+        // if (target[key].call) return new Proxy( target[key], new MethodProxy({ comm: this.comm, source: this.source, element: this.element }) );
+        var { source, comm, element } = this;
         var data = { type: 'get', source, key };
         var result = Reflect.get(source, key);  // omit receiver to get key of source
         
@@ -97,10 +90,26 @@ class MemberProxy {
         return result;
     }
 
+}
+
+class MethodProxy {
+    private comm: any;
+    private source: any;
+    private element: HTMLElement;
+
+    constructor({ comm, source, element }) {
+        this.comm = comm;
+        this.source = source;
+        this.element = element;
+    }
+
     apply(target, thus, args) {
         var { source, comm } = this;
         var data = { type: 'apply', source, target, thus, args };
         var result = target.call(source, ...args);
+        // var result = source[target.name](...args);
+        // var result = target.call(thus, ...args);
+        // var result = Reflect.apply(target, thus, args);
         
         comm.publish(comm.channels['PROXY:INVOKED'], data);
         comm.publish(comm.channels['PROXY:APPLY:INVOKED'], data);
@@ -108,6 +117,10 @@ class MemberProxy {
         return result;
     }
 
+}
+
+class ProxyManager {  // sets up & manages proxy relationships
+    
 }
 
 class Channels {
@@ -118,6 +131,7 @@ class Channels {
     ['PROXY:SET:INVOKED'] = 'vcomm://invoked/proxy/set';
     ['PROXY:DELETE:INVOKED'] = 'vcomm://invoked/proxy/delete';
     ['PROXY:APPLY:INVOKED'] = 'vcomm://invoked/proxy/apply';
+    ['PROXY:MOCK:INVOKED'] = 'vcomm://invoked/proxy/mock';
 }
 class EventHub {
     private target = new EventTarget();
@@ -125,7 +139,7 @@ class EventHub {
 
     constructor() {}
 
-    publish(channel, data) {
+    publish(channel: string, data?: any) {
         var e = new CustomEvent(channel, { detail: data });
         this.target.dispatchEvent(e);
         return this;
@@ -141,11 +155,35 @@ class EventHub {
 
 }
 
-function compareValues(name: string, previous: any): Function {
-    return function compare(current: any): ValueComparison {
+class Comparitor {
+    public previous: any = undefined;
+    get name(): string { return this.attr.name; }
+    get current(): any { return this.component[ this.name ]; }
+    set current(value: any) { this.attr.value = value; }
+    get equal(): boolean { return this.detect(); }
+    get dirty(): boolean { return !this.equal; }
+    
+    constructor(private comm: EventHub, private component: any, private attr: Attr) {
+        var { name, value } = attr;
+        this.previous = value;
+        return this;
+    }
+    
+    detect() {
+        var { comm, name, previous, current } = this;
         var equal = (previous === current);
-        return { name, equal, previous, current };
-    };
+        var details = { name, previous, current, equal };
+        
+        if (!equal) comm.publish(comm.channels['ELEMENT:ATTRIBUTE:CHANGE'], details);
+        return equal;
+    }
+    
+    update() {
+        var { name, component } = this;
+        this.previous = this.current = component[name];
+        return this;
+    }
+    
 }
 
 
@@ -192,13 +230,17 @@ class ElementEngine {
         var ClassProxy = new Proxy(Class, construction);
         var component = new ClassProxy({ state: false });
         var members = new MemberProxy({ comm, source: component, element });
+        var methods = new MethodProxy({ comm, source: component, element });
         var proxy = new Proxy(component, members);
+        var properties = Object.getOwnPropertyNames(Class.prototype);
+        var methodBlacklist = { 'constructor': true, 'connectedCallback': true, 'attributeChangedCallback': true, 'disconnectedCallback': true, 'adoptedCallback': true };
         
         var listeners = listeners.map( (item) => this.mapListener(component, item) );  // map each handler to a handler bound to "component"
         var subscriptions = subscriptions.map( (item) => this.mapSubscription(component, operators, item) );  // map each handler to a handler bound to "component"
         
         var surrogate = Object.create(proxy);  // use Object.create to carry over get|set; spread op fails to do so
-        for (let key in proxy) if (proxy[key].call) surrogate[key] = new Proxy(proxy[key], members);
+        for (let key in proxy) if (proxy[key].call) surrogate[key] = new Proxy(proxy[key], methods);
+        properties.forEach( (key) => { if (!!component[key] && component[key].call && !methodBlacklist[key]) surrogate[key] = new Proxy(component[key], methods); });
         
         var config = {  // TODO: create fn
             comm,
@@ -251,6 +293,7 @@ class ElementEngine {
             private template: string = this.config.template;
             private pTemplate: Promise<string> = this.config.pTemplate;
             private $comparitors: Map<string, Comparitor> = new Map();
+            private handlers: any[] = [ ];
             get comparitors(): Comparitor[] { return Array.from( this.$comparitors.values() ); }
             get content(): string { return this.$utils.interpolate(this.template)(this.component); }
             set content(value: string) { this.innerHTML = value; }
@@ -266,34 +309,12 @@ class ElementEngine {
                 
                 pTemplate.then( (t) => this.template = t );
                 comm.subscribe(comm.channels['PROXY:INVOKED'], this.handleProxyInvokation);
+                comm.subscribe(comm.channels['PROXY:MOCK:INVOKED'], this.handleProxyInvokation);
                 
                 return this;
             }
-            
-            private getBindingName(attr: Attr): any {
-                var { name, value, ownerElement: element } = attr;
-                var matches = name.match(/\((\w*)\)/), [ match, type ] = !!matches && matches.length && matches || [];
-                return type;
-            }
-            private isEventBinding(attr: Attr): boolean {
-                var { ownerElement: element } = attr;
-                var type = this.getBindingName(attr), namespace = `on${type}`, has = !!(namespace in element);
-                return has;
-            }
-            private getEventBindingInvoker(attr: Attr, component: any): any {
-                var { name, value } = attr;
-                var [ match, method, args ] = value.match(/(\w*)\((.*)\)/);
-                var params = args.match(/([^,\s]+)/g);
-                var op = `with($_) return eval("$_['${method}'](${args})");`;
-                var fn = new Function('$_', '$event', `with($_) return eval("$_['${method}'](${args})");`);
-                var f = (e) => fn(component, e);
-                // console.log('>', method, args, params, args, op);
-                
-                return f;
-            }
     
             private init({ component, dataset, attributes }: Element) {
-                // console.log('@ributes', this.tagName, attributes);
                 this.initAttributes(this);
                 if (component.init) component.init(dataset);
                 return this;
@@ -306,7 +327,6 @@ class ElementEngine {
                 var { attrs } = this;
                 var { name, value: attr } = attribute, value = component[name];
                 
-                if ( this.isEventBinding(attribute) ) this.addEventListener( this.getBindingName(attribute), this.getEventBindingInvoker(attribute, component), false );
                 if (!{ undefined: true, null: true, '': true }[ value ]) this.setAttribute(name, value);
                 // attribute.addEventListener('change', (e) => console.log('$$$$$$$$$$$', e), false);
                 // attribute.dispatchEvent( new CustomEvent('change', { detail: { name, value } }) );
@@ -319,9 +339,11 @@ class ElementEngine {
                 for (let i = 0, len = attributes.length; i < len; i++) this.initAttributeComparitor(component, attributes[i], i, attributes);
                 return this;
             }
-            private initAttributeComparitor(component, name: string, i, attributes: string[]) {
-                var value = component[name], compare = compareValues(name, value);
-                this.$comparitors.set(name, { name, compare });
+            private initAttributeComparitor(component, name: string, i, attrs: string[]) {
+                var { comm, component, attributes } = this;
+                var attr = attributes[name], comparitor = new Comparitor(comm, component, attr);
+                
+                this.$comparitors.set(name, comparitor);
                 return this;
             }
             
@@ -348,6 +370,7 @@ class ElementEngine {
                 
                 return this;
             }
+            
             private bindListener(component: any, map: ListenerMap) {
                 var { type, handler } = map;
                 this.addEventListener(type, handler, false);
@@ -356,6 +379,7 @@ class ElementEngine {
                 var { type, handler } = map;
                 this.removeEventListener(type, handler, false);
             }
+            
             private bindMessageHandler(component: any, map: any) {
                 var { type, name, operators } = map, { $ } = this, channel = $.channels[type];
                 $.in(channel).pipe(...operators).subscribe( (...splat) => component[name](...splat) );
@@ -365,21 +389,127 @@ class ElementEngine {
                 // $.in(type).unsubscribe(handler);
             }
             
-            getDirtyAttributeStates(comparitors: Comparitor[]): Comparitor[] {
-                var inequalities = comparitors.filter( (comparitor) => this.compareAttributeValues(comparitor) );
+            private inspectChildren(children: HTMLCollection) {  // #MutualRecursion
+                Array.prototype.forEach.call( children, (c, i, a) => this.inspectChild(c, i, a) );
+                return this;
+            }
+            private inspectChild(child: HTMLElement, i: number, children: HTMLCollection) {  // #MutualRecursion
+                var { attributes, children } = child;
+                
+                this.inspectChildAttributes(attributes);
+                if (children.length) this.inspectChildren(children);
+                
+                return this;
+            }
+            private inspectChildAttributes(attributes: NamedNodeMap) {
+                Array.prototype.forEach.call( attributes, (attr, i, attrs) => this.inspectChildAttribute(attr, i, attrs) );
+                return this;
+            }
+            private inspectChildAttribute(attr: Attr, i: number, attrs: NamedNodeMap) {
+                var { name, value, ownerElement: child } = attr;
+                // console.log('@CHILD ATTR', this.tagName, name, value, attr);
+                if ( this.isRefBinding(attr) ) this.setRefBinding(attr);
+                if ( this.isEventBinding(attr) ) this.$addEventListener(attr);
+                return this;
+            }
+            
+            private isRefBinding(attr: Attr): boolean {
+                var { name, value, ownerElement: element } = attr;
+                var is = !!this.getRefBinding(attr);
+                return is;
+            }
+            private getRefBinding(attr: Attr): string {
+                var { name, value, ownerElement: element } = attr;
+                var matches = name.match(/^#(.+)$/), [ match, id ] = !!matches && matches.length && matches || [];
+                return id;
+            }
+            private setRefBinding(attr: Attr) {
+                var { component } = this;
+                var { name, value, ownerElement: element } = attr;
+                var id = this.getRefBinding(attr);
+                component[id] = element;
+                // console.log('--------- %s %s %s %s %s %O %O', this.tagName, name, id, element.id, component[id].id, element, component[id]);
+                return this;
+            }
+            
+            private isEventBinding(attr: Attr): boolean {
+                var { ownerElement: element } = attr;
+                var type = this.getEventBindingName(attr), namespace = `on${type}`, has = !!(namespace in element);
+                return has;
+            }
+            private getEventBindingName(attr: Attr): any {
+                var { name, value, ownerElement: element } = attr;
+                var matches = name.match(/\((\w*)\)/), [ match, type ] = !!matches && matches.length && matches || [];
+                return type;
+            }
+            private getEventBindingInvoker(attr: Attr): any {
+                var { component: c, comm } = this;
+                var { name, value } = attr;
+                var [ match, method, args ] = value.match(/(\w*)\((.*)\)/);
+                var params = args.match(/([^,\s]+)/g);
+                // var exe = Function.prototype.call.bind(c[method], c);
+                var exe = thus.composeExecutor(c, method);
+                // var op = `with($_) return eval("$_['${method}'](${args})");`;
+                var op = `with($_) return eval("h(${args})");`;
+                var fn = new Function('$_', 'h', '$event', op);
+                // var f = (e) => ( fn(c, exe, e), comm.publish(comm.channels['PROXY:MOCK:INVOKED'], { name, value, attr }) );  // <-- workaround
+                var f = (e) => fn(c, exe, e);
+                // var f = (e) => fn(c, e);
+                // setTimeout( () => exe({ type: 'TEST' }, 'test', 'blah'), (1000 * 12) );
+                // console.log('>>>>>>>>>>>>', method, c[method]);
+                // exe({ type: 'TEST' }, 'test', 'blah');
+                
+                return f;
+            }
+            
+            private $addEventListener(attr: Attr) {
+                var { handlers } = this;
+                var { name, value, ownerElement: element } = attr;
+                var type = this.getEventBindingName(attr), handler = this.getEventBindingInvoker(attr);
+                var cache = { name, value, element, type, handler };
+                
+                element.addEventListener(type, handler, false);
+                handlers.push(cache);
+                
+                return this;
+            }
+            private $removeEventListeners() {
+                var { handlers } = this;
+                for (let i = handlers.length; i--;) this.$removeEventListener(handlers[i], i, handlers);
+                return this;
+            }
+            private $removeEventListener(cache: any, i: number, caches: any[]) {
+                var { name, value, element, type, handler } = cache;
+                
+                element.removeEventListener(type, handler, false);
+                caches.splice(i, 1);
+                
+                return this;
+            }
+            
+            private getDirtyAttributeStates(comparitors: Comparitor[]): Comparitor[] {
+                var inequalities = comparitors.filter( (comparitor) => comparitor.dirty );
                 return inequalities;
             }
-            compareAttributeValues(comparitor: Comparitor) {
-                var { name, compare } = comparitor, { [name]: current } = this.component;
-                var comparison = compare(current), { equal } = comparison;
-                return !equal;
+            
+            $draw() {
+                var { component, content } = this;
+                this.content = content;
+                this.inspectChildren(this.children);
+            }
+            $load() {
+                this.$unload();
+                this.$draw();
+            }
+            $unload() {
+                this.$removeEventListeners();
             }
             
             // https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements#Using_the_lifecycle_callbacks
             connectedCallback() {
                 var { component, content } = this;
                 if (component.attachedCallback) component.connectedCallback();
-                this.content = content;
+                this.$load();
             }
             attributeChangedCallback(attrName, oldVal, newVal) {
                 var { component, content, $watchers } = this;
@@ -391,26 +521,28 @@ class ElementEngine {
                 if (all) all.call(component, attrName, oldVal, newVal);
                 if (handler) handler.call(component, newVal, oldVal);
                 if ($watcher) $watcher.handler.call(component, newVal, oldVal);
-                this.content = content;
+                this.$load();
             }
             disconnectedCallback() {
                 var { component, listeners, subscriptions } = this;
                 if (component.detachedCallback) component.disconnectedCallback();
                 listeners.forEach( (map) => this.unbindListener(component, map) );
                 subscriptions.forEach( (map) => this.unbindMessageHandler(component, map) );
+                this.$unload();
             }
             adoptedCallback() {
                 var { component, content } = this;
                 if (component.adoptedCallback) component.adoptedCallback();
-                this.content = content;
+                this.$load();
             }
             
             private handleProxyInvokation = (e: CustomEvent) => {
                 var { component, attributes, content } = this;
                 var { type, detail } = e, { type: method } = detail;
                 var dirty = this.getDirtyAttributeStates(this.comparitors);
+                
                 dirty.forEach( ({ name }) => this.initAttribute(component, attributes[name]) );
-                this.content = content;
+                this.$load();
             };
             
         };

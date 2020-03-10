@@ -1,5 +1,6 @@
 
 import { Reactive as CommonSandbox } from '@motorman/core/sandbox';
+import { Sandbox as CommonComponentSandbox } from '@motorman/vertices/sandbox';
 import { Utilities } from '@motorman/core/utilities';
 import { Director, ActionHandlers, StateHandlers, channels } from './director';
 
@@ -20,10 +21,10 @@ class ServiceSandbox extends Sandbox {
     
 }
 
-class ComponentSandbox extends Sandbox {
+class ComponentSandbox extends CommonComponentSandbox {
     
-    constructor(public element: any, director: Director) {
-        super(director);
+    constructor(element: any, comm: any, director: Director) {
+        super(element, comm, director);
         return this;
     }
     

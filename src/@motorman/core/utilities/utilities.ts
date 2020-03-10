@@ -237,14 +237,39 @@ class Utilities {
             }[c];
         });
     }
+    
+    
+    drill(data: any, path: string): any {  // @usage: var x = drill('a.b.c.id', { a: { b: { c: { id: x } } } });
+        var keys = path.split('.'), key = keys.shift();
+        
+        if (!data) return undefined;  // not unlike an operation of { 'existent': true }[ 'absent' ] > undefined
+        if (!key) return data;  // data is final
+        
+        return this.drill( data[key], keys.join('.') );  // TCO/TCE
+    }
+
+
+    /**
+     * @ Inspiration: Douglas Crockford (String.prototype.supplant)
+     */
+    interpolate(str) {
+        return (o) => str.replace(/{{([^{}]*)}}/g, (a, b) => {
+            var value = this.drill(o, b), val = ''+value;  // default & convert to string
+            
+            if (!value) val = a;  // leave {{key[.x[.y[.z]]]}} syntax in string so that multiple iterations of interpolation may occur
+            else if (value.call) val = ''+value();  // get return value
+            
+            return this.escapeHTML(val);  // assume rational value for string result
+        });
+    }
 
     /**
      * @ THX: Douglas Crockford (String.prototype.supplant)
      * @ INTERPOLATE
      */
-    interpolate(str) {
+    interpolateShallow(str) {
         return (o) => {
-            return str.replace(/{([^{}]*)}/g, (a, b) => {
+            return str.replace(/{{([^{}]*)}}/g, (a, b) => {
                 var val = ''+o[b];
                 return this.escapeHTML(val);  // TODO: escape HTML-Entities
             });
@@ -257,7 +282,7 @@ class Utilities {
      */
     INSECURE_INTERPOLATE(str) {
         return function interpolate(o) {
-            return str.replace(/{([^{}]*)}/g, function (a, b) {
+            return str.replace(/{{([^{}]*)}}/g, function (a, b) {
                 var val = ''+o[b];
                 return val;  // TODO: escape HTML-Entities
             });

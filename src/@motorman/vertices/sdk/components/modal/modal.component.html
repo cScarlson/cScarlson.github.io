@@ -1,4 +1,11 @@
 
 <div #container id="test" class="vertices modal">
-    <div class="modal container" (click)="handleClique($event, active, 'other')">Modal ({container.id}) is active: {active}</div>
+    <div class="id" data-test></div>
+    <div id="wrap" class="modal container" (attributechange)="handleClique($event, active, 'other')">
+        Modal is active: {{active}}
+        <p><span><b>Bolder!</b><b>Boulder!</b></span></p>
+    </div>
+    <input id="{{item.id}}" type="literal" [value]="test" {{key}}="{{value}}" (input)="type($event)" *each="item of items" />
+    <input id="xxx" type="input" value="test" {{key}}="{{value}}" (input)="type($event)" />
 </div>
+<!-- My Comment has="attr" -->

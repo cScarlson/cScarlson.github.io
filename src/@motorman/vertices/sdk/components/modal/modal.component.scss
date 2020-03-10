@@ -9,7 +9,7 @@ v-modal {
     right: $offset;
     background-color: transparent;
     border: solid 1px #444;  // test
-    display: none;
+    // display: none;
     justify-content: center;
     
     &[active="true"] {

@@ -1,8 +1,10 @@
 
 <div #container id="test" class="vertices modal">
-    <div class="id" data-test></div>
+    <div class="id" data-test>
+        ...
+    </div>
     <div id="wrap" class="modal container" (attributechange)="handleClique($event, active, 'other')">
-        Modal is active: {{active}}
+        Modal is active: {{active}} {{test}}
         <p><span><b>Bolder!</b><b>Boulder!</b></span></p>
     </div>
     <input id="{{item.id}}" type="literal" [value]="test" {{key}}="{{value}}" (input)="type($event)" *each="item of items" />

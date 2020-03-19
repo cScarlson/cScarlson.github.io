@@ -46,6 +46,19 @@ class ModalComponent {
         console.log('@options-change', val, old);
     }
     
+    // @listener('click') @element('this') handleSomeEvent(e: Event) {
+    //     console.log('@ MODEL - LISTENER #this', e.type, e);
+    // }
+    // @listener('click') @element('.id[data-test]') handleSomeEvent(e: Event) {
+    //     console.log('@ MODEL - LISTENER #.id[data-test]', e.type, e);
+    // }
+    // @listener('mutation') @attr('this[data-test]') handleSomeEvent(e: Event) {
+    //     console.log('@ MODEL - LISTENER #this[data-test]', e.type, e);
+    // }
+    @listener('mutation') @attr('.id[data-test]') handleSomeEvent(e: Event) {
+        console.log('@ MODEL - LISTENER #.id[data-test]', e.type, e);
+    }
+    
     constructor(private $: Sandbox) {
         // var { comm } = this;
         // comm.subscribe(comm.channels['ELEMENT:CREATED'], () => comm.publish(comm.channels['ELEMENT:TEMPLATE:FOUND'], template) );

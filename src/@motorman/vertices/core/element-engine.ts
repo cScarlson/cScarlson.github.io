@@ -330,7 +330,7 @@ class MutationManager {
         var { component, comm } = this;
         var { attributeName: name, target: element } = mutation;
         var attr = (element as Element).getAttributeNode(name);
-        var detail = mutation, e = new CustomEvent('attributechange', { detail }), a = new CustomEvent('change', { detail });
+        var detail = mutation, e = new CustomEvent('attributechange', { detail }), a = new CustomEvent('mutation', { detail });
         
         comm.publish(comm.channels['ELEMENT:MUTATION:OBSERVED'], mutation);
         element.dispatchEvent(e);
@@ -360,15 +360,18 @@ class ContentManager {
     protected dTemplateReady: Deferred<boolean> = new Deferred();
     protected $variables: Map<string, Element> = new Map();
     protected attributes: AttributeManager[] = [ ];
-    protected listeners: TemplateListener[] = [];
+    protected templateListeners: TemplateListener[] = [];
     protected mutations: MutationManager = new MutationManager(this.comm, this.component);
     public fragment: DocumentFragment|Element = new DocumentFragment();
     public template: string = '';
     public content: string = '';
     get component() { return this.element.component; }
     get comm() { return this.element.comm; }
+    get $elementRefs() { return this.element.$elementRefs; }
     get elementRefs() { return this.element.elementRefs; }
+    get $attrRefs() { return this.element.$attrRefs; }
     get attrRefs() { return this.element.attrRefs; }
+    get listeners() { return this.element.listeners; }
     get reAttrIn() { return this.options.reAttrIn; }
     get reStructural() { return this.options.reStructural; }
     get reListener() { return this.options.reListener; }
@@ -418,7 +421,7 @@ class ContentManager {
         return replacement;
     }
     private handleStructuralRepeat(attr: Attr) {
-        var { reStructural, component, listeners } = this;
+        var { reStructural, component } = this;
         var { name, value, ownerElement: instructor } = <any>attr;
         var { previousSibling: previous } = instructor;
         var matches = reStructural.exec(name), [ match, type ] = matches;
@@ -471,13 +474,13 @@ class ContentManager {
     private handleListenerBinding(node: Node&Attr): Node&Attr {
         if (!{ '2': true }[ node.nodeType ]) return node;  // https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType
         if ( !this.reListener.test(node.name) ) return node;
-        var { listeners, reListener } = this;
+        var { templateListeners, reListener } = this;
         var { name, ownerElement: element } = node, matches = reListener.exec(name), [ match, type ] = matches;
         var handler = this.createBindingInvoker(node);
         var details = new TemplateListener({ name, type, node, element, handler });
         // console.log('LISTENER %O', node);
         
-        listeners.push(details);
+        templateListeners.push(details);
         return node;
     }
     private createBindingInvoker(attr: Attr): Function {
@@ -567,25 +570,46 @@ class ContentManager {
     bindElementNodeRefs() {
         var { element, component, elementRefs } = this;
         // element.matches(selector);
-        elementRefs.forEach( ({ isHost, selector, key }) => isHost ? component[key] = element : component[key] = element.querySelector(selector) );
+        for (let { isHost, selector, key } of elementRefs) if (!{ 'function': true }[ typeof component[key] ]) isHost ? component[key] = element : component[key] = element.querySelector(selector);
         return this;
     }
     bindAttributeNodeRefs() {
         var { element, component, attrRefs } = this;
-        attrRefs.forEach( ({ isHost, selector, key, name }) => isHost ? component[key] = element.getAttributeNode(name) : component[key] = element.querySelector(selector).getAttributeNode(name) );
+        // console.log('>>>>>>>', attrRefs);
+        for (let { isHost, selector, key, name } of attrRefs) if (!{ 'function': true }[ typeof component[key] ]) isHost ? component[key] = element.getAttributeNode(name) : component[key] = element.querySelector(selector).getAttributeNode(name);
         return this;
     }
     bindListeners() {
-        var { listeners } = this;
-        listeners.forEach( ({ element: target, type, handler }) => target.addEventListener(type, handler, false) );
+        var { element, listeners, templateListeners, $elementRefs } = this;
+        listeners.forEach( ({ key, type, handler }) => this.addNodeListener(key, type, handler ) );
+        templateListeners.forEach( ({ element: target, type, handler }) => target.addEventListener(type, handler, false) );
         return this;
+    }
+    addNodeListener(key: string, type: string, handler: Function) {
+        var { element, $elementRefs, $attrRefs } = this;
+        var metadata = $elementRefs.get(key) || $attrRefs.get(key) || { };
+        var { decorator, selector, isHost, name } = metadata;
+        var target = {
+            'true': element,
+            'false': element['querySelector'](selector),
+        }[ isHost ];
+        var node = {
+            'reference:element': target,
+            'reference:attribute': target['getAttributeNode'](name),
+        }[ decorator ];
+        
+        if ( !$elementRefs.get(key) && !$attrRefs.get(key) ) return this;
+        if (  $elementRefs.get(key) &&  $attrRefs.get(key) ) return this;
+        
+        node.addEventListener(type, handler, false);
+        
     }
     
     destroy() {
-        var { listeners } = this;
+        var { listeners, templateListeners } = this;
         
-        listeners.forEach( ({ element, type, handler }) => element.removeEventListener(type, handler, false) );
-        listeners.length = 0;
+        templateListeners.forEach( ({ element, type, handler }) => element.removeEventListener(type, handler, false) );
+        templateListeners.length = 0;
         
         return this;
     }
@@ -712,11 +736,10 @@ class ElementEngine {
             }
             
             private bind() {
-                var { comm, component, listeners, subscriptions } = this;
+                var { comm, component, subscriptions } = this;
                 var { observedAttributes: attributes } = Element;
                 
                 attributes.forEach( (key) => this.bindAttribute(key) );
-                listeners.forEach( ({ type, handler }) => this.addEventListener(type, handler, false) );
                 subscriptions.forEach( ({ type, handler }) => comm.subscribe(comm.channels[type], handler) );
                 
                 return this;

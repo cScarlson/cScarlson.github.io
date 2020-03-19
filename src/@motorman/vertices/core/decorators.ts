@@ -207,8 +207,8 @@ var decorators = new (class Decorators extends DecoratorUtilities {
     attr(selector: string): any {
         var thus = this;
         var re = new RegExp(/^(.*)\[(.+)\]$/);
-        var matches = re.exec(selector), [ match, selector, attr ] = matches;
-        var isHost = (selector === 'this');
+        var matches = re.exec(selector), [ match, tagName, attr ] = matches;
+        var isHost = (tagName === 'this');
         
         return function get(target: any, key: string, descriptor: any = {}): any {
             var { constructor } = target;
@@ -224,12 +224,14 @@ var decorators = new (class Decorators extends DecoratorUtilities {
         };
     };
     
-    listener = (type: string) => {
+    listener(type: string) {
         var thus = this;
         var isHost = !type;
         
         return function get(target: any, key: string, descriptor: any = {}): any {
+            console.log('----------', target, key, descriptor);
             var { constructor } = target;
+            // var descriptor = { ...descriptor, ...DEFAULT_DESCRIPTOR };
             var { value: handler } = descriptor;
             var metadata = new Metadata(constructor);
             var name = key;
@@ -237,18 +239,12 @@ var decorators = new (class Decorators extends DecoratorUtilities {
             
             metadata.$members.set(key, data);
             metadata.$listeners.set(key, data);
-            // thus.ensure(...);
-            // if (!constructor.meta.$elements && !constructor.meta.$attrs) return descriptor;
-            // if (!constructor.meta.$attrs) return descriptor;
-            // if (constructor.meta.$elements.has(key)) thus.meta(constructor, key, { ...meta, target: 'element' });  // ensures .meta.members[key]
-            // if (constructor.meta.$attrs.has(key)) thus.meta(constructor, key, { ...meta, target: 'attribute' });  // ensures .meta.members[key]
-            // ^ TODO: make decorator compositive for @listener(type) @dom('tagName.class[attr]') handleType({ target|ownerElement }) {}
             
             return descriptor;
         };
     };
     
-    message = (type: string): any => {  // TODO
+    message(type: string): any {  // TODO
         var thus = this;
         
         return function get(target: any, key: string, descriptor: any = {}): any {

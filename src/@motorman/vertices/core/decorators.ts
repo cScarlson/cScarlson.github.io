@@ -229,7 +229,6 @@ var decorators = new (class Decorators extends DecoratorUtilities {
         var isHost = !type;
         
         return function get(target: any, key: string, descriptor: any = {}): any {
-            console.log('----------', target, key, descriptor);
             var { constructor } = target;
             // var descriptor = { ...descriptor, ...DEFAULT_DESCRIPTOR };
             var { value: handler } = descriptor;

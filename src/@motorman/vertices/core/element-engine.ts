@@ -358,6 +358,7 @@ class MutationManager {
 }
 class ContentManager {
     protected dTemplateReady: Deferred<boolean> = new Deferred();
+    protected $slots: Map<string, NodeList> = new Map();
     protected $variables: Map<string, Element> = new Map();
     protected attributes: AttributeManager[] = [ ];
     protected templateListeners: TemplateListener[] = [];
@@ -378,11 +379,11 @@ class ContentManager {
     get reListenerValue() { return this.options.reListenerValue; }
     protected pipeNodeHandler = (handler: Function) => (e: CustomEvent) => handler.call(this, e.detail, e);
     protected nodeProcessors: ChainOfResponsibility = new ChainOfResponsibility({}, [
+        { respond: this.pipeNodeHandler(this.processSlotElementNode) },
         { respond: this.pipeNodeHandler(this.processAttributeNodeRepeat) },  // note Execution Guards in method
         { respond: this.pipeNodeHandler(this.processElementNode) },
         { respond: this.pipeNodeHandler(this.processTextNode) },
         { respond: this.pipeNodeHandler(this.processCommentNode) },
-        { respond: this.pipeNodeHandler(this.processAttributeNodeRepeat) },
     ]);
     protected pipeAttributeHandler = (handler: Function) => (e: CustomEvent) => handler.call(this, e.detail, e);
     protected attributeProcessors: ChainOfResponsibility = new ChainOfResponsibility({}, [
@@ -409,18 +410,35 @@ class ContentManager {
         return node;  // result can still equal node
     }
     
+    private processSlotElementNode(node: Node&Element&HTMLSlotElement, response: CustomEvent): Node&Element {  // Node.ELEMENT_NODE === 1
+        if (!{ '1': true }[ node.nodeType ]) return node;  // https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType
+        if (!{ 'SLOT': true }[ node.tagName ]) return node;
+        if ( !this.$slots.has(node.name) ) return node;
+        var { $slots } = this;
+        var { name, previousSibling: previous } = node;
+        var occupants: NodeList = $slots.get(name)
+          , container = document.createElement('div')
+          ;
+        
+        occupants.forEach( (occupant) => container.appendChild(occupant) );
+        node.outerHTML = container.innerHTML;
+        response.stopPropagation();  // end responsibility processing. abort/break chain. do not pass into next process.
+        
+        return <Node&Element>previous.nextSibling;
+    }
+    
     private processAttributeNodeRepeat(node: Node&Element, response: CustomEvent): Node&Element {
         if (!{ '1': true }[ node.nodeType ]) return node;  // https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType
         
         if ( !node.hasAttribute('*each') ) return node;
-        else response.stopPropagation();  // discontinue processing. abort/break chain. do not pass into next process
+        else response.stopPropagation();  // end responsibility processing. abort/break chain. do not pass into next process.
         
         var attribute: Attr = node.getAttributeNode('*each')
           , replacement: Node&Element = this.handleStructuralRepeat(attribute)
           ;
         return replacement;
     }
-    private handleStructuralRepeat(attr: Attr) {
+    private handleStructuralRepeat(attr: Attr): Node&Element {
         var { reStructural, component } = this;
         var { name, value, ownerElement: instructor } = <any>attr;
         var { previousSibling: previous } = instructor;
@@ -523,27 +541,42 @@ class ContentManager {
      * @intention : Leverage <template> &| DocumentFragment so that DOM objects do not change between parsing template variables & processing event-bindings.
      */
     refresh(template: string = '') {
-        var { component, element, dTemplateReady } = this;
+        var { component, element, dTemplateReady, $slots } = this;
+        var { shadow } = element;
         var { promise: pTemplateReady } = dTemplateReady;
-        var temp = document.createElement('template');
         var innerHTML = utils.interpolate(template)(component);
+        var container = document.createElement('div');
         
-        // temp.innerHTML = innerHTML;
-        // console.log('TEMPLATE %O', temp.content.childNodes);
+        container.innerHTML = element.innerHTML;
+        shadow.innerHTML = innerHTML;
+        $slots.clear();  // clear before each potential cycle
+        for (let i = 0, len = container.childNodes.length; i < len; i++) setSlot.call(this, $slots, <Node&Element>container.childNodes[i]);
         
-        element.innerHTML = innerHTML;
-        this.template = template;
         pTemplateReady
+            .then( () => this.template = template )
             .then( () => this.bindMutationObservers() )
             .then( () => this.bindElementNodeRefs() )
             .then( () => this.bindAttributeNodeRefs() )
             .then( () => this.bindListeners() )
+            // .then( () => this.bindSlots(container) )  // this should be done using this.nodeProcessors responsibility chain
             .then( () => this.dTemplateReady = new Deferred() )
             // .then( () => this.comm.publish(READY) )
             ;
         this.destroy()
-            .parseNode(element.firstChild)
+            .parseNode(shadow.firstChild)
             ;
+        
+        function setSlot($slots: Map<string, NodeList>, node: Node&Element) {  // Node.ELEMENT_NODE === 1
+            if (!{ '1': true }[ node.nodeType ]) return;
+            if ( !node.hasAttribute('slot') ) return;
+            if ( $slots.has(node.slot) ) return;  // if already set, skip. parent.querySelectorAll() gets siblings.
+            var { slot, parentElement: parent } = node;
+            var selector = `[slot="${slot}"]`, all = parent.querySelectorAll(selector);
+            
+            if (all.length) $slots.set(slot, all);
+            // console.log('->- %O', node.slot, node.tagName, $slots);
+        }
+        
         return this;
     }
     
@@ -565,6 +598,7 @@ class ContentManager {
     bindMutationObservers() {
         var { element, mutations } = this;
         mutations.connect(element);
+        mutations.connect(element.shadow);
         return this;
     }
     bindElementNodeRefs() {
@@ -591,7 +625,7 @@ class ContentManager {
         var { decorator, selector, isHost, name } = metadata;
         var target = {
             'true': element,
-            'false': element['querySelector'](selector),
+            'false': element.shadow['querySelector'](selector),
         }[ isHost ];
         var node = {
             'reference:element': target,
@@ -603,6 +637,16 @@ class ContentManager {
         
         node.addEventListener(type, handler, false);
         
+    }
+    bindSlots(container: Node&Element) {
+        var { element } = this, slots = element.querySelectorAll('slot');
+        for (let i = 0, len = slots.length; i < len; i++) this.bindSlot(container, slots[i], i, slots);
+    }
+    bindSlot(container: Node&Element, slot: Node&HTMLSlotElement, i: number, slots: NodeList) {
+        var { name } = slot, assignees = container.querySelectorAll(`[slot="${name}"]`);
+        if (assignees.length) while (slot.firstChild) slot.removeChild(slot.lastChild);
+        for (let i = 0, len = assignees.length; i < len; i++) slot.appendChild(assignees[i]);
+        slot.outerHTML = slot.innerHTML;
     }
     
     destroy() {
@@ -643,6 +687,8 @@ class ElementEngine {
           , listeners = Array.from( $listeners.values() ).map( (item) => utils.mapExecutor(component, item) )  // map each handler to a handler bound to "component"
           , subscriptions = Array.from( $subscriptions.values() ).map( (item) => utils.mapExecutor(component, item) )  // map each handler to a handler bound to "component"
           ;
+        var shadow = element;
+        // var shadow = element.attachShadow({ mode: 'open' });
         
         var surrogate = Object.create(proxy);  // use Object.create to carry over get|set; spread op fails to do so
         for (let key in proxy) if (proxy[key] && proxy[key].call) surrogate[key] = new Proxy(proxy[key], methodsProxy);
@@ -653,6 +699,9 @@ class ElementEngine {
             director,
             Sandbox,
             Class,
+            ...{
+                shadow,
+            },
             ...{
                 sandbox: construction.sandbox,
             },
@@ -696,6 +745,8 @@ class ElementEngine {
             private component: any = this.config.component;
             private surrogate: any = this.config.surrogate;
             //
+            private shadow: ShadowRoot = this.config.shadow;
+            //
             private $observedAttributes: Map<string, any> = this.config.$observedAttributes;
             private observedAttributes: any[] = this.config.observedAttributes;
             private $watchers: Map<string, any> = this.config.$watchers;
@@ -723,6 +774,7 @@ class ElementEngine {
             
             constructor() {
                 super();
+                console.log('CONSTRUCTOR');
                 var { comm } = this;
                 
                 this.bind();
@@ -764,6 +816,7 @@ class ElementEngine {
             // https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements#Using_the_lifecycle_callbacks
             connectedCallback() {
                 var { comm, component } = this;
+                console.log('connectedCallback');
                 // if (component.attachedCallback) component.connectedCallback();
                 // this.$load();
                 comm.publish(comm.channels['LEFECYCLE:ELEMENT:CONNECTED']);
@@ -778,8 +831,6 @@ class ElementEngine {
                 // // if (all) all.call(component, attrName, oldVal, newVal);
                 // // if (handler) handler.call(component, newVal, oldVal);
                 if ($watcher) $watcher.handler.call(component, newVal, oldVal);
-                console.log('-------------', newVal, oldVal);
-                // // this.$load();
             }
             disconnectedCallback() {
                 var { component, listeners, subscriptions } = this;

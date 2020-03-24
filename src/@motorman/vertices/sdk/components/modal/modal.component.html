@@ -2,6 +2,12 @@
 <div #container id="test" class="vertices modal">
     <div class="id" data-test>
         ...
+        <slot name="some-slot">PLACEHOLDER</slot>
+        <slot name="some-slot-x">PLACEHOLDER-s-s-x</slot>
+        <slot name="some-slot">PLACEHOLDER</slot>
+        <hr />
+        <span>A <slot>PLACEHOLDER-Y</slot></span>
+        <span>B <slot>PLACEHOLDER-Y</slot></span>
     </div>
     <div id="wrap" class="modal container" (attributechange)="handleClique($event, active, 'other')">
         Modal is active: {{active}} {{test}}
@@ -11,3 +17,4 @@
     <input id="xxx" type="input" value="test" {{key}}="{{value}}" (input)="type($event)" />
 </div>
 <!-- My Comment has="attr" -->
+<div class="another">...</div>

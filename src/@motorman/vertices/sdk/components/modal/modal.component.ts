@@ -39,7 +39,8 @@ class ModalComponent {
     @attr('this[data-test]') attr: Attr;
     
     type(e) {
-        console.log('######', e);
+        console.log('######', e, this);
+        this.$.element.cycle();
     }
     
     @observe('options') handleOptionsChange(val, old) {

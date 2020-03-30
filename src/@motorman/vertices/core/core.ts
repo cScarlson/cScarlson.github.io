@@ -22,6 +22,7 @@ class Core {
     private services: any = { };
     private components: any = { };
     private elements: any = { };
+    private modules: any = { };
     private configuration: any = DEFAULT_CONFIG;
     
     constructor() {

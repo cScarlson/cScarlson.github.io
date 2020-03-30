@@ -54,6 +54,7 @@ function Component() {}
 function Directive() {}
 function Pipe() {}
 function Service() {}
+function IoT() {}
 
 type ObserveeMetadata = {
     decorator: 'attribute:observee',

@@ -11,6 +11,7 @@ v-modal {
     border: solid 1px #444;  // test
     // display: none;
     justify-content: center;
+    overflow: auto;
     
     &[active="true"] {
         display: flex;

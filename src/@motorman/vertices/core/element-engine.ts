@@ -359,9 +359,10 @@ class MutationManager {
 class ContentManager {
     protected dTemplateReady: Deferred<boolean> = new Deferred();
     protected $slots: Map<string, NodeList> = new Map();
-    protected $variables: Map<string, Element> = new Map();
-    protected attributes: AttributeManager[] = [ ];
+    // protected $variables: Map<string, Element> = new Map();
+    // protected attributes: AttributeManager[] = [ ];
     protected templateListeners: TemplateListener[] = [];
+    protected activeListeners: { element, type, handler }[] = [ ];
     protected mutations: MutationManager = new MutationManager(this.comm, this.component);
     public fragment: DocumentFragment|Element = new DocumentFragment();
     public template: string = '';
@@ -391,7 +392,25 @@ class ContentManager {
         { respond: this.pipeAttributeHandler(this.handleListenerBinding) },
     ]);
     
-    constructor(private element: HTMLElement&any, private options: TemplateManagementOptions) {}
+    constructor(private element: HTMLElement&any, private options: TemplateManagementOptions) {
+        var { $slots } = this;
+        var container = document.createElement('div');
+        
+        container.innerHTML = element.innerHTML;  // this needs to be done at construction-time
+        $slots.clear();  // clear before each potential cycle
+        for (let i = 0, len = container.childNodes.length; i < len; i++) setSlot.call(this, $slots, <Node&Element>container.childNodes[i]);
+        
+        function setSlot($slots: Map<string, NodeList>, node: Node&Element) {  // Node.ELEMENT_NODE === 1
+            if (!{ '1': true }[ node.nodeType ]) return;
+            if ( !node.hasAttribute('slot') ) return;
+            if ( $slots.has(node.slot) ) return;  // if already set, skip. parent.querySelectorAll() gets siblings.
+            var { slot, parentElement: parent } = node;
+            var selector = `[slot="${slot}"]`, all = parent.querySelectorAll(selector);
+            
+            if (all.length) $slots.set(slot, all);
+        }
+        
+    }
     
     parseNode(node: Node): Node {
         var { nodeProcessors: cor } = this;
@@ -413,13 +432,12 @@ class ContentManager {
     private processSlotElementNode(node: Node&Element&HTMLSlotElement, response: CustomEvent): Node&Element {  // Node.ELEMENT_NODE === 1
         if (!{ '1': true }[ node.nodeType ]) return node;  // https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType
         if (!{ 'SLOT': true }[ node.tagName ]) return node;
-        if ( !this.$slots.has(node.name) ) return node;
+        if ( !this.$slots.has(node.name) ) return node;  // only process if there are occupants
         var { $slots } = this;
         var { name, previousSibling: previous } = node;
         var occupants: NodeList = $slots.get(name)
           , container = document.createElement('div')
           ;
-        
         occupants.forEach( (occupant) => container.appendChild(occupant) );
         node.outerHTML = container.innerHTML;
         response.stopPropagation();  // end responsibility processing. abort/break chain. do not pass into next process.
@@ -541,41 +559,25 @@ class ContentManager {
      * @intention : Leverage <template> &| DocumentFragment so that DOM objects do not change between parsing template variables & processing event-bindings.
      */
     refresh(template: string = '') {
-        var { component, element, dTemplateReady, $slots } = this;
+        var { component, element, dTemplateReady } = this;
         var { shadow } = element;
         var { promise: pTemplateReady } = dTemplateReady;
         var innerHTML = utils.interpolate(template)(component);
-        var container = document.createElement('div');
         
-        container.innerHTML = element.innerHTML;
         shadow.innerHTML = innerHTML;
-        $slots.clear();  // clear before each potential cycle
-        for (let i = 0, len = container.childNodes.length; i < len; i++) setSlot.call(this, $slots, <Node&Element>container.childNodes[i]);
-        
         pTemplateReady
             .then( () => this.template = template )
             .then( () => this.bindMutationObservers() )
             .then( () => this.bindElementNodeRefs() )
             .then( () => this.bindAttributeNodeRefs() )
             .then( () => this.bindListeners() )
-            // .then( () => this.bindSlots(container) )  // this should be done using this.nodeProcessors responsibility chain
+            // .then( () => this.element.config.createSurrogate() )
             .then( () => this.dTemplateReady = new Deferred() )
             // .then( () => this.comm.publish(READY) )
             ;
         this.destroy()
             .parseNode(shadow.firstChild)
             ;
-        
-        function setSlot($slots: Map<string, NodeList>, node: Node&Element) {  // Node.ELEMENT_NODE === 1
-            if (!{ '1': true }[ node.nodeType ]) return;
-            if ( !node.hasAttribute('slot') ) return;
-            if ( $slots.has(node.slot) ) return;  // if already set, skip. parent.querySelectorAll() gets siblings.
-            var { slot, parentElement: parent } = node;
-            var selector = `[slot="${slot}"]`, all = parent.querySelectorAll(selector);
-            
-            if (all.length) $slots.set(slot, all);
-            // console.log('->- %O', node.slot, node.tagName, $slots);
-        }
         
         return this;
     }
@@ -609,7 +611,6 @@ class ContentManager {
     }
     bindAttributeNodeRefs() {
         var { element, component, attrRefs } = this;
-        // console.log('>>>>>>>', attrRefs);
         for (let { isHost, selector, key, name } of attrRefs) if (!{ 'function': true }[ typeof component[key] ]) isHost ? component[key] = element.getAttributeNode(name) : component[key] = element.querySelector(selector).getAttributeNode(name);
         return this;
     }
@@ -620,7 +621,7 @@ class ContentManager {
         return this;
     }
     addNodeListener(key: string, type: string, handler: Function) {
-        var { element, $elementRefs, $attrRefs } = this;
+        var { element, $elementRefs, $attrRefs, activeListeners } = this;
         var metadata = $elementRefs.get(key) || $attrRefs.get(key) || { };
         var { decorator, selector, isHost, name } = metadata;
         var target = {
@@ -636,24 +637,17 @@ class ContentManager {
         if (  $elementRefs.get(key) &&  $attrRefs.get(key) ) return this;
         
         node.addEventListener(type, handler, false);
-        
-    }
-    bindSlots(container: Node&Element) {
-        var { element } = this, slots = element.querySelectorAll('slot');
-        for (let i = 0, len = slots.length; i < len; i++) this.bindSlot(container, slots[i], i, slots);
-    }
-    bindSlot(container: Node&Element, slot: Node&HTMLSlotElement, i: number, slots: NodeList) {
-        var { name } = slot, assignees = container.querySelectorAll(`[slot="${name}"]`);
-        if (assignees.length) while (slot.firstChild) slot.removeChild(slot.lastChild);
-        for (let i = 0, len = assignees.length; i < len; i++) slot.appendChild(assignees[i]);
-        slot.outerHTML = slot.innerHTML;
+        activeListeners.push({ element: node, type, handler });
     }
     
     destroy() {
-        var { listeners, templateListeners } = this;
+        var { element, mutations, listeners, templateListeners, activeListeners } = this;
         
+        mutations.destroy();
         templateListeners.forEach( ({ element, type, handler }) => element.removeEventListener(type, handler, false) );
+        activeListeners.forEach( ({ element, type, handler }) => element.removeEventListener(type, handler, false) );
         templateListeners.length = 0;
+        activeListeners.length = 0;
         
         return this;
     }
@@ -690,9 +684,15 @@ class ElementEngine {
         var shadow = element;
         // var shadow = element.attachShadow({ mode: 'open' });
         
-        var surrogate = Object.create(proxy);  // use Object.create to carry over get|set; spread op fails to do so
-        for (let key in proxy) if (proxy[key] && proxy[key].call) surrogate[key] = new Proxy(proxy[key], methodsProxy);
-        properties.forEach( (key) => { if (!!component[key] && component[key].call && !methodBlacklist[key]) surrogate[key] = new Proxy(component[key], methodsProxy); });
+        var createSurrogate = _createSurrogate.bind(this, { proxy, component, methodsProxy, methodBlacklist });
+        
+        // TODO!!! THIS NEEDS TO BE PERFORMED REPEATEDLY OnRecycle (and surrogate destroyed) MAY OBVIATE INFINITE LOOP.
+        function _createSurrogate({ proxy, component, methodsProxy, methodBlacklist }) {
+            var surrogate = Object.create(proxy);  // use Object.create to carry over get|set; spread op fails to do so
+            for (let key in proxy) if (proxy[key] && proxy[key].call) surrogate[key] = new Proxy(proxy[key], methodsProxy);
+            properties.forEach( (key) => { if (!!component[key] && component[key].call && !methodBlacklist[key]) surrogate[key] = new Proxy(component[key], methodsProxy); });
+            return surrogate;
+        }
         
         var config = {  // TODO: create fn
             comm,
@@ -721,7 +721,8 @@ class ElementEngine {
             },
             ...{
                 component,
-                surrogate,
+                // surrogate,
+                createSurrogate,
             },
         };
         
@@ -734,7 +735,6 @@ class ElementEngine {
         var { $observedAttributes } = metadata;
         var observedAttributes = Array.from( $observedAttributes.values() ).map( ({ name }) => name )
         var templateOptions = new TemplateManagementOptions();
-        // alert('needs element-selector-binding responsibility-handler in ContentManager');
         
         return class Element extends HTMLElement {  // https://alligator.io/web-components/attributes-properties/
             static get observedAttributes(): string[] { return observedAttributes }  // native HTML Custom Elements
@@ -743,7 +743,8 @@ class ElementEngine {
             private comm: EventEmitter = this.config.comm;
             private $: any = this.config.sandbox;
             private component: any = this.config.component;
-            private surrogate: any = this.config.surrogate;
+            // private surrogate: any = this.config.surrogate;
+            // private createSurrogate: any = this.config.createSurrogate;
             //
             private shadow: ShadowRoot = this.config.shadow;
             //
@@ -763,9 +764,9 @@ class ElementEngine {
             private $content: ContentManager = new ContentManager(this, templateOptions);
             private template: string = '';  // this.config.template;
             // private pTemplate: Promise<string> = this.config.pTemplate;
-            private $comparitors: Map<string, Comparitor> = new Map();
+            // private $comparitors: Map<string, Comparitor> = new Map();
             private handlers: any[] = [ ];
-            get comparitors(): Comparitor[] { return Array.from( this.$comparitors.values() ); }
+            // get comparitors(): Comparitor[] { return Array.from( this.$comparitors.values() ); }
             // get content(): string { return this.$utils.interpolate(this.template)(this.component); }
             // set content(value: string) { this.innerHTML = value; }
             get attrs() { return observedAttributes; }
@@ -780,8 +781,9 @@ class ElementEngine {
                 this.bind();
                 comm.subscribe(comm.channels['ELEMENT:MUTATION:OBSERVED'], (e) => console.log('@MUTATION', e) );
                 comm.subscribe(comm.channels['ELEMENT:TEMPLATE:FOUND'], this.handleTemplate );
-                comm.subscribe(comm.channels['PROXY:INVOKED'], this.handleProxyInvokation);
-                comm.subscribe(comm.channels['PROXY:MOCK:INVOKED'], this.handleProxyInvokation);
+                // comm.subscribe(comm.channels['PROXY:INVOKED'], this.handleProxyInvokation);
+                comm.subscribe(comm.channels['PROXY:APPLY:INVOKED'], this.handleProxyInvokation);
+                // comm.subscribe(comm.channels['PROXY:MOCK:INVOKED'], this.handleProxyInvokation);
                 comm.publish(comm.channels['LEFECYCLE:ELEMENT:CREATED']);
                 
                 return this;
@@ -864,7 +866,8 @@ class ElementEngine {
                 // var dirty = this.getDirtyAttributeStates(this.comparitors);
                 
                 // dirty.forEach( ({ name }) => this.initAttribute(component, attributes[name]) );
-                // this.$load();
+                console.log('--handleProxyInvokation--');
+                setTimeout( () => this.cycle(), (1000 * 3) );
             };
             
         };
@@ -884,6 +887,19 @@ export { ElementEngine };
 
 /* ================================================================================================================================
 TODO
+
+ORDER OF OPERATIONS
+OnInitialization:
+    getOccupants()
+        .then( trigger('onchange') )
+OnChange:
+    pTemplateReady
+        .then( () => this.template = template )
+        .then( () => this.bindMutationObservers() )
+        .then( () => this.bindElementNodeRefs() )
+        .then( () => this.bindAttributeNodeRefs() )
+        .then( () => this.bindListeners() )
+
 
 Refactor
 Do less; simplify. Use EDA for more. Lifecycle Hooks should be CustomEvents from Comm.

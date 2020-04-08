@@ -18,43 +18,6 @@ Decorators should have the capability to be leveraged compositively with each ot
 
 */
 
-var DEFAULT_DESCRIPTOR = { writable: true, configurable: true, enumerable: true };
-
-
-class DecoratorUtilities {  // DEP
-    namespace(object: any, ns: string, keys: string[] = ns.split('.')): boolean {
-        while (keys.length) if (!object[ keys[0] ]) object[ keys.shift() ] = { };
-        return !!(new Function(`return constructor.${ns};`))();
-    }
-    ensure(object, namespace, key, value) {
-        var exists = this.namespace(object, namespace);
-        var set = new Function('value', `object.${namespace} = value;`);
-        // var set = new Function('value', `object.${namespace}.${key} = value;`);
-        var get = new Function(`return object.${namespace};`);
-        
-        set(value);
-        return get();
-    }
-    meta(object, key, meta) {
-        this.namespace(object, 'meta.members');
-        object.meta.members[key] = meta;
-    }
-}
-
-function Element(details: any, options?: any): any {
-    var data = { ...details, options, decorator: 'element', members: {} };
-    
-    return function get(Class: any): any {
-        Class.meta = data;
-        return { ...data, Class };
-    };
-}
-
-function Component() {}
-function Directive() {}
-function Pipe() {}
-function Service() {}
-function IoT() {}
 
 type ObserveeMetadata = {
     decorator: 'attribute:observee',
@@ -127,6 +90,52 @@ class Metadata {  // TODO: create types for maps
     }
     
 }
+
+
+var DEFAULT_DESCRIPTOR = { writable: true, configurable: true, enumerable: true };
+
+
+class DecoratorUtilities {  // DEP
+    namespace(object: any, ns: string, keys: string[] = ns.split('.')): boolean {
+        while (keys.length) if (!object[ keys[0] ]) object[ keys.shift() ] = { };
+        return !!(new Function(`return constructor.${ns};`))();
+    }
+    ensure(object, namespace, key, value) {
+        var exists = this.namespace(object, namespace);
+        var set = new Function('value', `object.${namespace} = value;`);
+        // var set = new Function('value', `object.${namespace}.${key} = value;`);
+        var get = new Function(`return object.${namespace};`);
+        
+        set(value);
+        return get();
+    }
+    meta(object, key, meta) {
+        this.namespace(object, 'meta.members');
+        object.meta.members[key] = meta;
+    }
+}
+
+
+function Element(details: any, options?: any): any {
+    var data = {type: 'element', ...details, options, members: {} };
+    
+    return function get(Class: any): any {
+        Class.meta = data;
+        return { ...data, Class };
+    };
+}
+
+function Component() {}
+function Directive(options?: any): any {
+    var data = { type: 'sandbox', options };
+    
+    return function get(Class: any): any {
+        return { ...data, Class };
+    };
+}
+function Pipe() {}
+function Service() {}
+function IoT() {}
 
 var decorators = new (class Decorators extends DecoratorUtilities {
     
@@ -265,80 +274,6 @@ var decorators = new (class Decorators extends DecoratorUtilities {
 })();
 
 
-
-// function attr(attr?: string): any {
-    
-//     return function get(target: any, name: string, descriptor: any = {}): any {
-//         var { constructor } = target;
-//         var { get, set } = descriptor, hasGetOrSet = !!(get || set);
-//         var descriptor = { ...descriptor };
-        
-//         if (!hasGetOrSet) descriptor.writable = true;
-//         constructor.observedAttributes = constructor.observedAttributes || [ ];
-//         constructor.observedAttributes.push(name);
-        
-//         return descriptor;
-//     };
-// }
-// function watch(attr: string): any {
-    
-//     return function get(target: any, name: string, descriptor: any): any {
-//         var { constructor } = target;
-//         var descriptor = { ...descriptor, ...DEFAULT_DESCRIPTOR };
-//         var { value: handler } = descriptor;
-        
-//         constructor.watchers = constructor.watchers || new Map();
-//         constructor.watchers.set(attr, { attr, name, handler });
-        
-//         return descriptor;
-//     };
-// }
-
-// function bind(type: string): any {  // TODO: rename to "event"
-    
-//     return function get(target: any, name: string, descriptor: any): any {
-//         var { constructor } = target;
-//         var descriptor = { ...descriptor, ...DEFAULT_DESCRIPTOR };
-//         var { value: handler } = descriptor;
-        
-//         constructor.listeners = constructor.listeners || [ ];
-//         constructor.listeners.push({ type, name, handler });
-        
-//         return descriptor;
-//     };
-// }
-
-// function handle(channel: string): any {
-    
-//     return function get(target: any, name: string, descriptor: any): any {
-//         var { constructor } = target;
-//         var descriptor = { ...descriptor, ...DEFAULT_DESCRIPTOR };
-//         var { value } = descriptor;
-        
-//         constructor.subscriptions = constructor.subscriptions || [ ];
-//         constructor.subscriptions.push({ type: channel, name, value });
-        
-//         return descriptor;
-//     };
-// }
-
-// function cashe$(options: any = {}): any {
-//     return function get(): any {};
-// }
-// function casheP(options: any = {}): any {
-//     return function get(): any {};
-// }
-
-// const observe = decorators.observe;
-// const observee = decorators.observee;
-// const observer = decorators.observer;
-// //
-// const element = decorators.element;
-// const attr = decorators.attr;
-// //
-// const listener = decorators.listener;
-// const comm = decorators.comm;
-
 const {
     observe, observee, observer,
     element, attr,
@@ -349,6 +284,3 @@ export { Element, Component, Directive, Pipe, Service };
 export { observe, observee, observer };
 export { element, attr };
 export { listener, message };
-// export { attr, watch };
-// export { bind };
-// export { handle };

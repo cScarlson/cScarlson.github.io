@@ -1,14 +1,56 @@
 
 import { Utilities, Deferred } from '@motorman/core/utilities';
-import { bootstrap, $bootstrap, DefaultDirector, DefaultComponentSandbox, DefaultServicesSandbox } from './defaults';
+import { IEventAggregator } from '@motorman/core/eventaggregator.interface';
+import { bootstrap, $bootstrap, DefaultDirector, DefaultSandbox, DefaultComponentSandbox, DefaultServicesSandbox } from './defaults';
 import { ElementEngine } from './element-engine';
+
+
+class DOMUtilities {
+    
+    constructor(protected node: Node) {}
+    
+    forEach(node: Node): Node {
+        // var { isConnected, parentNode: parent, previousSibling: previous, nextSibling: next, firstChild: child } = result;
+        
+        // // RECURSION
+        // if (result !== node) return this.parseNode(result);  // reparse. assume replacement occurred. do not continue for next or child.
+        // if (child) this.parseNode(child);  // TCO???
+        // if (next) this.parseNode(next);  // TCO???
+        // this.dTemplateReady.resolve(true);  // gets fulfilled after last element processed. noop after that.
+        
+        return node;  // result can still equal node
+    }
+    
+}
+
+
+type ModuleType = string | 'service'|'element'|'attribute'|'IoT' | ''|'component'|'directive'|'';
+
+interface IModuleMetadata {
+    type: ModuleType;
+    selector: string;
+    Class: any;
+    Sandbox?: any;  // sandbox
+}
+
+interface IBootstrap {  // Note similarity to The Command Pattern. implementer only needs Instance.execute and not necessarily an "action"
+    new(context: Core, action?: string);
+    execute(environment: any): any;
+}
+interface IConfiguration {
+    environment: any;
+    director: IEventAggregator;  // maybe unnecessary. perhaps sandbox should be provided by V.register(metadata);
+    selector: string;
+    Sandbox: (typeof DefaultSandbox)|any;  // perhaps sandbox should be provided by V.register(metadata);
+    bootstrap: IBootstrap;
+}
 
 var director = new DefaultDirector();
 var DEFAULT_CONFIG = {  // ... defaults
     director,
     selector: '[data-v]' || '[data-behavior]',
     datasets: '[v-attribute]',  // includes <script type="application/json"> { items: [...] } </scrpt>
-    bootstrap: bootstrap,
+    // bootstrap: bootstrap,
     decorators: { services: DefaultServicesSandbox, components: DefaultComponentSandbox, },
 };
 
@@ -18,62 +60,71 @@ class Core {
     private dInitialization: Deferred<any> = new Deferred();
     private pInitialization: Promise<any> = this.dInitialization.promise;
     private utils: Utilities = new Utilities();
-    private engine: ElementEngine = new ElementEngine(DefaultComponentSandbox, director);
-    private services: any = { };
-    private components: any = { };
-    private elements: any = { };
-    private modules: any = { };
-    private configuration: any = DEFAULT_CONFIG;
+    // private engine: ElementEngine = new ElementEngine(DefaultComponentSandbox, director);
+    public $instances: Map<any, any> = new Map();
+    public $nodes: Map<Node, any> = new Map();
+    public modules: any = { };
+    public configuration: any = DEFAULT_CONFIG;
     
     constructor() {
-        var { pInitialization, elements } = this;
+        var { pConfiguration, pInitialization } = this;
         
-        pInitialization
-            .then( (options) => console.log('INIT', options) )
+        pConfiguration
+            .then( (config) => this.dInitialization.resolve(config) )
+            .then( (config) => console.log('Core.pConfiguration.then()') )
             ;
-        this.pConfiguration
-            .then( (config) => this.dInitialization.resolve({ target: document }) )
+        pInitialization
+            .then( (config) => this.bootstrap(config) )
+            .then( (config) => console.log('INIT', config) )
             ;
         return this;
     }
     
     init(options) {
-        if (!options) throw Error("Vertices Core initialized without options");
-        this.arm(options);
-        // this.registerComponent = this.utils.noop;
-        // this.registerService = this.utils.noop;
-        // this.dInitialization.resolve(options);
+        var { configuration } = this;
+        // this.dInitialization.resolve({ ...configuration, options });
+        return this;
+    }
+    
+    bootstrap(config: IConfiguration) {
+        var { environment, bootstrap } = config;
+        console.log('Core.bootstrap()', config);
+        bootstrap.execute(this);
+    }
+    
+    configure(config) {
+        console.log('Core.configure()');
+        this.utils.extend(this.configuration, config);
+        // this.engine = new ElementEngine(this.configuration.decorators.components, this.configuration.director);
+        this.dConfiguration.resolve(this.configuration);
+        return this.utils.extend({ }, this.configuration);
+    }
+    
+    register(metadata: IModuleMetadata) {
+        var { pConfiguration } = this;
+        pConfiguration.then( (config: IConfiguration) => this.registerModule(config, metadata) );
+        return this;
+    }
+    private registerModule(config: IConfiguration, metadata: IModuleMetadata) {
+        var { modules } = this;
+        var { selector: _selector, Sandbox: _Sandbox } = config;
+        var { type, selector = _selector, Class, Sandbox = _Sandbox } = metadata;
+        
+        if ( !modules[type] ) modules[type] = new Map<string, IModuleMetadata>();
+        modules[type].set(selector, { type, selector, Class, Sandbox });
         
         return this;
     }
     
-    configure(config) {
-        this.utils.extend(this.configuration, config);
-        this.engine = new ElementEngine(this.configuration.decorators.components, this.configuration.director);
-        this.dConfiguration.resolve(this.configuration);
-        return this.utils.extend({ }, this.configuration);
-    }
-    registerService(Service) {
-        var id = Service.constructor;
-        var service = { id, Constructor: Service };
-        this.services[id] = this.services[id] || service;
+    // define(definition) {
+    //     var { name, Class, options } = definition;
+    //     var { dConfiguration } = this, { promise: pConfiguration } = dConfiguration;
         
-        return this;
-    }
-    registerComponent(id, Component) {
-        var component = { id, Constructor: Component };
-        this.components[id] = this.components[id] || component;
-        return this;
-    }
-    define(definition) {
-        var { name, Class, options } = definition;
-        var { dConfiguration } = this, { promise: pConfiguration } = dConfiguration;
-        
-        pConfiguration
-            .then( (config) => this.engine.define(name, Class, options) )
-            ;
-        return this;
-    }
+    //     pConfiguration
+    //         .then( (config) => this.engine.define(name, Class, options) )
+    //         ;
+    //     return this;
+    // }
     
     arm(options) {  // automatically register modules
         var config = this.configuration
@@ -86,45 +137,47 @@ class Core {
     }
     
     startServices() {
-        var config = this.configuration, decorators = config.decorators;
-        for (var id in this.services) this.startService(this.services[id], id, this.services);
+        var { configuration, modules } = this;
+        var { service: registry } = modules;
+        for (let i = 0, len = registry.length; i < len; i++) this.startService(registry[i], i, registry);
         return this;
     }
-    private startService(_service, id, services) {
-        var { configuration, utils } = this, { director, decorators } = configuration;
-        var { services: ServiceSandbox = DefaultServicesSandbox } = decorators;
-        var Service = _service.Constructor
-          , sandbox = new ServiceSandbox(utils, director)
-          , service = new Service(sandbox)
-          ;
-        service.init();
+    private startService(metadatum: IModuleMetadata, i: number, metadata: IModuleMetadata[]) {
+        // ...
+        // var { configuration, utils } = this, { director, decorators } = configuration;
+        // var { services: ServiceSandbox = DefaultServicesSandbox } = decorators;
+        // var Service = _service.Constructor
+        //   , sandbox = new ServiceSand?box(utils, director)
+        //   , service = new Service(sandbox)
+        //   ;
+        // service.init();
     }
     
     /**
      * Gets called by this.configuration.bootstrap
      * TODO: Rename `details` to `api` and provide an API for mapping, starting, stopping & destroying (etc) modules.
      */
-    bootstrap(element, data, id) {
+    bootstrapX(element, data, id) {
         if (!element || !id) return null;
-        if (!this.components[id]) return this.utils.console.warn("Unregistered Component: " + id) && null || null;
+        // if (!this.components[id]) return this.utils.console.warn("Unregistered Component: " + id) && null || null;
         
         var { configuration: config } = this
           , { director, decorators } = config
           , { components: ComponentSandbox = DefaultComponentSandbox } = decorators
           ;
-        var component = this.components[id]
-          , Component = component.Constructor
-          , sandbox = new ComponentSandbox(element, director)
-          , instance = new Component(sandbox)
-          , data = data || { }
-          ;
+        // var component = this.components[id]
+        //   , Component = component.Constructor
+        //   , sandbox = new ComponentSandbox(element, director)
+        //   , instance = new Component(sandbox)
+        //   , data = data || { }
+        //   ;
         var details = {
             id: id,
-            instance: instance,
+            // instance: instance,
             element: element,
             data: data,
         };
-        instance.init(data);
+        // instance.init(data);
         
         return details;
     }

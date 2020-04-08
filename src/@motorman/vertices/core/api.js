@@ -6,24 +6,14 @@ var Facade = function Facade(core) {
     var thus = this;
     
     function configure() {
+        console.log('Facade.config()');
         return core.configure.apply(core, arguments);
     }
-    function service(Service) {
-        core.registerService.apply(core, arguments);
-        return this;
-    }
-    function element(definition) {
-        core.define(definition);
-        return this;
-    }
-    function component(id, Directive) {
-        core.registerComponent.apply(core, arguments);
-        return this;
-    }
     
-    function register(item, Class) {
-        var type = { 'string': 'component', 'function': 'service', 'object': item.decorator }[ typeof item ];
-        this[type].call(this, item, Class);
+    function register(metadata) {
+        core.register(metadata);
+        // var type = { 'string': 'component', 'function': 'service', 'object': item.decorator }[ typeof item ];
+        // this[type].call(this, item, Class);
         return this;
     }
     
@@ -35,9 +25,6 @@ var Facade = function Facade(core) {
     // export precepts
     this.utils = core.utils;
     this.config = configure;
-    this.service = service;
-    this.element = element;
-    this.component = component;
     this.register = register;
     this.bootstrap = bootstrap;
     

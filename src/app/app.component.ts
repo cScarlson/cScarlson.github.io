@@ -1,5 +1,5 @@
 
 import { Element } from '@motorman/vertices';
 
-@Element({ name: 'x-app', template: `` })
+@Element({ selector: 'x-app', template: `` })
 export class AppComponent {}

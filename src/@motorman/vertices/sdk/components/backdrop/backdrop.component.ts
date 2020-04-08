@@ -17,7 +17,7 @@ class BackdropRequest extends SingletonComponentRequest {
     
 }
 
-@Element({ name: 'v-backdrop' })
+@Element({ selector: 'v-backdrop' })
 export class BackdropComponent {
     // @attr() active: boolean = false;
     // @attr() options: any = { };

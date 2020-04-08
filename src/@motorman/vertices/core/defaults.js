@@ -57,7 +57,8 @@ function $bootstrap(root, medium) {
 
 class DefaultDirector {}
 
+function DefaultSandbox(anything) { return anything; }  // see The Decorator Pattern @GoF
 function DefaultServicesSandbox(utils) { return utils; }
-function DefaultComponentSandbox(element) { return element; }
+function DefaultNodeSandbox(element) { return element; }
 
-export { bootstrap, $bootstrap, DefaultDirector, DefaultServicesSandbox, DefaultComponentSandbox };
+export { bootstrap, $bootstrap, DefaultDirector, DefaultSandbox, DefaultServicesSandbox, DefaultNodeSandbox as DefaultComponentSandbox };

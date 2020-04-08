@@ -1,4 +1,8 @@
 
+interface IObserver {
+    update(state?: any): any;
+}
+
 /**
  * @deviations 
  *  * @param #this: key
@@ -24,35 +28,31 @@
  *  *   *   upon attachment, in order to obtain the Subject's current state.
  */
 class Subject {
-    private $key: any = undefined;
-    private observers = [ ];
-    get key() { return this.$key; }  // for subclass overrides
-    set key(value) { this.$key = value; }  // for subclass overrides
+    private observers: IObserver[] = [ ];
     get observation() { return this[this.key]; }  // (aliases Observer Pattern "state" datum) uses given datum for state
     set observation(value) { this[this.key] = value; this.notify(); }  // manually sets state & notifies observers
     
-    constructor(key) {
-        this.key = key;
-    }
+    constructor(private key?: any) {}
     
-    attach(observer, notify) {
-        this.observers.push(observer);
-        if (notify) observer.update(this.observation);
+    attach(observer: IObserver, notify?: boolean): Subject {
+        var { observers, observation } = this;
+        observers.push(observer);
+        if (notify) observer.update(observation);
         return this;
     }
     
-    detach(observer) {
+    detach(observer: IObserver): Subject {
         var { observers } = this;
         for (let i = observers.length; i--;) if (observers[i] === observer) observers.splice(i, 1);
         return this;
     }
     
-    notify(state?: any) {
-        var { observers } = this, state = state || this.observation;
+    notify(state?: any): Subject {
+        var { observers, observation } = this, state = state || observation;
         for (let i = 0, len = observers.length; i < len; i++) observers[i].update(state);
         return this;
     }
     
 }
 
-export { Subject };
+export { Subject, IObserver };

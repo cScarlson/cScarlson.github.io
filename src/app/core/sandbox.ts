@@ -66,8 +66,8 @@ class MutationManager {
         var { attributeName: name, target: element } = mutation;
         var attr = (element as Element).getAttributeNode(name);
         var isIO = ( (element as Element).matches(selector) && node.isSameNode(element) )  // source of change occurred on host-element
-          , isInput
-          , isOutput
+          , isInput  // dep?
+          , isOutput  // dep?
           ;
         var detail = mutation
           , a = new CustomEvent('mutation', { detail })
@@ -76,14 +76,12 @@ class MutationManager {
           , i = new CustomEvent('mutation:input', { detail })
           , o = new CustomEvent('mutation:output', { detail })
           ;
-        
-        console.log('------------------', isIO);
         if (isIO) element.dispatchEvent(io);
         if (isInput) element.dispatchEvent(i);
         if (isOutput) element.dispatchEvent(o);
         attr.dispatchEvent(a);
         element.dispatchEvent(e);
-        sandbox.publish(sandbox.channels['ELEMENT:MUTATION:ATTRIBUTE:OBSERVED'], mutation);
+        sandbox.publish(sandbox.channels['ELEMENT:MUTATION:ATTRIBUTE:OBSERVED'], mutation);  // !ALERT!: SANDBOX SHOULD ONLY COMMUNICATE TO INSTANCE THROUGH ISOLATE MEDIUM; THAT IS, DISPATCH ON NODE TO ISOLATE FROM OTHER MODULES. THAT IS, SANDBOX.PUBLISH SHOULD ONLY BE USED FOR EXPLICITLY PUBLISHED EVENTS/DATA TO PEERS.
     }
     private ['subtree'](mutation: MutationRecord) {
         var { sandbox, node } = this;
@@ -108,7 +106,9 @@ class MutationManager {
 }
 
 class EventManager {
+    private emit: (e: Event|CustomEvent) => any;
     get node(): Node { return this.sandbox.node; }
+    get proxy(): EventTarget { return EventTarget.prototype; }
     
     constructor(private sandbox: ComponentSandbox) {
         // var { node } = this;
@@ -116,10 +116,19 @@ class EventManager {
     }
     
     connect() {
-        var { node } = this;
-        var successful = this.proxyEventTargetSource(node);
+        var { node, proxy } = this;
+        var successful = this.proxyEventTargetSource(proxy);
         
-        node.addEventListener('*', this.handleAll, false);
+        node.addEventListener('*', this.handleAll, true);  // `useCapture`
+        
+        return this;
+    }
+    
+    disconnect() {
+        var { node, proxy } = this;
+        
+        node.removeEventListener('*', this.handleAll);
+        proxy.dispatchEvent = this.emit;
         
         return this;
     }
@@ -130,7 +139,7 @@ class EventManager {
      *  *   Node (Element, Attr, etc)
      * @usage : [Node].addEventListener('*', ({ detail: e }) => {...}, false);
      */
-    proxyEventTargetSource(source: { dispatchEvent }) {
+    proxyEventTargetSource(source: EventTarget) {
         var emit = source.dispatchEvent;  // obtain reference
 
         function proxy(event) {
@@ -140,13 +149,20 @@ class EventManager {
         }
 
         source.dispatchEvent = proxy;  // attempt overwrite
+        this.emit = emit;
 
         return (source.dispatchEvent === proxy);  // indicate if its set after we try to
     }
     
     public handleAll = (any: CustomEvent) => {
-        var { detail: e } = any;
+        var { detail: e } = any
+          , { type } = e
+          ;
         console.log('@ ANY', e.type, e, any);
+        var reType = new RegExp(`^\(${type}\)$`)  // attr.name
+          , reInvocation = new RegExp(`^(.+)\((.*)\)$`)  // attr.value
+          ;
+        // if (has type in [Attr].name) call method from value with parameters
     };
     
 }

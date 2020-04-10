@@ -25,6 +25,7 @@ class ModalRequest extends SingletonComponentRequest {
     selector: 'v-modal',
 })
 class ModalComponent {
+    active = 'YO!';
     
     constructor(private $: Sandbox) {
         console.log('ModalComponent.constructor', $);
@@ -35,6 +36,11 @@ class ModalComponent {
         setTimeout( () => $.publish('OUTPUT', { key: 'data-poop', value: 'turdz' }), (1000 * 5) );
         // setTimeout( () => $.template.set('...loading...'), (1000 * 5) );
         // setTimeout( () => $.template.set(template), (1000 * 8) );
+    }
+    
+    handleClique(e: Event, x, y) {
+        console.log('MODAL', x, y);
+        return false;
     }
     
     // @message('LEFECYCLE:ELEMENT:CREATED') onConnected = () => this.comm.publish(this.comm.channels['ELEMENT:TEMPLATE:FOUND'], template);

@@ -105,15 +105,13 @@ class MutationManager {
     
 }
 
-class EventManager {
+class EventManagerX {
     private emit: (e: Event|CustomEvent) => any;
     get node(): Node { return this.sandbox.node; }
     get proxy(): EventTarget { return EventTarget.prototype; }
+    // get proxy(): EventTarget { return this.node; }
     
-    constructor(private sandbox: ComponentSandbox) {
-        // var { node } = this;
-        // var successful = this.proxyEventTargetSource(node);
-    }
+    constructor(private sandbox: ComponentSandbox) {}
     
     connect() {
         var { node, proxy } = this;
@@ -142,13 +140,13 @@ class EventManager {
     proxyEventTargetSource(source: EventTarget) {
         var emit = source.dispatchEvent;  // obtain reference
 
-        function proxy(event) {
-            var { type } = event, any = new CustomEvent('*', { detail: event });  // use original event as detail
+        function proxy(e: Event|CustomEvent) {
+            var { type } = e, any = new CustomEvent('*', { detail: e });  // use original event as detail
             if (!{ '*': true }[ type ]) emit.call(this, any);  // only emit "any" if type is not any.type ('*')
-            return emit.call(this, event);
+            return emit.call(this, e);
         }
 
-        source.dispatchEvent = proxy;  // attempt overwrite
+        if ({ 'dispatchEvent': true }[ emit.name ]) source.dispatchEvent = proxy;  // attempt overwrite only if not already set (avoid rewrapping)
         this.emit = emit;
 
         return (source.dispatchEvent === proxy);  // indicate if its set after we try to
@@ -156,13 +154,104 @@ class EventManager {
     
     public handleAll = (any: CustomEvent) => {
         var { detail: e } = any
-          , { type } = e
+          , { type, target } = <Event>e
+        //   , { attributes } = <Element>target
           ;
-        console.log('@ ANY', e.type, e, any);
+        console.log('@ ANY', type, e, any);
+        // var delegates = this.getEventDelegates(...attributes);
         var reType = new RegExp(`^\(${type}\)$`)  // attr.name
           , reInvocation = new RegExp(`^(.+)\((.*)\)$`)  // attr.value
           ;
         // if (has type in [Attr].name) call method from value with parameters
+    };
+    private getEventDelegates(attribute?: Attr, ...more: Attr[]): Map<Node, any> {
+        var $delegates = new Map<Node, { key: string, type: string, operation: string, method: string, params: string  }>();
+        console.log('DELEGATES', attribute, ...more);
+        return $delegates;
+    }
+    
+}
+
+class EventManager {
+    private emit: (e: Event|CustomEvent) => any;
+    private $events: Map<string, any> = new Map();
+    get events(): string[] { return Array.from( this.$events.keys() ); }
+    get node(): Node { return this.sandbox.node; }
+    get proxy(): EventTarget { return EventTarget.prototype; }
+    get precepts(): any { return this.sandbox.core.$nodes.get(this.node); }
+    get instance(): any { return this.precepts.instance; }
+    
+    constructor(private sandbox: ComponentSandbox) {}
+    
+    private proxyEventTargetSource(source: EventTarget): boolean {
+        var { node } = this;
+        
+        this.getEventTypes(<Element>node);
+        this.events.forEach( (type) => node.addEventListener(type, this.handleAll, true) );
+        
+        return !!this.events.length;
+    }
+    
+    private getEventTypes(node: Node&Element): Node {
+        if ( !{ [1]: true }[ node.nodeType ] ) return node;
+        var { attributes, tagName } = node, re = /^\((.*)\)$/;
+        
+        // console.log('::::', tagName, node.firstChild, node.nextSibling);
+        for (let i = 0, len = attributes.length; i < len; i++) this.checkAttrNode(attributes[i], i, attributes);
+        if (node.firstElementChild) this.getEventTypes(node.firstElementChild);
+        if (node.nextElementSibling) this.getEventTypes(node.nextElementSibling);
+        
+        return node;
+    }
+    
+    private checkAttrNode(attribute: Attr, i: number, attributes: NamedNodeMap) {
+        var { name, value } = attribute, re = /^\((.*)\)$/;
+        var match = re.test(name), matches = name.match(re), full, type;
+        if (matches && matches.length) [ full, type ] = matches;
+        if (matches && matches.length) this.$events.set(type, true);
+    }
+    
+    connect() {
+        var { node, proxy } = this;
+        var successful = this.proxyEventTargetSource(proxy);
+        
+        node.addEventListener('*', this.handleAny, true);  // `useCapture`
+        
+        return this;
+    }
+    
+    disconnect() {
+        var { node, proxy } = this;
+        
+        node.removeEventListener('*', this.handleAll);
+        proxy.dispatchEvent = this.emit;
+        
+        return this;
+    }
+    
+    public handleAll = (e: Event|CustomEvent) => {
+        var { type, target } = e, any = new CustomEvent('*', { detail: e });  // use original event as detail
+        return target.dispatchEvent(any);
+    };
+    
+    public handleAny = (any: CustomEvent) => {
+        if ( !any.detail.target.attributes[`(${any.detail.type})`] ) return;
+        var { instance } = this;
+        var { detail: e } = any
+          , { type, target } = <Event>e
+          , property = `(${type})`
+          , attr = (target as Element).attributes[property]
+          , { name, value }: Attr = attr
+          ;
+        var re = /^(\w+)\((.*)\)$/
+          , matches = value.match(re) || [ ]
+          , [ full, action, params ] = matches
+          ;
+        var method = instance[action]
+          , invoke = new Function('fn', 'ctx', '$event', `with (ctx) return fn.call(ctx, ${params})`)
+          , result = invoke(method, instance, e)
+          ;
+        return result;
     };
     
 }
@@ -195,8 +284,8 @@ class ComponentSandbox {
     
     publish(channel: string, data?: any, ...more: any[]) {
         var { director, node } = this;
-        if ({ 'OUTPUT': true }[ channel ]) node.setAttribute(data.key, data.value);
-        if ({ 'OUTPUT': true }[ channel ]) node.dispatchEvent( new CustomEvent(channel, { detail: data }) );
+        // if ({ 'OUTPUT': true }[ channel ]) node.setAttribute(data.key, data.value);
+        // if ({ 'OUTPUT': true }[ channel ]) node.dispatchEvent( new CustomEvent(channel, { detail: data }) );
         director.publish(channel, data, ...more);
         return this;
     }

@@ -9,7 +9,7 @@
         <span>A <slot>PLACEHOLDER-Y</slot></span>
         <span>B <slot>PLACEHOLDER-Y</slot></span>
     </div>
-    <div id="wrap" class="modal container" (attributechange)="handleClique($event, active, 'other')">
+    <div id="wrap" class="modal container" (click)="handleClique($event, active, 'other')">
         Modal is active: {{active}} {{test}}
         <p><span><b>Bolder!</b><b>Boulder!</b></span></p>
     </div>

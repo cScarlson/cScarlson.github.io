@@ -30,10 +30,12 @@ var app = new (class Application {
             target: Node | Utilities,
             instance: any,
             sandbox: Sandbox,
-            occupants: Node[],
-            occupee: Node,
-            $occupants: Map<string, Node>,
+            owner?: any,
+            occupants?: Node[],
+            occupee?: Node,
+            $occupants?: Map<string, Node>,
         };
+        // { target: node, instance, selector, sandbox, owner, ...metadata, occupants: null, occupee: null, $occupants: null }
         
         class Bootstrap {
             private core: Core = null;  // assume !null if pEnvironment.[[status]] !== pending
@@ -141,8 +143,31 @@ var app = new (class Application {
                 return node;
             }
             
+            private processAttributeNode(node?: Node&Attr, ...more: (Node&Attr)[]): Node&Attr {
+                if ( !node ) return node;
+                if ( !{ [Node.ATTRIBUTE_NODE]: true }[ node.nodeType ] ) return node;
+                if ( !this.modules.attribute ) return node;
+                if ( !this.modules.attribute.has(node.name) ) return this.processAttributeNode(...more);
+                var { core, modules = {} } = this;
+                var { $nodes, $instances } = core;
+                var { attribute: $attributes = new Map() } = modules;
+                var { nodeType, name } = node, metadata = $attributes.get(name);
+                var { Sandbox, Class, selector }: IMetadata = metadata;
+                var owner = this.getOwnerInstance(node.ownerElement);
+                
+                let sandbox = new Sandbox({ type: nodeType, target: node, core });  // must be constructed after node is emptied to avoid mutation events.
+                let instance = new Class(sandbox);
+                let data: IReferenceInstance = { target: node, instance, selector, sandbox, owner, ...metadata };
+                $nodes.set(node, data);
+                $instances.set(instance, data);
+                
+                if ( !more.length ) return node;
+                return this.processAttributeNode(...more);
+            }
+            
             private processTextNode(node: Node&Text): Node&Text {  // Node.TEXT_NODE === 3
                 if (!{ '3': true }[ node.nodeType ]) return node;  // https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType
+                if ( !this.modules.text ) return node;
                 var { modules } = this;
                 var { text: $texts }: { text: Map<RegExp, IMetadata> } = modules;
                 
@@ -153,6 +178,7 @@ var app = new (class Application {
             
             private processCommentNode(node: Node&Comment): Node&Comment {  // Node.COMMENT_NODE === 8
                 if (!{ '8': true }[ node.nodeType ]) return node;  // https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType
+                if ( !this.modules.comment ) return node;
                 var { modules } = this;
                 var { comment: $comments }: { comment: Map<RegExp, IMetadata> } = modules;
                 
@@ -168,40 +194,22 @@ var app = new (class Application {
                 var { Sandbox, Class, selector } = metadata;
                 
                 if ( !key.test(nodeValue) && !{ '#text': true }[ selector ] ) return;
+                let owner = this.getOwnerInstance(node.parentElement);
                 let sandbox = new Sandbox({ type: nodeType, target: node, core });
                 let instance = new Class(sandbox);
-                let data: IReferenceInstance = { target: node, instance, selector, sandbox, occupants: null, occupee: null, $occupants: null, ...metadata };
+                let data: IReferenceInstance = { target: node, instance, selector, sandbox, owner, ...metadata };
                 
                 $instances.set(instance, data);
                 $nodes.set(node, data);
             }
             
-            private processAttributeNode(node?: Node&Attr, ...more: (Node&Attr)[]): Node&Attr {
-                if ( !node ) return node;
-                if ( !{ [Node.ATTRIBUTE_NODE]: true }[ node.nodeType ] ) return node;
-                if ( !this.modules.attribute.has(node.name) ) return this.processAttributeNode(...more);
-                var { core, modules = {} } = this;
-                var { $nodes, $instances } = core;
-                var { attribute: $attributes = new Map() } = modules;
-                var { nodeType, name } = node, metadata = $attributes.get(name);
-                var { Sandbox, Class, selector }: IMetadata = metadata;
-                var owner = this.getOwnerInstance(node);
-                
-                let sandbox = new Sandbox({ type: nodeType, target: node, core });  // must be constructed after node is emptied to avoid mutation events.
-                let instance = new Class(sandbox);
-                let data: IReferenceInstance = { node, instance, selector, sandbox, owner, ...metadata, occupants: null, occupee: null, $occupants: null };
-                $nodes.set(node, data);
-                $instances.set(instance, data);
-                
-                if ( !more.length ) return node;
-                return this.processAttributeNode(...more);
-            }
-            private getOwnerInstance(node: Node&Attr, owner: Element = node.ownerElement): any {
-                if ( !owner ) return null;
-                if ( !this.core.$nodes.has(owner) ) return this.getOwnerInstance(null, owner.parentElement);
+            private getOwnerInstance(node: Node&Element): any {
+                if ( !this.core.$nodes.has(node) ) return this.getOwnerInstance(node.parentElement);
                 var { core } = this;
-                var { $nodes } = core, metadata = $nodes.get(owner);
+                var { $nodes } = core, metadata = $nodes.get(node);
                 var { instance } = metadata;
+                
+                console.log('OWNER %O', node, node);
                 
                 return instance;
             }

@@ -11,8 +11,6 @@ var Facade = function Facade(core) {
     
     function register(metadata) {
         core.register(metadata);
-        // var type = { 'string': 'component', 'function': 'service', 'object': item.decorator }[ typeof item ];
-        // this[type].call(this, item, Class);
         return this;
     }
     

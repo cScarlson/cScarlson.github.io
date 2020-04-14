@@ -107,7 +107,7 @@ class Core {
         var { type, selector = _selector, Class, Sandbox = _Sandbox } = metadata;
         
         if ( !modules[type] ) modules[type] = new Map<string, IModuleMetadata>();
-        modules[type].set(selector, { type, selector, Class, Sandbox });
+        modules[type].set(selector, { ... metadata, type, selector, Class, Sandbox });
         
         return this;
     }

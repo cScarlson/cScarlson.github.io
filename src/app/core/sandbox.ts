@@ -315,7 +315,7 @@ type TService = 'service';
 type TMicroService = 'microservice';
 type TIoT = 'iot';
 type TPreceptType = Node['ELEMENT_NODE'] | Node['ATTRIBUTE_NODE'] | Node['TEXT_NODE'] | Node['COMMENT_NODE'] | TPipe | TService | TMicroService | TIoT;
-type TPrecept = (Node&Element) | (Node&Attr) | Utilities;
+type TPrecept = (Node&Element) | (Node&Attr) | (Node&Text) | (Node&Comment) | Utilities;
 
 
 function select(details: { type, target: TPrecept, core: Core }): any {

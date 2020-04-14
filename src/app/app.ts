@@ -2,7 +2,7 @@
 import { filter } from 'rxjs/operators';
 //
 import { Environment } from '@motorman/models';
-import { V, Element, Attribute, Service } from '@motorman/vertices';
+import { V, Element, Attribute, Text, Comment, Service } from '@motorman/vertices';
 import { Core } from '@motorman/vertices/core/core';
 import { ChainOfResponsibility } from '@motorman/core/utilities/patterns/behavioral';
 import { BackdropComponent } from '@motorman/vertices/sdk/components/backdrop/backdrop.component';
@@ -143,26 +143,37 @@ var app = new (class Application {
             
             private processTextNode(node: Node&Text): Node&Text {  // Node.TEXT_NODE === 3
                 if (!{ '3': true }[ node.nodeType ]) return node;  // https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType
-                // var { component} = this;
-                // var { data } = node;
-                // var interpolated = utils.interpolate(data)(component);
+                var { modules } = this;
+                var { text: $texts }: { text: Map<RegExp, IMetadata> } = modules;
                 
-                // console.log('TEXT %O', node);
-                // // node.replaceWith(interpolated);
-                // // console.log('TEXT %O', node, data, interpolated);
+                for (let [key, val] of $texts) this.initializeInstance(node, val, key, $texts);
                 
                 return node;
             }
             
             private processCommentNode(node: Node&Comment): Node&Comment {  // Node.COMMENT_NODE === 8
                 if (!{ '8': true }[ node.nodeType ]) return node;  // https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType
-                // var attrs: NamedNodeMap = node.attributes;
+                var { modules } = this;
+                var { comment: $comments }: { comment: Map<RegExp, IMetadata> } = modules;
                 
-                // console.log('COMMENT %O', node);
-                // for (let i = 0, len = attrs.length; i < len; i++) this.parseChildAttr(attrs[i], i, attrs);
-                // this.parse(node.childNodes);
+                for (let [key, val] of $comments) this.initializeInstance(node, val, key, $comments);
                 
                 return node;
+            }
+            
+            private initializeInstance(node: Node&(Text|Comment), metadata: IMetadata, key: RegExp, $text: Map<RegExp, IMetadata>) {
+                var { core } = this;
+                var { $instances, $nodes } = core;
+                var { nodeType, nodeValue } = node;
+                var { Sandbox, Class, selector } = metadata;
+                
+                if ( !key.test(nodeValue) && !{ '#text': true }[ selector ] ) return;
+                let sandbox = new Sandbox({ type: nodeType, target: node, core });
+                let instance = new Class(sandbox);
+                let data: IReferenceInstance = { target: node, instance, selector, sandbox, occupants: null, occupee: null, $occupants: null, ...metadata };
+                
+                $instances.set(instance, data);
+                $nodes.set(node, data);
             }
             
             private processAttributeNode(node?: Node&Attr, ...more: (Node&Attr)[]): Node&Attr {
@@ -211,39 +222,42 @@ var app = new (class Application {
         
         @Service({}) class TestService {
             
-            constructor(private $: any) {
+            constructor(private $: Sandbox) {
                 console.log(`@Service({ id: 'foreach' })`, $);
             }
             
         }
         
-        @Attribute({ selector: 'foreach' }) class TemplateRepeatDirective {
+        @Attribute({ selector: 'foreach' }) class TemplateRepeatAttribute {
             
-            constructor(private $: any) {
+            constructor(private $: Sandbox) {
                 console.log(`@Attribute({ selector: 'foreach' })`, $);
+            }
+            
+        }
+        
+        @Text({ selector: /\{\{.+\}\}/ }) class TextInterpolationDirective {
+            
+            constructor(private $: Sandbox) {
+                console.log(`@Text({ selector: /^my test text$/ })`, $);
+            }
+            
+        }
+        
+        @Comment({ selector: /my\scomment/i }) class CommentDirective {
+            
+            constructor(private $: Sandbox) {
+                console.log(`@Comment({ selector: /my comment/i })`, $);
             }
             
         }
         
         V(TestService);
         V(ModalComponent);
-        V(TemplateRepeatDirective);
-        alert(' | \n | Look at the comment below me! \n | \n V ');
-        /*
-            {   [Element]:   [ Element[] ]:    [selector]  }
-               \            /\             \  /
-                \ keyRefTo /  \  keyRefTo   \/ <-keyRefTo
-            ...
-            $selectors: Map<selector, Element[]>
-            $types: Map<Element[], Element>
-            $elements: Map<Element, selector>
-            let selector = $a.get( b.get( c.get(x) ) )
-            OR
-            $selectors: Map<selector, LinkedList<Element>>
-            ...
-        */ 
+        V(TemplateRepeatAttribute);
+        V(TextInterpolationDirective);
+        V(CommentDirective);
         
-        window.addEventListener( 'load', () => console.log('ON-LOAD?') );
         window.addEventListener( 'load', () => V.config(config) );
         
     }

@@ -117,7 +117,7 @@ class DecoratorUtilities {  // DEP
 
 
 function Element(definition: { selector: string, template?: string }, options?: any): any {
-    var data = {type: 'element', ...definition, options, members: {} };
+    var data = { ...definition, type: 'element', key: 'selector', options, members: {} };
     
     return function get(Class: any): any {
         Class.meta = data;
@@ -125,40 +125,51 @@ function Element(definition: { selector: string, template?: string }, options?: 
     };
 }
 function Attribute(definition: { selector: string }): any {
-    var data = { type: 'attribute', ...definition };
+    var data = { ...definition, type: 'attribute', key: 'selector' };
     
     return function get(Class: any): any {
         return { ...data, Class };
     };
 }
-function Text(definition: { selector: string }): any {  // selector := Text.nodeValue || Text.charaterData
+function Text(definition: { selector?: RegExp|'#text' }): any {  // selector := Text.nodeValue || Text.charaterData
     /*
     if reInterpolate.test(node.[nodeValue,wholeText,textContent,data]) > node.nodeValue = interpolate(nodeValue)(parent/owner)
     */
-    var data = { type: 'attribute', ...definition };
+    var { selector = '#text' } = definition;
+    var data = { ...definition, type: 'text', selector };
     
     return function get(Class: any): any {
         return { ...data, Class };
     };
 }
-function Comment(definition: { selector: string }): any {  // selector := Comment.data || Comment.charaterData
+function Comment(definition: { selector?: RegExp|'#comment' }): any {  // selector := Comment.data || Comment.charaterData
     /*
     comments may be used to drive performance
     syntax can be used to drive directive(s) / operation(s): <!-- <psst! [next.parent]="v-modal" /> -->, etc
     if owner > core.$selectors.linkedList.get(<string>owner, this.nextElementSibling)
     */
-    var data = { type: 'attribute', ...definition };
+    var { selector = '#comment' } = definition;
+    var data = { ...definition, type: 'comment', selector };
     
     return function get(Class: any): any {
         return { ...data, Class };
     };
 }
+function Directive(definition: { type: '#text'|'#comment', selector: RegExp }): any {
+    var { type } = definition;
+    var get = {
+        '#text': Text({ ...definition, selector: '#text' }),
+        '#comment': Comment({ ...definition, selector: '#comment' }),
+    }[ type ];
+    
+    return get;
+}
 function Pipe() {}
 function Service(definition: { id?: string }): any {  // selector := Comment.data || Comment.charaterData
-    var data = { type: 'service', ...definition };
+    var data = { ...definition, type: 'service' };
     
     return function get(Class: any): any {
-        var selector = definition.id || Class.name;
+        var { id: selector = Class.name } = data;
         return { ...data, selector, Class };
     };
 }
@@ -308,7 +319,7 @@ const {
     listener, message,
 } = decorators;
 
-export { Element, Attribute, Pipe, Service };
+export { Element, Attribute, Text, Comment, Directive, Pipe, Service };
 export { observe, observee, observer };
 export { element, attr };
 export { listener, message };

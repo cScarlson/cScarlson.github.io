@@ -6,7 +6,6 @@ var Facade = function Facade(core) {
     var thus = this;
     
     function configure() {
-        console.log('Facade.config()');
         return core.configure.apply(core, arguments);
     }
     

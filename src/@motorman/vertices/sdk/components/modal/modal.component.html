@@ -13,7 +13,7 @@
         Modal is active: {{active}} {{test}}
         <p><span><b>Bolder!</b><b>Boulder!</b></span></p>
     </div>
-    <input id="{{item.id}}" type="literal" [value]="test" {{key}}="{{value}}" (input)="type($event)" *each="item of items" />
+    <input id="{{item.id}}" type="literal" [value]="test" {{key}}="{{value}}" (input)="type($event)" foreach="item of items" />
     <input id="xxx" type="input" value="test" {{key}}="{{value}}" (input)="type($event)" />
 </div>
 <!-- My Comment has="attr" -->

@@ -21,18 +21,16 @@ class ModalRequest extends SingletonComponentRequest {
     
 }
 
-@Element({
-    selector: 'v-modal',
-})
+@Element({ selector: 'v-modal' })
 class ModalComponent {
     active = 'YO!';
     
     constructor(private $: Sandbox) {
-        console.log('ModalComponent.constructor', $);
+        console.log(`@Element({ selector: 'v-modal' })`, $);
         // comm.subscribe(comm.channels['ELEMENT:CREATED'], () => comm.publish(comm.channels['ELEMENT:TEMPLATE:FOUND'], template) );
         // $.in($.channels['MODAL:REQUESTED']).subscribe(this.handleRequest);
         // $.in($.channels['MODAL:DISMISSED']).subscribe(this.handleDismiss);
-        $.template.set(template);
+        $.content.set(template);
         setTimeout( () => $.publish('OUTPUT', { key: 'data-poop', value: 'turdz' }), (1000 * 5) );
         // setTimeout( () => $.template.set('...loading...'), (1000 * 5) );
         // setTimeout( () => $.template.set(template), (1000 * 8) );

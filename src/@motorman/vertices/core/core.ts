@@ -71,11 +71,9 @@ class Core {
         
         pConfiguration
             .then( (config) => this.dInitialization.resolve(config) )
-            .then( (config) => console.log('Core.pConfiguration.then()') )
             ;
         pInitialization
             .then( (config) => this.bootstrap(config) )
-            .then( (config) => console.log('INIT', config) )
             ;
         return this;
     }
@@ -88,12 +86,10 @@ class Core {
     
     bootstrap(config: IConfiguration) {
         var { environment, bootstrap } = config;
-        console.log('Core.bootstrap()', config);
         bootstrap.execute(this);
     }
     
     configure(config) {
-        console.log('Core.configure()');
         this.utils.extend(this.configuration, config);
         // this.engine = new ElementEngine(this.configuration.decorators.components, this.configuration.director);
         this.dConfiguration.resolve(this.configuration);

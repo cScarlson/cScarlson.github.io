@@ -2,122 +2,32 @@
 import { filter } from 'rxjs/operators';
 //
 import { Environment } from '@motorman/models';
-import { V, Element } from '@motorman/vertices';
+import { V, Element, Attribute, Service } from '@motorman/vertices';
 import { Core } from '@motorman/vertices/core/core';
 import { ChainOfResponsibility } from '@motorman/core/utilities/patterns/behavioral';
-// import { V, Element, attr, watch, bind, handle } from '@motorman/vertices';
 import { BackdropComponent } from '@motorman/vertices/sdk/components/backdrop/backdrop.component';
 import { ModalComponent } from '@motorman/vertices/sdk/components/modal/modal.component';
+import { Deferred } from '@motorman/core/utilities';
 //
 import { environment } from '../environments/environment';
-import { ServiceSandbox, ComponentSandbox as Sandbox } from './core';
+import { Sandbox } from './core';
 import { Director, ActionHandlers, StateHandlers, channels } from './core';
-import { CONSTANTS, bootstrap } from './core';
-import { Deferred } from '@motorman/core/utilities';
+import { CONSTANTS, Utilities, bootstrap } from './core';
 // import { AppComponent } from './app.component';
 
-
-class TestService {
-            
-    constructor(private $: ServiceSandbox) {
-        // console.log('@ TestService', $);
-    }
-    
-    init() {
-        // console.log('@ TestService # init', this.$);
-        return this;
-    }
-    
-}
-
-@Element({ selector: 'v-custom', template: `<h2>This is a template for {name}</h2>` })
-class Component {
-    // @attr() name: any = '';
-    // public id: number = +'998';
-    
-    // constructor(private $: Sandbox) {
-    //     // console.log('@ v-custom', $.element, $.element.template);
-    //     setTimeout( () => this.name = 'CLICK ME', (1000 * 3) );
-    //     // $.attach(this);
-    //     $.in($.channels['JOHN:WILL:LIKE:THIS:STRATEGY']).pipe(this.filterId).subscribe(this.handleId);
-    //     // $.in($.channels['JOHN:WILL:LIKE:THIS:STRATEGY']).pipe(latest).subscribe(this.handleId);
-    //     // setTimeout( () => $.attach(this), (1000 * 2) );
-    // }
-    
-    // init(dataset: DOMStringMap) {
-    //     console.log('@ Component # dataset', dataset);
-    // }
-    
-    // attributeChangedCallback(attrName, oldVal, newVal) {
-    //     console.log('@ Custom # attributeChangedCallback', attrName, oldVal, newVal);
-    // }
-    
-    // @watch('name') watchName(val, old) {
-    //     console.log(`@v-custom: this.name was ${old} and is now ${val}`);
-    // }
-    
-    // @bind('click') handleClick(e: Event) {
-    //     console.log('# click', e);
-    //     this.name = 'now-this!!!';
-    //     setTimeout( () => this.name = 'CLICK ME', (1000 * 3) );
-    // }
-    
-    // next(e: CustomEvent) {
-    //     var { type, detail } = e;
-    //     var action = {
-    //         [ this.$.channels['JOHN:WILL:LIKE:THIS:STRATEGY'] ]: this.handleId,
-    //     }[ type ];
-        
-    //     console.log('@ next', type, detail);
-    //     action && setTimeout( () => action.call(this, e), (1000 * 5) );
-    // }
-    // error(error: any) {
-    //     // console.log('@ SomeComponent # error()', error);
-    // }
-    // complete() {
-    //     // console.log('@ SomeComponent # complete()');
-    // }
-    
-    // private filterId = filter( (e: CustomEvent) => e.detail.id === this.id );
-    // private handleId = (e: CustomEvent) => {
-    //     var { type, detail } = e;
-    //     console.log('@ handleId', type, detail);
-    // };
-    
-    // // public handleLatest = (e: CustomEvent) => {
-    // //   var { type, detail } = e;
-    // //   console.log('@ handleLatest', type, detail);
-    // // };
-    
-}
-
-@Element({ selector: 'v-other', template: `` })
-class OtherComponent {
-    
-    // constructor(private $: Sandbox) {
-    //     setTimeout( () => this.wait(), (1000 * 3) );
-    //     setTimeout( () => $.publish($.channels['MODAL:REQUESTED'], { active: '???' }), (1000 * 2) );
-    // }
-    
-    // wait() {
-    //     var { $ } = this;
-    //     $.publish($.channels['JOHN:WILL:LIKE:THIS:STRATEGY'], { id: 998, datum: 'A' });
-    //     $.publish($.channels['JOHN:WILL:LIKE:THIS:STRATEGY'], { id: 999, datum: 'B' });
-    // }
-    
-}
 
 var app = new (class Application {
     
     constructor(env: Environment) {
-    
+        
+        var utils = new Utilities();
         const {
             SELECTOR,
         } = CONSTANTS;
         
         type IMetadata = { type: string, selector: string, Class: any, Sandbox: typeof Sandbox };
         type IReferenceInstance = IMetadata & {
-            node: Node,
+            target: Node | Utilities,
             instance: any,
             sandbox: Sandbox,
             occupants: Node[],
@@ -161,9 +71,19 @@ var app = new (class Application {
             bootstrapServices(env: Document): Node&Document {
                 var { core } = this;
                 var { modules } = core;
-                var { service: $services } = modules;
-                // set instances on core? or core.configuration.director?
+                var { service: $services = new Map() } = modules;
+                
+                for (let [key, val] of $services) this.bootstrapService(val, key, $services);
+                
                 return env;
+            }
+            bootstrapService(metadata: IMetadata, key: string, $services: Map<string, IMetadata>) {
+                var { core } = this;
+                var { $instances } = core;
+                var { Sandbox, Class, selector } = metadata;
+                var sandbox = new Sandbox({ type: 'service', target: utils, core });
+                var instance = new Class(sandbox);
+                var data: IReferenceInstance = { target: utils, instance, selector, sandbox, occupants: null, occupee: null, $occupants: null, ...metadata };
             }
             
             parseNode(node: Node): Node {
@@ -186,7 +106,7 @@ var app = new (class Application {
                 var { core } = this;
                 var { $instances, $nodes } = core;
                 var { Class, Sandbox } = metadata;
-                var { childNodes } = node;
+                var { nodeType, childNodes } = node;
                 var occupants = Array.prototype.slice.call(childNodes);
                 var occupee = new DocumentFragment();
                 var $occupants = new Map();
@@ -199,21 +119,24 @@ var app = new (class Application {
                 }
                 
                 while (node.lastChild) node.firstChild.remove();  // clear from original parent to obviate child.cloneNode and maintain same object in Heap
-                let sandbox = new Sandbox(node, core);  // must be constructed after node is emptied to avoid mutation events.
+                let sandbox = new Sandbox({ type: nodeType, target: node, core });  // must be constructed after node is emptied to avoid mutation events.
                 let instance = new Class(sandbox);
-                let data: IReferenceInstance = { node, instance, selector, sandbox, occupants, occupee, $occupants, ...metadata };
+                let data: IReferenceInstance = { target: node, instance, selector, sandbox, occupants, occupee, $occupants, ...metadata };
                 occupants.forEach( c => addOccupant($occupants, occupee, c) );
                 
-                $nodes.set(node, data);  // TODO: there may me a better way to align domnodes with other data using same index
+                $nodes.set(node, data);
                 $instances.set(instance, data);
             }
             
             private processElementNode(node: Node&Element): Node&Element {  // Node.ELEMENT_NODE === 1
-                if (!{ '1': true }[ node.nodeType ]) return node;  // https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType
+                if ( !{ '1': true }[ node.nodeType ] ) return node;  // https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType
                 var { modules = {} } = this;
-                var { element: $elements = new Map(), attribute: $attributes = new Map() } = modules;
+                var { element: $elements = new Map() } = modules;
+                var { attributes } = node;
+                var attribute = attributes[0];
                 
                 for (let [key, val] of $elements) this.processMetadata(node, val, key, $elements);
+                if (attribute) this.processAttributeNode(attribute, ...node.attributes);
                 
                 return node;
             }
@@ -242,6 +165,36 @@ var app = new (class Application {
                 return node;
             }
             
+            private processAttributeNode(node?: Node&Attr, ...more: (Node&Attr)[]): Node&Attr {
+                if ( !node ) return node;
+                if ( !{ [Node.ATTRIBUTE_NODE]: true }[ node.nodeType ] ) return node;
+                if ( !this.modules.attribute.has(node.name) ) return this.processAttributeNode(...more);
+                var { core, modules = {} } = this;
+                var { $nodes, $instances } = core;
+                var { attribute: $attributes = new Map() } = modules;
+                var { nodeType, name } = node, metadata = $attributes.get(name);
+                var { Sandbox, Class, selector }: IMetadata = metadata;
+                var owner = this.getOwnerInstance(node);
+                
+                let sandbox = new Sandbox({ type: nodeType, target: node, core });  // must be constructed after node is emptied to avoid mutation events.
+                let instance = new Class(sandbox);
+                let data: IReferenceInstance = { node, instance, selector, sandbox, owner, ...metadata, occupants: null, occupee: null, $occupants: null };
+                $nodes.set(node, data);
+                $instances.set(instance, data);
+                
+                if ( !more.length ) return node;
+                return this.processAttributeNode(...more);
+            }
+            private getOwnerInstance(node: Node&Attr, owner: Element = node.ownerElement): any {
+                if ( !owner ) return null;
+                if ( !this.core.$nodes.has(owner) ) return this.getOwnerInstance(null, owner.parentElement);
+                var { core } = this;
+                var { $nodes } = core, metadata = $nodes.get(owner);
+                var { instance } = metadata;
+                
+                return instance;
+            }
+            
         }
         
         class Dependencies {};  // mock
@@ -253,10 +206,42 @@ var app = new (class Application {
             bootstrap: new Bootstrap({}),
             // selector: `[data-${SELECTOR}]`,
             // datasets: '[data-attribute]',
-            // decorators: { services: ServiceSandbox, components: Sandbox },
+            // decorators: { services: Sandbox, components: Sandbox },
         };
         
+        @Service({}) class TestService {
+            
+            constructor(private $: any) {
+                console.log(`@Service({ id: 'foreach' })`, $);
+            }
+            
+        }
+        
+        @Attribute({ selector: 'foreach' }) class TemplateRepeatDirective {
+            
+            constructor(private $: any) {
+                console.log(`@Attribute({ selector: 'foreach' })`, $);
+            }
+            
+        }
+        
+        V(TestService);
         V(ModalComponent);
+        V(TemplateRepeatDirective);
+        alert(' | \n | Look at the comment below me! \n | \n V ');
+        /*
+            {   [Element]:   [ Element[] ]:    [selector]  }
+               \            /\             \  /
+                \ keyRefTo /  \  keyRefTo   \/ <-keyRefTo
+            ...
+            $selectors: Map<selector, Element[]>
+            $types: Map<Element[], Element>
+            $elements: Map<Element, selector>
+            let selector = $a.get( b.get( c.get(x) ) )
+            OR
+            $selectors: Map<selector, LinkedList<Element>>
+            ...
+        */ 
         
         window.addEventListener( 'load', () => console.log('ON-LOAD?') );
         window.addEventListener( 'load', () => V.config(config) );

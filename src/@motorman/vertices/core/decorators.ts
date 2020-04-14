@@ -116,26 +116,54 @@ class DecoratorUtilities {  // DEP
 }
 
 
-function Element(details: any, options?: any): any {
-    var data = {type: 'element', ...details, options, members: {} };
+function Element(definition: { selector: string, template?: string }, options?: any): any {
+    var data = {type: 'element', ...definition, options, members: {} };
     
     return function get(Class: any): any {
         Class.meta = data;
         return { ...data, Class };
     };
 }
-
-function Component() {}
-function Directive(options?: any): any {
-    var data = { type: 'sandbox', options };
+function Attribute(definition: { selector: string }): any {
+    var data = { type: 'attribute', ...definition };
+    
+    return function get(Class: any): any {
+        return { ...data, Class };
+    };
+}
+function Text(definition: { selector: string }): any {  // selector := Text.nodeValue || Text.charaterData
+    /*
+    if reInterpolate.test(node.[nodeValue,wholeText,textContent,data]) > node.nodeValue = interpolate(nodeValue)(parent/owner)
+    */
+    var data = { type: 'attribute', ...definition };
+    
+    return function get(Class: any): any {
+        return { ...data, Class };
+    };
+}
+function Comment(definition: { selector: string }): any {  // selector := Comment.data || Comment.charaterData
+    /*
+    comments may be used to drive performance
+    syntax can be used to drive directive(s) / operation(s): <!-- <psst! [next.parent]="v-modal" /> -->, etc
+    if owner > core.$selectors.linkedList.get(<string>owner, this.nextElementSibling)
+    */
+    var data = { type: 'attribute', ...definition };
     
     return function get(Class: any): any {
         return { ...data, Class };
     };
 }
 function Pipe() {}
-function Service() {}
+function Service(definition: { id?: string }): any {  // selector := Comment.data || Comment.charaterData
+    var data = { type: 'service', ...definition };
+    
+    return function get(Class: any): any {
+        var selector = definition.id || Class.name;
+        return { ...data, selector, Class };
+    };
+}
 function IoT() {}
+function MicroService() {}
 
 var decorators = new (class Decorators extends DecoratorUtilities {
     
@@ -280,7 +308,7 @@ const {
     listener, message,
 } = decorators;
 
-export { Element, Component, Directive, Pipe, Service };
+export { Element, Attribute, Pipe, Service };
 export { observe, observee, observer };
 export { element, attr };
 export { listener, message };

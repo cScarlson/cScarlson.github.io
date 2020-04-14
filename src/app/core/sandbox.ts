@@ -1,4 +1,5 @@
 
+import { IEventAggregator } from '@motorman/core/eventaggregator.interface';
 import { Core } from '@motorman/vertices/core/core';
 import { Reactive as CommonSandbox } from '@motorman/core/sandbox';
 import { Sandbox as CommonComponentSandbox } from '@motorman/vertices/sandbox';
@@ -10,23 +11,13 @@ import { Director, ActionHandlers, StateHandlers, channels } from './director';
 // var director = new Director({ channels, Dependencies, ActionHandlers, StateHandlers });
 
 
-class ServiceSandbox {
-    public http: any = { };
-    
-    constructor(utils: Utilities, director: Director) {
-        return this;
-    }
-    
-}
-
-
 class TemplateSubject extends Subject {
     private template: string = '';
     private repository: Node&DocumentFragment = new DocumentFragment();
     private digestion: Node&HTMLDivElement = document.createElement('div');
     public content: NodeList|Node[] = [ ];
     
-    constructor(private sandbox: ComponentSandbox) {
+    constructor(private sandbox: ElementSandboxState) {
         super('content');
         var { repository, digestion } = this;
         repository.appendChild(digestion);
@@ -36,6 +27,7 @@ class TemplateSubject extends Subject {
         var { digestion } = this;
         
         digestion.innerHTML = template;
+        this.template = template;
         this.observation = this.content = Array.prototype.slice.call(digestion.childNodes);
         
         return this;
@@ -46,11 +38,11 @@ class TemplateSubject extends Subject {
 class MutationManager {
     protected observer: MutationObserver = new MutationObserver( (r, o) => this.observe(r, o) );
     protected get node(): Node { return this.sandbox.node; }
-    protected get core(): Core { return this.sandbox.core; }
     protected get precepts(): any { return this.core.$nodes.get(this.node); }
     protected get selector(): string { return this.precepts.selector; }
+    protected get instance(): string { return this.precepts.instance; }
     
-    constructor(private sandbox: ComponentSandbox) {}
+    constructor(private sandbox: ElementSandboxState, public core: Core) {}
     
     private observe(changes: MutationRecord[], observer: MutationObserver) {
         for(let mutation of changes) this[mutation.type](mutation);
@@ -59,15 +51,12 @@ class MutationManager {
     private ['childList'](mutation: MutationRecord) {
         var { sandbox, node } = this;
         console.log('MutationManager - childList', mutation);
-        sandbox.publish(sandbox.channels[''], { mutation, node });
     }
     private ['attributes'](mutation: MutationRecord) {
-        var { sandbox, node, selector } = this;
+        var { sandbox, node, selector, instance } = this;
         var { attributeName: name, target: element } = mutation;
         var attr = (element as Element).getAttributeNode(name);
         var isIO = ( (element as Element).matches(selector) && node.isSameNode(element) )  // source of change occurred on host-element
-          , isInput  // dep?
-          , isOutput  // dep?
           ;
         var detail = mutation
           , a = new CustomEvent('mutation', { detail })
@@ -76,12 +65,10 @@ class MutationManager {
           , i = new CustomEvent('mutation:input', { detail })
           , o = new CustomEvent('mutation:output', { detail })
           ;
-        if (isIO) element.dispatchEvent(io);
-        if (isInput) element.dispatchEvent(i);
-        if (isOutput) element.dispatchEvent(o);
+        
+        if (isIO) element.dispatchEvent(io);  // check instance to see if scope is already updated? if not, dispatch mutation:input event?
         attr.dispatchEvent(a);
         element.dispatchEvent(e);
-        sandbox.publish(sandbox.channels['ELEMENT:MUTATION:ATTRIBUTE:OBSERVED'], mutation);  // !ALERT!: SANDBOX SHOULD ONLY COMMUNICATE TO INSTANCE THROUGH ISOLATE MEDIUM; THAT IS, DISPATCH ON NODE TO ISOLATE FROM OTHER MODULES. THAT IS, SANDBOX.PUBLISH SHOULD ONLY BE USED FOR EXPLICITLY PUBLISHED EVENTS/DATA TO PEERS.
     }
     private ['subtree'](mutation: MutationRecord) {
         var { sandbox, node } = this;
@@ -105,30 +92,25 @@ class MutationManager {
     
 }
 
-class EventManagerX {
+class EventManager {
     private emit: (e: Event|CustomEvent) => any;
+    private $events: Map<string, any> = new Map();
+    get events(): string[] { return Array.from( this.$events.keys() ); }
     get node(): Node { return this.sandbox.node; }
     get proxy(): EventTarget { return EventTarget.prototype; }
     // get proxy(): EventTarget { return this.node; }
+    get precepts(): any { return this.core.$nodes.get(this.node); }
+    get instance(): any { return this.precepts.instance; }
     
-    constructor(private sandbox: ComponentSandbox) {}
+    constructor(private sandbox: ElementSandboxState, public core: Core) {}
     
-    connect() {
-        var { node, proxy } = this;
-        var successful = this.proxyEventTargetSource(proxy);
+    private proxyEventTargetSource(source: EventTarget): boolean {
+        var { node } = this;
         
-        node.addEventListener('*', this.handleAll, true);  // `useCapture`
+        this.getEventTypes(<Element>node);
+        this.events.forEach( (type) => node.addEventListener(type, this.handleAll, true) );
         
-        return this;
-    }
-    
-    disconnect() {
-        var { node, proxy } = this;
-        
-        node.removeEventListener('*', this.handleAll);
-        proxy.dispatchEvent = this.emit;
-        
-        return this;
+        return !!this.events.length;
     }
     
     /**
@@ -137,7 +119,7 @@ class EventManagerX {
      *  *   Node (Element, Attr, etc)
      * @usage : [Node].addEventListener('*', ({ detail: e }) => {...}, false);
      */
-    proxyEventTargetSource(source: EventTarget) {
+    private proxyEventTargetSource_IDEAL(source: EventTarget) {
         var emit = source.dispatchEvent;  // obtain reference
 
         function proxy(e: Event|CustomEvent) {
@@ -152,51 +134,10 @@ class EventManagerX {
         return (source.dispatchEvent === proxy);  // indicate if its set after we try to
     }
     
-    public handleAll = (any: CustomEvent) => {
-        var { detail: e } = any
-          , { type, target } = <Event>e
-        //   , { attributes } = <Element>target
-          ;
-        console.log('@ ANY', type, e, any);
-        // var delegates = this.getEventDelegates(...attributes);
-        var reType = new RegExp(`^\(${type}\)$`)  // attr.name
-          , reInvocation = new RegExp(`^(.+)\((.*)\)$`)  // attr.value
-          ;
-        // if (has type in [Attr].name) call method from value with parameters
-    };
-    private getEventDelegates(attribute?: Attr, ...more: Attr[]): Map<Node, any> {
-        var $delegates = new Map<Node, { key: string, type: string, operation: string, method: string, params: string  }>();
-        console.log('DELEGATES', attribute, ...more);
-        return $delegates;
-    }
-    
-}
-
-class EventManager {
-    private emit: (e: Event|CustomEvent) => any;
-    private $events: Map<string, any> = new Map();
-    get events(): string[] { return Array.from( this.$events.keys() ); }
-    get node(): Node { return this.sandbox.node; }
-    get proxy(): EventTarget { return EventTarget.prototype; }
-    get precepts(): any { return this.sandbox.core.$nodes.get(this.node); }
-    get instance(): any { return this.precepts.instance; }
-    
-    constructor(private sandbox: ComponentSandbox) {}
-    
-    private proxyEventTargetSource(source: EventTarget): boolean {
-        var { node } = this;
-        
-        this.getEventTypes(<Element>node);
-        this.events.forEach( (type) => node.addEventListener(type, this.handleAll, true) );
-        
-        return !!this.events.length;
-    }
-    
     private getEventTypes(node: Node&Element): Node {
         if ( !{ [1]: true }[ node.nodeType ] ) return node;
         var { attributes, tagName } = node, re = /^\((.*)\)$/;
         
-        // console.log('::::', tagName, node.firstChild, node.nextSibling);
         for (let i = 0, len = attributes.length; i < len; i++) this.checkAttrNode(attributes[i], i, attributes);
         if (node.firstElementChild) this.getEventTypes(node.firstElementChild);
         if (node.nextElementSibling) this.getEventTypes(node.nextElementSibling);
@@ -256,24 +197,63 @@ class EventManager {
     
 }
 
-class ComponentSandbox {
-    private delegations: EventManager = new EventManager(this);
-    private mutations: MutationManager = new MutationManager(this);
-    public template: TemplateSubject = new TemplateSubject(this);
-    public get config() { return this.core.configuration; }
-    private get director() { return this.config.director; }
-    public get channels() { return this.director.channels; }
+interface ISandboxState extends IEventAggregator {
+    // details: any;
+    // core: any;
+    // config: any;
+    // director: Director;
+    // target: any;
+    // channels: any;
+    // template: any;
+}
+interface INodeSandboxState extends ISandboxState {
+}
+
+class Sandbox implements ISandboxState {
+    protected get core() { return this.details.core; }
+    protected get target() { return this.details.target; }
+    protected get config() { return this.core.configuration; }
+    protected get director() { return this.config.director; }
+    public content: Subject;
     
-    constructor(public node: any, public core: Core) {
-        this.template.attach(this);
-        this.mutations.connect();
-        this.subscribe(this.channels['ELEMENT:MUTATION:ATTRIBUTE:OBSERVED'], (m) => console.log('ELEMENT:MUTATION:ATTRIBUTE:OBSERVED', m) );
-        this.node.addEventListener('OUTPUT', (e) => console.log('OUTPUT', e), false );
-        this.node.addEventListener('mutation:io', (e) => console.log('IO (io)', e), false);
+    constructor(protected details: { type, target: TPrecept, core: Core }) {}
+    
+    publish(channel: string, data?: any, ...more: any[]): ISandboxState {
+        var { director } = this;
+        director.publish(channel, data, ...more);
+        return this;
+    }
+    subscribe(channel: string, handler: Function, ...more: any[]): ISandboxState {
+        var { director } = this;
+        director.subscribe(channel, handler, ...more);
+        return this;
+    }
+    unsubscribe(channel: string, handler: Function, ...more: any[]): ISandboxState {
+        var { director } = this;
+        director.unsubscribe(channel, handler, ...more);
         return this;
     }
     
-    update(state: string = '') {  // Chain of Responsibility Pattern
+}
+
+class ElementSandboxState extends Sandbox implements ISandboxState {
+    private delegations: EventManager = new EventManager(this, this.core);
+    private mutations: MutationManager = new MutationManager(this, this.core);
+    public content: TemplateSubject = new TemplateSubject(this);
+    public get channels() { return this.director.channels; }
+    public get node(): Node&Element { return <Element>this.target; }
+    
+    constructor(node: Node&Element, core: Core) {
+        super({ type: node.nodeType, target: node, core });
+        this.content.attach(this);
+        this.mutations.connect();
+        // this.subscribe(this.channels['ELEMENT:MUTATION:ATTRIBUTE:OBSERVED'], (m) => console.log('ELEMENT:MUTATION:ATTRIBUTE:OBSERVED', m) );
+        // this.node.addEventListener('OUTPUT', (e) => console.log('OUTPUT', e), false );
+        // this.node.addEventListener('mutation:io', (e) => console.log('IO (io)', e), false);
+        return this;
+    }
+    
+    update(state: NamedNodeMap) {  // Chain of Responsibility Pattern
         var { mutations, delegations, node } = this;
         mutations.disconnect();  // reconnect after to avoid mutation events
         node.innerHTML = '';  // clear current contents
@@ -282,22 +262,93 @@ class ComponentSandbox {
         delegations.connect();
     }
     
-    publish(channel: string, data?: any, ...more: any[]) {
-        var { director, node } = this;
-        // if ({ 'OUTPUT': true }[ channel ]) node.setAttribute(data.key, data.value);
-        // if ({ 'OUTPUT': true }[ channel ]) node.dispatchEvent( new CustomEvent(channel, { detail: data }) );
-        director.publish(channel, data, ...more);
-        return this;
-    }
-    subscribe(channel: string, handler: Function, ...more: any[]) {
-        this.director.subscribe(channel, handler, ...more);
-        return this;
-    }
-    unsubscribe(channel: string, handler: Function, ...more: any[]) {
-        this.director.unsubscribe(channel, handler, ...more);
+}
+
+
+class AttributeSandboxState extends Sandbox implements ISandboxState {
+    public get channels() { return this.director.channels; }
+    public get node(): Node&Attr { return <Attr>this.target; }
+    
+    constructor(node: Node&Attr, core: Core) {
+        super({ type: node.nodeType, target: node, core });
         return this;
     }
     
 }
 
-export { ComponentSandbox as Sandbox, ServiceSandbox, ComponentSandbox };
+
+class TextSandboxState {}
+class CommentSandboxState {}
+
+class PipeSandboxState {}
+class ServiceSandboxState implements ISandboxState {
+    private get config() { return this.core.configuration; }
+    private get director() { return this.config.director; }
+    public get channels() { return this.director.channels; }
+    
+    constructor(private utils: Utilities, private core: Core) {
+        return this;
+    }
+    
+    publish(channel: string, data?: any, ...more: any[]): ISandboxState {
+        var { director } = this;
+        director.publish(channel, data, ...more);
+        return this;
+    }
+    subscribe(channel: string, handler: Function): ISandboxState {
+        var { director } = this;
+        director.subscribe(channel, handler);
+        return this;
+    }
+    unsubscribe(channel: string, handler: Function): ISandboxState {
+        var { director } = this;
+        director.unsubscribe(channel, handler);
+        return this;
+    }
+    
+}
+class MicroserviceSandboxState {}
+class IoTSandboxState {}
+
+type TPipe = 'pipe';
+type TService = 'service';
+type TMicroService = 'microservice';
+type TIoT = 'iot';
+type TPreceptType = Node['ELEMENT_NODE'] | Node['ATTRIBUTE_NODE'] | Node['TEXT_NODE'] | Node['COMMENT_NODE'] | TPipe | TService | TMicroService | TIoT;
+type TPrecept = (Node&Element) | (Node&Attr) | Utilities;
+
+
+function select(details: { type, target: TPrecept, core: Core }): any {
+    var { type, target, core } = details;
+    var Sandbox = {
+        [Node.ELEMENT_NODE]: ElementSandboxState,
+        [Node.ATTRIBUTE_NODE]: AttributeSandboxState,
+        [Node.TEXT_NODE]: TextSandboxState,
+        [Node.COMMENT_NODE]: CommentSandboxState,
+        ['pipe']: PipeSandboxState,
+        ['service']: ServiceSandboxState,
+        ['microservice']: MicroserviceSandboxState,
+        ['iot']: IoTSandboxState,
+    }[ type ] as any;
+    var sandbox = new Sandbox(target, core);
+    
+    return sandbox;
+}
+
+
+class SandboxContext extends Sandbox implements ISandboxState {
+    public content: TemplateSubject;  // stub
+    
+    constructor(details: { type, target: TPrecept, core: Core }) {
+        super(details);
+        var sandbox = select(details);
+        return sandbox;
+    }
+    
+}
+
+export {
+    SandboxContext as Sandbox,
+    ServiceSandboxState as ServiceSandbox,
+    ElementSandboxState as ComponentSandbox,
+};

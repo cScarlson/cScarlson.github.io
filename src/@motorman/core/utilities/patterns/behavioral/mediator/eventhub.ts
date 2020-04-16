@@ -5,16 +5,16 @@
 var EventEmitter = EventTarget;
 class EventHub extends EventEmitter {
     
-    publish(channel, data) {
+    publish(channel: string, data?: any, ...more: any[]) {
         var e = new CustomEvent(channel, { detail: data });
         this.dispatchEvent(e);
         return this;
     }
-    subscribe(channel, handler) {
+    subscribe(channel: string, handler: any) {
         this.addEventListener(channel, handler, false);
         return this;
     }
-    unsubscribe(channel, handler) {
+    unsubscribe(channel: string, handler: any) {
         this.removeEventListener(channel, handler, false);  // what is 3rd param again?
         return this;
     }

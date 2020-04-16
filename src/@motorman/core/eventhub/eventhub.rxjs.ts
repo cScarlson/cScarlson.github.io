@@ -27,13 +27,13 @@ class EventHub implements IEventAggregator {
     return this;
   }
 
-  subscribe(channel: string, handler?: (data?: any) => {}): Observable<CustomEvent> {
+  subscribe(channel: string, handler: any): Observable<CustomEvent> {
     var subscription = this.in(channel);
     if (handler) subscription.subscribe(handler);
     return subscription;
   }
 
-  unsubscribe(channel: string, handler: (data?: any) => {}): IEventAggregator {
+  unsubscribe(channel: string, handler: Function): IEventAggregator {
     // this.channels$.unsubscribe();
     return this;
   }

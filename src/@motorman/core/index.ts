@@ -1,4 +1,7 @@
 
+// INTERFACES
+export { IEventAggregator } from './eventaggregator.interface';
+export { ISandbox } from './sandbox';
 // STANDARD/NATIVE
 export { Reactive as EventHub } from './eventhub';  // |----------------------------------------------------------------
 export { Reactive as Mediator } from './mediator';  // |

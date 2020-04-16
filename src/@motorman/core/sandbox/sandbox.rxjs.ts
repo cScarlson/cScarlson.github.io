@@ -1,13 +1,14 @@
 
 import { ISubscriber } from '../subscriber.interface';
-import { Reactive as Director, IDirectorOptions } from '../director';
+import { Reactive as Director } from '../director';
+import { ISandbox } from './sandbox.interface';
 
 
-class Sandbox {
+class Sandbox implements ISandbox {
     get utils() { return this.director.utils; }
     get channels() { return this.director.channels; }
 
-    constructor(private director: Director) {
+    constructor(protected director: Director) {
         return this;
     }
 
@@ -15,19 +16,24 @@ class Sandbox {
         return this.director.in(channel);
     }
     publish(channel: string, data?: any, ...more: any[]) {
-        return this.director.publish(channel, data);
+        this.director.publish(channel, data, ...more);
+        return this;
     }
-    subscribe(channel: string, handler: () => {}) {
-        return this.director.subscribe(channel, handler);
+    subscribe(channel: string, handler: Function) {
+        this.director.subscribe(channel, handler);
+        return this;
     }
-    unsubscribe(channel: string, handler: () => {}) {
-        return this.director.unsubscribe(channel, handler);
+    unsubscribe(channel: string, handler: Function) {
+        this.director.unsubscribe(channel, handler);
+        return this;
     }
     attach(observer: ISubscriber) {
-        return this.director.attach(observer);
+        this.director.attach(observer);
+        return this;
     }
     detach(observer: ISubscriber) {
-        return this.director.detach(observer);
+        this.director.detach(observer);
+        return this;
     }
 
 }

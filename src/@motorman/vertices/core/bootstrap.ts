@@ -91,23 +91,25 @@ class Bootstrap {
         var { Class, Sandbox } = metadata;
         var { nodeType, childNodes } = node;
         var occupants = Array.prototype.slice.call(childNodes);
-        var occupee = new DocumentFragment();
+        // var occupee = new DocumentFragment();
+        var occupee = document.createElement('div');
         var $occupants = new Map();
         
-        function addOccupant($occupants: Map<string, Node[]>, occupee: DocumentFragment, node: Node&HTMLSlotElement) {
-            var { slot: name = '' } = node;
+        function addOccupant($occupants: Map<string, Node[]>, occupee: Element, schema: Node&HTMLSlotElement) {
+            var { slot: name = '' } = schema, node = schema.cloneNode(true);
             if ( !$occupants.has(name) ) $occupants.set(name, [ ]);
             $occupants.get(name).push(node);
             occupee.appendChild(node);
         }
         
-        while (node.lastChild) node.firstChild.remove();  // clear from original parent to obviate child.cloneNode and maintain same object in Heap
+        occupants.forEach( c => addOccupant($occupants, occupee, c) );
+        // while (node.lastChild) node.firstChild.remove();  // clear from original parent to obviate child.cloneNode and maintain same object in Heap
         let data: IReferenceInstance = { target: node, instance: null, selector, sandbox: null, occupants, occupee, $occupants, ...metadata };
         let sandbox = new Sandbox({ type: 'element', target: node, data, core });  // must be constructed after node is emptied to avoid mutation events.
         let instance = new Class(sandbox);
         data.instance = instance;  // is there a better way to do this using Hoisting?
         data.sandbox = sandbox;  // is there a better way to do this using Hoisting?
-        occupants.forEach( c => addOccupant($occupants, occupee, c) );
+        // occupants.forEach( c => addOccupant($occupants, occupee, c) );
         
         $nodes.set(node, data);
         $instances.set(instance, data);

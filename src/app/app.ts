@@ -31,6 +31,16 @@ var app = new (class Application {
             
         }
         
+        @Element({ selector: 'slot' }) class SlotComponent {
+            get name() { return (this.$.target as HTMLSlotElement).name; }
+            get occupants() { return this.$.data.occupants; }
+            
+            constructor(private $: Sandbox) {
+                console.log(`@Element({ selector: 'slot' })`, $);
+            }
+            
+        }
+        
         @Attribute({ selector: 'foreach' }) class TemplateRepeatAttribute {
             
             constructor(private $: Sandbox) {
@@ -39,16 +49,29 @@ var app = new (class Application {
             
         }
         
-        @Attribute({ selector: '[*]' }) class BindingAttribute {
-            
+        @Attribute({ selector: '[*]' }) class BindingAttribute {  // TODO: implement for both properties AND attributes ([attr:*])
+            /*
+            private context: Proxy<IOwner>;
+            private mutation: MutationObserver<Attr>;
+            ^ if (mutation.target !== this.target) return;
+            ^ if (mutation.attribute.name !== this.target.name) return;
+            ^ NOTE: MutationObserer is for DOM. Use Proxy<IInstance> instead?
+            */
             constructor(private $: Sandbox) {
                 console.log(`@Attribute({ selector: '[*]' })`, $);
             }
             
         }
         
-        @Attribute({ selector: '{*}' }) class ReporterAttribute {
-            
+        @Attribute({ selector: '{*}' }) class ReporterAttribute {  // TODO: implement for both properties AND attributes ({attr:*})
+            /*
+            private mutation: MutationObserver;
+            private context = new Proxy(this.target, {
+                apply(target: Function, args: any[]) {
+                    if (target.name === 'setValue') this.updateOwner(args);
+                }
+            });
+            */
             constructor(private $: Sandbox) {
                 console.log(`@Attribute({ selector: '{*}' })`, $);
             }
@@ -73,6 +96,7 @@ var app = new (class Application {
         
         V(TestService);
         V(ModalComponent);
+        V(SlotComponent);
         V(TemplateRepeatAttribute);
         V(BindingAttribute);
         V(ReporterAttribute);

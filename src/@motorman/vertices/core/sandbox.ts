@@ -22,12 +22,22 @@ class TemplateSubject extends Subject {
     private digestion: Node&HTMLDivElement = document.createElement('div');
     public content: NodeList|Node[] = [ ];
     
-    constructor(private sandbox: ElementSandboxState) {
+    constructor(private sandbox: ElementSandboxState, private core: Core) {
         super('content');
         var { repository, digestion } = this;
         repository.appendChild(digestion);
     }
     
+    /**
+     * @intention
+     *      Sets template and triggers update on all observers. This allows components to set a template from any source:
+     *          * import template from './x.component.html'; subject.set(template);  // compiletime
+     *          * http.get('template.html').then( (html) => subject.set(html) );  // runtime AJAX
+     *          * subject.set(Sandbox.data.occupee.innerHTML);  // runtime provided (slotless)
+     *          * subject.set(Sandbox.data.occupee.querySelector('template').content);  // runtime provided (slot)
+     *          * subject.set( utils.interpolate(template)(this) );  // runtime any interpolated
+     *      
+     */
     set(template: string = '') {
         var { digestion } = this;
         
@@ -47,7 +57,7 @@ class MutationManager {
     protected get selector(): string { return this.data.selector; }
     protected get instance(): string { return this.data.instance; }
     
-    constructor(private sandbox: ElementSandboxState, public core: Core) {}
+    constructor(private sandbox: ElementSandboxState, private core: Core) {}
     
     private observe(changes: MutationRecord[], observer: MutationObserver) {
         for(let mutation of changes) this[mutation.type](mutation);
@@ -107,7 +117,7 @@ class EventManager {
     get data(): any { return this.sandbox.data; }
     get instance(): any { return this.data.instance; }
     
-    constructor(private sandbox: ElementSandboxState, public core: Core) {}
+    constructor(private sandbox: ElementSandboxState, private core: Core) {}
     
     private proxyEventTargetSource(source: EventTarget): boolean {
         var { node } = this;
@@ -304,7 +314,7 @@ class AttributeProxy implements ProxyHandler<Attr> {
 class ElementSandboxState extends Sandbox implements ISandbox {
     private delegations: EventManager = new EventManager(this, this.core);
     private mutations: MutationManager = new MutationManager(this, this.core);
-    public content: TemplateSubject = new TemplateSubject(this);
+    public content: TemplateSubject = new TemplateSubject(this, this.core);
     public element: Element = new Proxy( <any>this.target, new ElementProxy(this, <Element>this.target, this.core) );
     public attributes: NamedNodeMap = (this.target as Element).attributes;
     public attrs: NamedNodeMap = new Proxy( this.attributes, new NamedNodeMapProxy(this, (this.target as Element).attributes, this.core) );

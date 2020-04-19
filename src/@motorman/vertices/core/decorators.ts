@@ -116,7 +116,7 @@ class DecoratorUtilities {  // DEP
 }
 
 
-function Element(definition: { selector: string, template?: string }, options?: any): any {
+function Element(definition: { selector: string, template?: string }, options: any = {}): any {
     var data = { ...definition, type: 'element', key: 'selector', options, members: {} };
     
     return function get(Class: any): any {

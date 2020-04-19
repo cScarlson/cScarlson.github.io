@@ -39,6 +39,22 @@ var app = new (class Application {
             
         }
         
+        @Attribute({ selector: '[*]' }) class BindingAttribute {
+            
+            constructor(private $: Sandbox) {
+                console.log(`@Attribute({ selector: '[*]' })`, $);
+            }
+            
+        }
+        
+        @Attribute({ selector: '{*}' }) class ReporterAttribute {
+            
+            constructor(private $: Sandbox) {
+                console.log(`@Attribute({ selector: '{*}' })`, $);
+            }
+            
+        }
+        
         @Text({ selector: /\{\{.+\}\}/ }) class TextInterpolationDirective {
             
             constructor(private $: Sandbox) {
@@ -58,6 +74,8 @@ var app = new (class Application {
         V(TestService);
         V(ModalComponent);
         V(TemplateRepeatAttribute);
+        V(BindingAttribute);
+        V(ReporterAttribute);
         V(TextInterpolationDirective);
         V(CommentDirective);
         alert;(`

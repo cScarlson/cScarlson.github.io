@@ -62,9 +62,11 @@ class Bootstrap {
         var { core } = this;
         var { $instances } = core;
         var { Sandbox, Class, selector } = metadata;
-        var sandbox = new Sandbox({ type: 'service', target: utils, core });
+        var data: IReferenceInstance = { target: utils, instance: null, selector, sandbox: null, ...metadata };
+        var sandbox = new Sandbox({ type: 'service', target: utils, data, core });
         var instance = new Class(sandbox);
-        var data: IReferenceInstance = { target: utils, instance, selector, sandbox, ...metadata };
+        data.instance = instance;  // is there a better way to do this using Hoisting?
+        data.sandbox = sandbox;  // is there a better way to do this using Hoisting?
     }
     
     parseNode(node: Node): Node {
@@ -100,9 +102,11 @@ class Bootstrap {
         }
         
         while (node.lastChild) node.firstChild.remove();  // clear from original parent to obviate child.cloneNode and maintain same object in Heap
-        let sandbox = new Sandbox({ type: nodeType, target: node, core });  // must be constructed after node is emptied to avoid mutation events.
+        let data: IReferenceInstance = { target: node, instance: null, selector, sandbox: null, occupants, occupee, $occupants, ...metadata };
+        let sandbox = new Sandbox({ type: 'element', target: node, data, core });  // must be constructed after node is emptied to avoid mutation events.
         let instance = new Class(sandbox);
-        let data: IReferenceInstance = { target: node, instance, selector, sandbox, occupants, occupee, $occupants, ...metadata };
+        data.instance = instance;  // is there a better way to do this using Hoisting?
+        data.sandbox = sandbox;  // is there a better way to do this using Hoisting?
         occupants.forEach( c => addOccupant($occupants, occupee, c) );
         
         $nodes.set(node, data);
@@ -126,17 +130,24 @@ class Bootstrap {
         if ( !node ) return node;
         if ( !{ [Node.ATTRIBUTE_NODE]: true }[ node.nodeType ] ) return node;
         if ( !this.modules.attribute ) return node;
-        if ( !this.modules.attribute.has(node.name) ) return this.processAttributeNode(...more);
         var { core, modules = {} } = this;
         var { $nodes, $instances } = core;
         var { attribute: $attributes = new Map() } = modules;
-        var { nodeType, name } = node, metadata = $attributes.get(name);
-        var { Sandbox, Class, selector }: IMetadata = metadata;
-        var owner = this.getOwnerInstance(node.ownerElement);
+        var { name } = node, metadata = $attributes.get(name);
+        var reBinding = /^\[.+\]$/, reReporter = /^{[^{}]*}$/;
+        var isBinding = reBinding.test(name), isReporter = reReporter.test(name);
         
-        let sandbox = new Sandbox({ type: nodeType, target: node, core });  // must be constructed after node is emptied to avoid mutation events.
+        if ( !this.modules.attribute.has(node.name) && !(isBinding || isReporter) ) return this.processAttributeNode(...more);
+        if (isBinding) metadata = $attributes.get('[*]');
+        if (isReporter) metadata = $attributes.get('{*}');
+        
+        let { Sandbox, Class, selector }: IMetadata = metadata;
+        let owner = this.getOwnerInstance(node.ownerElement);
+        let data: IReferenceInstance = { target: node, instance: null, selector, sandbox: null, owner, ...metadata };
+        let sandbox = new Sandbox({ type: 'attribute', target: node, data, core });  // must be constructed after node is emptied to avoid mutation events.
         let instance = new Class(sandbox);
-        let data: IReferenceInstance = { target: node, instance, selector, sandbox, owner, ...metadata };
+        data.instance = instance;  // is there a better way to do this using Hoisting?
+        data.sandbox = sandbox;  // is there a better way to do this using Hoisting?
         $nodes.set(node, data);
         $instances.set(instance, data);
         
@@ -174,10 +185,13 @@ class Bootstrap {
         
         if ( !key.test(nodeValue) && !{ '#text': true }[ selector ] ) return;
         let owner = this.getOwnerInstance(node.parentElement);
-        let sandbox = new Sandbox({ type: nodeType, target: node, core });
+        let type = { [Node.TEXT_NODE]: 'text', [Node.COMMENT_NODE]: 'comment' }[ nodeType ];
+        let data: IReferenceInstance = { target: node, instance: null, selector, sandbox: null, owner, ...metadata };
+        let sandbox = new Sandbox({ type, target: node, data, core });
         let instance = new Class(sandbox);
-        let data: IReferenceInstance = { target: node, instance, selector, sandbox, owner, ...metadata };
         
+        data.instance = instance;  // is there a better way to do this using Hoisting?
+        data.sandbox = sandbox;  // is there a better way to do this using Hoisting?
         $instances.set(instance, data);
         $nodes.set(node, data);
     }

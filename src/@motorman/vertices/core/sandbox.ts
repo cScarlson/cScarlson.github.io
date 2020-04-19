@@ -5,6 +5,17 @@ import { Utilities } from '@motorman/core/utilities';
 import { Subject } from '@motorman/core/utilities/patterns/behavioral/observer';
 
 
+type TElement = 'element';
+type TAttribute = 'attribute';
+type TText = 'text';
+type TComment = 'comment';
+type TPipe = 'pipe';
+type TService = 'service';
+type TMicroService = 'microservice';
+type TIoT = 'iot';
+type TPrecept = (Node&Element) | (Node&Attr) | (Node&Text) | (Node&Comment) | Utilities;
+
+
 class TemplateSubject extends Subject {
     private template: string = '';
     private repository: Node&DocumentFragment = new DocumentFragment();
@@ -31,10 +42,10 @@ class TemplateSubject extends Subject {
 
 class MutationManager {
     protected observer: MutationObserver = new MutationObserver( (r, o) => this.observe(r, o) );
-    protected get node(): Node { return this.sandbox.node; }
-    protected get precepts(): any { return this.core.$nodes.get(this.node); }
-    protected get selector(): string { return this.precepts.selector; }
-    protected get instance(): string { return this.precepts.instance; }
+    protected get node(): Node { return <Element>this.sandbox.target; }
+    protected get data(): any { return this.sandbox.data; }
+    protected get selector(): string { return this.data.selector; }
+    protected get instance(): string { return this.data.instance; }
     
     constructor(private sandbox: ElementSandboxState, public core: Core) {}
     
@@ -90,11 +101,11 @@ class EventManager {
     private emit: (e: Event|CustomEvent) => any;
     private $events: Map<string, any> = new Map();
     get events(): string[] { return Array.from( this.$events.keys() ); }
-    get node(): Node { return this.sandbox.node; }
+    get node(): Node { return <Element>this.sandbox.target; }
     get proxy(): EventTarget { return EventTarget.prototype; }
     // get proxy(): EventTarget { return this.node; }
-    get precepts(): any { return this.core.$nodes.get(this.node); }
-    get instance(): any { return this.precepts.instance; }
+    get data(): any { return this.sandbox.data; }
+    get instance(): any { return this.data.instance; }
     
     constructor(private sandbox: ElementSandboxState, public core: Core) {}
     
@@ -193,12 +204,12 @@ class EventManager {
 
 class Sandbox extends CommonSandbox implements ISandbox {
     protected get core() { return this.details.core; }
-    protected get target() { return this.details.target; }
-    protected get config() { return this.core.configuration; }
-    // protected get director() { return this.config.director; }
+    // protected get config() { return this.core.configuration; }
+    public get data() { return this.details.data; }
+    public get target() { return this.details.target; }
     public content: Subject;
     
-    constructor(protected details: { type, target: TPrecept, core: Core }) {
+    constructor(protected details: { type, target: TPrecept, data: any, core: Core }) {
         super(details.core.configuration.director);
     }
     
@@ -220,15 +231,86 @@ class Sandbox extends CommonSandbox implements ISandbox {
     
 }
 
+class ElementProxy {
+    
+    constructor(private sandbox: Sandbox, private target: Element, private core: Core) {}
+    
+    get(target: Element, key: string|number|symbol, receiver: ElementProxy): any {
+        var result: any = Reflect.get(target, key, receiver);
+        return result;
+    }
+    
+}
+
+class NamedNodeMapProxy {
+    
+    constructor(private sandbox: Sandbox, private target: NamedNodeMap, private core: Core) {}
+    
+    get(target: NamedNodeMap, key: string|number|symbol, receiver: NamedNodeMapProxy): Attr {
+        var attr: Attr = Reflect.get(target, key, receiver);
+        var handler: AttributeProxy = new AttributeProxy(this.sandbox, attr, this.core);
+        var result: Attr = new Proxy(attr, handler);
+        
+        return result;
+    }
+    
+}
+
+class AttributeProxy implements ProxyHandler<Attr> {
+    
+    constructor(private sandbox: Sandbox, private target: Attr, private core: Core) {}
+    
+    get(target: Attr, key: string|number|symbol, receiver: AttributeProxy): any {
+        var result: any = Reflect.get(target, key, receiver);
+        return result;
+    }
+    
+    set(target: Attr, key: string|number|symbol, value: any, receiver: AttributeProxy): any {
+        var current = target[key];
+        var result: any = Reflect.set(target, key, value, receiver);
+        var changed = (current !== result);
+        if ({ value: true, nodeValue: true }[ key ] && changed) this.trigger('changed', { oldValue: current });
+        
+        return result;
+    }
+    
+    deleteProperty(target: Attr, key: string|number|symbol): any {
+        var current = target[key];
+        var result: any = Reflect.deleteProperty(target, key);
+        var changed = (current !== result);
+        if ({ value: true, nodeValue: true }[ key ] && changed) this.trigger('deleted', { oldValue: current });
+        
+        return result;
+    }
+    
+    trigger(trigger: string, data: { oldValue: any, newValue?: any }) {
+        var { target } = this;
+        var { name, value, ownerElement } = target;
+        var operation = { 'changed': 'change', 'deleted': 'delete' }[ trigger ];
+        var type = { 'changed': 'attribute:changed', 'deleted': 'attribute:deleted' }[ trigger ];
+        var spec = `${name}:${trigger}`;
+        var detail = { ...data, target, ownerElement, name, value, old: data.oldValue, operation };
+        var t = new CustomEvent(type, { detail });  // example: ('attribute:changed', detail: {...})
+        var m = new CustomEvent(spec, { detail });  // example: ('active:changed', detail: { ..., name: 'active', value: 'true', oldValue: 'false', ..., })
+        
+        ownerElement.dispatchEvent(t);  // dispatch generic
+        ownerElement.dispatchEvent(m);  // dispatch specific
+        
+        return this;
+    }
+    
+}
+
 class ElementSandboxState extends Sandbox implements ISandbox {
     private delegations: EventManager = new EventManager(this, this.core);
     private mutations: MutationManager = new MutationManager(this, this.core);
     public content: TemplateSubject = new TemplateSubject(this);
-    public get channels() { return this.director.channels; }
-    public get node(): Node&Element { return <Element>this.target; }
+    public element: Element = new Proxy( <any>this.target, new ElementProxy(this, <Element>this.target, this.core) );
+    public attributes: NamedNodeMap = (this.target as Element).attributes;
+    public attrs: NamedNodeMap = new Proxy( this.attributes, new NamedNodeMapProxy(this, (this.target as Element).attributes, this.core) );
     
-    constructor(node: Node&Element, core: Core) {
-        super({ type: node.nodeType, target: node, core });
+    constructor(node: Node&Element, data: any, core: Core) {
+        super({ type: node.nodeType, target: node, data, core });
         this.content.attach(this);
         this.mutations.connect();
         // this.subscribe(this.channels['ELEMENT:MUTATION:ATTRIBUTE:OBSERVED'], (m) => console.log('ELEMENT:MUTATION:ATTRIBUTE:OBSERVED', m) );
@@ -238,23 +320,23 @@ class ElementSandboxState extends Sandbox implements ISandbox {
     }
     
     update(state: NamedNodeMap) {  // Chain of Responsibility Pattern
-        var { mutations, delegations, node } = this;
+        var { mutations, delegations, target } = this;
         mutations.disconnect();  // reconnect after to avoid mutation events
-        node.innerHTML = '';  // clear current contents
-        for (let child of state) node.appendChild(child);
+        (target as Element).innerHTML = '';  // clear current contents
+        for (let child of state) (target as Element).appendChild(child);
         mutations.connect();  // reconnect after to avoid mutation events
         delegations.connect();
     }
     
 }
 
-
 class AttributeSandboxState extends Sandbox implements ISandbox {
-    public get channels() { return this.director.channels; }
-    public get node(): Node&Attr { return <Attr>this.target; }
+    public attribute: Attr = new Proxy( <Attr>this.target, new AttributeProxy(this, <Attr>this.target, this.core) );
+    public element: Element = (this.target as Attr).ownerElement;
+    public owner: any = this.data.owner;
     
-    constructor(node: Node&Attr, core: Core) {
-        super({ type: node.nodeType, target: node, core });
+    constructor(node: Node&Attr, data: any, core: Core) {
+        super({ type: 'attribute', target: node, data, core });
         return this;
     }
     
@@ -265,56 +347,36 @@ class TextSandboxState {}
 class CommentSandboxState {}
 
 class PipeSandboxState {}
-class ServiceSandboxState implements ISandbox {
+
+class ServiceSandboxState extends Sandbox implements ISandbox {
     private get config() { return this.core.configuration; }
-    private get director() { return this.config.director; }
-    public get channels() { return this.director.channels; }
+    // private get director() { return this.config.director; }
+    // public get channels() { return this.director.channels; }
     
-    constructor(private utils: Utilities, private core: Core) {
-        return this;
-    }
-    
-    publish(channel: string, data?: any, ...more: any[]): ISandbox {
-        var { director } = this;
-        director.publish(channel, data, ...more);
-        return this;
-    }
-    subscribe(channel: string, handler: Function): ISandbox {
-        var { director } = this;
-        director.subscribe(channel, handler);
-        return this;
-    }
-    unsubscribe(channel: string, handler: Function): ISandbox {
-        var { director } = this;
-        director.unsubscribe(channel, handler);
+    constructor(target: Utilities, data: any, core: Core) {
+        super({ type: 'service', target, data, core });
         return this;
     }
     
 }
+
 class MicroserviceSandboxState {}
 class IoTSandboxState {}
 
-type TPipe = 'pipe';
-type TService = 'service';
-type TMicroService = 'microservice';
-type TIoT = 'iot';
-type TPreceptType = Node['ELEMENT_NODE'] | Node['ATTRIBUTE_NODE'] | Node['TEXT_NODE'] | Node['COMMENT_NODE'] | TPipe | TService | TMicroService | TIoT;
-type TPrecept = (Node&Element) | (Node&Attr) | (Node&Text) | (Node&Comment) | Utilities;
 
-
-function select(details: { type, target: TPrecept, core: Core }): any {
-    var { type, target, core } = details;
+function select(details: { type, target: TPrecept, data: any, core: Core }): any {
+    var { type, target, data, core } = details;
     var Sandbox = {
-        [Node.ELEMENT_NODE]: ElementSandboxState,
-        [Node.ATTRIBUTE_NODE]: AttributeSandboxState,
-        [Node.TEXT_NODE]: TextSandboxState,
-        [Node.COMMENT_NODE]: CommentSandboxState,
+        ['element']: ElementSandboxState,
+        ['attribute']: AttributeSandboxState,
+        ['text']: TextSandboxState,
+        ['comment']: CommentSandboxState,
         ['pipe']: PipeSandboxState,
         ['service']: ServiceSandboxState,
         ['microservice']: MicroserviceSandboxState,
         ['iot']: IoTSandboxState,
     }[ type ] as any;
-    var sandbox = new Sandbox(target, core);
+    var sandbox = new Sandbox(target, data, core);
     
     return sandbox;
 }
@@ -323,7 +385,7 @@ function select(details: { type, target: TPrecept, core: Core }): any {
 class SandboxContext extends Sandbox implements ISandbox {
     public content: TemplateSubject;  // stub
     
-    constructor(details: { type, target: TPrecept, core: Core }) {
+    constructor(details: { type, target: TPrecept, data: any, core: Core }) {
         super(details);
         var sandbox = select(details);
         return sandbox;

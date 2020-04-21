@@ -50,7 +50,7 @@ class TemplateSubject extends Subject {
     
 }
 
-class MutationManager {
+class MutationManager {  // https://developer.mozilla.org/pt-BR/docs/Web/API/MutationObserver
     protected observer: MutationObserver = new MutationObserver( (r, o) => this.observe(r, o) );
     protected get node(): Node { return <Element>this.sandbox.target; }
     protected get data(): any { return this.sandbox.data; }
@@ -63,27 +63,57 @@ class MutationManager {
         for(let mutation of changes) this[mutation.type](mutation);
     }
     
+    private trigger(type: string, mutation: MutationRecord) {
+        var { target, addedNodes, removedNodes } = mutation;
+        var nodes = { 'children:added': addedNodes, 'children:removed': removedNodes }[ type ];
+        var detail = { mutation, nodes };
+        var e = new CustomEvent(type, { detail });
+        
+        target.dispatchEvent(e);
+        for (let i = 0, len = nodes.length; i < len; i++) trigger(target, type, mutation, nodes[i]);
+        
+        function trigger(target: Node, type: string, mutation: MutationRecord, node: Node) {
+            var detail = { mutation, node, target };
+            var tChild = { 'children:added': 'node:added', 'children:removed': 'node:removed' }[ type ];
+            var tParent = { 'children:added': 'child:added', 'children:removed': 'child:removed' }[ type ];
+            var c = new CustomEvent(tChild, { detail });
+            var p = new CustomEvent(tParent, { detail });
+            
+            node.dispatchEvent(c);
+            target.dispatchEvent(p);
+        }
+        
+        return this;
+    }
+    
     private ['childList'](mutation: MutationRecord) {
         var { sandbox, node } = this;
-        console.log('MutationManager - childList', mutation);
+        var detail = { mutation }
+          , e = new CustomEvent('mutation:children', { detail })
+          ;
+        this.trigger('children:added', mutation);
+        this.trigger('children:removed', mutation);
+        // console.log('MutationManager - childList', mutation);
     }
     private ['attributes'](mutation: MutationRecord) {
+        console.log('mutation:attributes', mutation);
         var { sandbox, node, selector, instance } = this;
-        var { attributeName: name, target: element } = mutation;
-        var attr = (element as Element).getAttributeNode(name);
-        var isIO = ( (element as Element).matches(selector) && node.isSameNode(element) )  // source of change occurred on host-element
-          ;
-        var detail = mutation
+        var { attributeName: name, target: element }: any&{ target: HTMLElement } = mutation;
+        var attr = element.getAttributeNode(name);
+        var detail = { mutation, node: attr, operation: 'update' }
           , a = new CustomEvent('mutation', { detail })
           , e = new CustomEvent('mutation:attribute', { detail })
-          , io = new CustomEvent('mutation:io', { detail })
-          , i = new CustomEvent('mutation:input', { detail })
-          , o = new CustomEvent('mutation:output', { detail })
           ;
+        if ( !element.hasAttribute(name) ) detail.operation = 'delete';
+        if ( { 'null': true, 'undefined': true, '': true }[ mutation.oldValue ] ) detail.operation = 'create';
         
-        if (isIO) element.dispatchEvent(io);  // check instance to see if scope is already updated? if not, dispatch mutation:input event?
-        attr.dispatchEvent(a);
         element.dispatchEvent(e);
+        if ( { 'delete': true }[ detail.operation ]) element.dispatchEvent( new CustomEvent('node:removed', { detail }) );
+        if (!{ 'delete': true }[ detail.operation ]) attr.dispatchEvent(a);
+    }
+    private ['characterData'](mutation: MutationRecord) {
+        var { sandbox, node } = this;
+        console.log('MutationManager - characterData', mutation);
     }
     private ['subtree'](mutation: MutationRecord) {
         var { sandbox, node } = this;
@@ -92,7 +122,16 @@ class MutationManager {
     
     connect(config?: any) {
         var { observer, node } = this;
-        var config = { attributes: true, childList: true, subtree: true, ...config };
+        var config = {
+            attributes: true,
+            childList: true,
+            characterData: true,
+            subtree: true,
+            attributeOldValue: true,
+            characterDataOldValue: true,
+            // attributeFilter: true,
+            ...config
+        };
         
         observer.observe(node, config);
         
@@ -239,7 +278,78 @@ class Sandbox extends CommonSandbox implements ISandbox {
         return this;
     }
     
+    bootstrap(root: Node) {
+        var { core } = this, { configuration } = core, { bootstrap } = configuration;
+        var result = bootstrap.parseNode(root);
+        return result;
+    }
+    
 }
+
+class NodeSandbox extends Sandbox {
+    
+    constructor(details: { type, target: Element|Attr|Text|Comment, data: any, core: Core }) {
+        super(details);
+        var { target } = details, node = target;
+        
+        if ({ [Node.ATTRIBUTE_NODE]: true }[ node.nodeType ]) node = (node as Attr).ownerElement;
+    }
+    
+    protected handleNodeRemoved(e: CustomEvent) {
+        console.warn('TODO (SUPER): core.stop(e.target).destroy(e.target)', e);
+    }
+    
+}
+class ElementNodeSandbox extends NodeSandbox {
+    
+    constructor(details: { type, target: Element|Attr|Text|Comment, data: any, core: Core }) {
+        super(details);
+        var { target } = details;
+        target.addEventListener('node:removed', this.handleNodeRemoved, false);
+        target.addEventListener('children:removed', this.handleChildrenRemoved, false);
+        target.addEventListener('child:removed', this.handleChildRemoved, false);
+    }
+    
+    protected handleNodeRemoved = (e: CustomEvent) => {
+        console.warn('TODO (ELEMENT): handle target+instance destroy', e);
+        super.handleNodeRemoved(e);
+    }
+    
+    protected handleChildrenRemoved = (e: CustomEvent) => {}
+    
+    protected handleChildRemoved = (e: CustomEvent) => {}
+    
+}
+class AttrNodeSandbox extends NodeSandbox {
+    
+    constructor(details: { type, target: Attr, data: any, core: Core }) {
+        super(details);
+        var { target } = details;
+        target.ownerElement.addEventListener('node:removed', this.handleNodeRemoved, false);
+    }
+    
+    protected handleNodeRemoved = (e: CustomEvent) => {
+        console.warn('TODO (ATTRIBUTE): handle target+instance destroy', e);
+        super.handleNodeRemoved(e);
+    }
+    
+}
+class TextNodeSandbox extends NodeSandbox {
+    
+    constructor(details: { type, target: Text, data: any, core: Core }) {
+        super(details);
+    }
+    
+}
+class CommentNodeSandbox extends NodeSandbox {
+    
+    constructor(details: { type, target: Comment, data: any, core: Core }) {
+        super(details);
+    }
+    
+}
+
+
 
 class ElementProxy {
     
@@ -311,13 +421,15 @@ class AttributeProxy implements ProxyHandler<Attr> {
     
 }
 
-class ElementSandboxState extends Sandbox implements ISandbox {
-    private delegations: EventManager = new EventManager(this, this.core);
-    private mutations: MutationManager = new MutationManager(this, this.core);
+class ElementSandboxState extends ElementNodeSandbox implements ISandbox {
+    protected delegations: EventManager = new EventManager(this, this.core);
+    protected mutations: MutationManager = new MutationManager(this, this.core);
     public content: TemplateSubject = new TemplateSubject(this, this.core);
     public element: Element = new Proxy( <any>this.target, new ElementProxy(this, <Element>this.target, this.core) );
     public attributes: NamedNodeMap = (this.target as Element).attributes;
     public attrs: NamedNodeMap = new Proxy( this.attributes, new NamedNodeMapProxy(this, (this.target as Element).attributes, this.core) );
+    public $classes: DOMTokenList = (this.target as Element).classList;
+    public $dataset: DOMStringMap = (this.target as HTMLElement).dataset;
     
     constructor(node: Node&Element, data: any, core: Core) {
         super({ type: node.nodeType, target: node, data, core });
@@ -340,7 +452,7 @@ class ElementSandboxState extends Sandbox implements ISandbox {
     
 }
 
-class AttributeSandboxState extends Sandbox implements ISandbox {
+class AttributeSandboxState extends AttrNodeSandbox implements ISandbox {
     public attribute: Attr = new Proxy( <Attr>this.target, new AttributeProxy(this, <Attr>this.target, this.core) );
     public element: Element = (this.target as Attr).ownerElement;
     public owner: any = this.data.owner;
@@ -353,8 +465,20 @@ class AttributeSandboxState extends Sandbox implements ISandbox {
 }
 
 
-class TextSandboxState {}
-class CommentSandboxState {}
+class TextSandboxState extends TextNodeSandbox {
+    
+    constructor(target: Text, data: any, core: Core) {
+        super({ type: 'text', target, data, core });
+    }
+    
+}
+class CommentSandboxState extends CommentNodeSandbox {
+    
+    constructor(target: Comment, data: any, core: Core) {
+        super({ type: 'comment', target, data, core });
+    }
+    
+}
 
 class PipeSandboxState {}
 
@@ -393,6 +517,7 @@ function select(details: { type, target: TPrecept, data: any, core: Core }): any
 
 
 class SandboxContext extends Sandbox implements ISandbox {
+    public element: Element;  // stub
     public content: TemplateSubject;  // stub
     
     constructor(details: { type, target: TPrecept, data: any, core: Core }) {

@@ -24,6 +24,16 @@ class ModalRequest extends SingletonComponentRequest {
 @Element({ selector: 'v-modal' })
 class ModalComponent {
     active = 'YO!';
+    items = [
+        { id: 0 },
+        { id: 1 },
+        { id: 2 },
+    ];
+    key = 'type';
+    getType(item) {
+        console.log('@ VALUE!', this);
+        return `checkbox-${item.id}`;
+    }
     
     constructor(private $: Sandbox) {
         console.log(`@Element({ selector: 'v-modal' })`, $);
@@ -37,7 +47,7 @@ class ModalComponent {
     }
     
     handleClique(e: Event, x, y) {
-        console.log('MODAL', x, y);
+        console.log('MODAL', e.type, x, y);
         return false;
     }
     

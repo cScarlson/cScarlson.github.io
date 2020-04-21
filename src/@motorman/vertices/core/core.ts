@@ -62,7 +62,7 @@ class Core {
     private utils: Utilities = new Utilities();
     // private engine: ElementEngine = new ElementEngine(DefaultComponentSandbox, director);
     public $instances: Map<any, any> = new Map();
-    public $nodes: Map<Node, any> = new Map();
+    public $targets: Map<Node, any> = new Map();
     public modules: any = { };
     public configuration: any = DEFAULT_CONFIG;
     

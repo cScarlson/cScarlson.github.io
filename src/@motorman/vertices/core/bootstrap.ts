@@ -11,6 +11,7 @@ type IReferenceInstance = IMetadata & {
     instance: any,
     sandbox: Sandbox,
     owner?: any,
+    parent?: any,
     occupants?: Node[],
     occupee?: Node,
     $occupants?: Map<string, Node>,
@@ -84,10 +85,10 @@ class Bootstrap {
         return node;  // result can still equal node
     }
         
-    private processMetadata(node: Node&Element, metadata: IMetadata, selector: string, $elements: Map<string, IMetadata>) {
+    private decorateElement(node: Node&Element, metadata: IMetadata, selector: string, $elements: Map<string, IMetadata>) {
         if ( !node.matches(selector) ) return;
         var { core } = this;
-        var { $instances, $nodes } = core;
+        var { $instances, $targets } = core;
         var { Class, Sandbox } = metadata;
         var { nodeType, childNodes } = node;
         var occupants = Array.prototype.slice.call(childNodes);
@@ -98,20 +99,24 @@ class Bootstrap {
         function addOccupant($occupants: Map<string, Node[]>, occupee: Element, schema: Node&HTMLSlotElement) {
             var { slot: name = '' } = schema, node = schema.cloneNode(true);
             if ( !$occupants.has(name) ) $occupants.set(name, [ ]);
+            // console.log('<?>', name);
             $occupants.get(name).push(node);
             occupee.appendChild(node);
         }
         
         occupants.forEach( c => addOccupant($occupants, occupee, c) );
         // while (node.lastChild) node.firstChild.remove();  // clear from original parent to obviate child.cloneNode and maintain same object in Heap
-        let data: IReferenceInstance = { target: node, instance: null, selector, sandbox: null, occupants, occupee, $occupants, ...metadata };
+        let owner = this.getOwnerInstance(node), parentData: IReferenceInstance = $instances.get(owner);
+        // console.log('-->', node.tagName, owner);
+        let data: IReferenceInstance = { selector, target: node, instance: null, owner, sandbox: null, occupants, occupee, $occupants, ...metadata };
+        if ( $instances.has(owner) ) data.parent = { occupants: parentData.occupants, $occupants: parentData.$occupants, occupee: parentData.occupee, Class: parentData.Class };
         let sandbox = new Sandbox({ type: 'element', target: node, data, core });  // must be constructed after node is emptied to avoid mutation events.
         let instance = new Class(sandbox);
         data.instance = instance;  // is there a better way to do this using Hoisting?
         data.sandbox = sandbox;  // is there a better way to do this using Hoisting?
         // occupants.forEach( c => addOccupant($occupants, occupee, c) );
         
-        $nodes.set(node, data);
+        $targets.set(node, data);
         $instances.set(instance, data);
     }
     
@@ -122,7 +127,7 @@ class Bootstrap {
         var { attributes } = node;
         var attribute = attributes[0];
         
-        for (let [key, val] of $elements) this.processMetadata(node, val, key, $elements);
+        for (let [key, val] of $elements) this.decorateElement(node, val, key, $elements);
         if (attribute) this.processAttributeNode(attribute, ...node.attributes);
         
         return node;
@@ -133,7 +138,7 @@ class Bootstrap {
         if ( !{ [Node.ATTRIBUTE_NODE]: true }[ node.nodeType ] ) return node;
         if ( !this.modules.attribute ) return node;
         var { core, modules = {} } = this;
-        var { $nodes, $instances } = core;
+        var { $targets, $instances } = core;
         var { attribute: $attributes = new Map() } = modules;
         var { name } = node, metadata = $attributes.get(name);
         var reBinding = /^\[.+\]$/, reReporter = /^{[^{}]*}$/;
@@ -144,13 +149,14 @@ class Bootstrap {
         if (isReporter) metadata = $attributes.get('{*}');
         
         let { Sandbox, Class, selector }: IMetadata = metadata;
-        let owner = this.getOwnerInstance(node.ownerElement);
+        let owner = this.getOwnerInstance(node.ownerElement), parentData: IReferenceInstance = $instances.get(owner);
         let data: IReferenceInstance = { target: node, instance: null, selector, sandbox: null, owner, ...metadata };
+        if ( $instances.has(owner) ) data.parent = { occupants: parentData.occupants, $occupants: parentData.$occupants, occupee: parentData.occupee, Class: parentData.Class };
         let sandbox = new Sandbox({ type: 'attribute', target: node, data, core });  // must be constructed after node is emptied to avoid mutation events.
         let instance = new Class(sandbox);
         data.instance = instance;  // is there a better way to do this using Hoisting?
         data.sandbox = sandbox;  // is there a better way to do this using Hoisting?
-        $nodes.set(node, data);
+        $targets.set(node, data);
         $instances.set(instance, data);
         
         if ( !more.length ) return node;
@@ -181,7 +187,7 @@ class Bootstrap {
     
     private initializeInstance(node: Node&(Text|Comment), metadata: IMetadata, key: RegExp, $text: Map<RegExp, IMetadata>) {
         var { core } = this;
-        var { $instances, $nodes } = core;
+        var { $instances, $targets } = core;
         var { nodeType, nodeValue } = node;
         var { Sandbox, Class, selector } = metadata;
         
@@ -195,13 +201,14 @@ class Bootstrap {
         data.instance = instance;  // is there a better way to do this using Hoisting?
         data.sandbox = sandbox;  // is there a better way to do this using Hoisting?
         $instances.set(instance, data);
-        $nodes.set(node, data);
+        $targets.set(node, data);
     }
     
-    private getOwnerInstance(node: Node&Element): any {
-        if ( !this.core.$nodes.has(node) ) return this.getOwnerInstance(node.parentElement);
+    private getOwnerInstance(node: Node): any {
+        if ( !this.core.$targets.has(node) && !node.parentNode ) return null;
+        if ( !this.core.$targets.has(node) ) return this.getOwnerInstance(node.parentNode);
         var { core } = this;
-        var { $nodes } = core, metadata = $nodes.get(node);
+        var { $targets } = core, metadata = $targets.get(node);
         var { instance } = metadata;
         
         return instance;

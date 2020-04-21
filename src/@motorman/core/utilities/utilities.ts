@@ -226,7 +226,7 @@ class Utilities {
         }
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, replace);
     }
-        
+    
     escapeHTML(s) {
         return s.replace(/[&"<>]/g, function (c) {
             return {
@@ -254,11 +254,7 @@ class Utilities {
      */
     interpolate(str) {
         return (o) => str.replace(/{{([^{}]*)}}/g, (a, b) => {
-            var value = this.drill(o, b), val = ''+value;  // default & convert to string
-            
-            if (!value) val = a;  // leave {{key[.x[.y[.z]]]}} syntax in string so that multiple iterations of interpolation may occur
-            else if (value.call) val = ''+value();  // get return value
-            
+            var f = new Function('o', `with (o) return o.${b};`), val = ''+f(o);
             return this.escapeHTML(val);  // assume rational value for string result
         });
     }

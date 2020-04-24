@@ -140,17 +140,25 @@ class Bootstrap {
         var { core, modules = {} } = this;
         var { $targets, $instances } = core;
         var { attribute: $attributes = new Map() } = modules;
-        var { name } = node, metadata = $attributes.get(name);
-        var reBinding = /^\[.+\]$/, reReporter = /^{[^{}]*}$/;
-        var isBinding = reBinding.test(name), isReporter = reReporter.test(name);
+        var { name, value } = node, metadata = $attributes.get(name);
+        var reBinding = /^\[.+\]$/
+          , reReporter = /^{[^{}]*}$/
+          , isBinding = reBinding.test(name)
+          , isReporter = reReporter.test(name)
+          , hasBinding = $attributes.get('[*]')
+          , hasReporter = $attributes.get('{*}')
+          , bindable = (isBinding && hasBinding)
+          , reportable = (isReporter && hasReporter)
+          ;
         
-        if ( !this.modules.attribute.has(node.name) && !(isBinding || isReporter) ) return this.processAttributeNode(...more);
-        if (isBinding) metadata = $attributes.get('[*]');
-        if (isReporter) metadata = $attributes.get('{*}');
+        if ( !$attributes.has(name) && !bindable && !reportable ) return this.processAttributeNode(...more);
+        if (bindable) metadata = $attributes.get('[*]');
+        if (reportable) metadata = $attributes.get('{*}');
         
+        if (!metadata) console.log('([!])', name, $attributes);
         let { Sandbox, Class, selector }: IMetadata = metadata;
         let owner = this.getOwnerInstance(node.ownerElement), parentData: IReferenceInstance = $instances.get(owner);
-        let data: IReferenceInstance = { target: node, instance: null, selector, sandbox: null, owner, ...metadata };
+        let data: IReferenceInstance = { target: node, instance: null, selector, sandbox: null, value, owner, ...metadata };
         if ( $instances.has(owner) ) data.parent = { occupants: parentData.occupants, $occupants: parentData.$occupants, occupee: parentData.occupee, Class: parentData.Class };
         let sandbox = new Sandbox({ type: 'attribute', target: node, data, core });  // must be constructed after node is emptied to avoid mutation events.
         let instance = new Class(sandbox);
@@ -185,6 +193,17 @@ class Bootstrap {
         return node;
     }
     
+    private getOwnerInstance(node: Element): any {
+        if ( !this.core.$targets.has(node) && !node.parentElement ) return null;
+        if ( !this.core.$targets.has(node) ) return this.getOwnerInstance(node.parentElement);
+        var { core } = this;
+        var { $targets } = core, metadata = $targets.get(node);
+        var { instance } = metadata;
+        
+        if (node && (node as Element).id && (node as Element).id.toString() === '0') console.log('<N>', this.core.$targets.has(node), node.parentNode );
+        return instance;
+    }
+    
     private initializeInstance(node: Node&(Text|Comment), metadata: IMetadata, key: RegExp, $text: Map<RegExp, IMetadata>) {
         var { core } = this;
         var { $instances, $targets } = core;
@@ -202,16 +221,6 @@ class Bootstrap {
         data.sandbox = sandbox;  // is there a better way to do this using Hoisting?
         $instances.set(instance, data);
         $targets.set(node, data);
-    }
-    
-    private getOwnerInstance(node: Node): any {
-        if ( !this.core.$targets.has(node) && !node.parentNode ) return null;
-        if ( !this.core.$targets.has(node) ) return this.getOwnerInstance(node.parentNode);
-        var { core } = this;
-        var { $targets } = core, metadata = $targets.get(node);
-        var { instance } = metadata;
-        
-        return instance;
     }
     
 }

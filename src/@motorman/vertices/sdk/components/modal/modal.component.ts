@@ -34,6 +34,7 @@ class ModalComponent {
         console.log('@ VALUE!', this);
         return `checkbox-${item.id}`;
     }
+    test = 'my test!!!';
     
     constructor(private $: Sandbox) {
         console.log(`@Element({ selector: 'v-modal' })`, $);
@@ -44,6 +45,7 @@ class ModalComponent {
         setTimeout( () => $.publish('OUTPUT', { key: 'data-poop', value: 'turdz' }), (1000 * 5) );
         // setTimeout( () => $.template.set('...loading...'), (1000 * 5) );
         // setTimeout( () => $.template.set(template), (1000 * 8) );
+        setTimeout( () => this.test = 'your test???', (1000 * 5) );
     }
     
     handleClique(e: Event, x, y) {

@@ -52,6 +52,7 @@ class TemplateSubject extends Subject {
 
 class MutationManager {  // https://developer.mozilla.org/pt-BR/docs/Web/API/MutationObserver
     protected observer: MutationObserver = new MutationObserver( (r, o) => this.observe(r, o) );
+    protected bootstrap: any = this.core.configuration.bootstrap;
     protected get node(): Node { return <Element>this.sandbox.target; }
     protected get data(): any { return this.sandbox.data; }
     protected get selector(): string { return this.data.selector; }
@@ -87,12 +88,13 @@ class MutationManager {  // https://developer.mozilla.org/pt-BR/docs/Web/API/Mut
     }
     
     private ['childList'](mutation: MutationRecord) {
-        var { sandbox, node } = this;
+        var { sandbox, node, bootstrap } = this;
         var detail = { mutation }
           , e = new CustomEvent('mutation:children', { detail })
           ;
         this.trigger('children:added', mutation);
         this.trigger('children:removed', mutation);
+        if (mutation.addedNodes.length) bootstrap.parseNode( mutation.addedNodes[0] );
         // console.log('MutationManager - childList', mutation);
     }
     private ['attributes'](mutation: MutationRecord) {

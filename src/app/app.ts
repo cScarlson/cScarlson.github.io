@@ -1,5 +1,6 @@
 
 import { Environment } from '@motorman/models';
+import { Detective } from '@motorman/core/utilities';
 import { V, Bootstrap, Element, Attribute, Text, Comment, Service } from '@motorman/vertices';
 import { ModalComponent } from '@motorman/vertices/sdk/components/modal/modal.component';
 //
@@ -49,6 +50,15 @@ var app = new (class Application {
             
         }
         
+        // NOTE: foreach, [*], & {*} should perhaps be "special" attribute/property directives:
+        // *foreach, *getter, & *setter
+        // OR
+        // [foreach], [getter], & [setter]
+        // OR
+        // {foreach}, {getter}, & {setter}
+        // OR (simply)
+        // foreach, getter, & setter
+        
         @Attribute({ selector: 'foreach' }) class ElementRepeatAttribute {
             ProxySource: any = class ProxySource {
             
@@ -60,7 +70,7 @@ var app = new (class Application {
                     return result;
                 }
                 
-            }
+            };
             
             constructor(private $: Sandbox) {
                 // console.log(`@Attribute({ selector: 'foreach' })`, $);
@@ -75,7 +85,7 @@ var app = new (class Application {
                 var clones: Element[] = array.map( (item, i) => this.clone(container, clone, as, item, i) );
                 
                 element.outerHTML = container.innerHTML;
-                $.bootstrap( clones[0] );
+                // $.bootstrap( clones[0] );
                 
             }
             
@@ -99,31 +109,139 @@ var app = new (class Application {
             
         }
         
+                
+        class BindingProxy {
+                
+            constructor(private attr: Attr, private owner: any, private reflection: string) {
+                console.log('<?>', reflection, this);
+                // attr.value = owner[reflection];
+            }
+            
+            set(target: any, key: string|number|symbol, value: any, receiver: any) {
+                var { attr, owner, reflection } = this;
+                var { name, ownerElement } = attr;
+                var result = Reflect.set(target, key, value, receiver);
+                var reProperty = /^\[(.+)\]$/
+                  , isBinding = reProperty.test(name)
+                  , matches = name.match(reProperty) || [ ]
+                  , [ match, property ] = matches
+                  , operational = (isBinding && key === reflection)
+                  ;
+                if (!operational) return result;
+                
+                ownerElement[property] = value;
+                // ownerElement.setAttribute(property, value);
+                return result;
+            }
+            
+        }
         @Attribute({ selector: '[*]' }) class BindingAttribute {  // TODO: implement for both properties AND attributes ([attr:*])
-            /*
-            private context: Proxy<IOwner>;
-            private mutation: MutationObserver<Attr>;
-            ^ if (mutation.target !== this.target) return;
-            ^ if (mutation.attribute.name !== this.target.name) return;
-            ^ NOTE: MutationObserer is for DOM. Use Proxy<IInstance> instead?
-            */
+            /**
+             private context: Proxy<IOwner>;
+             private mutation: MutationObserver<Attr>;
+             ^ if (mutation.target !== this.target) return;
+             ^ if (mutation.attribute.name !== this.target.name) return;
+             ^ NOTE: MutationObserer is for DOM. Use Proxy<IInstance> instead?
+             */
+            private reflection: string = this.$.data.value;
+            private detective: Detective = new Detective(this.$.data.owner, this);
+            private attr: Attr = this.$.data.target;
+            private owner: Attr = this.$.data.owner;
+            // private proxy: (typeof Proxy);
+            
             constructor(private $: Sandbox) {
-                console.log(`@Attribute({ selector: '[*]' })`, ($.target as Attr).ownerElement);
+                // console.log(`@Attribute({ selector: '[*]' })`, $);
+                var { reflection, detective } = this;
+                detective.subscribe(reflection);
+            }
+            
+            detect(e: CustomEvent) {
+                console.log('[*] detected change', e.type, e.detail);
+                var { type: key, detail } = e;
+                var { oldValue, value } = detail;
+                
+                this.copy(key, value);
+            }
+            
+            copy(key: string, value: any) {
+                var { attr, reflection } = this;
+                var { name, ownerElement } = attr;
+                var reProperty = /^\[(.+)\]$/
+                  , isBinding = reProperty.test(name)
+                  , matches = name.match(reProperty) || [ ]
+                  , [ match, property ] = matches
+                  , operational = (isBinding && key === reflection)
+                  ;
+                
+                if (!operational) return;
+                ownerElement[property] = value;
+                // ownerElement.setAttribute(property, value);
             }
             
         }
         
         @Attribute({ selector: '{*}' }) class ReporterAttribute {  // TODO: implement for both properties AND attributes ({attr:*})
-            /*
-            private mutation: MutationObserver;
-            private context = new Proxy(this.target, {
-                apply(target: Function, args: any[]) {
-                    if (target.name === 'setValue') this.updateOwner(args);
-                }
-            });
-            */
+            /**
+             private mutation: MutationObserver;
+             private context = new Proxy(this.target, {
+                 apply(target: Function, args: any[]) {
+                     if (target.name === 'setValue') this.updateOwner(args);
+                 }
+             });
+             */
+            private reflection: string = this.$.data.value;
+            private attr: Attr = this.$.data.target;
+            private owner: Attr = this.$.data.owner;
+            private detective: Detective = new Detective(this.attr.ownerElement, this);
+            private observer: MutationObserver = new MutationObserver( (r, o) => this.observe(r, o) );
+            
             constructor(private $: Sandbox) {
                 console.log(`@Attribute({ selector: '{*}' })`, $);
+                var { observer, attr, reflection, detective } = this;
+                var { name, ownerElement } = attr;
+                var reProperty = /^\{(.+)\}$/
+                  , isReporting = reProperty.test(name)
+                  , matches = name.match(reProperty) || [ ]
+                  , [ match, property ] = matches
+                  ;
+                var config = {
+                    attributes: true,
+                    attributeOldValue: true,
+                };
+                
+                console.log('? %O', this.attr, name, property, (ownerElement as HTMLInputElement).value );
+                // observer.observe(ownerElement, config);
+                detective.subscribe(property);
+            }
+            
+            private observe(records: MutationRecord[], observer: MutationObserver) {
+                // for(let mutation of records) this[mutation.type](mutation);
+            }
+            private ['attributes'](mutation: MutationRecord) {
+                // console.log('mutation:attributes', mutation);
+            }
+            
+            detect(e: CustomEvent) {
+                console.log('{*} detected change', e.type, e.detail);
+                var { type: key, detail } = e;
+                var { oldValue, value } = detail;
+                
+                this.copy(key, value);
+            }
+            
+            copy(key: string, value: any) {
+                var { attr, owner, reflection } = this;
+                var { name, ownerElement } = attr;
+                var reProperty = /^\{(.+)\}$/
+                  , isReporting = reProperty.test(name)
+                  , matches = name.match(reProperty) || [ ]
+                  , [ match, property ] = matches
+                  , operational = (isReporting && key === reflection)
+                  ;
+                
+                if (!operational) return;
+                owner[property] = value;
+                // ownerElement.setAttribute(property, value);
             }
             
         }
@@ -144,14 +262,14 @@ var app = new (class Application {
             
         }
         
-        V(TestService);
+        // V(TestService);
         V(ModalComponent);
-        V(SlotComponent);
+        // V(SlotComponent);
         V(ElementRepeatAttribute);
-        V(BindingAttribute);
+        // V(BindingAttribute);
         V(ReporterAttribute);
-        V(TextInterpolationDirective);
-        V(CommentDirective);
+        // V(TextInterpolationDirective);
+        // V(CommentDirective);
         alert;(`
             Create a "Coding Assessment" module on section of site. Make it efficient enough to completely replace all BS "Take-Home"
             assessments. In fact, this should completely remove the need for onsite interviews altogether. This is your contribution to

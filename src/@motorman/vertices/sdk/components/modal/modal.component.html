@@ -13,9 +13,9 @@
         Modal is active: {{active}} {{test}}
         <p><span><b>Bolder!</b><b>Boulder!</b></span></p>
     </div>
-    <input id="{{item.id}}" type="literal" [value]="test" {{key}}="{{getType(item)}}" (input)="handleClique($event)" foreach="item of items" />
-    <input id="xxx" type="input" [value]="test" (input)="handleClique($event)" />
-    <input id="xxx" type="input" {value}="test" (input)="handleClique($event)" />
+    <!-- <input id="{{item.id}}" type="literal" [value]="test" {{key}}="{{getType(item)}}" (input)="handleClique($event)" foreach="item of items" />
+    <input id="xxx" type="input" [value]="test" (input)="handleClique($event)" /> -->
+    <input id="xxx" type="input" {value}="test" value="..." (input)="handleClique($event)" />
 </div>
 <!-- My Comment has="attr" -->
 {{testText}}

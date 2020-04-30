@@ -247,18 +247,27 @@ class Utilities {
         
         return this.drill( data[key], keys.join('.') );  // TCO/TCE
     }
-
-
+    
+    
     /**
      * @ Inspiration: Douglas Crockford (String.prototype.supplant)
      */
     interpolate(str) {
         return (o) => str.replace(/{{([^{}]*)}}/g, (a, b) => {
-            var f = new Function('o', `with (o) return o.${b};`), val = ''+f(o);
+            var f = new Function('o', `with (o) if (o.${b} !== undefined) return o.${b}; else return '{{${b}}}';`), val = ''+f(o);
+            return val;  // assume rational value for string result
+        });
+    }
+    /**
+     * @ Inspiration: Douglas Crockford (String.prototype.supplant)
+     */
+    safelyInterpolate(str) {
+        return (o) => str.replace(/{{([^{}]*)}}/g, (a, b) => {
+            var f = new Function('o', `with (o) if (o.${b} !== undefined) return o.${b}; else return '{{${b}}}';`), val = ''+f(o);
             return this.escapeHTML(val);  // assume rational value for string result
         });
     }
-
+    
     /**
      * @ THX: Douglas Crockford (String.prototype.supplant)
      * @ INTERPOLATE

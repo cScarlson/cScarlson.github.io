@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html data-v="document">
+<html v="app document root">
   <head>
     <base href="<%= htmlWebpackPlugin.options.base %>" />
     <meta charset="utf-8" />
@@ -9,18 +9,9 @@
   <body>
     <h1>Cody S. Carlson</h1>
     <p>Coming sooooooooon...</p>
-    <v-custom name="this" data-test="x">... custom element ...</v-custom>
-    <v-other>... other element ...</v-other>
     <v-backdrop options='{ "dismissable": "false" }'></v-backdrop>
-    <v-modal data-test>
-      Just some unwrapped text!
-      <p slot>UNNAMED 1!</p>
-      <p slot>UNNAMED 2!</p>
-      <p slot>UNNAMED 3!</p>
-      <p slot="some-slot">This was injected using slots!</p>
-      <p slot="some-slot">This was injected using slots toooooooo!</p>
-    </v-modal>
+    <v-modal></v-modal>
     <img src="assets/shadow.jpg" alt="avatar" />
-    <div id="changeMyAttr" tabindex="-1"></div>
+    <div id="app"></div>
   </body>
 </html>

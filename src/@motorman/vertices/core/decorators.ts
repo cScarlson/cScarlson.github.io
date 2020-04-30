@@ -116,7 +116,7 @@ class DecoratorUtilities {  // DEP
 }
 
 
-function Element(definition: { selector: string, template?: string }, options: any = {}): any {
+function ElementNode(definition: { selector: string, template?: string }, options: any = {}): any {
     var data = { ...definition, type: 'element', key: 'selector', options, members: {} };
     
     return function get(Class: any): any {
@@ -124,14 +124,14 @@ function Element(definition: { selector: string, template?: string }, options: a
         return { ...data, Class };
     };
 }
-function Attribute(definition: { selector: string }): any {
+function AttributeNode(definition: { selector: string }): any {
     var data = { ...definition, type: 'attribute', key: 'selector' };
     
     return function get(Class: any): any {
         return { ...data, Class };
     };
 }
-function Text(definition: { selector?: RegExp|'#text' }): any {  // selector := Text.nodeValue || Text.charaterData
+function TextNode(definition: { selector?: RegExp|'#text' }): any {  // selector := TextNode.nodeValue || TextNode.charaterData
     /*
     if reInterpolate.test(node.[nodeValue,wholeText,textContent,data]) > node.nodeValue = interpolate(nodeValue)(parent/owner)
     */
@@ -142,7 +142,7 @@ function Text(definition: { selector?: RegExp|'#text' }): any {  // selector := 
         return { ...data, Class };
     };
 }
-function Comment(definition: { selector?: RegExp|'#comment' }): any {  // selector := Comment.data || Comment.charaterData
+function CommentNode(definition: { selector?: RegExp|'#comment' }): any {  // selector := CommentNode.data || CommentNode.charaterData
     /*
     comments may be used to drive performance
     syntax can be used to drive directive(s) / operation(s): <!-- <psst! [next.parent]="v-modal" /> -->, etc
@@ -158,14 +158,14 @@ function Comment(definition: { selector?: RegExp|'#comment' }): any {  // select
 function Directive(definition: { type: '#text'|'#comment', selector: RegExp }): any {
     var { type } = definition;
     var get = {
-        '#text': Text({ ...definition, selector: '#text' }),
-        '#comment': Comment({ ...definition, selector: '#comment' }),
+        '#text': TextNode({ ...definition, selector: '#text' }),
+        '#comment': CommentNode({ ...definition, selector: '#comment' }),
     }[ type ];
     
     return get;
 }
 function Pipe() {}
-function Service(definition: { id?: string }): any {  // selector := Comment.data || Comment.charaterData
+function Service(definition: { id?: string }): any {  // selector := CommentNode.data || CommentNode.charaterData
     var data = { ...definition, type: 'service' };
     
     return function get(Class: any): any {
@@ -235,7 +235,7 @@ var decorators = new (class Decorators extends DecoratorUtilities {
         };
     };
     
-    element(selector: string): any {
+    element(selector: string): any {  // DEP
         var thus = this;
         var isHost = (selector === 'this');
         
@@ -253,7 +253,7 @@ var decorators = new (class Decorators extends DecoratorUtilities {
         };
     };
     
-    attr(selector: string): any {
+    attr(selector: string): any {  // DEP
         var thus = this;
         var re = new RegExp(/^(.*)\[(.+)\]$/);
         var matches = re.exec(selector), [ match, tagName, attr ] = matches;
@@ -273,7 +273,7 @@ var decorators = new (class Decorators extends DecoratorUtilities {
         };
     };
     
-    listener(type: string) {
+    listener(type: string) {  // DEP
         var thus = this;
         var isHost = !type;
         
@@ -292,8 +292,7 @@ var decorators = new (class Decorators extends DecoratorUtilities {
         };
     };
     
-    message(type: string): any {  // TODO
-        var thus = this;
+    message(type: string): any {  // DEP
         
         return function get(target: any, key: string, descriptor: any = {}): any {
             var { constructor } = target;
@@ -309,6 +308,28 @@ var decorators = new (class Decorators extends DecoratorUtilities {
             return descriptor;
         };
     };
+    
+    trigger(action: string) {  // DEP
+        class MethodProxy {
+            constructor(private target: any, private name: string) {}
+            apply(fn: Function, thus: any, args: any[]) {
+                var { target, name } = this;
+                var result = Reflect.apply(fn, thus, args);
+                
+                target[action](name, ...args);
+                
+                return result;
+            }
+        }
+        
+        return function get(target: any, key: string, descriptor: any = {}): any {
+            var { value: fn } = descriptor;
+            var proxy = new Proxy( fn, new MethodProxy(target, key) );
+            var descriptor = { ...descriptor, value: proxy };
+            
+            return descriptor;
+        };
+    }
 
 })();
 
@@ -317,9 +338,11 @@ const {
     observe, observee, observer,
     element, attr,
     listener, message,
+    trigger,
 } = decorators;
 
-export { Element, Attribute, Text, Comment, Directive, Pipe, Service };
+export { ElementNode, AttributeNode, TextNode, CommentNode, Directive, Pipe, Service };
 export { observe, observee, observer };
 export { element, attr };
 export { listener, message };
+export { trigger };

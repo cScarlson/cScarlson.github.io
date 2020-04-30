@@ -1,8 +1,10 @@
 
-import { ISandbox, Sandbox as CommonSandbox } from '@motorman/core';
+import { Sandbox as CommonSandbox } from '@motorman/core';
 import { Core } from '@motorman/vertices/core/core';
 import { Utilities } from '@motorman/core/utilities';
+import { Queue, Stack } from '@motorman/core/utilities/ds';
 import { Subject } from '@motorman/core/utilities/patterns/behavioral/observer';
+import { ISandbox } from './sandbox.interface';
 
 
 type TElement = 'element';
@@ -17,9 +19,9 @@ type TPrecept = (Node&Element) | (Node&Attr) | (Node&Text) | (Node&Comment) | Ut
 
 
 class TemplateSubject extends Subject {
-    private template: string = '';
     private repository: Node&DocumentFragment = new DocumentFragment();
     private digestion: Node&HTMLDivElement = document.createElement('div');
+    public template: string = '';
     public content: NodeList|Node[] = [ ];
     
     constructor(private sandbox: ElementSandboxState, private core: Core) {
@@ -39,12 +41,30 @@ class TemplateSubject extends Subject {
      *      
      */
     set(template: string = '') {
-        var { digestion } = this;
+        var { sandbox, digestion } = this;
+        var { state } = sandbox;
+        var html = sandbox.utils.interpolate(template)(state.data);
+        // var html = template;
         
-        digestion.innerHTML = template;
+        digestion.innerHTML = html;
         this.template = template;
         this.observation = this.content = Array.prototype.slice.call(digestion.childNodes);
         
+        return this;
+    }
+    
+}
+class StateSubject extends Subject {
+    public states: Stack<any> = new Stack([ {'--INITIAL-STATE--':''} ]);
+    public get data(): any { return this.states.peek(); };
+    
+    constructor(private sandbox: ElementSandboxState, private core: Core) {
+        super('data');
+    }
+    
+    set(state: any = {}) {
+        this.states.push(state);
+        this.notify();
         return this;
     }
     
@@ -53,7 +73,7 @@ class TemplateSubject extends Subject {
 class MutationManager {  // https://developer.mozilla.org/pt-BR/docs/Web/API/MutationObserver
     protected observer: MutationObserver = new MutationObserver( (r, o) => this.observe(r, o) );
     protected bootstrap: any = this.core.configuration.bootstrap;
-    protected get node(): Node { return <Element>this.sandbox.target; }
+    protected get node(): Node { return this.sandbox.target; }
     protected get data(): any { return this.sandbox.data; }
     protected get selector(): string { return this.data.selector; }
     protected get instance(): string { return this.data.instance; }
@@ -152,7 +172,7 @@ class EventManager {
     private emit: (e: Event|CustomEvent) => any;
     private $events: Map<string, any> = new Map();
     get events(): string[] { return Array.from( this.$events.keys() ); }
-    get node(): Node { return <Element>this.sandbox.target; }
+    get node(): Node { return this.sandbox.target; }
     get proxy(): EventTarget { return EventTarget.prototype; }
     // get proxy(): EventTarget { return this.node; }
     get data(): any { return this.sandbox.data; }
@@ -255,98 +275,23 @@ class EventManager {
 
 class Sandbox extends CommonSandbox implements ISandbox {
     protected get core() { return this.details.core; }
-    // protected get config() { return this.core.configuration; }
     public get data() { return this.details.data; }
     public get target() { return this.details.target; }
-    public content: Subject;
     
-    constructor(protected details: { type, target: TPrecept, data: any, core: Core }) {
+    constructor(protected details: { type: string, target: any, data: any, core: Core }) {
         super(details.core.configuration.director);
-    }
-    
-    publish(channel: string, data?: any, ...more: any[]) {
-        var { director } = this;
-        director.publish(channel, data, ...more);
-        return this;
-    }
-    subscribe(channel: string, handler: Function) {
-        var { director } = this;
-        director.subscribe(channel, handler);
-        return this;
-    }
-    unsubscribe(channel: string, handler: Function) {
-        var { director } = this;
-        director.unsubscribe(channel, handler);
-        return this;
-    }
-    
-    bootstrap(root: Node) {
-        var { core } = this, { configuration } = core, { bootstrap } = configuration;
-        var result = bootstrap.parseNode(root);
-        return result;
     }
     
 }
 
 class NodeSandbox extends Sandbox {
     
-    constructor(details: { type, target: Element|Attr|Text|Comment, data: any, core: Core }) {
+    constructor(details: { type: string, target: Element|Attr|Text|Comment, data: any, core: Core }) {
         super(details);
-        var { target } = details, node = target;
-        
-        if ({ [Node.ATTRIBUTE_NODE]: true }[ node.nodeType ]) node = (node as Attr).ownerElement;
     }
     
     protected handleNodeRemoved(e: CustomEvent) {
         console.warn('TODO (SUPER): core.stop(e.target).destroy(e.target)', e);
-    }
-    
-}
-class ElementNodeSandbox extends NodeSandbox {
-    
-    constructor(details: { type, target: Element|Attr|Text|Comment, data: any, core: Core }) {
-        super(details);
-        var { target } = details;
-        target.addEventListener('node:removed', this.handleNodeRemoved, false);
-        target.addEventListener('children:removed', this.handleChildrenRemoved, false);
-        target.addEventListener('child:removed', this.handleChildRemoved, false);
-    }
-    
-    protected handleNodeRemoved = (e: CustomEvent) => {
-        console.warn('TODO (ELEMENT): handle target+instance destroy', e);
-        super.handleNodeRemoved(e);
-    }
-    
-    protected handleChildrenRemoved = (e: CustomEvent) => {}
-    
-    protected handleChildRemoved = (e: CustomEvent) => {}
-    
-}
-class AttrNodeSandbox extends NodeSandbox {
-    
-    constructor(details: { type, target: Attr, data: any, core: Core }) {
-        super(details);
-        var { target } = details;
-        target.ownerElement.addEventListener('node:removed', this.handleNodeRemoved, false);
-    }
-    
-    protected handleNodeRemoved = (e: CustomEvent) => {
-        console.warn('TODO (ATTRIBUTE): handle target+instance destroy', e);
-        super.handleNodeRemoved(e);
-    }
-    
-}
-class TextNodeSandbox extends NodeSandbox {
-    
-    constructor(details: { type, target: Text, data: any, core: Core }) {
-        super(details);
-    }
-    
-}
-class CommentNodeSandbox extends NodeSandbox {
-    
-    constructor(details: { type, target: Comment, data: any, core: Core }) {
-        super(details);
     }
     
 }
@@ -423,28 +368,39 @@ class AttributeProxy implements ProxyHandler<Attr> {
     
 }
 
-class ElementSandboxState extends ElementNodeSandbox implements ISandbox {
+class ElementSandboxState extends NodeSandbox implements ISandbox {
     protected delegations: EventManager = new EventManager(this, this.core);
     protected mutations: MutationManager = new MutationManager(this, this.core);
     public content: TemplateSubject = new TemplateSubject(this, this.core);
-    public element: Element = new Proxy( <any>this.target, new ElementProxy(this, <Element>this.target, this.core) );
-    public attributes: NamedNodeMap = (this.target as Element).attributes;
-    public attrs: NamedNodeMap = new Proxy( this.attributes, new NamedNodeMapProxy(this, (this.target as Element).attributes, this.core) );
-    public $classes: DOMTokenList = (this.target as Element).classList;
+    public state: StateSubject = new StateSubject(this, this.core);
+    public node: Element = this.target;
+    public element: Element = new Proxy( this.target, new ElementProxy(this, this.target, this.core) );
+    public attributes: NamedNodeMap = this.target.attributes;
+    public attrs: NamedNodeMap = new Proxy( this.attributes, new NamedNodeMapProxy(this, this.target.attributes, this.core) );
+    public $classes: DOMTokenList = this.target.classList;
     public $dataset: DOMStringMap = (this.target as HTMLElement).dataset;
     
-    constructor(node: Node&Element, data: any, core: Core) {
-        super({ type: node.nodeType, target: node, data, core });
-        this.content.attach(this);
+    constructor(details: { type: 'element', target: Element, data: any, core: Core }) {
+        super(details);
+        var { target, data } = details;
+        
+        this.content.attach({ update: (state) => this.handleTemplateUpdate(state) });  // TODO: detatch is broken. use Command Pattern.
+        this.state.attach({ update: (state) => this.handleStateUpdate(state) });  // TODO: detatch is broken. use Command Pattern.
         this.mutations.connect();
-        // this.subscribe(this.channels['ELEMENT:MUTATION:ATTRIBUTE:OBSERVED'], (m) => console.log('ELEMENT:MUTATION:ATTRIBUTE:OBSERVED', m) );
-        // this.node.addEventListener('OUTPUT', (e) => console.log('OUTPUT', e), false );
-        // this.node.addEventListener('mutation:io', (e) => console.log('IO (io)', e), false);
+        target.addEventListener('node:removed', this.handleNodeRemoved, false);
+        target.addEventListener('children:removed', this.handleChildrenRemoved, false);
+        target.addEventListener('child:removed', this.handleChildRemoved, false);
+        
         return this;
     }
     
-    update(state: NamedNodeMap) {  // Chain of Responsibility Pattern
+    handleStateUpdate(state: any) {
+        this.content.set(this.content.template);  // trigger full template reparse
+    }
+    
+    handleTemplateUpdate(state: NamedNodeMap) {  // Chain of Responsibility Pattern
         var { mutations, delegations, target } = this;
+        
         mutations.disconnect();  // reconnect after to avoid mutation events
         (target as Element).innerHTML = '';  // clear current contents
         for (let child of state) (target as Element).appendChild(child);
@@ -452,32 +408,55 @@ class ElementSandboxState extends ElementNodeSandbox implements ISandbox {
         delegations.connect();
     }
     
+    bootstrap(root: Node) {
+        var { core } = this, { configuration } = core, { bootstrap } = configuration;
+        var result = bootstrap.parseNode(root);
+        return result;
+    }
+    
+    protected handleNodeRemoved = (e: CustomEvent) => {
+        console.warn('TODO (ELEMENT): handle target+instance destroy', e);
+        super.handleNodeRemoved(e);
+    }
+    
+    protected handleChildrenRemoved = (e: CustomEvent) => {}
+    
+    protected handleChildRemoved = (e: CustomEvent) => {}
+    
 }
 
-class AttributeSandboxState extends AttrNodeSandbox implements ISandbox {
-    public attribute: Attr = new Proxy( <Attr>this.target, new AttributeProxy(this, <Attr>this.target, this.core) );
-    public element: Element = (this.target as Attr).ownerElement;
+class AttributeSandboxState extends NodeSandbox implements ISandbox {
+    public node: Attr = this.target;
+    public attribute: Attr = new Proxy( this.target, new AttributeProxy(this, this.target, this.core) );
+    public element: Element = this.target.ownerElement;
     public owner: any = this.data.owner;
     
-    constructor(node: Node&Attr, data: any, core: Core) {
-        super({ type: 'attribute', target: node, data, core });
+    constructor(details: { type: 'attribute', target: Node&Attr, data: any, core: Core }) {
+        super(details);
+        var { target } = details;
+        target.ownerElement.addEventListener('node:removed', this.handleNodeRemoved, false);
         return this;
     }
     
-}
-
-
-class TextSandboxState extends TextNodeSandbox {
-    
-    constructor(target: Text, data: any, core: Core) {
-        super({ type: 'text', target, data, core });
+    protected handleNodeRemoved = (e: CustomEvent) => {
+        console.warn('TODO (ATTRIBUTE): handle target+instance destroy', e);
+        super.handleNodeRemoved(e);
     }
     
 }
-class CommentSandboxState extends CommentNodeSandbox {
+
+
+class TextSandboxState extends NodeSandbox {
     
-    constructor(target: Comment, data: any, core: Core) {
-        super({ type: 'comment', target, data, core });
+    constructor(details: { type: 'text', target: Text, data: any, core: Core }) {
+        super(details);
+    }
+    
+}
+class CommentSandboxState extends NodeSandbox {
+    
+    constructor(details: { type: 'comment', target: Comment, data: any, core: Core }) {
+        super(details);
     }
     
 }
@@ -489,8 +468,8 @@ class ServiceSandboxState extends Sandbox implements ISandbox {
     // private get director() { return this.config.director; }
     // public get channels() { return this.director.channels; }
     
-    constructor(target: Utilities, data: any, core: Core) {
-        super({ type: 'service', target, data, core });
+    constructor(details: { type: 'service', target: Utilities, data: any, core: Core }) {
+        super(details);
         return this;
     }
     
@@ -500,7 +479,7 @@ class MicroserviceSandboxState {}
 class IoTSandboxState {}
 
 
-function select(details: { type, target: TPrecept, data: any, core: Core }): any {
+function select(details: { type, target: any, data: any, core: Core }): any {
     var { type, target, data, core } = details;
     var Sandbox = {
         ['element']: ElementSandboxState,
@@ -512,7 +491,7 @@ function select(details: { type, target: TPrecept, data: any, core: Core }): any
         ['microservice']: MicroserviceSandboxState,
         ['iot']: IoTSandboxState,
     }[ type ] as any;
-    var sandbox = new Sandbox(target, data, core);
+    var sandbox = new Sandbox(details);
     
     return sandbox;
 }
@@ -522,7 +501,7 @@ class SandboxContext extends Sandbox implements ISandbox {
     public element: Element;  // stub
     public content: TemplateSubject;  // stub
     
-    constructor(details: { type, target: TPrecept, data: any, core: Core }) {
+    constructor(details: { type, target: any, data: any, core: Core }) {
         super(details);
         var sandbox = select(details);
         return sandbox;
@@ -534,5 +513,5 @@ class SandboxContext extends Sandbox implements ISandbox {
 export {
     SandboxContext as Sandbox,
     ServiceSandboxState as ServiceSandbox,
-    ElementSandboxState as ComponentSandbox,
+    ElementSandboxState as NodeSandbox,
 };

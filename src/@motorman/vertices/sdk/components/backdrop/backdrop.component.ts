@@ -1,7 +1,7 @@
 
-import { Element } from '@motorman/vertices';
-// import { Element, attr, watch, bind, handle } from '@motorman/vertices';
-// import { Sandbox } from '@motorman/core';
+import { Queue } from '@motorman/core/utilities/ds';
+import { ElementNode } from '@motorman/vertices';
+import { NodeSandbox as Sandbox } from '@motorman/vertices/core';
 
 class SingletonComponentRequest { constructor(options: any = {}) {} }  // MOCK/TEMP
 
@@ -17,34 +17,42 @@ class BackdropRequest extends SingletonComponentRequest {
     
 }
 
-@Element({ selector: 'v-backdrop' })
+@ElementNode({ selector: 'v-backdrop' })
 export class BackdropComponent {
-    // @attr() active: boolean = false;
-    // @attr() options: any = { };
-    // public request: BackdropRequest = new BackdropRequest({});
+    private requests: Queue<BackdropRequest> = new Queue();
+    get request(): BackdropRequest { return this.requests.front(); };
+    get active(): boolean { return !this.requests.isEmpty(); };
     
-    // constructor(private $: Sandbox) {}
+    constructor(private $: Sandbox) {
+        $.in('BACKDROP:REQUESTED').subscribe(this.handleRequest);
+        $.in('BACKDROP:DISMISSED').subscribe(this.handleDismiss);
+        $.state.set(this);
+    }
     
-    // @watch('options') watchOptions(val, old) {
-    //     console.log('>', val, old);
-    // }
+    handleInteraction(e: MouseEvent) {
+        var { $, request } = this;
+        $.publish('BACKDROP:INSPECTED', request);
+    }
     
-    // @bind('click') handleInteraction(e: Event) {
-    //     var { $, request } = this;
-    //     $.publish($.channels['BACKDROP:INSPECTED'], request);
-    // }
+    private handleRequest = (e: CustomEvent) => {
+        var { $, requests } = this;
+        var { type, detail }: { type: string, detail: BackdropRequest } = e;
+        var request = new BackdropRequest(detail);
+        
+        console.log('@ BackdropComponent', type, detail);
+        requests.enqueue(request);
+        $.state.set(this);
+        $.node.setAttribute('active', ''+this.active);
+    };
     
-    // @handle('BACKDROP:REQUESTED') handleRequest(e: CustomEvent) {
-    //     var { type, detail } = e, request = new BackdropRequest(detail);
-    //     console.log('@ BackdropComponent', type, detail);
-    //     this.request = request;
-    //     this.active = true;
-    // }
-    
-    // @handle('BACKDROP:DISMISSED') handleDismissed(e: CustomEvent) {
-    //     var { type, detail } = e;
-    //     console.log('@ BackdropComponent', type, detail);
-    //     this.active = false;
-    // }
+    private handleDismiss = (e: CustomEvent) => {
+        var { $, requests } = this;
+        var { type, detail } = e;
+        
+        console.log('@ BackdropComponent', type, detail);
+        requests.dequeue();
+        $.state.set(this);
+        $.node.setAttribute('active', ''+this.active);
+    };
     
 }

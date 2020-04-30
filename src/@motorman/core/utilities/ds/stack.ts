@@ -4,12 +4,12 @@
  * @intention
  *  * LIFO (Last-In, First-Out)
  */
-class Stack {
-    private data: any[] = [ ];
+class Stack<T> {
+    private data: T[] = [ ];
     get length() { return this.size(); }
     get index() { return (this.length - 1); }
     
-    constructor(data) {
+    constructor(data: T[] = []) {
         this.clear();
         this.data = [ ...data ];
         return this;
@@ -28,39 +28,39 @@ class Stack {
         return object;
     }
     
-    push(value) {
+    push(value: T): Stack<T> {
         this.data.push(value);
         return this;
     }
-    pop() {
+    pop(): T {
         var value = this.data.pop();
         return value;
     }
-    peek() {
+    peek(): T {
         var value = this.data[this.index];
         return value;
     }
-    clear() {
+    clear(): Stack<T> {
         this.data.length = 0;
         return this;
     }
-    size() {
+    size(): number {
         var value = this.data.length;
         return value;
     }
-    isEmpty() {
+    isEmpty(): boolean {
         var is = !this.size();
         return is;
     }
     
-    toJSON() {
+    toJSON(): T[] {
         return this.valueOf();
     }
-    toString() {
+    toString(): string {
         var json = this.serialize( this.valueOf() );
         return json;
     }
-    valueOf() {
+    valueOf(): T[] {
         return this.data.slice(0);
     }
     

@@ -1,22 +1,9 @@
 
-<div #container id="test" class="vertices modal">
-    <div class="id" data-test>
-        ...
-        <slot name="some-slot">PLACEHOLDER</slot>
-        <slot name="some-slot-x">PLACEHOLDER-s-s-x</slot>
-        <slot name="some-slot">PLACEHOLDER</slot>
+<div class="vertices modal">
+    <div id="wrap" class="modal container" (click)="handleClick($event, active, 'other')">
+        Modal is active: {{active}}
+        <div class="outlet" [innerHTML]="content"></div>
         <hr />
-        <span>A <slot>PLACEHOLDER-Y</slot></span>
-        <span>B <slot>PLACEHOLDER-Y</slot></span>
+        <div class="outlet">{{content}}</div>
     </div>
-    <div id="wrap" class="modal container" (click)="handleClique($event, active, 'other')">
-        Modal is active: {{active}} {{test}}
-        <p><span><b>Bolder!</b><b>Boulder!</b></span></p>
-    </div>
-    <!-- <input id="{{item.id}}" type="literal" [value]="test" {{key}}="{{getType(item)}}" (input)="handleClique($event)" foreach="item of items" />
-    <input id="xxx" type="input" [value]="test" (input)="handleClique($event)" /> -->
-    <input id="xxx" type="input" {value}="test" value="..." (input)="handleClique($event)" />
 </div>
-<!-- My Comment has="attr" -->
-{{testText}}
-<div class="another">...</div>

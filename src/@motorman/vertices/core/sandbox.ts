@@ -30,6 +30,13 @@ class TemplateSubject extends Subject {
         repository.appendChild(digestion);
     }
     
+    protected encodePropertyTokens(string: string): string {
+        return string.replace(/\{([^{}]+)\}="(.*)"/img, function replace(whole, $1, $2) {
+            var codes = $1.split(''), codes = codes.map( c => c.charCodeAt(0) ), codes = codes.join('#');
+            return `{${codes}}="${$2}"`;
+        });
+    }
+    
     /**
      * @intention
      *      Sets template and triggers update on all observers. This allows components to set a template from any source:
@@ -43,7 +50,9 @@ class TemplateSubject extends Subject {
     set(template: string = '') {
         var { sandbox, digestion } = this;
         var { state } = sandbox;
-        var html = sandbox.utils.interpolate(template)(state.data);
+        var html = this.encodePropertyTokens(template)
+          , html = sandbox.utils.interpolate(html)(state.data)
+          ;
         // var html = template;
         
         digestion.innerHTML = html;

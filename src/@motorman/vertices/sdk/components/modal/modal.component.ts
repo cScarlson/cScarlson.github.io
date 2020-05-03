@@ -28,6 +28,8 @@ class ModalComponent {
     get request(): ModalRequest { return this.requests.front(); };
     get active(): boolean { return !this.requests.isEmpty(); };
     get content(): string { return this.request && this.request.content || '...'; }
+    type = 'text';
+    value = '... VALUE ...';
     
     constructor(private $: Sandbox) {
         $.in('MODAL:REQUESTED').subscribe(this.handleRequest);
@@ -38,6 +40,8 @@ class ModalComponent {
     
     handleClick(e: Event, x, y) {
         console.log('MODAL', e.type, x, y);
+        // this.type = 'checkbox';
+        this.value = '... CLICK ...';
         return false;
     }
     
@@ -50,6 +54,8 @@ class ModalComponent {
         $.state.set(this);
         $.node.setAttribute('active', ''+this.active);
         $.publish('BACKDROP:REQUESTED', { test: true });
+        // this.type = 'radio';
+        this.value = '... REQUEST ...';
         console.log('@ ModalComponent', this.request);
     };
     

@@ -252,7 +252,7 @@ class Utilities {
     /**
      * @ Inspiration: Douglas Crockford (String.prototype.supplant)
      */
-    interpolate(str) {
+    interpolate(str: string): (o) => string {
         return (o) => str.replace(/{{([^{}]*)}}/g, (a, b) => {
             var f = new Function('o', `with (o) if (o.${b} !== undefined) return o.${b}; else return '{{${b}}}';`), val = ''+f(o);
             return val;  // assume rational value for string result

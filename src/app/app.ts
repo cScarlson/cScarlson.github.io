@@ -6,7 +6,7 @@ import { BackdropComponent } from '@motorman/vertices/sdk/components/backdrop/ba
 import { ModalComponent } from '@motorman/vertices/sdk/components/modal/modal.component';
 //
 import { environment } from '../environments/environment';
-import { Sandbox } from './core';
+import { Sandbox, IElementSandbox, IAttributeSandbox } from './core';
 import { Director, ActionHandlers, StateHandlers, channels } from './core';
 import { CONSTANTS } from './core';
 import { AppComponent } from './app.component';
@@ -156,7 +156,7 @@ var app = new (class Application {
             constructor(private $: Sandbox) {}
         }
         
-        @AttributeNode({ selector: '#*' }) class ReferenceAttribute {
+        @AttributeNode({ selector: '[!]' }) class ReferenceAttribute {
             constructor(private $: Sandbox) {}
         }
         
@@ -179,13 +179,88 @@ var app = new (class Application {
             
         }
         
+        class BinderAttribute {  // # Template Method Pattern
+            // protected name: string = '';
+            protected key: string = '';
+            protected detective: Detective = new Detective(this.$.data.owner, this);
+            
+            constructor(protected $: IAttributeSandbox) {
+                var { node } = $;
+                var { value } = node;
+                
+                this.key = value;
+            }
+            
+            detect(e: CustomEvent) {
+                var { type: datum, detail } = e;
+                var { oldValue, value } = detail;
+                this._detect(datum, value);
+            }
+            
+            _detect(key: string, value: string) {}  // noop
+            
+        }
+        
+        @AttributeNode({ selector: '[*]' }) class AttributeBinder extends BinderAttribute {
+            private attr: string = '';
+            
+            constructor($: IAttributeSandbox) {
+                super($);
+                var { detective } = this;
+                var { node } = $;
+                var { name, value } = node;
+                var matches = name.match(/^\[(.+)\]$/);
+                var [ whole, match ] = matches;
+                // console.log('[*]', name, match);
+                this.attr = match;
+                detective.subscribe(value);
+            }
+            
+            _detect(key: string, value: string) {
+                var { $, attr } = this;
+                var { node } = $;
+                var { ownerElement } = node;
+                console.log('[*]', key, value, attr);
+                ownerElement.setAttribute(attr, value);
+            }
+            
+        }
+        
+        @AttributeNode({ selector: '{*}' }) class PropertyBinder extends BinderAttribute {
+            private property: string = '';
+            
+            constructor($: IAttributeSandbox) {
+                super($);
+                var { detective } = this;
+                var { node } = $;
+                var { name, value } = node;
+                var matches = name.match(/^\{(.+)\}$/);
+                var [ whole, id ] = matches;
+                var codes = <any>id.split('#'), property = String.fromCharCode(...codes);
+                
+                this.property = property;
+                detective.subscribe(value);
+            }
+            
+            _detect(key: string, value: string) {
+                var { $, property } = this;
+                var { node } = $;
+                var { ownerElement } = node;
+                
+                ownerElement[property] = value;
+            }
+            
+        }
+        
         // // V(TestService);
         V(AppComponent);
         V(BackdropComponent);
         V(ModalComponent);
         V(SlotComponent);
         V(ElementRepeatAttribute);
-        V(BindingAttribute);
+        // V(BindingAttribute);
+        V(AttributeBinder);
+        V(PropertyBinder);
         // // V(ReporterAttribute);
         // // V(ReferenceAttribute);
         V(TextInterpolationDirective);

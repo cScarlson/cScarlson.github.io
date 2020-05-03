@@ -2,8 +2,7 @@
 <div class="vertices modal">
     <div id="wrap" class="modal container" (click)="handleClick($event, active, 'other')">
         Modal is active: {{active}}
-        <div class="outlet" [innerHTML]="content"></div>
-        <hr />
-        <div class="outlet">{{content}}</div>
+        <div class="outlet" {innerHTML}="content"></div>
+        <input [type]="type" {value}="value" />
     </div>
 </div>

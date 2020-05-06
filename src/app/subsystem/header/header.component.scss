@@ -1,0 +1,57 @@
+
+@import '../../styles/sandbox';
+@import "~bootstrap/scss/navbar";
+
+app-header {
+    @extend .navbar;
+    // @extend .navbar-dark;
+    // @extend .bg-dark;
+    background-color: tomato;
+    // border: solid 1px black;
+    // position: relative;
+    // display: block;
+    // width: 100%;
+    // height: 100px;
+    
+    .app.header {
+        width: 100%;
+        height: auto;
+                
+        .brand {
+            @extend .navbar-brand;
+            .logo {
+                width: 36px;
+                height: 36px;
+            }
+        }
+        
+        .header.body {
+            @extend .row;
+            
+            .body.item {
+                // direction: rtl;
+            }
+            
+            .body.item.left {
+                @extend .col;
+                @extend .col-4;
+                
+                .logo {
+                    width: 36px;
+                    height: 36px;
+                }
+                
+            }
+            .body.item.center {
+                @extend .col;
+                @extend .col-4;
+            }
+            .body.item.right {
+                @extend .col;
+                @extend .col-4;
+            }
+        }
+        
+    }
+    
+}

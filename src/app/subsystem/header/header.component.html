@@ -1,0 +1,20 @@
+
+<div class="app header" (click)="handleClick($event, 'container')">
+    <a class="brand" href="/#">
+      <!-- <img class="d-inline-block align-top" src="assets/shadow.jpg" width="30" height="30" alt=""> -->
+      <img class="logo" src="assets/shadow.jpg" alt="logo" (click)="handleClick($event, 'img')" (load)="handleLogoLoad($event)" (error)="handleLogoError($event)" />
+      {{title}}
+    </a>
+    
+    <!-- <div class="header body">
+        <div class="body item left">
+            <img class="logo" src="assets/shadow.jpg" alt="logo" />
+            <span class="page title">Cody S. Carlson</span>
+        </div>
+        <div class="body item center">center</div>
+        <div class="body item right">
+            <span class="icon menu">#</span>
+        </div>
+    </div> -->
+    
+</div>

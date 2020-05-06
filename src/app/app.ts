@@ -10,6 +10,7 @@ import { Sandbox, IElementSandbox, IAttributeSandbox } from './core';
 import { Director, ActionHandlers, StateHandlers, channels } from './core';
 import { CONSTANTS } from './core';
 import { AppComponent } from './app.component';
+import { HeaderComponent } from './subsystem/header/header.component';
 
 
 var app = new (class Application {
@@ -180,14 +181,11 @@ var app = new (class Application {
         }
         
         class BinderAttribute {  // # Template Method Pattern
-            // protected name: string = '';
             protected key: string = '';
             protected detective: Detective = new Detective(this.$.data.owner, this);
             
             constructor(protected $: IAttributeSandbox) {
-                var { node } = $;
-                var { value } = node;
-                
+                var { node } = $, { value } = node;
                 this.key = value;
             }
             
@@ -211,7 +209,7 @@ var app = new (class Application {
                 var { name, value } = node;
                 var matches = name.match(/^\[(.+)\]$/);
                 var [ whole, match ] = matches;
-                // console.log('[*]', name, match);
+                
                 this.attr = match;
                 detective.subscribe(value);
             }
@@ -220,7 +218,7 @@ var app = new (class Application {
                 var { $, attr } = this;
                 var { node } = $;
                 var { ownerElement } = node;
-                console.log('[*]', key, value, attr);
+                
                 ownerElement.setAttribute(attr, value);
             }
             
@@ -254,6 +252,8 @@ var app = new (class Application {
         
         // // V(TestService);
         V(AppComponent);
+        V(HeaderComponent);
+        //
         V(BackdropComponent);
         V(ModalComponent);
         V(SlotComponent);

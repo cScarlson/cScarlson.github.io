@@ -1,0 +1,6 @@
+
+@import './styles/sandbox';
+
+.content {
+    @extend .container;
+}

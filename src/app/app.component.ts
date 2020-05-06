@@ -11,10 +11,10 @@ export class AppComponent {
     
     constructor(private $: Sandbox) {
         // console.log('App', $);
-        setTimeout( () => this.testName = 'b', (1000 * 2) );
+        // setTimeout( () => this.testName = 'b', (1000 * 2) );
         // setTimeout( () => this.testType = 'radio', (1000 * 2) );
         // setTimeout( () => this.testValue = '... test! ...', (1000 * 2) );
-        setTimeout( () => $.publish('MODAL:REQUESTED', { data: true, content: '<h1>TESTING...123</h1>' }), (1000 * 4) );
+        // setTimeout( () => $.publish('MODAL:REQUESTED', { data: true, content: '<h1>TESTING...123</h1>' }), (1000 * 0) );
         // setTimeout( () => $.publish('MODAL:DISMISSED', { data: true }), (1000 * 9) );
         // setTimeout( () => $.publish('MODAL:REQUESTED', { data: true, content: '<h1>TESTING......123</h1>' }), (1000 * 12) );
     }

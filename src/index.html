@@ -1,18 +1,27 @@
 
-<!DOCTYPE html>
-<html v="app document root">
+<!doctype html>
+<html lang="en" v="app document root">
   <head>
-    <base href="<%= htmlWebpackPlugin.options.base %>" />
+    <!-- Required meta tags -->
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <base href="<%= htmlWebpackPlugin.options.base %>" />
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>
-    <h1>Cody S. Carlson</h1>
-    <p>Coming sooooooooon...</p>
-    <v-backdrop options='{ "dismissable": "false" }'></v-backdrop>
-    <v-modal active="true"></v-modal>
-    <img src="assets/shadow.jpg" alt="avatar" />
-    <!-- <div id="app" [innerHTML]="missing"></div> -->
-    <!-- <input [attr:type]="testType" [attr:name]="testName" [innerHTML]="value:testValue" {105#110#110#101#114#72#84#77#76}="" value="..." /> -->
+    <app-header></app-header>
+    <div class="content">
+      <h1>Cody S. Carlson</h1>
+      <p>Coming sooooooooon...</p>
+      <v-backdrop options='{ "dismissable": "false" }'></v-backdrop>
+      <v-modal active="false"></v-modal>
+      <img src="assets/shadow.jpg" alt="avatar" />
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
   </body>
 </html>

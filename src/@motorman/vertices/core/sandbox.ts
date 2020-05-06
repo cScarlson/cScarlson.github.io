@@ -23,6 +23,7 @@ class TemplateSubject extends Subject {
     private digestion: Node&HTMLDivElement = document.createElement('div');
     public template: string = '';
     public content: NodeList|Node[] = [ ];
+    public events: string[] = [ ];
     
     constructor(private sandbox: ElementSandboxState, private core: Core) {
         super('content');
@@ -30,11 +31,19 @@ class TemplateSubject extends Subject {
         repository.appendChild(digestion);
     }
     
-    protected encodePropertyTokens(string: string): string {
-        return string.replace(/\{([^{}]+)\}="(.*)"/img, function replace(whole, $1, $2) {
+    protected encodePropertyTokens(template: string): string {
+        return template.replace(/\{([^{}]+)\}="(.*)"/img, function replace(whole, $1, $2) {
             var codes = $1.split(''), codes = codes.map( c => c.charCodeAt(0) ), codes = codes.join('#');
             return `{${codes}}="${$2}"`;
         });
+    }
+    
+    protected collectEventTypes(template: string): string {
+        var re = /\(([^()]+)\)=/img;
+        var matches = (template.match(re) || []).map( match => match.replace(re, '$1') );
+        this.events.length = 0;
+        this.events.push(...matches);
+        return template;
     }
     
     /**
@@ -50,10 +59,10 @@ class TemplateSubject extends Subject {
     set(template: string = '') {
         var { sandbox, digestion } = this;
         var { state } = sandbox;
-        var html = this.encodePropertyTokens(template)
+        var html = this.collectEventTypes(template)
+          , html = this.encodePropertyTokens(template)
           , html = sandbox.utils.interpolate(html)(state.data)
           ;
-        // var html = template;
         
         digestion.innerHTML = html;
         this.template = template;
@@ -181,6 +190,7 @@ class EventManager {
     private emit: (e: Event|CustomEvent) => any;
     private $events: Map<string, any> = new Map();
     get events(): string[] { return Array.from( this.$events.keys() ); }
+    set events(value: string[]) { this.$events.clear(); value.forEach( type => this.$events.set(type, type) ); }
     get node(): Node { return this.sandbox.target; }
     get proxy(): EventTarget { return EventTarget.prototype; }
     // get proxy(): EventTarget { return this.node; }
@@ -188,15 +198,6 @@ class EventManager {
     get instance(): any { return this.data.instance; }
     
     constructor(private sandbox: ElementSandboxState, private core: Core) {}
-    
-    private proxyEventTargetSource(source: EventTarget): boolean {
-        var { node } = this;
-        
-        this.getEventTypes(<Element>node);
-        this.events.forEach( (type) => node.addEventListener(type, this.handleAll, true) );
-        
-        return !!this.events.length;
-    }
     
     /**
      * @param : source := EventTarget
@@ -219,28 +220,11 @@ class EventManager {
         return (source.dispatchEvent === proxy);  // indicate if its set after we try to
     }
     
-    private getEventTypes(node: Node&Element): Node {
-        if ( !{ [1]: true }[ node.nodeType ] ) return node;
-        var { attributes, tagName } = node, re = /^\((.*)\)$/;
-        
-        for (let i = 0, len = attributes.length; i < len; i++) this.checkAttrNode(attributes[i], i, attributes);
-        if (node.firstElementChild) this.getEventTypes(node.firstElementChild);
-        if (node.nextElementSibling) this.getEventTypes(node.nextElementSibling);
-        
-        return node;
-    }
-    
-    private checkAttrNode(attribute: Attr, i: number, attributes: NamedNodeMap) {
-        var { name, value } = attribute, re = /^\((.*)\)$/;
-        var match = re.test(name), matches = name.match(re), full, type;
-        if (matches && matches.length) [ full, type ] = matches;
-        if (matches && matches.length) this.$events.set(type, true);
-    }
-    
-    connect() {
+    connect(events: string[]) {
         var { node, proxy } = this;
-        var successful = this.proxyEventTargetSource(proxy);
         
+        this.events = events;
+        this.events.forEach( (type) => node.addEventListener(type, this.handleAll, true) );  // enforce `useCapture` to handle other events such as <img>.error (disallows bubble).
         node.addEventListener('*', this.handleAny, true);  // `useCapture`
         
         return this;
@@ -255,18 +239,26 @@ class EventManager {
         return this;
     }
     
-    public handleAll = (e: Event|CustomEvent) => {
-        var { type, target } = e, any = new CustomEvent('*', { detail: e });  // use original event as detail
-        return target.dispatchEvent(any);
+    private handleAll = (e: Event|CustomEvent) => {
+        var { node } = this;
+        var { type, target }: any&{ target: Element } = e
+          , { parentElement: parent }: any&{ parentElement: Element } = target
+          ;
+        var any = new CustomEvent('*', { detail: e }), recursive = new Event(type, { bubbles: true });
+        
+        target.dispatchEvent(any);
+        if ( !parent.isSameNode(node) ) parent.dispatchEvent(recursive);  // retrigger event on parent to ensure Event Delegation. otherwise, parents with same handler will not be reached. use parent.isSameNode to prevent (type)="..." from host being invoked
+        
+        return true;  // always allow bubbling
     };
     
-    public handleAny = (any: CustomEvent) => {
-        if ( !any.detail.target.attributes[`(${any.detail.type})`] ) return;
+    public handleAny = (any: CustomEvent<{ type: string, target: Element, e: Event }>) => {
+        if ( !any.detail.target.attributes[`(${any.detail.type})`] ) return true;
         var { instance } = this;
         var { detail: e } = any
-          , { type, target } = <Event>e
+          , { type, target }: any&{ target: Element } = e
           , property = `(${type})`
-          , attr = (target as Element).attributes[property]
+          , attr = target.attributes[property]
           , { name, value }: Attr = attr
           ;
         var re = /^(\w+)\((.*)\)$/
@@ -408,13 +400,13 @@ class ElementSandboxState extends NodeSandbox implements ISandbox {
     }
     
     handleTemplateUpdate(state: NamedNodeMap) {  // Chain of Responsibility Pattern
-        var { mutations, delegations, target } = this;
+        var { content, mutations, delegations, target } = this;
         
+        delegations.connect(content.events);  // listen for all events before children begin to load
         mutations.disconnect();  // reconnect after to avoid mutation events
         (target as Element).innerHTML = '';  // clear current contents
         for (let child of state) (target as Element).appendChild(child);
         mutations.connect();  // reconnect after to avoid mutation events
-        delegations.connect();
     }
     
     bootstrap(root: Node) {

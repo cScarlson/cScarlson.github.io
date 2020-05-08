@@ -8,6 +8,7 @@ v-backdrop {
     background-color: #fff;
     opacity: 0.8;
     display: none;
+    z-index: 999;
     
     &[active="true"] {
         display: block;

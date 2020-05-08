@@ -2,6 +2,7 @@
 import { Environment } from '@motorman/models';
 import { Detective } from '@motorman/core/utilities';
 import { V, Bootstrap, ElementNode, AttributeNode, TextNode, CommentNode, Service } from '@motorman/vertices';
+import { RouterComponent } from '@motorman/vertices/sdk/components/router/router.component';
 import { BackdropComponent } from '@motorman/vertices/sdk/components/backdrop/backdrop.component';
 import { ModalComponent } from '@motorman/vertices/sdk/components/modal/modal.component';
 //
@@ -11,11 +12,15 @@ import { Director, ActionHandlers, StateHandlers, channels } from './core';
 import { CONSTANTS } from './core';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './subsystem/header/header.component';
+import { HudComponent } from './subsystem/hud/hud.component';
+import { WelcomeComponent } from './subsystem/welcome/welcome.component';
+//
+import { routes } from './routes';
 
 
 var app = new (class Application {
     
-    constructor(env: Environment) {
+    constructor(env: Environment, routes: any) {
         
         class Dependencies {};  // mock
         var director = new Director({ channels, Dependencies, ActionHandlers, StateHandlers });
@@ -253,7 +258,10 @@ var app = new (class Application {
         // // V(TestService);
         V(AppComponent);
         V(HeaderComponent);
+        V(HudComponent);
+        V(WelcomeComponent);
         //
+        V(RouterComponent);
         V(BackdropComponent);
         V(ModalComponent);
         V(SlotComponent);
@@ -275,6 +283,6 @@ var app = new (class Application {
         
     }
     
-})(environment);
+})(environment, routes);
 
 export { app };

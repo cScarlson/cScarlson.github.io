@@ -15,6 +15,7 @@ v-modal {
     display: none;
     justify-content: center;
     overflow: hidden;
+    z-index: 999;
     
     &[active="true"] {
         display: flex;

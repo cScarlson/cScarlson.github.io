@@ -1,6 +1,42 @@
 
 @import './styles/sandbox';
 
-.content {
+$canvasOffset: 85px;
+
+.main {
     @extend .container;
+}
+
+.content {
+    transform: translateX(0);
+    transition: transform 1s 0s ease-in-out;
+}
+
+.navigation {
+    position: fixed;
+    top: 0;
+    left: 100%;
+    width: 100%;
+    height: 100%;
+    background: gray;
+    // transform: translateX(100%);
+    // transition: transform 1s 0s ease-in-out;
+    transition: left 1s 0s ease-in-out;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+body.inactive {
+    
+    .content {
+        transform: translateX( calc(-100% + #{$canvasOffset}) );
+    }
+
+    .navigation {
+        left: $canvasOffset;
+        // transform: translateX($canvasOffset);
+    }
+    
 }

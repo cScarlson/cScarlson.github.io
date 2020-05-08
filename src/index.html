@@ -10,14 +10,169 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>
-    <app-header></app-header>
+    <v-backdrop options='{ "dismissable": "false" }'></v-backdrop>
+    <v-modal></v-modal>
+    <app-hud></app-hud>
     <div class="content">
-      <h1>Cody S. Carlson</h1>
-      <p>Coming sooooooooon...</p>
-      <v-backdrop options='{ "dismissable": "false" }'></v-backdrop>
-      <v-modal active="false"></v-modal>
-      <img src="assets/shadow.jpg" alt="avatar" />
+      <app-header></app-header>
+      <div class="main">
+        <v-router name="app">... LOADING ...</v-router>
+        <app-welcome></app-welcome>
+      </div>
+      <div class="temp">
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+      </div>
     </div>
+    <nav class="navigation">
+      <h2>Menu</h2>
+      <ul>
+        <li>
+          <a href="/#/">#/</a>
+        </li>
+        <li>
+          <a href="/#/route/test/0">#/route/test/:id 0</a>
+        </li>
+        <li>
+          <a href="/#/route/test/1">#/route/test/:id 1</a>
+        </li>
+        <li>
+          <a href="/#/route/test/2">#/route/test/:id 2</a>
+        </li>
+        <li>
+          <a href="/#/route/test/">#/route/test/:id (undefined)</a>
+        </li>
+        <li>
+          <a href="/#/route/test/3/edit">#/route/test/3/edit (missing)</a>
+        </li>
+      </ul>
+    </nav>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

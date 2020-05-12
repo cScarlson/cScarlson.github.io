@@ -18,11 +18,11 @@
         "v": [ "./src/@motorman/vertices" ],
         "v.sdk.router": [ "./src/@motorman/vertices/sdk/components/router/router.component.ts", "./src/@motorman/vertices/sdk/components/router/router.component.scss" ],
         "v.sdk.backdrop": [ "./src/@motorman/vertices/sdk/components/backdrop/backdrop.component.ts", "./src/@motorman/vertices/sdk/components/backdrop/backdrop.component.scss" ],
+        "v.sdk.hud": [ "./src/@motorman/vertices/sdk/components/hud/hud.component.ts", "./src/@motorman/vertices/sdk/components/hud/hud.component.scss" ],
         "v.sdk.modal": [ "./src/@motorman/vertices/sdk/components/modal/modal.component.ts", "./src/@motorman/vertices/sdk/components/modal/modal.component.scss" ],
         "main": [ "./src/main.ts", "./src/main.scss" ],
         "app.component": [ "./src/app/app.component.ts", "./src/app/app.component.scss" ],
         "app.header": [ "./src/app/subsystem/header/header.component.ts", "./src/app/subsystem/header/header.component.scss" ],
-        "app.hud": [ "./src/app/subsystem/hud/hud.component.ts", "./src/app/subsystem/hud/hud.component.scss" ],
         "app.welcome": [ "./src/app/subsystem/welcome/welcome.component.ts", "./src/app/subsystem/welcome/welcome.component.scss" ]
     },
     "proxy": {

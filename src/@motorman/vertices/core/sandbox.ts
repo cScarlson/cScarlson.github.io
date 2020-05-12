@@ -1,6 +1,6 @@
 
 import { Sandbox as CommonSandbox } from '@motorman/core';
-import { Core } from '@motorman/vertices/core/core';
+import { Core, } from '@motorman/vertices/core/core';
 import { Utilities } from '@motorman/core/utilities';
 import { Queue, Stack } from '@motorman/core/utilities/ds';
 import { Subject } from '@motorman/core/utilities/patterns/behavioral/observer';
@@ -132,11 +132,9 @@ class MutationManager {  // https://developer.mozilla.org/pt-BR/docs/Web/API/Mut
           ;
         this.trigger('children:added', mutation);
         this.trigger('children:removed', mutation);
-        if (mutation.addedNodes.length) bootstrap.parseNode( mutation.addedNodes[0] );
-        // console.log('MutationManager - childList', mutation);
+        // if (mutation.addedNodes.length) bootstrap.parseNode( mutation.addedNodes[0] );  // ISSUE: triggers recursive bootstrap.parseNode() up parentElement chain
     }
     private ['attributes'](mutation: MutationRecord) {
-        console.log('mutation:attributes', mutation);
         var { sandbox, node, selector, instance } = this;
         var { attributeName: name, target: element }: any&{ target: HTMLElement } = mutation;
         var attr = element.getAttributeNode(name);
@@ -153,11 +151,11 @@ class MutationManager {  // https://developer.mozilla.org/pt-BR/docs/Web/API/Mut
     }
     private ['characterData'](mutation: MutationRecord) {
         var { sandbox, node } = this;
-        console.log('MutationManager - characterData', mutation);
+        // console.log('MutationManager - characterData', mutation);
     }
     private ['subtree'](mutation: MutationRecord) {
         var { sandbox, node } = this;
-        console.log('MutationManager - subtree', mutation);
+        // console.log('MutationManager - subtree', mutation);
     }
     
     connect(config?: any) {
@@ -276,11 +274,18 @@ class EventManager {
 
 class Sandbox extends CommonSandbox implements ISandbox {
     protected get core() { return this.details.core; }
-    public get data() { return this.details.data; }
-    public get target() { return this.details.target; }
+    public data: any = this.details.data;
+    public target: any = this.details.target;
+    public bootstrap: any = this.core.configuration.bootstrap;
     
-    constructor(protected details: { type: string, target: any, data: any, core: Core }) {
+    constructor(protected details: { type: string, target: any, data: any, core: Core }) {  // TODO: make first argument always target
         super(details.core.configuration.director);
+    }
+    
+    init(data: any = {}): Sandbox {
+        // ~this.data~ this.config (change key name)
+        // this.data = data;
+        return this;
     }
     
 }
@@ -395,6 +400,12 @@ class ElementSandboxState extends NodeSandbox implements ISandbox {
         return this;
     }
     
+    v(root: Node): Node {
+        var { bootstrap } = this;
+        var result = bootstrap.parseNode(root);
+        return result;
+    }
+    
     handleStateUpdate(state: any) {
         this.content.set(this.content.template);  // trigger full template reparse
     }
@@ -407,12 +418,6 @@ class ElementSandboxState extends NodeSandbox implements ISandbox {
         (target as Element).innerHTML = '';  // clear current contents
         for (let child of state) (target as Element).appendChild(child);
         mutations.connect();  // reconnect after to avoid mutation events
-    }
-    
-    bootstrap(root: Node) {
-        var { core } = this, { configuration } = core, { bootstrap } = configuration;
-        var result = bootstrap.parseNode(root);
-        return result;
     }
     
     protected handleNodeRemoved = (e: CustomEvent) => {

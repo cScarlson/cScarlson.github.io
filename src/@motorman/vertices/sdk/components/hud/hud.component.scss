@@ -1,11 +1,13 @@
 
-@import '../../styles/sandbox';
+// @import '../../styles/sandbox';
+@import '../../../core/styles/sandbox.scss';
 
 app-hud {
     height: 0;
     display: block;
     overflow: hidden;
     transition: min-height 1s 0s ease-in-out, height 1s 0s ease-in-out;
+    z-index: 999;
     
     .app.hud {
         @extend .alert;

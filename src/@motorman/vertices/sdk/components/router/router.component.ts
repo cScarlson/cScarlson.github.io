@@ -11,27 +11,35 @@ import template from './router.component.html';
 class RouterComponent implements IObserver {
     private static INSTANCE: any = null;
     private route: RouteComposite = null;
+    public attr = this.$.target.attributes['name'];  // name attribute (name="[name]")
+    public name = this.attr.value;  // router name
     public get url(): string { return this.route ? this.route.id : ''; }
-    public get router(): Router { return Router.$instances.get( this.$.target.attributes['name'].value ); };
+    public get router(): Router { return Router.$instances.get(this.name); };
     
     constructor(private $: Sandbox) {
-        var { router } = this;
-        console.log('ROUTER', this.route);
+        var { router, name } = this;
         
+        if (!RouterComponent.INSTANCE) RouterComponent.INSTANCE = this;  // set | return before instance operations
+        else return RouterComponent.INSTANCE;
         router.attach(this, true);
-        // $.state.set(this);
-        // $.content.set(template);
-        // $.in('MODAL:REQUESTED').subscribe(this.handleRequest);
-        // $.in('MODAL:DISMISSED').subscribe(this.handleDismiss);
-        // this.router.subscribe('http://localhost:8080/#/route/test/0', (e) => console.log('>', e) );
+        router.publish('router:outlet:ready', { name });
         
-        if (!RouterComponent.INSTANCE) RouterComponent.INSTANCE = this;
         return RouterComponent.INSTANCE;
     }
     
     update(state: RouteComposite) {
+        var { name, route } = this;
+        var old = { ...route }, copy = { ...state };  // protect source-data in Heap
+        var payload = { name, old, route: copy };
+        
         this.route = state;
-        console.log('NEW ROUTE LOADED...', this.url, state);
+        this.$.target.innerHTML = state.content;
+        this.$.v(this.$.target.firstChild);
+        // $.state.set(this);  // only use if template uses {innerHTML}="route.content" or {{route.content}}
+        // this.$.content.set(state.content);  // ISSUE: does not produce innerHTML!
+        this.router.publish('router:outlet:content:change');
+        this.router.publish('router:outlet:updated', payload);
+        
         return this;
     }
     

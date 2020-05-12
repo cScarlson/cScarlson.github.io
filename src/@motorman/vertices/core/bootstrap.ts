@@ -22,6 +22,7 @@ class Bootstrap {
     public dEnvironment: Deferred<any> = new Deferred();  // resolver must set this.core before invoking resolve()
     public pEnvironment: Promise<any> = this.dEnvironment.promise;
     get modules() { if (this.core) return this.core.modules; else return null; }
+    protected $processed: Map<Node, any> = new Map();
     protected pipeNodeHandler = (handler: Function) => (e: CustomEvent) => handler.call(this, e.detail, e);
     protected nodeProcessors: ChainOfResponsibility = new ChainOfResponsibility({}, [
         { respond: this.pipeNodeHandler(this.processElementNode) },
@@ -35,6 +36,7 @@ class Bootstrap {
         pEnvironment
             // .then( (env) => this.bootstrapDirector(env) )
             .then( (env) => this.bootstrapServices(env) )
+            .then( (env) => this.bootstrapRouters(env) )  // TODO!
             .then( (env) => this.parseNode(env) )
             ;
         return this;
@@ -61,20 +63,41 @@ class Bootstrap {
     }
     bootstrapService(metadata: IMetadata, key: string, $services: Map<string, IMetadata>) {
         var { core } = this;
-        var { $instances } = core;
         var { Sandbox, Class, selector } = metadata;
-        var data: IReferenceInstance = { target: utils, instance: null, selector, sandbox: null, ...metadata };
-        var sandbox = new Sandbox({ type: 'service', target: utils, data, core });
-        var instance = new Class(sandbox);
+        let data: IReferenceInstance = { target: utils, instance: null, selector, sandbox: null, ...metadata };
+        let sandbox = new Sandbox({ type: 'service', target: utils, data, core });
+        let instance = new Class(sandbox);
+        data.instance = instance;  // is there a better way to do this using Hoisting?
+        data.sandbox = sandbox;  // is there a better way to do this using Hoisting?
+    }
+    
+    bootstrapRouters(env: Document) {
+        var { core } = this;
+        var { modules, configuration } = core;
+        var { routers, RouterSandbox } = configuration;  // ?
+        var { router: $routers = new Map() } = modules;  // ?
+        
+        for (let [key, val] of $routers) this.bootstrapRouter(val, key, $routers);
+        
+        return env;
+    }
+    bootstrapRouter(metadata: IMetadata, key: string, $services: Map<string, IMetadata>) {
+        var { core } = this;
+        var { Sandbox, Class, selector } = metadata;
+        let data: IReferenceInstance = { target: utils, instance: null, selector, sandbox: null, ...metadata };
+        let sandbox = new Sandbox({ type: 'router', target: utils, data, core });
+        let instance = new Class(sandbox);
         data.instance = instance;  // is there a better way to do this using Hoisting?
         data.sandbox = sandbox;  // is there a better way to do this using Hoisting?
     }
     
     parseNode(node: Node): Node {
+        if (!node) return node;
+        if ( this.$processed.has(node) ) return node;
         var { nodeProcessors: cor } = this;
         var e = new CustomEvent('domnodeprocess', { detail: <any>node })
             , e = cor.respond(e)
-            , { detail: result } = e
+            , { detail: result = {} } = e
             ;
         var { isConnected, parentNode: parent, previousSibling: previous, nextSibling: next, firstChild: child } = result;
         
@@ -82,6 +105,8 @@ class Bootstrap {
         // if (result !== node) return this.parseNode(result);  // reparse. assume replacement occurred. do not continue for next or child.
         if (child) this.parseNode(child);  // TCO???
         if (next) this.parseNode(next);  // TCO???
+        this.$processed.set(node, node);  // allow full processing of children before setting as processed. !ALERT! watch for memory leaks!
+        
         return node;  // result can still equal node
     }
         

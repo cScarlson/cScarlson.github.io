@@ -4,6 +4,7 @@ import { Detective } from '@motorman/core/utilities';
 import { V, Bootstrap, ElementNode, AttributeNode, TextNode, CommentNode, Service } from '@motorman/vertices';
 import { RouterComponent } from '@motorman/vertices/sdk/components/router/router.component';
 import { BackdropComponent } from '@motorman/vertices/sdk/components/backdrop/backdrop.component';
+import { HUDComponent } from '@motorman/vertices/sdk/components/hud/hud.component';
 import { ModalComponent } from '@motorman/vertices/sdk/components/modal/modal.component';
 //
 import { environment } from '../environments/environment';
@@ -12,15 +13,15 @@ import { Director, ActionHandlers, StateHandlers, channels } from './core';
 import { CONSTANTS } from './core';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './subsystem/header/header.component';
-import { HudComponent } from './subsystem/hud/hud.component';
+// import { HudComponent } from './subsystem/hud/hud.component';
 import { WelcomeComponent } from './subsystem/welcome/welcome.component';
 //
-import { routes } from './routes';
+import { router } from './routing';
 
 
 var app = new (class Application {
     
-    constructor(env: Environment, routes: any) {
+    constructor(env: Environment, router: any) {
         
         class Dependencies {};  // mock
         var director = new Director({ channels, Dependencies, ActionHandlers, StateHandlers });
@@ -258,7 +259,7 @@ var app = new (class Application {
         // // V(TestService);
         V(AppComponent);
         V(HeaderComponent);
-        V(HudComponent);
+        V(HUDComponent);
         V(WelcomeComponent);
         //
         V(RouterComponent);
@@ -283,6 +284,6 @@ var app = new (class Application {
         
     }
     
-})(environment, routes);
+})(environment, router);
 
 export { app };

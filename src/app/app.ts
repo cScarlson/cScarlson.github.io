@@ -1,19 +1,18 @@
 
+// vertices
 import { Environment } from '@motorman/models';
 import { Detective } from '@motorman/core/utilities';
 import { V, Bootstrap, ElementNode, AttributeNode, TextNode, CommentNode, Service } from '@motorman/vertices';
 import { RouterComponent } from '@motorman/vertices/sdk/components/router/router.component';
 import { BackdropComponent } from '@motorman/vertices/sdk/components/backdrop/backdrop.component';
 import { HUDComponent } from '@motorman/vertices/sdk/components/hud/hud.component';
-import { ModalComponent } from '@motorman/vertices/sdk/components/modal/modal.component';
-//
+// app
 import { environment } from '../environments/environment';
 import { Sandbox, IElementSandbox, IAttributeSandbox } from './core';
 import { Director, ActionHandlers, StateHandlers, channels } from './core';
 import { CONSTANTS } from './core';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './subsystem/header/header.component';
-// import { HudComponent } from './subsystem/hud/hud.component';
 import { WelcomeComponent } from './subsystem/welcome/welcome.component';
 //
 import { router } from './routing';
@@ -108,65 +107,6 @@ var app = new (class Application {
             
         }
         
-        @AttributeNode({ selector: '[*]' }) class BindingAttribute {
-            private reflection: string = this.$.data.value;
-            private detective: Detective = new Detective(this.$.data.owner, this);
-            private attr: Attr = this.$.data.target;
-            private reProperty: RegExp = /^\[(.+)\]$/;
-            private reAttribute: RegExp = /^\[attr:(.+)\]$/;
-            private isPropertyBinding: boolean = this.reProperty.test(this.attr.name);
-            private isAttributeBinding: boolean = this.reAttribute.test(this.attr.name);
-            private isBinding: boolean = (this.isPropertyBinding || this.isAttributeBinding);
-            private property: string = '';
-            
-            constructor(private $: Sandbox) {
-                var { reProperty, reAttribute, isPropertyBinding, isAttributeBinding } = this;
-                var { attr, reflection, detective } = this;
-                var { name } = attr;
-                var matches = [ ], [ match, property ] = matches;
-                if (isPropertyBinding) matches = name.match(reProperty);
-                if (isAttributeBinding) matches = name.match(reAttribute);
-                [ match, property ] = matches;
-                
-                this.property = property;
-                detective.subscribe(reflection);
-            }
-            
-            detect(e: CustomEvent) {
-                var { type: key, detail } = e;
-                var { oldValue, value } = detail;
-                this.copy(key, value);
-            }
-            
-            copy(key: string, value: any) {
-                var { isBinding, isPropertyBinding, isAttributeBinding } = this;
-                var { attr, reflection, property } = this;
-                var { ownerElement } = attr;
-                var operational = (isBinding && key === reflection);
-                
-                if (!operational) return;
-                if (isPropertyBinding) ownerElement[property] = value;
-                if (isAttributeBinding) ownerElement.setAttribute(property, value);
-            }
-            
-        }
-        
-        @AttributeNode({ selector: '{*}' }) class ReporterAttribute {  // TODO: implement for both properties AND attributes ({attr:*})
-            /**
-             private mutation: MutationObserver;
-             private context = new Proxy(this.target, {
-                 apply(target: Function, args: any[]) {
-                     if (target.name === 'setValue') this.updateOwner(args);
-                 }
-             });
-             */
-            constructor(private $: Sandbox) {}
-        }
-        
-        @AttributeNode({ selector: '[!]' }) class ReferenceAttribute {
-            constructor(private $: Sandbox) {}
-        }
-        
         @TextNode({ selector: /\{\{.+\}\}/ }) class TextInterpolationDirective {
             private data: string = (this.$.target as Text).data;
             private owner: string = this.$.data.owner;
@@ -256,6 +196,57 @@ var app = new (class Application {
             
         }
         
+        @AttributeNode({ selector: '$' }) class ReferenceAttribute {  // TODO: this should be deprecated. use in bootstrap and add to scope that is interpolated
+            
+            constructor(private $: IAttributeSandbox) {
+                var { name, value, ownerElement } = $.target;
+                $.data.owner[value] = ownerElement;
+            }
+            
+        }
+        
+        @AttributeNode({ selector: 'autofocus' }) class AutofocusAttribute {  // TODO: this should be deprecated. use in bootstrap and add to scope that is interpolated
+            
+            constructor(private $: IAttributeSandbox) {
+                if ({ 'false': true }[ $.target.value ]) return this;
+                var { name, value, ownerElement } = <any>$.target;
+                var element = <HTMLElement>ownerElement, delay = <any>value || 0;
+                setTimeout( () => element.focus(), delay );
+            }
+            
+        }
+        
+        class ActionOnAttribute {
+            protected context: HTMLElement = <HTMLElement>this.$.target.ownerElement;
+            
+            constructor(protected $: IAttributeSandbox, protected action: string = '') {
+                var { name, value, ownerElement } = $.target;
+                $.subscribe(value, this.handleAction);
+            }
+            
+            execute(...params: any[]) {}
+            
+            public handleAction = (e: CustomEvent<{ params: any[] }>) => {
+                var { type, detail } = e;
+                var { params = [] } = detail;
+                this.execute(...params);
+            };
+            
+        }
+        
+        @AttributeNode({ selector: 'focuson' }) class FocusOnAttribute extends ActionOnAttribute {
+            
+            constructor($: IAttributeSandbox) {
+                super($, 'focus');
+            }
+            
+            execute(...params: any[]) {
+                var { context, action } = this;
+                context[action](...params);
+            }
+            
+        }
+        
         // // V(TestService);
         V(AppComponent);
         V(HeaderComponent);
@@ -264,14 +255,13 @@ var app = new (class Application {
         //
         V(RouterComponent);
         V(BackdropComponent);
-        V(ModalComponent);
         V(SlotComponent);
         V(ElementRepeatAttribute);
-        // V(BindingAttribute);
         V(AttributeBinder);
         V(PropertyBinder);
-        // // V(ReporterAttribute);
-        // // V(ReferenceAttribute);
+        V(ReferenceAttribute);
+        V(AutofocusAttribute);
+        V(FocusOnAttribute);
         V(TextInterpolationDirective);
         // // V(CommentDirective);
         alert;(`

@@ -35,7 +35,7 @@ class RouterComponent implements IObserver {
         this.route = state;
         this.$.target.innerHTML = state.content;
         this.$.v(this.$.target.firstChild);
-        // $.state.set(this);  // only use if template uses {innerHTML}="route.content" or {{route.content}}
+        // this.$.state.set(this);  // only use if template uses {innerHTML}="route.content" or {{route.content}}
         // this.$.content.set(state.content);  // ISSUE: does not produce innerHTML!
         this.router.publish('router:outlet:content:change');
         this.router.publish('router:outlet:updated', payload);

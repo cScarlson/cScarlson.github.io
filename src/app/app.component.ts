@@ -4,7 +4,6 @@ import { ElementNode } from '@motorman/vertices';
 import { IElementSandbox as Sandbox } from './core';
 import { router } from './routing';
 
-// console.log('-->', router);
 @ElementNode({ selector: '[v*="app"][v*="root"]' })
 export class AppComponent {
     private body: Element = document.body;
@@ -15,13 +14,15 @@ export class AppComponent {
     
     constructor(private $: Sandbox) {
         // console.log('App', $);
-        // setTimeout( () => this.testName = 'b', (1000 * 2) );
-        // setTimeout( () => this.testType = 'radio', (1000 * 2) );
-        // setTimeout( () => this.testValue = '... test! ...', (1000 * 2) );
-        setTimeout( () => $.publish('HUD:REQUESTED', { data: true, type: 'alert', content: '<h1>TESTING...123</h1>' }), (1000 * 2) );
-        // setTimeout( () => $.publish('MODAL:DISMISSED', { data: true }), (1000 * 9) );
-        // setTimeout( () => $.publish('MODAL:REQUESTED', { data: true, content: '<h1>TESTING......123</h1>' }), (1000 * 12) );
-        // console.log('>>>', $.target.innerHTML);
+        
+        // 'vattention'|'vmodal'|'vnote'|'valert'|'vconfirm'|'vprompt';
+        
+        setTimeout( () => $.publish('HUD:REQUESTED', { backdrop: false, type: 'vattention', content: '<h1>TESTING...123</h1>' }), (1000 * 2) );
+        setTimeout( () => $.publish('HUD:REQUESTED', { backdrop: true, type: 'vmodal', content: '<h1>TESTING...123</h1>' }), (1000 * 3) );
+        setTimeout( () => $.publish('HUD:REQUESTED', { backdrop: false, type: 'vnote', content: '<h1>TESTING...123</h1>' }), (1000 * 4) );
+        // setTimeout( () => $.publish('HUD:REQUESTED', { backdrop: true, type: 'valert', content: '<h1>TESTING...123</h1>' }), (1000 * 0) );
+        // setTimeout( () => $.publish('HUD:REQUESTED', { backdrop: true, type: 'vconfirm', content: '<h1>TESTING...123</h1>' }), (1000 * 0) );
+        // setTimeout( () => $.publish('HUD:REQUESTED', { backdrop: true, type: 'vprompt', content: '<h1>TESTING...123</h1>' }), (1000 * 0) );
         // $.content.set($.target.innerHTML);
         
         $.subscribe('MENU:REQUESTED', this.handleMenuRequest);

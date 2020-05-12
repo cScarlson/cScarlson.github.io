@@ -8,7 +8,7 @@ interface IElementSandbox extends NodeSandbox {
 }
 interface IAttributeSandbox extends CommonSandbox {
     node: Attr;
-    target: Element;
+    target: Attr;
 }
 
 class Sandbox extends CommonSandbox {}

@@ -9,7 +9,7 @@ $canvasOffset: 85px;
 
 .content {
     transform: translateX(0);
-    transition: transform 1s 0s ease-in-out;
+    transition: transform 500ms 0ms ease-in-out;
 }
 
 .navigation {
@@ -19,9 +19,7 @@ $canvasOffset: 85px;
     width: 100%;
     height: 100%;
     background: gray;
-    // transform: translateX(100%);
-    // transition: transform 1s 0s ease-in-out;
-    transition: left 1s 0s ease-in-out;
+    transition: left 500ms 0ms ease-in-out;
 }
 
 body {

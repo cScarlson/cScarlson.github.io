@@ -1,4 +1,11 @@
 
-<div class="app hud">
-  ...
+<div class="app hud" tabindex="0" autofocus="0">
+  
+  <button $="focum" class="close" type="button" (click)="handleClose($event)" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  
+  <div class="hud body" {innerHTML}="content"></div>
+  
+  <div tabindex="0" (blur)="handleRecycle($event, focum)"></div>
 </div>

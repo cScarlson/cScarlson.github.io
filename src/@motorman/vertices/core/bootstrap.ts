@@ -36,7 +36,7 @@ class Bootstrap {
         pEnvironment
             // .then( (env) => this.bootstrapDirector(env) )
             .then( (env) => this.bootstrapServices(env) )
-            .then( (env) => this.bootstrapRouters(env) )  // TODO!
+            // .then( (env) => this.bootstrapRouters(env) )  // TODO!
             .then( (env) => this.parseNode(env) )
             ;
         return this;
@@ -168,10 +168,11 @@ class Bootstrap {
         var { name, value } = node, metadata = $attributes.get(name);
         var reBinding = /^\[.+\]$/
           , reReporter = /^{[^{}]*}$/
+          , reReference = /^#$/
           , isBinding = reBinding.test(name)
           , isReporter = reReporter.test(name)
-          , hasBinding = $attributes.get('[*]')
-          , hasReporter = $attributes.get('{*}')
+          , hasBinding = $attributes.has('[*]')
+          , hasReporter = $attributes.has('{*}')
           , bindable = (isBinding && hasBinding)
           , reportable = (isReporter && hasReporter)
           ;
@@ -180,7 +181,6 @@ class Bootstrap {
         if (bindable) metadata = $attributes.get('[*]');
         if (reportable) metadata = $attributes.get('{*}');
         
-        if (!metadata) console.log('([!])', name, $attributes);
         let { Sandbox, Class, selector }: IMetadata = metadata;
         let owner = this.getOwnerInstance(node.ownerElement), parentData: IReferenceInstance = $instances.get(owner);
         let data: IReferenceInstance = { target: node, instance: null, selector, sandbox: null, value, owner, ...metadata };

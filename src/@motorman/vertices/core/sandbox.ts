@@ -132,7 +132,7 @@ class MutationManager {  // https://developer.mozilla.org/pt-BR/docs/Web/API/Mut
           ;
         this.trigger('children:added', mutation);
         this.trigger('children:removed', mutation);
-        // if (mutation.addedNodes.length) bootstrap.parseNode( mutation.addedNodes[0] );  // ISSUE: triggers recursive bootstrap.parseNode() up parentElement chain
+        if (mutation.addedNodes.length) bootstrap.parseNode( mutation.addedNodes[0] );  // ISSUE: sometimes triggers recursive bootstrap.parseNode() up parentElement chain
     }
     private ['attributes'](mutation: MutationRecord) {
         var { sandbox, node, selector, instance } = this;

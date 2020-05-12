@@ -11,55 +11,55 @@ import { landing, $404 } from './pages';
  *  *   *   Router.set should call router.init(director);
  */
 var router = new Router('app', [
-    // {
-    //     url: '',
-    //     name: 'app',
-    //     content: landing,
-    // },
-    // { url: '*', name: '404', content: $404 },
+    {
+        url: '',
+        name: 'app',
+        content: landing,
+    },
+    { url: '*', name: '404', content: $404 },
     
     // { url: '', name: 'root' },
     // { url: '/route/test/:id', name: 'route-test-id' },
     
-    {
-        url: '',
-        name: 'root',
-        content: '',
-        children: [
-            // { url: '/route/test/:id', name: 'test-id' },
-            {
-                url: '/route',
-                name: 'just-test',
-                content: '',
-                children: [
-                    // { url: '/test/:id', name: 'test-id' },
-                    {
-                        url: '/test',
-                        name: 'just-test',content: '',
-                        children: [
-                            {
-                                url: '/0',
-                                name: 'ZERO',
-                                content: '',
-                                children: [
-                                    { url: '*', name: 'post-id', content: '', },
-                                ],
-                            },
-                            {
-                                url: '/:id',
-                                name: 'just-id',
-                                content: '',
-                                children: [
-                                    { url: '*', name: 'post-id', content: '', },
-                                ],
-                            },
-                            { url: '*', name: 'no-id', content: '', },  // <-- wildcards on parameter-namespaces are useless?
-                        ],
-                    },
-                ],
-            },
-        ],
-    },
+    // {
+    //     url: '',
+    //     name: 'root',
+    //     content: '',
+    //     children: [
+    //         // { url: '/route/test/:id', name: 'test-id' },
+    //         {
+    //             url: '/route',
+    //             name: 'just-test',
+    //             content: '',
+    //             children: [
+    //                 // { url: '/test/:id', name: 'test-id' },
+    //                 {
+    //                     url: '/test',
+    //                     name: 'just-test',content: '',
+    //                     children: [
+    //                         {
+    //                             url: '/0',
+    //                             name: 'ZERO',
+    //                             content: '',
+    //                             children: [
+    //                                 { url: '*', name: 'post-id', content: '', },
+    //                             ],
+    //                         },
+    //                         {
+    //                             url: '/:id',
+    //                             name: 'just-id',
+    //                             content: '',
+    //                             children: [
+    //                                 { url: '*', name: 'post-id', content: '', },
+    //                             ],
+    //                         },
+    //                         { url: '*', name: 'no-id', content: '', },  // <-- wildcards on parameter-namespaces are useless?
+    //                     ],
+    //                 },
+    //             ],
+    //         },
+    //     ],
+    // },
     
     // {
     //     url: '',

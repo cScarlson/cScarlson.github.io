@@ -6,21 +6,25 @@ import { ElementNode } from '@motorman/vertices/core/decorators';
 // import { IElementSandbox } from '@app/core/sandbox';
 import template from './hud.component.html';
 
+type THUD = ''|'vattention'|'vmodal'|'vnote'|'valert'|'vconfirm'|'vprompt';
+
 class SingletonComponentRequest { constructor(options: any = {}) {} }  // MOCK/TEMP
 
 class HUDRequest extends SingletonComponentRequest {
     id: string = '';
-    type: 'alert'|'modal'|'note' = 'alert';
+    type: THUD = '';
     level: number = 0;  // (log-level for alerts & notes (likely not modals?))
-    backdrop: boolean = true;
+    backdrop: boolean = false;
     content: string = '';  // <template id="selector">
     
     constructor(options: any = {}) {
         super(options);
-        var { id, type = 'alert', content } = options;
+        var { id, type, level, backdrop, content } = options;
         
         this.id = id || this.id;
         this.type = type || this.type;
+        this.level = level || this.level;
+        this.backdrop = backdrop || this.backdrop;
         this.content = content || this.content;
         
         return this;
@@ -30,9 +34,33 @@ class HUDRequest extends SingletonComponentRequest {
 
 interface IHUDState {}
 
-class AlertState implements IHUDState {}
-class ModalState implements IHUDState {}
-class ToastState implements IHUDState {}
+class BaseState implements IHUDState {
+    
+    init() {
+        return this;
+    }
+    
+    destroy() {
+        return this;
+    }
+    
+}
+
+class AttentionState extends BaseState {}
+class ModalState extends BaseState {}
+class ToastState extends BaseState {}
+class AlertState extends BaseState {}
+class PromptState extends BaseState {}
+class ConfirmState extends BaseState {}
+
+var STATES = {
+    'vattention': AttentionState,
+    'vmodal': ModalState,
+    'vnote': ToastState,
+    'valert': AlertState,
+    'vprompt': PromptState,
+    'vconfirm': ConfirmState,
+};
 
 @ElementNode({ selector: 'app-hud' })
 /**
@@ -56,9 +84,9 @@ class HUDComponent {
     private requests: Queue<HUDRequest> = new Queue();
     get request(): HUDRequest { return this.requests.front(); }
     get active(): boolean { return !this.requests.isEmpty(); }
-    get type(): string { return this.request ? this.request.type : 'alert'; }
+    get type(): THUD { return this.request ? this.request.type : ''; }
     get content(): string { return this.request ? this.request.content : '...'; }
-    get state(): IHUDState { return { 'alert': AlertState, 'modal': ModalState, 'note': ToastState }[ this.type ] }
+    get state(): IHUDState { return new STATES[ this.type ](this.$); }
     
     constructor(private $: Sandbox) {
         // console.log('HUD', $);
@@ -66,40 +94,54 @@ class HUDComponent {
         $.in('HUD:DISMISSED').subscribe(this.handleDismiss);
         $.state.set(this);
         $.content.set(template);
-        // setTimeout( () => $.target.setAttribute('active', 'true'), (1000 * 3) );
     }
     
-    handleClick(e: Event, x, y) {
-        // console.log('HUD', e.type, e.target, e.currentTarget, x, y);
-        console.log('HUD', e.type, x, y);
+    open(request: HUDRequest) {
+        var { $, requests } = this;
+        
+        requests.enqueue(request);
+        $.node.classList.add(this.request.type);
+        $.state.set(this);
+        $.node.setAttribute('active', ''+this.active);
+        if (this.request.backdrop) $.publish('BACKDROP:REQUESTED', { test: true });  // keep synchronized
+        else $.publish('BACKDROP:DISMISSED', { test: true });  // keep synchronized
+        
+        return this;
+    }
+    
+    close() {
+        var { $, requests } = this;
+        var closed = requests.dequeue();
+        var request = this.request;
+        
+        if (request) $.node.classList.add(request.type);
+        $.node.classList.remove(closed.type);
+        $.state.set(this);
+        $.node.setAttribute('active', ''+this.active);
+        if (request && request.backdrop) $.publish('BACKDROP:REQUESTED', { test: true });  // keep synchronized
+        else $.publish('BACKDROP:DISMISSED', { test: true });  // keep synchronized
+        
+        return this;
+    }
+    
+    handleClose(e: Event) {
+        this.close();
         return false;
     }
     
+    handleRecycle(e: Event, focum: HTMLElement) {
+        focum.focus();
+    }
+    
     private handleRequest = (e: CustomEvent) => {
-        var { $, requests } = this;
         var { detail }: { type: string, detail: HUDRequest } = e;
-        var current = requests.front();
         var request = new HUDRequest(detail);
-        
-        requests.enqueue(request);
-        if (current) $.node.classList.remove(current.type);
-        $.node.classList.add(request.type);
-        $.state.set(this);
-        $.node.setAttribute('active', ''+this.active);
-        if (request.backdrop) $.publish('BACKDROP:REQUESTED', { test: true });  // keep synchronized
-        console.log('@ ModalComponent', this.request);
+        this.open(request);
     };
     
     private handleDismiss = (e: CustomEvent) => {
-        var { $, requests } = this;
         var { type, detail } = e;
-        var request = requests.dequeue();
-        
-        console.log('@ ModalComponent', type, detail);
-        $.state.set(this);
-        $.node.classList.add(request.type);
-        $.node.setAttribute('active', ''+this.active);
-        if (request.backdrop) $.publish('BACKDROP:DISMISSED', { test: true });  // keep synchronized
+        this.close();
     };
     
 }

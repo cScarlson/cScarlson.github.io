@@ -21,34 +21,44 @@ var router = new Router('app', [
     // { url: '', name: 'root' },
     // { url: '/route/test/:id', name: 'route-test-id' },
     
+    
     // {
     //     url: '',
     //     name: 'root',
-    //     content: '',
+    //     content: landing,
     //     children: [
     //         // { url: '/route/test/:id', name: 'test-id' },
     //         {
     //             url: '/route',
     //             name: 'just-test',
-    //             content: '',
+    //             content: 'at /route',
     //             children: [
     //                 // { url: '/test/:id', name: 'test-id' },
     //                 {
     //                     url: '/test',
-    //                     name: 'just-test',content: '',
+    //                     name: 'just-test',
+    //                     content: 'at /test',
     //                     children: [
+    //                         {
+    //                             url: '/0?param',
+    //                             name: 'ZERO',
+    //                             content: 'at /0?param',
+    //                             children: [
+    //                                 // { url: '*', name: 'post-id', content: '', },
+    //                             ],
+    //                         },
     //                         {
     //                             url: '/0',
     //                             name: 'ZERO',
-    //                             content: '',
+    //                             content: 'at /0',
     //                             children: [
-    //                                 { url: '*', name: 'post-id', content: '', },
+    //                                 // { url: '*', name: 'post-id', content: '', },
     //                             ],
     //                         },
     //                         {
     //                             url: '/:id',
     //                             name: 'just-id',
-    //                             content: '',
+    //                             content: 'at /:id',
     //                             children: [
     //                                 { url: '*', name: 'post-id', content: '', },
     //                             ],
@@ -60,6 +70,8 @@ var router = new Router('app', [
     //         },
     //     ],
     // },
+    // { url: '*', name: '404', content: $404 },
+    
     
     // {
     //     url: '',

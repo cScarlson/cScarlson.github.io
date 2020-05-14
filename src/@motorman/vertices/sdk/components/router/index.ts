@@ -40,12 +40,17 @@ class RouteComposite implements IRoute {
         var id = `${parent.id}/${url}`.replace(/\/{2,}/g, '/')  // ensure no more than 1 "/" as delimiter
           , expression = id.replace(/(:[^/]+)/g, '([^/]+)')  // eg: '/items/:id' --> '/items/([^/]+)'
           , expression = (url !== '/*') ? expression : expression.replace('/*', '/(.*)')  // let all wildcard-routes match, upstream to root
-          , pattern = new RegExp(`^${expression}$`)  // eg: /^/items/([^/]+)$/ Note: '/items/*' --> /^/items/*$/ (note "*")
+          , expression = expression.replace(/^(.*)\?(.*)$/, '$1[?]$2')  // for routes with query-parameters
+          , expression = `${expression}([?].*)*`  // for routes without query-parameters
+          , expression = `^${expression}$`
+          , expression = expression.replace(/^\^([^?]*)\[([?])\](.*)\(\[\?\]\.\*\)\*\$$/, '$1$2([?]$3.*)|(.+[&]$3.*)')  // for routes without query-parameters
+          , pattern = new RegExp(expression)  // eg: /^/items/([^/]+)$/ Note: '/items/*' --> /^/items/*$/ (note "*")
           , wildcard = /^[^*]*\/\*{1}$/.test(id)
           , length = id.split('/').length
           , root = (id === url)
           ;
         
+          if (id === '/') console.log(id, expression, pattern);
         this.expression = expression;
         this.pattern = pattern;
         this.wildcard = wildcard;
@@ -93,8 +98,8 @@ class RouteComposite implements IRoute {
     
     link(first?: IRoute, next?: IRoute, ...more: IRoute[]) {
         if (!first) return null;
-        var previous = new RouteComposite(first);
-        var route = next ? new RouteComposite(next) : null;
+        var previous = new RouteComposite(first, this);
+        var route = next ? new RouteComposite(next, this) : null;
         
         previous.nextSibling = route;  // set first.next, even if null.
         this.$children.set(previous.url, previous);  // set first to maintain ordinality.
@@ -119,10 +124,11 @@ class RouteComposite implements IRoute {
         var { type, oldURL, newURL } = e;
         var olds = oldURL.split('#'), news = newURL.split('#');
         var oldURI = `${olds[1]}`, newURI = `${news[1]}`;
+        var matching = this.pattern.test(newURI);
         var data = { old: oldURI, url: newURI, route: this, event: e };
         
         RouteComposite.publish('*', data);  // provide clients with opportunity to stopImmediatePropagation
-        if ( !this.pattern.test(newURI) ) return this;
+        if ( !matching ) return this;
         e.stopImmediatePropagation();  // prevent multiple dispatch. take fist match.
         
         RouteComposite.publish(newURI, data);
@@ -180,6 +186,29 @@ class Router extends Subject {
         return is;
     }
     
+    static getQueryParams(uri: string) {
+        var parameters = { }, url = new URL(uri), params = new URLSearchParams(url.search), keys = params.keys();
+        for (let key of keys) parameters[key] = params.get(key);
+        return parameters;
+    }
+
+    static getPathParams(schema: string, uri: string) {
+        var exp = schema.replace(/(:[^/]+)/ig, '([^?]+)'), re = new RegExp(exp);
+        var matchesK = schema.match(re) || [ ], matchesV = uri.match(re) || [ ];
+        var parameters = { };
+        
+        for (let i = 0, len = matchesK.length; i < len; i++) parameters[ matchesK[i].replace(/^:([^:]+)$/, '$1') ] = matchesV[i];
+        delete parameters[schema];
+        
+        return parameters;
+    }
+
+    static getURLParams(schema: string, uri: string) {
+        var url = `http://www.fake.com${uri}`;
+        var parameters = { ...this.getQueryParams(url), ...this.getPathParams(schema, uri) };
+        return parameters;
+    }
+    
     static navigate(options: { url: string, params?: any }) {
         var { url, params = {} } = options;
         console.warn('Router.static.navigate not implemented');
@@ -227,8 +256,7 @@ class Router extends Subject {
     public handleHashChange = (e: HashChangeEvent) => {
         var { type, oldURL, newURL } = e;
         var hashchange = new HashChangeEvent('v:hashchange', { oldURL, newURL });
-        // console.log('HashChange', type, e);
-        // console.log('$HashChange', hashchange.type, hashchange);
+        
         window.dispatchEvent(hashchange);
         this.publish(type, e);
     };
@@ -236,11 +264,12 @@ class Router extends Subject {
     public handleMatch = (e: CustomEvent) => {
         var { type, detail } = e;
         var { old, url, route, event } = detail;
+        var params = Router.getURLParams(route.id, url);
+        var detail = { ...detail, params };
         
         this.route = route;
         this.notify();
         this.publish(type, detail);
-        // console.log('???', type, e);
     };
     
 }

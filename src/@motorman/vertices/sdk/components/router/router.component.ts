@@ -32,6 +32,7 @@ class RouterComponent implements IObserver {
         var old = { ...route }, copy = { ...state };  // protect source-data in Heap
         var payload = { name, old, route: copy };
         
+        if (!state) return !!(this.route = null);  // return false
         this.route = state;
         this.$.target.innerHTML = state.content;
         this.$.v(this.$.target.firstChild);

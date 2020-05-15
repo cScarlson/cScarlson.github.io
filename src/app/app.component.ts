@@ -17,9 +17,9 @@ export class AppComponent {
         
         // 'vattention'|'vmodal'|'vnote'|'valert'|'vconfirm'|'vprompt';
         
-        setTimeout( () => $.publish('HUD:REQUESTED', { backdrop: false, type: 'vattention', content: '<h1>TESTING...123</h1>' }), (1000 * 2) );
-        setTimeout( () => $.publish('HUD:REQUESTED', { backdrop: true, type: 'vmodal', content: '<h1>TESTING...123</h1>' }), (1000 * 3) );
-        setTimeout( () => $.publish('HUD:REQUESTED', { backdrop: false, type: 'vnote', content: '<h1>TESTING...123</h1>' }), (1000 * 4) );
+        // setTimeout( () => $.publish('HUD:REQUESTED', { backdrop: false, type: 'vattention', content: '<h1>TESTING...123</h1>' }), (1000 * 2) );
+        // setTimeout( () => $.publish('HUD:REQUESTED', { backdrop: true, type: 'vmodal', content: '<h1>TESTING...123</h1>' }), (1000 * 3) );
+        // setTimeout( () => $.publish('HUD:REQUESTED', { backdrop: false, type: 'vnote', content: '<h1>TESTING...123</h1>' }), (1000 * 4) );
         // setTimeout( () => $.publish('HUD:REQUESTED', { backdrop: true, type: 'valert', content: '<h1>TESTING...123</h1>' }), (1000 * 0) );
         // setTimeout( () => $.publish('HUD:REQUESTED', { backdrop: true, type: 'vconfirm', content: '<h1>TESTING...123</h1>' }), (1000 * 0) );
         // setTimeout( () => $.publish('HUD:REQUESTED', { backdrop: true, type: 'vprompt', content: '<h1>TESTING...123</h1>' }), (1000 * 0) );

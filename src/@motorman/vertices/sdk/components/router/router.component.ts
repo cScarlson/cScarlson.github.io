@@ -21,7 +21,7 @@ class RouterComponent implements IObserver {
         
         if (!RouterComponent.INSTANCE) RouterComponent.INSTANCE = this;  // set | return before instance operations
         else return RouterComponent.INSTANCE;
-        router.attach(this, true);
+        setTimeout( () => router.attach(this, true), (1000 * 0) );
         router.publish('router:outlet:ready', { name });
         
         return RouterComponent.INSTANCE;
@@ -40,6 +40,7 @@ class RouterComponent implements IObserver {
         // this.$.content.set(state.content);  // ISSUE: does not produce innerHTML!
         this.router.publish('router:outlet:content:change');
         this.router.publish('router:outlet:updated', payload);
+        // setTimeout( () => this.router.publish('router:outlet:updated', payload), (1000 * 0) );
         
         return this;
     }

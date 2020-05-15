@@ -14,6 +14,7 @@ import { CONSTANTS } from './core';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './subsystem/header/header.component';
 import { WelcomeComponent } from './subsystem/welcome/welcome.component';
+import { MenuComponent } from './subsystem/menu/menu.component';
 //
 import { router } from './routing';
 
@@ -250,10 +251,11 @@ var app = new (class Application {
         // // V(TestService);
         V(AppComponent);
         V(HeaderComponent);
-        V(HUDComponent);
+        V(MenuComponent);
         V(WelcomeComponent);
         //
         V(RouterComponent);
+        V(HUDComponent);
         V(BackdropComponent);
         V(SlotComponent);
         V(ElementRepeatAttribute);
@@ -262,8 +264,8 @@ var app = new (class Application {
         V(ReferenceAttribute);
         V(AutofocusAttribute);
         V(FocusOnAttribute);
-        V(TextInterpolationDirective);
-        // // V(CommentDirective);
+        // V(TextInterpolationDirective);
+        // V(CommentDirective);
         alert;(`
             Create a "Coding Assessment" module on section of site. Make it efficient enough to completely replace all BS "Take-Home"
             assessments. In fact, this should completely remove the need for onsite interviews altogether. This is your contribution to

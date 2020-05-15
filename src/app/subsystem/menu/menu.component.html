@@ -1,0 +1,11 @@
+
+<div class="app menu">
+  <h2>${title}</h2>
+  
+  <nav class="menu nav" role="tablist" aria-orientation="vertical">
+    <a class="nav item home ${ { 'app': 'active' }[ name ] }" href="/#/" role="tab" aria-controls="v-pills-home" aria-selected="true">Home</a>
+    <a class="nav item about ${ { 'about': 'active' }[ name ] }" href="/#/about" role="tab" aria-controls="v-pills-profile" aria-selected="false">About</a>
+    <a class="nav item other ${ { 'other': 'active' }[ name ] }" href="/#/other" role="tab" aria-controls="v-pills-messages" aria-selected="false">Other</a>
+  </nav>
+  
+</div>

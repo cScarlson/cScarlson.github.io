@@ -22,6 +22,7 @@
         "main": [ "./src/main.ts", "./src/main.scss" ],
         "app.component": [ "./src/app/app.component.ts", "./src/app/app.component.scss" ],
         "app.header": [ "./src/app/subsystem/header/header.component.ts", "./src/app/subsystem/header/header.component.scss" ],
+        "app.menu": [ "./src/app/subsystem/menu/menu.component.ts", "./src/app/subsystem/menu/menu.component.scss" ],
         "app.welcome": [ "./src/app/subsystem/welcome/welcome.component.ts", "./src/app/subsystem/welcome/welcome.component.scss" ]
     },
     "proxy": {

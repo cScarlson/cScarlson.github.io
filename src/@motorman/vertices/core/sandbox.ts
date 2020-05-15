@@ -73,7 +73,7 @@ class TemplateSubject extends Subject {
     
 }
 class StateSubject extends Subject {
-    public states: Stack<any> = new Stack([ {'--INITIAL-STATE--':''} ]);
+    public states: Stack<any> = new Stack([]);
     public get data(): any { return this.states.peek(); };
     
     constructor(private sandbox: ElementSandboxState, private core: Core) {

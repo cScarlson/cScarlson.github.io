@@ -10,7 +10,7 @@ class HeaderComponent {
     public title: string = 'Home';
     
     constructor(private $: IElementSandbox) {
-        // $.state.set(this);
+        $.state.set(this);
         $.content.set(template);
         console.log('HEADER', $);
         router.subscribe('router:outlet:updated', this.handleRouterOutletUpdate );  // close menu if open
@@ -32,15 +32,25 @@ class HeaderComponent {
     }
     
     handleMenuState(e: Event&{ target: HTMLInputElement }) {
+        var { $ } = this;
         var { type, target } = e;
         var { checked } = target;
+        
         if (checked) this.$.publish('MENU:REQUESTED');
         else this.$.publish('MENU:DISMISSED');
+        
         console.log('MENU STATE', type, checked);
     }
     
     public handleRouterOutletUpdate = (e: CustomEvent) => {
-        this.menu.checked = false
+        var { detail } = e;
+        var { route } = detail;
+        var { data } = route;
+        var { title } = data;
+        
+        this.title = title;
+        this.menu.checked = false;
+        this.$.state.set(this);
     };
     
 }

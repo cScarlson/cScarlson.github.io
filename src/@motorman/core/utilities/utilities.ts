@@ -248,11 +248,18 @@ class Utilities {
         return this.drill( data[key], keys.join('.') );  // TCO/TCE
     }
     
+    interpolate$(str) {
+        return (o) => (new Function(`if (this) with (this) return \`${str}\`;`) ).call(o);
+    }
+    interpolate(str: string): (o) => string {
+        // var str = str.replace(/{{([^{}]*)}}/g, '${$1}');
+        return (o) => this.interpolate$(str)(o);
+    }
     
     /**
      * @ Inspiration: Douglas Crockford (String.prototype.supplant)
      */
-    interpolate(str: string): (o) => string {
+    interpolateX(str: string): (o) => string {
         return (o) => str.replace(/{{([^{}]*)}}/g, (a, b) => {
             var f = new Function('o', `with (o) if (o.${b} !== undefined) return o.${b}; else return '{{${b}}}';`), val = ''+f(o);
             return val;  // assume rational value for string result

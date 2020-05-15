@@ -15,8 +15,21 @@ var router = new Router('app', [
         url: '',
         name: 'app',
         content: landing,
+        data: { title: 'Welcome' },
     },
-    { url: '*', name: '404', content: $404 },
+    {
+        url: '/about',
+        name: 'about',
+        content: landing,
+        data: { title: 'About' },
+    },
+    {
+        url: '/other',
+        name: 'other',
+        content: landing,
+        data: { title: 'Other' },
+    },
+    { url: '*', name: '404', content: $404, data: { title: 'Oops!' } },
     
     // { url: '', name: 'root' },
     // { url: '/route/test/:id', name: 'route-test-id' },

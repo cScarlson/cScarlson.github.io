@@ -168,7 +168,6 @@ class Bootstrap {
         var { name, value } = node, metadata = $attributes.get(name);
         var reBinding = /^\[.+\]$/
           , reReporter = /^{[^{}]*}$/
-          , reReference = /^#$/
           , isBinding = reBinding.test(name)
           , isReporter = reReporter.test(name)
           , hasBinding = $attributes.has('[*]')
@@ -181,6 +180,7 @@ class Bootstrap {
         if (bindable) metadata = $attributes.get('[*]');
         if (reportable) metadata = $attributes.get('{*}');
         
+        // console.log('------>', node.ownerElement);
         let { Sandbox, Class, selector }: IMetadata = metadata;
         let owner = this.getOwnerInstance(node.ownerElement), parentData: IReferenceInstance = $instances.get(owner);
         let data: IReferenceInstance = { target: node, instance: null, selector, sandbox: null, value, owner, ...metadata };

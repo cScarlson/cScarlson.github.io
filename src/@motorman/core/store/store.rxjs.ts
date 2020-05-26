@@ -20,16 +20,16 @@ class Store extends Mediator {
           , data = child.data()
           ;
         var paths = {
-            'parent/child/datum': `${this.id}/${key}/${type}`,
-            'parent/*/datum': `${this.id}/*/${type}`,
-            '**/child/datum': `**/${key}/${type}`,
-            '**/*/datum': `**/*/${type}`,
+            'parent.child.datum':   `${this.id}.${key}.${type}`,
+            'parent.*.datum':       `${this.id}.*.${type}`,
+            '**.child.datum':       `**.${key}.${type}`,
+            '**.*.datum':           `**.*.${type}`,
         };
         
-        this.publish(paths['parent/child/datum'], detail);
-        this.publish(paths['parent/*/datum'], detail);
-        this.publish(paths['**/child/datum'], detail);
-        this.publish(paths['**/*/datum'], detail);
+        this.publish(paths['parent.child.datum'], detail);
+        this.publish(paths['parent.*.datum'], detail);
+        this.publish(paths['**.child.datum'], detail);
+        this.publish(paths['**.*.datum'], detail);
     }
     error(error: Error) {}
     complete() {}
@@ -48,8 +48,8 @@ class Store extends Mediator {
         this.$data.set(key, value);
         this.publish(key, value);
         this.publish('*', value);
-        this.publish('**/*', value);
-        this.publish(`**/${key}`, value);
+        this.publish('**.*', value);
+        this.publish(`**.${key}`, value);
         if (value instanceof Store) value.attach({ next: (e) => this.next(e, key) });
         
         return this;

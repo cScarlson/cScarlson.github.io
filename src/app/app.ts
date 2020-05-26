@@ -6,6 +6,7 @@ import { V, Bootstrap, ElementNode, AttributeNode, TextNode, CommentNode, Servic
 import { RouterComponent } from '@motorman/vertices/sdk/components/router/router.component';
 import { BackdropComponent } from '@motorman/vertices/sdk/components/backdrop/backdrop.component';
 import { HUDComponent } from '@motorman/vertices/sdk/components/hud/hud.component';
+import { PopstateComponent } from '@motorman/vertices/sdk/components/popstate/popstate.component'
 // app
 import { environment } from '../environments/environment';
 import { Sandbox, IElementSandbox, IAttributeSandbox } from './core';
@@ -15,6 +16,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './subsystem/header/header.component';
 import { WelcomeComponent } from './subsystem/welcome/welcome.component';
 import { MenuComponent } from './subsystem/menu/menu.component';
+import { UserTokenGetterComponent } from './subsystem/user/user.component';
 //
 import { router } from './routing';
 
@@ -24,7 +26,7 @@ var app = new (class Application {
     constructor(env: Environment, router: any) {
         
         class Dependencies {};  // mock
-        var director = new Director({ channels, Dependencies, ActionHandlers, StateHandlers });
+        var director = new Director({ id: 'app' }, { channels, Dependencies, ActionHandlers, StateHandlers });
         var config = {
             environment: document,
             director,
@@ -191,7 +193,10 @@ var app = new (class Application {
                 var { $, property } = this;
                 var { node } = $;
                 var { ownerElement } = node;
+                // var commit = new Function('o', 'value', `console.log('.....', '${property}'); o.${property} = ${value}`);
                 
+                console.log('.....', property, value);
+                // commit(ownerElement);
                 ownerElement[property] = value;
             }
             
@@ -248,15 +253,23 @@ var app = new (class Application {
             
         }
         
+        @ElementNode({ selector: 'input[type="signature"]' }) class SignatureComponent {
+            // REQUIRES TRACK-PAD / TOUCH-PAD
+            // uses algorithm to provide accurate aspect-ratio representation for writing signature on touch-pad
+            // provides canvas and swipe/touch on mobile
+        }
+        
         // // V(TestService);
         V(AppComponent);
         V(HeaderComponent);
         V(MenuComponent);
         V(WelcomeComponent);
+        V(UserTokenGetterComponent);
         //
         V(RouterComponent);
         V(HUDComponent);
         V(BackdropComponent);
+        V(PopstateComponent);
         V(SlotComponent);
         V(ElementRepeatAttribute);
         V(AttributeBinder);

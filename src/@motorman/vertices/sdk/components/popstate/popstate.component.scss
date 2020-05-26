@@ -1,0 +1,22 @@
+
+@import '../../../core/styles/sandbox.scss';
+
+app-back {
+    
+    .back.button {
+        @extend .btn;
+        // @extend .btn-dark;
+        
+        &.inactive {
+            @extend .btn-dark;
+            // border: solid 4px tomato;
+        }
+        
+        &.active {
+            @extend .btn-light;
+            // border: solid 4px tomato;
+        }
+        
+    }
+    
+}

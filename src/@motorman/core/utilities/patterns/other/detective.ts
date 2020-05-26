@@ -62,8 +62,8 @@ class Detective {
         return dtor;
     }
     
-    private configure(key: string) {
-        var { context, proxy, target } = this;
+    private configure(context: any, key: string) {
+        var { proxy, target } = this;
         var dtor = this.getPropertyDescriptor(context, key)
           , getter = dtor && dtor.get
           , setter = dtor && dtor.set
@@ -84,6 +84,15 @@ class Detective {
         Object.defineProperty(context, key, config);
     }
     
+    private getContextAndKey(context: any, key: string): { context: any, key: string } {
+        var keys = key.split('.');
+        var first = keys.shift(), next = context[first], composite = keys.join('.');
+        var result = { context, key };
+        
+        if (keys.length) return this.getContextAndKey(next, composite);
+        return result;
+    }
+    
     hasProperty(context: any, key: string) {
         var prototype = Object.getPrototypeOf(context);
         var has = context.hasOwnProperty(key);
@@ -93,10 +102,11 @@ class Detective {
     }
     
     subscribe(key: string, handler?: Function) {
-        var { target, proxy, context } = this;
+        var { context, target, proxy } = this;
+        var { context, key } = this.getContextAndKey(context, key);
         
         proxy[key] = context[key];  // ensure oldValue has initial/current before configuration
-        this.configure(key);
+        this.configure(context, key);
         if (handler) target.addEventListener(key, <EventListenerOrEventListenerObject>handler, false);
         
         return this;

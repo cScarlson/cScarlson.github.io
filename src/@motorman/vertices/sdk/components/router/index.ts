@@ -4,15 +4,25 @@ import { Subject } from '@motorman/core/utilities/patterns/behavioral';
 
 interface IRoute {
     url: string;
-    content: string;
     name?: string;
+    content?: string;
+    redirect?: string;
+    spoof?: string;
     data?: any;
     children?: IRoute[];
+}
+
+interface IActiveRouteDetails {
+    old: string;
+    url: string;
+    route: RouteComposite;
+    params: any;
 }
 
 class RouteComposite implements IRoute {
     static $routes: Map<string, RouteComposite> = new Map();
     private static target: EventTarget = new EventTarget();
+    private target: EventTarget = new EventTarget();
     public active: boolean = false;
     public expression: string = '';
     public pattern: RegExp = new RegExp('');
@@ -21,9 +31,11 @@ class RouteComposite implements IRoute {
     public root: boolean = false;
     public id: string = '';  // '/root/parent-b/some-other-child/:id', '/root/parent-a/some-child/:id' 
     public url: string = '';  // '/some-other-child/:id', '/some-child/:id'
-    public content: string = '';
     public name: string = '';
+    public content: string = '';
     public data: any = { };
+    public redirect: string = '';
+    public spoof: string = '';
     public parent: RouteComposite = this;
     public previousSibling: RouteComposite = null;
     public nextSibling: RouteComposite = null;
@@ -32,7 +44,7 @@ class RouteComposite implements IRoute {
     public set children(value: RouteComposite[]) { this.$children.clear(); value.forEach( (r) => this.$children.set(r.url, r) ); }
     
     constructor(options: IRoute, parent?: RouteComposite) {
-        var { url = '', content = '', name = '', data = {}, children = [] } = options;
+        var { url = '', name = '', content = '', redirect = '', spoof = '', data = {}, children = [] } = options;
         var parent = parent || this;
         var url = { '': true }[ url ] ? '/' : url
           , url = { '*': true }[ url ] ? '/*' : url
@@ -43,14 +55,13 @@ class RouteComposite implements IRoute {
           , expression = expression.replace(/^(.*)\?(.*)$/, '$1[?]$2')  // for routes with query-parameters
           , expression = `${expression}([?].*)*`  // for routes without query-parameters
           , expression = `^${expression}$`
-          , expression = expression.replace(/^\^([^?]*)\[([?])\](.*)\(\[\?\]\.\*\)\*\$$/, '$1$2([?]$3.*)|(.+[&]$3.*)')  // for routes without query-parameters
+          , expression = expression.replace(/^\^([^?]*)\[([?])\](.*)\(\[\?\]\.\*\)\*\$$/, '$1$2([?]$3.*)|(.+[&]$3.*)')  // replace redundancy i/a
           , pattern = new RegExp(expression)  // eg: /^/items/([^/]+)$/ Note: '/items/*' --> /^/items/*$/ (note "*")
           , wildcard = /^[^*]*\/\*{1}$/.test(id)
           , length = id.split('/').length
           , root = (id === url)
           ;
         
-          if (id === '/') console.log(id, expression, pattern);
         this.expression = expression;
         this.pattern = pattern;
         this.wildcard = wildcard;
@@ -58,8 +69,10 @@ class RouteComposite implements IRoute {
         this.root = root;
         this.id = id;
         this.url = url;
-        this.content = content;
         this.name = name;
+        this.content = content;
+        this.redirect = redirect;
+        this.spoof = spoof;
         this.data = data;
         this.parent = parent;
         this.link(...children);
@@ -139,8 +152,36 @@ class RouteComposite implements IRoute {
     
 }
 
-class StateMachine {
-    history: History = window.history;
+class StateMachine implements History {  // https://developer.mozilla.org/en-US/docs/Web/API/History
+    private history: History = window.history;
+    get length(): number { return this.history.length; }
+    get scrollRestoration(): ScrollRestoration { return this.history.scrollRestoration; }
+    set scrollRestoration(value: ScrollRestoration) { this.history.scrollRestoration = value; }
+    get state(): any { return this.history.state; }
+    
+    constructor() {}
+    
+    back(): StateMachine {
+        var result = this.history.back();
+        return this;
+    }
+    forward(): StateMachine {
+        var result = this.history.forward();
+        return this;
+    }
+    go(delta: number = 0): StateMachine {  // where 0 is current index in stack, 0 is location.reload(), -1 is this.back(), 1 is this.forward()
+        var result = this.history.go(delta);
+        return this;
+    }
+    pushState(state: any, title = '', url?: string): StateMachine {
+        var result = this.history.pushState(state, title, url);
+        return this;
+    }
+    replaceState(state: any, title = '', url?: string): StateMachine {
+        var result = this.history.replaceState(state, title, url);
+        return this;
+    }
+    
 }
 
 class Router extends Subject {
@@ -148,17 +189,20 @@ class Router extends Subject {
     public static $instances: Map<string, Router> = new Map();
     public static history: StateMachine = new StateMachine();
     private target: EventTarget = new EventTarget();
+    public history: StateMachine = new StateMachine();
     public routes: RouteComposite[] = [ ];
-    public route: RouteComposite = null;  // new RouteComposite({ url: '404', name: 'router-404', content: 'Page Not Found' });
+    public active: IActiveRouteDetails = null;
+    public get route(): RouteComposite { return this.active ? this.active.route: null; }
     
     constructor(public name: string, public schema: IRoute[]) {
-        super('route');
+        super('active');
         var routes = schema.map( (r: IRoute) => <IRoute>new RouteComposite(r) );
         var current = document.location
         var { href, hash } = current;
         
         this.routes = <RouteComposite[]>routes;
         if (!hash) document.location.hash = '/';  // set before subscribing
+        // if (!hash) history.replaceState();//'/';  // set before subscribing
         RouteComposite.subscribe('match', this.handleMatch);
         window.addEventListener('hashchange', this.handleHashChange, false);  // subscribe before RouteComposites register handlers [which may call e.stopImmediatePropagation()]
         window.dispatchEvent( new HashChangeEvent('hashchange', { newURL: location.href, oldURL: href }) );  // trigger after subscribing
@@ -170,6 +214,10 @@ class Router extends Subject {
     static set(router: Router) {
         this.$instances.set(router.name, router);
         return this;
+    }
+    
+    static guard(guard: (route: RouteComposite) => boolean) {
+        // set [root] RouteGuard (static? Router only has 1? Or should each instance have only 1? Or should router run it through Reducer middleware? Use The Chain of Responsibility Pattern?)
     }
     
     static matches(control: string, subject: string): boolean {
@@ -211,8 +259,17 @@ class Router extends Subject {
     
     static navigate(options: { url: string, params?: any }) {
         var { url, params = {} } = options;
-        console.warn('Router.static.navigate not implemented');
+        console.warn('Router.static.navigate not implemented. Use History API?');
         return this;
+    }
+    
+    guard(guard: (route: RouteComposite) => boolean) {
+        // set [root] RouteGuard (static? Router only has 1? Or should each instance have only 1? Or should router run it through Reducer middleware? Use The Chain of Responsibility Pattern?)
+        // this.guards.push(guard);  // Chain of Responsibility?
+        // Route.guards.push(guard);
+    }
+    middleware(guards: Function[]) {
+        // guards.forEach( (guard) => this.guard() );
     }
     
     navigate(url: string, data?: {}, ...more: any[]) {
@@ -264,14 +321,19 @@ class Router extends Subject {
     public handleMatch = (e: CustomEvent) => {
         var { type, detail } = e;
         var { old, url, route, event } = detail;
+        var { redirect, spoof } = route;
         var params = Router.getURLParams(route.id, url);
         var detail = { ...detail, params };
+        var state = { route: route.id, parent: route.parent.id, oldURL: old, newURL: url };
         
-        this.route = route;
+        if (redirect) location.hash = `${redirect}`;
+        if (spoof) return this.handleMatch( new CustomEvent(type, { detail: { ...detail, route: RouteComposite.$routes.get(spoof) } }) );
+        this.active = detail;
+        // this.history.replaceState(state, '', route.id);
         this.notify();
         this.publish(type, detail);
     };
     
 }
 
-export { IRoute, Router, RouteComposite };
+export { IRoute, IActiveRouteDetails, Router, RouteComposite };

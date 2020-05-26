@@ -1,8 +1,7 @@
 
 <div class="app header" (click)="handleClick($event, 'container')">
-    <a class="header brand" href="/#/">
-      <img class="brand logo" src="assets/shadow-x.jpg" alt="logo" (click)="handleClick($event, 'img')" (load)="handleLogoLoad($event)" (error)="handleLogoError($event)" />
-      <button><</button>
+    <a class="header brand logo" href="#/">
+      <img class="brand logo" src="${ user.avatar }" alt="logo" (load)="handleLogoLoad($event)" (error)="handleLogoError($event)" />
       ${title}
     </a>
     

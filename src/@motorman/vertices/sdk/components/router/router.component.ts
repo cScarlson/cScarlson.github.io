@@ -4,15 +4,16 @@ import { IEventAggregator } from '@motorman/core';
 import { IObserver } from '@motorman/core/utilities/patterns/behavioral';
 import { ElementNode } from '@motorman/vertices/core/decorators';
 import { NodeSandbox as Sandbox } from '@motorman/vertices/core';
-import { Router, RouteComposite } from './index';
+import { IActiveRouteDetails, Router, RouteComposite } from './index';
 import template from './router.component.html';
 
 @ElementNode({ selector: 'v-router' })
 class RouterComponent implements IObserver {
     private static INSTANCE: any = null;
-    private route: RouteComposite = null;
+    private details: IActiveRouteDetails = null;
     public attr = this.$.target.attributes['name'];  // name attribute (name="[name]")
     public name = this.attr.value;  // router name
+    public get route(): RouteComposite { return this.details ? this.details.route : null; }
     public get url(): string { return this.route ? this.route.id : ''; }
     public get router(): Router { return Router.$instances.get(this.name); };
     
@@ -27,14 +28,15 @@ class RouterComponent implements IObserver {
         return RouterComponent.INSTANCE;
     }
     
-    update(state: RouteComposite) {
-        var { name, route } = this;
-        var old = { ...route }, copy = { ...state };  // protect source-data in Heap
-        var payload = { name, old, route: copy };
+    update(state: IActiveRouteDetails) {
+        var { name, route: current } = this;
+        var { url, route, params } = state;
+        var old = { ...current }, copy = { ...route };  // protect source-data in Heap
+        var payload = { name, url, old, route: copy, params };
         
-        if (!state) return !!(this.route = null);  // return false
-        this.route = state;
-        this.$.target.innerHTML = state.content;
+        if (!state) return !!(this.details = null);  // return false
+        this.details = state;
+        this.$.target.innerHTML = route.content;
         this.$.v(this.$.target.firstChild);
         // this.$.state.set(this);  // only use if template uses {innerHTML}="route.content" or {{route.content}}
         // this.$.content.set(state.content);  // ISSUE: does not produce innerHTML!

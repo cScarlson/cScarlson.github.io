@@ -15,11 +15,9 @@ class ActionHandlers extends CommonHandlers {
         super(director, $);
     }
     
-    [ e['JOHN:WILL:LIKE:THIS:STRATEGY'] ](channel: string, data: { id: number, datum: string }) {
-        var { id, datum } = data;
-        if ({ '999': true }[ id ]) console.log('@ Director: Caught', data.id);
-        this.director.set(datum, data);
-        this.director.emit(channel, data);
+    [ e['USER:TOKEN:FOUND:LINKEDIN'] ](channel: string, token: string) {
+        this.director.set('token', token);
+        // this.director.emit(channel, token);  // mute token event
     }
     
 }

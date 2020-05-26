@@ -15,10 +15,15 @@ app-header {
                 
         .header.brand {
             @extend .navbar-brand;
+            
             .brand.logo {
                 width: 36px;
                 height: 36px;
             }
+            
+        }
+        .header.brand.logo {
+            .brand.button.back {}
         }
         
     }

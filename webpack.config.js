@@ -59,13 +59,14 @@ module.exports = (env, argv) => {
             new HtmlWebpackPlugin({
                 title: 'Cody S. Carlson',
                 filename: 'index.html',
-                template: './src/index.html',
+                template: './src/index.ejs',
                 base: baseUrl,
                 favicon: './src/assets/shadow.jpg',
             }),
             new CopyPlugin([
                 { from: './src/assets', to: './assets' },
                 { from: './src/mocks', to: './mocks' },
+                { from: './src/oauth', to: './oauth' },
             ]),
             ...REPLACEMENTS,
         ],

@@ -4,6 +4,10 @@ import { IDirectorOptions } from './options.interface';
 import { Reactive as Store } from '../store';
 import { Utilities } from '../utilities';
 
+type TStoreNamespace = 'root'|'app'|string;
+interface IStoreConfiguration {
+    id: TStoreNamespace;
+}
 
 class Director extends Store implements IEventAggregator {
     private dependencies: IDirectorOptions;
@@ -12,8 +16,8 @@ class Director extends Store implements IEventAggregator {
     public utils: Utilities = new Utilities();
     public channels: any;
 
-    constructor(options: IDirectorOptions) {
-        super({ id: 'app' });
+    constructor(settings: IStoreConfiguration, options: IDirectorOptions) {
+        super(settings);
         var { channels, ActionHandlers, StateHandlers, Dependencies } = options;
         var dependencies = new Dependencies(this);
         var actionHandlers = new ActionHandlers(this, dependencies)
@@ -34,7 +38,6 @@ class Director extends Store implements IEventAggregator {
         var action = handlers[type];
 
         if (action) action.call(handlers, e);
-        // else setTimeout( () => console.log('@ OBSERVED STATE', type, detail), (1000 * 10) );
     };
 
     emit(channel: string, data?: any, ...more: any[]) {

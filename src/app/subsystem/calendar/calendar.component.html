@@ -1,0 +1,33 @@
+
+<div class="app calendar">
+  
+  <div class="calendar header">
+    ${ date }
+    <input class="header search" type="date" placeholder="go to (MM/DD/YYYY)" [value]="date" (change)="handleSearch($event)" />
+  </div>
+  <div class="calendar body">
+    <div class="body header">
+      <span class="header sunday">Sunday</span>
+      <span class="header sunday">Monday</span>
+      <span class="header sunday">Tuesday</span>
+      <span class="header sunday">Wednesday</span>
+      <span class="header sunday">Thursday</span>
+      <span class="header sunday">Friday</span>
+      <span class="header sunday">Saturday</span>
+    </div>
+    <div class="body grid">
+      <app-calendar-field date="${ a }" type="range" (date:change)="handleDateChange($event)"></app-calendar-field>
+      <app-calendar-field date="${ b }" type="range" (date:change)="handleDateChange($event)"></app-calendar-field>
+      <app-calendar-field date="${ c }" type="range" (date:change)="handleDateChange($event)"></app-calendar-field>
+      <app-calendar-field date="${ d }" type="range" (date:change)="handleDateChange($event)"></app-calendar-field>
+      <app-calendar-field date="${ e }" type="range" (date:change)="handleDateChange($event)"></app-calendar-field>
+    </div>
+  </div>
+  <div class="calendar footer">
+    <div class="footer selection">
+      <span class="selection display">${ selection }</span>
+      <button class="selection clear btn btn-clear" (click)="handleSelectionClear($event)">X</button>
+    </div>
+  </div>
+  
+</div>

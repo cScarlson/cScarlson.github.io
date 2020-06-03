@@ -14,9 +14,15 @@ import { Director, ActionHandlers, StateHandlers, channels } from './core';
 import { CONSTANTS } from './core';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './subsystem/header/header.component';
-import { WelcomeComponent } from './subsystem/welcome/welcome.component';
 import { MenuComponent } from './subsystem/menu/menu.component';
+import { WelcomeComponent } from './subsystem/welcome/welcome.component';
+import { AboutComponent } from './subsystem/about/about.component';
+import { ContactComponent } from './subsystem/contact/contact.component';
+import { FormComponent as ContactFormComponent } from './subsystem/contact/subsystem/form/form.component';
 import { UserTokenGetterComponent } from './subsystem/user/user.component';
+import { CalendarComponent } from './subsystem/calendar/calendar.component';
+import { FieldComponent as CalendarFieldComponent } from './subsystem/calendar/subsystem/field/field.component';
+import { PlaygroundComponent } from './subsystem/playground/playground.component';
 //
 import { router } from './routing';
 
@@ -195,7 +201,7 @@ var app = new (class Application {
                 var { ownerElement } = node;
                 // var commit = new Function('o', 'value', `console.log('.....', '${property}'); o.${property} = ${value}`);
                 
-                console.log('.....', property, value);
+                // console.log('.....', property, value);
                 // commit(ownerElement);
                 ownerElement[property] = value;
             }
@@ -264,7 +270,13 @@ var app = new (class Application {
         V(HeaderComponent);
         V(MenuComponent);
         V(WelcomeComponent);
+        V(AboutComponent);
+        V(ContactComponent);
+        V(ContactFormComponent);
         V(UserTokenGetterComponent);
+        V(CalendarComponent);
+        V(CalendarFieldComponent);
+        if ( { 'QA': true, 'DEV': true, 'MOCK': true }[ environment.type ] ) V(PlaygroundComponent);
         //
         V(RouterComponent);
         V(HUDComponent);

@@ -1,0 +1,56 @@
+
+@import '../../../../styles/sandbox';
+
+.ranges {
+    position: absolute;
+    top: 0;
+    width: auto;
+    height: 100%;
+    text-align: center;
+}
+
+app-calendar-field {
+    display: block;
+    position: relative;
+    
+    &:focus {
+        outline: solid 1px blue;
+    }
+    
+    .field.date {
+        position: relative;
+        width: 80px;
+        height: 80px;
+        border: solid 4px tomato;
+        
+        .date.control {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.5;
+            z-index: 1;
+            
+            &[type="checkbox"] {
+                
+                &::before {
+                    content: "<";
+                    @extend .ranges;
+                    left: 0;
+                }
+                &::after {
+                    content: ">";
+                    @extend .ranges;
+                    right: 0;
+                }
+                
+            }
+            
+        }
+        .date.content {}
+    }
+    
+}

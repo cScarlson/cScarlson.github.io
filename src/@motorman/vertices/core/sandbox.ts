@@ -222,6 +222,7 @@ class EventManager {
         var { node, proxy } = this;
         
         this.events = events;
+        // this.events.forEach( (type) => node.addEventListener(type, this.handleAll, true) );
         this.events.forEach( (type) => node.addEventListener(type, this.handleAll, true) );  // enforce `useCapture` to handle other events such as <img>.error (disallows bubble).
         node.addEventListener('*', this.handleAny, true);  // `useCapture`
         
@@ -238,35 +239,38 @@ class EventManager {
     }
     
     private handleAll = (e: Event|CustomEvent) => {
+        // console.log( 'ALWAYS', e.bubbles, (e.currentTarget as Element).tagName, (e.target as Element).tagName, e.type, (e.target as Element).isSameNode(this.node) );
         var { node } = this;
-        var { type, target }: any&{ target: Element } = e
-          , { parentElement: parent }: any&{ parentElement: Element } = target
-          ;
-        var any = new CustomEvent('*', { detail: e }), recursive = new Event(type, { bubbles: true });
+        var { parentElement: parent } = node;
+        var { type, target, bubbles }: any&{ target: Element } = e;
+        var any = new CustomEvent('*', { bubbles: true, detail: e }), recursive = new Event(type, { bubbles: true });  // manually bubble
         
-        target.dispatchEvent(any);
-        if ( !parent.isSameNode(node) ) parent.dispatchEvent(recursive);  // retrigger event on parent to ensure Event Delegation. otherwise, parents with same handler will not be reached. use parent.isSameNode to prevent (type)="..." from host being invoked
+        // if ( !target.isSameNode(node) ) node.dispatchEvent(recursive);
+        if (node !== document) parent.dispatchEvent(recursive);  // retrigger event on parent to ensure Event Delegation. otherwise, parents with same handler will not be reached. use parent.isSameNode to prevent (type)="..." from host being invoked
+        node.dispatchEvent(any);
         
         return true;  // always allow bubbling
     };
     
     public handleAny = (any: CustomEvent<{ type: string, target: Element, e: Event }>) => {
         if ( !any.detail.target.attributes[`(${any.detail.type})`] ) return true;
-        var { instance } = this;
+        var { node, instance } = this;
         var { detail: e } = any
-          , { type, target }: any&{ target: Element } = e
+          , { type, target, currentTarget }: any&{ target: Element } = e
           , property = `(${type})`
           , attr = target.attributes[property]
           , { name, value }: Attr = attr
           ;
-        var re = /^(\w+)\((.*)\)$/
+        var re = /^(.+)\((.*)\)$/
           , matches = value.match(re) || [ ]
           , [ full, action, params ] = matches
           ;
-        var method = instance[action]
-          , invoke = new Function('fn', 'ctx', '$event', `with (ctx) return fn.call(ctx, ${params})`)
-          , result = invoke(method, instance, e)
+        var has = ( new Function('ctx', `with (ctx) return !!ctx.${action}`) )(instance)
+          , invoke = new Function('ctx', '$event', `with (ctx) return ${value}`)
+          , result = true;
           ;
+        
+        if (has) result = invoke(instance, e);
         return result;
     };
     

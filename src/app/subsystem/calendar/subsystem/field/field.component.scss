@@ -2,11 +2,12 @@
 @import '../../../../styles/sandbox';
 
 .ranges {
-    position: absolute;
-    top: 0;
-    width: auto;
-    height: 100%;
-    text-align: center;
+    // position: absolute;
+    // top: 0;
+    // width: auto;
+    height: auto;
+    // text-align: center;
+    // vertical-align: middle;
 }
 
 app-calendar-field {
@@ -17,40 +18,55 @@ app-calendar-field {
         outline: solid 1px blue;
     }
     
-    .field.date {
-        position: relative;
-        width: 80px;
-        height: 80px;
-        border: solid 4px tomato;
+    .app.calendar.field {
+        width: 100%;
+        height: 100%;
         
-        .date.control {
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
+        .field.date {
+            position: relative;
             width: 100%;
             height: 100%;
-            opacity: 0.5;
-            z-index: 1;
+            overflow: hidden;
             
-            &[type="checkbox"] {
+            .date.control {
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                width: 100%;
+                height: 100%;
+                opacity: 0;
+                z-index: 1;
+                cursor: pointer;
                 
-                &::before {
-                    content: "<";
-                    @extend .ranges;
-                    left: 0;
-                }
-                &::after {
-                    content: ">";
-                    @extend .ranges;
-                    right: 0;
+                &[type="checkbox"] {
+                    
+                    &~ .date.content:not(.param)::before {
+                        content: "\2190";
+                        @extend .ranges;
+                        // left: 0;
+                    }
+                    &~ .date.content:not(.param)::after {
+                        content: "\2192";
+                        @extend .ranges;
+                        // right: 0;
+                    }
+                    
                 }
                 
             }
-            
+            .date.content {
+                // border: solid 5px cyan;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-evenly;
+                align-items: center;
+                // text-align: center;
+                // vertical-align: middle;
+            }
         }
-        .date.content {}
     }
-    
 }

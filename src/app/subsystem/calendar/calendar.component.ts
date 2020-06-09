@@ -3,22 +3,101 @@ import { ElementNode } from '@motorman/vertices/core/decorators';
 import { IElementSandbox } from '@app/core/sandbox';
 import template from './calendar.component.html';
 
+class CalendarMonth {
+    protected cache: { previous: CalendarMonth, next: CalendarMonth } = { previous: null, next: null };
+    public year: number = this.datetime.getFullYear();
+    public month: number = this.datetime.getMonth();
+    public length: number = CalendarMonth.getMonthLength(this.month, this.year);
+    public days: Date[] = CalendarMonth.getDays(this.month, this.year);
+    public padded: Date[] = [ ];
+    public $dates: Map<number, Date> = new Map();
+    get dates(): Date[] { return Array.from( this.$dates.values() ); }
+    set dates(dates: Date[]) { this.$dates.clear(); dates.forEach( (d: Date) => this.$dates.set(+d, d) ); }
+    get previous(): CalendarMonth { return this.cache.previous = this.getPrevious(); }
+    get next(): CalendarMonth { return this.cache.next = this.getNext(); }
+    
+    constructor(public datetime: Date) {
+        var { year, month } = this;
+        var dates = CalendarMonth.getDates(month, year);
+        var padded = this.pad(dates);
+        
+        this.dates = dates;
+        this.padded = padded;
+        
+        return this;
+    }
+    
+    static getMonthLength(month: number, year: number) {
+        var isLeap = ((year % 4) === 0 && ((year % 100) !== 0 || (year % 400) === 0));
+        var length = [ 31, (isLeap ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ][ month ];
+        return length;
+    }
+    
+    static getDays(month: number, year: number) {
+        var length = this.getMonthLength(month, year), days = [ ];
+        for (let i = 0; i < length; i++) days.push(i);
+        return days;
+    }
+    
+    static getDates(month: number, year: number) {
+        var days = this.getDays(month, year), datetimes = days.map( (day: number) => new Date(year, month, day+1) );
+        return datetimes;
+    }
+    
+    private pad(dates: Date[]) {
+        const INDEX_OFFSET = 1;
+        var { length, year, month } = this;
+        var first = dates[0]
+          , last = dates[length - 1]
+          , fDay = first.getDay()
+          , lDay = last.getDay()
+          , fDate = first.getDate()
+          , lDate = last.getDate()
+          , fOffset = (fDate - fDay)
+          , lOffset = ( lDate + (6 - lDay) )
+          ;
+        var padded = [ ...dates ];
+        
+        // for (let p = fOffset; p < fDate; p++) console.log('<-UNSHIFT', p);
+        // for (let f = lDate ; f < lOffset ; f++) console.log('PUSH->', f);
+        for (let p = fOffset; p < fDate; p++) padded.unshift( new Date(year, month, p) );
+        for (let f = lDate ; f < lOffset ; f++) padded.push( new Date(year, month, f+INDEX_OFFSET) );
+        console.log('PADDING-->', fOffset, lOffset );
+        
+        return padded;
+    }
+    
+    private getPrevious() {
+        if (this.cache.previous) return this.cache.previous;
+        var { year, month } = this;
+        var datetime = new Date(year, month, 0), calendar = new CalendarMonth(datetime);
+        return calendar;
+    }
+    
+    private getNext() {
+        if (this.cache.next) return this.cache.next;
+        var { year, month } = this, month = (month + 2);
+        var datetime = new Date(year, month, 0), calendar = new CalendarMonth(datetime);
+        return calendar;
+    }
+    
+}
+
+var weekdatenames = [ 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat' ];
+
 @ElementNode({ selector: 'app-calendar' })
 class CalendarComponent {
-    public date: Date = new Date();
+    private weekdatenames: string[] = weekdatenames;
+    private today: Date = new Date();
+    private calendar: CalendarMonth = new CalendarMonth(this.today);
+    private $calendars: Map<CalendarMonth, CalendarMonth> = new Map([ [this.calendar, this.calendar] ]);
     public selection: string = '';
     public multi: boolean = false;
-    private start: Date;
-    private end: Date;
-    private $dates: Map<number, Date> = new Map();
-    get dates(): Date[] { return Array.from( this.$dates.values() ); }
-    set dates(dates: Date[]) { this.$dates.clear(); dates.sort( (a, b) => a >= b ? 1 : -1 ).forEach( (date) => this.$dates.set(+date, date) ); }
-    
-    a: Date = new Date(2020, 5, 2);
-    b: Date = new Date(2020, 5, 3);
-    c: Date = new Date(2020, 5, 4);
-    d: Date = new Date(2020, 5, 5);
-    e: Date = new Date(2020, 5, 6);
+    private $selections: Map<number, Date> = new Map();
+    get selections(): Date[] { return Array.from( this.$selections.values() ); }
+    set selections(selections: Date[]) { this.$selections.clear(); selections.sort( (a, b) => a >= b ? 1 : -1 ).forEach( (date) => this.$selections.set(+date, date) ); }
+    get dates(): any { return this.calendar.padded; }
+    get weekdates(): Date[] { return this.dates.slice(0, 7); }
     
     constructor(private $: IElementSandbox) {
         console.log('CALENDAR', $);
@@ -30,56 +109,29 @@ class CalendarComponent {
         console.log('search', (e.target as HTMLInputElement).value);
     }
     
-    handleSelectionClear(e: Event) {}
+    handleColumnSelection(e: Event, day: number) {
+        // this.$.publish('CALENDAR:SELECTION:CHANGED', { type: 'specs', specs: [ { type: 'day', value: day } ] });
+    }
+    
+    handleSelectionClear(e: Event) {
+        this.$selections.clear();
+        this.$.publish('CALENDAR:SELECTION:CHANGED', { $selections: this.$selections });
+    }
     
     handleDateChange(e: CustomEvent) {
-        var { $dates } = this;
+        var { $selections } = this;
         var { detail } = e;
         var { name, type, selected, date } = detail;
         var timestamp = +date;
-        var payload = { name, type, selected, date, $dates };
+        var payload = { name, type, selected, date, $selections };
         var action = {
-           'true': () => $dates.set(timestamp, date),   // record
-           'false': () => $dates.delete(timestamp),     // remove
+           'true': () => $selections.set(timestamp, date),   // record
+           'false': () => $selections.delete(timestamp),     // remove
         }[ selected ];
         
         if (action) action();
-        this.dates = Array.from( $dates.values() );  // commit
+        this.selections = Array.from( $selections.values() );  // commit
         this.$.publish('CALENDAR:SELECTION:CHANGED', payload);
-    }
-    
-    handleDateChangeX(e: CustomEvent) {
-        if (!e.detail.selected) this.start = this.end = this.start;
-        var { start, end } = this;
-        var { detail } = e;
-        var { name, type, selected, date } = detail;
-        var payload = { name, type, selected, date, start, end };
-        
-        if (!{ 'multi': true }[ type ]) start = end = date;
-        
-        if (!start) start = date;
-        else end = date;
-        if (start > end) (date = end), (end = start), (start = date);
-        console.log('-->', type, '\n', 'start', start, '\n', 'end', end);
-        
-        this.start = start;
-        this.end = end;
-        // this.$.publish('CALENDAR:SELECTION:CHANGED', { ...payload, start, end });
-        
-        // // if (!start) start = date;
-        // if (!!start && !!end) start = date;  // && end = null | date ?
-        // if (!!start &&  !end) end = date;
-        // if (start > end) (date = end), (end = start), (start = date);
-        
-        // // this.start = start;
-        // // this.end = end;
-        // // console.log('before...', '\n', this.start, '\n', this.end);
-        // // // if (!start && !end) return this.handleDateChange(e);
-        // // console.log('after...', '\n', this.start, '\n', this.end);
-        
-        // // console.log('DATE-CHANGE', type, detail, name, type, selected, date);
-        // // this.$.publish('CALENDAR:SELECTION:CHANGED', detail);
-        // // // this.$.target.dispatchEvent( new CustomEvent('selection', { detail: {} }) );
     }
     
 }

@@ -1,28 +1,32 @@
 
 class Handler {
     respond(e: CustomEvent): any {
-        // e.preventDefault();
-        // e.stopPropagation();
-        // e.stopImmediatePropagation();
-        // return false;
-        return e.detail;
+        return e.detail;  // continue and provide same value (see Function Purity)
     }
 }
 
 /**
- * @intention 
+ * @name: The Chain of Responsibility Pattern
+ * @intention
+ * 	* Avoid coupling the sender of a request to its receiver by giving more than one object a chance to handle the request. Chain
+ * 	* the receiving objects and pass the request along the chain until an object handles it.
  * @usage 
  *  * var cor = new ChainOfResponsibility({ ... });  // see config/constructor
  *  * cor.push({ respond(e) {...} });
- *  * cor.push({ respond(e) { e.stopPropagation(); return false } }, { respond(e) {...} }, ...);
- *  * [EventTarget].addEventListener('click', cor.respond.bind(cor), false);  // only 1st 2 handlers get invoked
- *  * 
-    * private nodeHandlers: ChainOfResponsibility = new ChainOfResponsibility({}, [
-    *     { respond: (e: CustomEvent) => console.log('COR: A', e) },
-          { respond: (e: CustomEvent) => console.log('COR: B', e) },
-          // { respond: (e: CustomEvent) => e.stopPropagation() },
-          { respond: ({ detail: value }: CustomEvent) => console.log('COR: C', value) },
-    * ]);
+ *  * cor.push({ respond(e) { e.stopImmediatePropagation(); return false; } }, { respond(e) {...} }, ...);
+ *  *  -- OR --
+ *  * private nodeHandlers: ChainOfResponsibility = new ChainOfResponsibility({}, [
+ *  *     { respond: (e: CustomEvent) => console.log('COR: A', e) },
+ *  *     { respond: (e: CustomEvent) => console.log('COR: B', e) },
+ *  *     { respond: (e: CustomEvent) => e.stopImmediatePropagation() },
+ *  *     { respond: ({ detail: value }: CustomEvent) => console.log('COR: C', value) },  // <-- never runs. propagation stopped.
+ *  * ]);
+ *  * -- INITIALIZE --
+ *  * [EventTarget].addEventListener('click', cor.respond, false);  // only 1st 2 handlers get invoked. propagation stopped.
+ *  * -- OR --
+ *  * cor.execute( new CustomEvent('some:process:id', { detail: data }) );
+ * @note
+ *  * Can be used to simply give multiple objects a chance to receive a request -- OR -- create a mutation pipeline.
  */
 class ChainOfResponsibility extends Array {
     protected config: any = { cancelable: false, bubbles: true };
@@ -42,20 +46,19 @@ class ChainOfResponsibility extends Array {
         var result = this.propagate(e, handler, i, handlers);  // process & reassign in case of change
         var event = new CustomEvent(e.type, { detail: result }), next = handlers[i + 1];
         
-        if (e.cancelBubble) event.stopPropagation();
+        if (e.cancelBubble) event.stopImmediatePropagation();
         if (e.cancelBubble) return event;  // if cancelled, stop immediately. return with value from cancellor.
         if (next) return this.execute(event, ++i);  // has sibling handler. continue with new detail.
         return event;  // if end reached and event not cancelled
     }
     
-    protected propagate(e: CustomEvent|any, handler: Handler, i: number, handlers: Handler[]): any {  // TODO: use Recursion to avoid unnecessary iterations
+    protected propagate(e: CustomEvent|any, handler: Handler, i: number, handlers: Handler[]): any {
         if (e.cancelBubble) return e;
         var { config } = this;
         var value = handler.respond.call(handler, e)
           , cancelBubble = !{ 'undefined': true, 'false': false }[ value ]
           ;
-        if (config.cancelable && cancelBubble) ( e.stopPropagation(), e.stopImmediatePropagation() );
-        // e.eventPhase = i;
+        if (config.cancelable && cancelBubble) e.stopImmediatePropagation();
         
         return value;
     }
@@ -65,11 +68,10 @@ class ChainOfResponsibility extends Array {
         return this;
     }
     
-    respond(e: CustomEvent<any>): CustomEvent<any> {
+    public respond = (e: CustomEvent<any>): CustomEvent<any> => {
         var event = this.execute(e);
-        // var result = this.reduce( this.propagate.bind(this), e );
         return event;  // subclasses can implement return result.cancelBubble or return false;
-    }
+    };
     
 }
 

@@ -2,7 +2,71 @@
 @import '../../styles/sandbox';
 
 app-calendar {
-    display: block;
+    display: inline-block;
     position: relative;
     border: solid 10px tomato;
+    width: auto;
+    
+    .app.calendar {
+        
+        .calendar.header {}
+        .calendar.body {
+            // display: block;
+            // position: relative;
+            
+            // .body.header {
+            //     display: grid;
+            //     grid-template-columns: repeat(7, 14.3%);
+            //     grid-template-rows: repeat(1, 14.3%);
+            // }
+            .body.matrix {
+                background-color: #f8f8f8;
+                background-color: #8ca0ff;
+                border: solid 4px #444;
+                display: grid;
+                grid-template-columns: repeat(7, 14.3%);
+                grid-template-rows: 32px repeat(1, 14.3%);
+                grid-auto-rows: 14.3%;
+                // grid-column-gap: 1px;
+                // grid-row-gap: 1px;
+                width: 400px;
+                height: 400px;
+                
+                .matrix.column, .matrix.field {
+                    border: solid 1px #fff;
+                    
+                    &.sun, &.sat {
+                        background-color: orchid;
+                    }
+                    &.mon, &.tue, &.wed, &.thu, &.fri {}
+                    
+                }
+                .matrix.column {
+                    // background-color: #8ca0ff;
+                    text-align: center;
+                    vertical-align: middle;
+                    cursor: pointer;
+                    
+                    &[selected="true"] {
+                        background-color: orangered;
+                    }
+                    
+                }
+                
+                .matrix.field {
+                    // background-color: #8ca0ff;
+                    // border: solid 1px #fff;
+                    
+                    &[selected="true"] {
+                        background-color: orangered;
+                    }
+                    
+                }
+                
+            }
+            
+        }
+        
+    }
+    
 }

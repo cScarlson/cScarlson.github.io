@@ -3,8 +3,8 @@
   
   <div class="field date">
     <input class="date control" type="${ types[ type] }" name="${ name }" ${ checked } (change)="handleChange($event)" />
-    <div class="date content">
-      ${weekday} - ${monthday}
+    <div class="date content ${ type }">
+      ${ display }
     </div>
   </div>
   

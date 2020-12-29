@@ -1,3 +1,7 @@
+
+# TEMP (git update-index --assume-unchanged dist/)
+dist
+
 # Logs
 logs
 *.log

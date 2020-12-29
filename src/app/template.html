@@ -1,0 +1,31 @@
+
+<div class="page">
+
+    <div class="page about slots">
+        <slot name="docs"></slot>
+    </div>
+
+    <hr />
+    <h1>Demo</h1>
+    <hr />
+
+    <div class="page header">
+        <h1 class="header title">${title}</h1>
+        <p class="header description">${description}</p>
+    </div>
+
+    <div class="page body">
+        ${content}
+        <ul class="body list ${ { 'true': 'active', 'false': 'inactive' }[ !!$selections.size ] }">
+        ${ items.map( (item) =>
+            `<li id="${item.id}" class="list item ${ { [true]: 'active', [false]: 'inactive' }[ $selections.has(item.id) ] }" data-id="${item.id}" data-type="${item.type}" data-title="${item.title}" (selection:changed)="handleSelection($event, $items.get(${item.id}))"></li>`
+        ).join('') }
+        </ul>
+    </div>
+
+    <div class="page footer">
+        ${ getFooterContent() }
+    </div>
+
+</div>
+  

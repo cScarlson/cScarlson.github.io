@@ -16,22 +16,8 @@
     },
     "modules": {
         "v": [ "./src/@motorman/vertices" ],
-        "v.sdk.router": [ "./src/@motorman/vertices/sdk/components/router/router.component.ts", "./src/@motorman/vertices/sdk/components/router/router.component.scss" ],
-        "v.sdk.backdrop": [ "./src/@motorman/vertices/sdk/components/backdrop/backdrop.component.ts", "./src/@motorman/vertices/sdk/components/backdrop/backdrop.component.scss" ],
-        "v.sdk.hud": [ "./src/@motorman/vertices/sdk/components/hud/hud.component.ts", "./src/@motorman/vertices/sdk/components/hud/hud.component.scss" ],
-        "v.sdk.popstate": [ "./src/@motorman/vertices/sdk/components/popstate/popstate.component.ts", "./src/@motorman/vertices/sdk/components/popstate/popstate.component.scss" ],
-        "main": [ "./src/main.ts", "./src/main.scss" ],
-        "app.component": [ "./src/app/app.component.ts", "./src/app/app.component.scss" ],
-        "app.header": [ "./src/app/subsystem/header/header.component.ts", "./src/app/subsystem/header/header.component.scss" ],
-        "app.menu": [ "./src/app/subsystem/menu/menu.component.ts", "./src/app/subsystem/menu/menu.component.scss" ],
-        "app.welcome": [ "./src/app/subsystem/welcome/welcome.component.ts", "./src/app/subsystem/welcome/welcome.component.scss" ],
-        "app.user": [ "./src/app/subsystem/user/user.component.ts", "./src/app/subsystem/user/user.component.scss" ],
-        "app.about": [ "./src/app/subsystem/about/about.component.ts", "./src/app/subsystem/about/about.component.scss" ],
-        "app.contact": [ "./src/app/subsystem/contact/contact.component.ts", "./src/app/subsystem/contact/contact.component.scss" ],
-        "app.contact.form": [ "./src/app/subsystem/contact/subsystem/form/form.component.ts", "./src/app/subsystem/contact/subsystem/form/form.component.scss" ],
-        "app.playground": [ "./src/app/subsystem/playground/playground.component.ts", "./src/app/subsystem/playground/playground.component.scss" ],
-        "app.calendar": [ "./src/app/subsystem/calendar/calendar.component.ts", "./src/app/subsystem/calendar/calendar.component.scss" ],
-        "app.calendar.field": [ "./src/app/subsystem/calendar/subsystem/field/field.component.ts", "./src/app/subsystem/calendar/subsystem/field/field.component.scss" ]
+        "main": [ "./src/main.ts" ],
+        "app.component": [ "./src/app/app.component.ts" ]
     },
     "proxy": {
         "/api": {

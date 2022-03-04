@@ -72,9 +72,9 @@
     "resolveJsonModule": true
   },
   "exclude": [
-    "./app_dep",
-    "./vertices_dep",
-    "./src/@motorman/utilities/ds",
-    "./src/@motorman/utilities/patterns"
-  ]
+    "./dist",
+  ],
+  "include": [
+    "./src/**/*.ts"
+  ],
 }

@@ -1,4 +1,0 @@
-
-class LinkedList {}
-
-export { LinkedList };

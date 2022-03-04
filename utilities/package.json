@@ -1,0 +1,5 @@
+{
+    "name": "utilities",
+    "type": "module",
+    "main": "index.js"
+}

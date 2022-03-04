@@ -1,15 +1,46 @@
 {
   "name": "cScarlson.github.io",
+  "type": "module",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --mode development",
-    "dev:build": "webpack --mode development",
+    "dev:install": "npm i -D ./tranfer ./tranfer-dev-therver ./utilities",
+    "dev:debug": "node --inspect tranfer-dev-therver --mode=overwrittenbytranferconfig --type=dev",
+    "dev": "node tranfer-dev-therver --mode=overwrittenbytranferconfig --type=dev",
+    "dev:build": "node tranfer --type=dev",
     "prod": "webpack-dev-server --mode production",
     "prod:build": "webpack --mode production",
     "prod:deploy": "npm run prod:build && git add . && git commit -am 'Deploying...' && git push origin master"
+  },
+  "devDependencies": {
+    "@webpack-cli/generators": "^2.4.2",
+    "copy-webpack-plugin": "^10.2.4",
+    "css-loader": "^6.5.1",
+    "express": "^4.17.3",
+    "fs-jetpack": "^4.3.1",
+    "html-webpack-plugin": "^5.5.0",
+    "jsdom": "^19.0.0",
+    "mini-css-extract-plugin": "^2.4.5",
+    "minimatch": "^3.0.5",
+    "sass": "^1.49.7",
+    "sass-loader": "^12.3.0",
+    "style-loader": "^3.3.1",
+    "tranfer": "file:tranfer",
+    "tranfer-dev-therver": "file:tranfer-dev-therver",
+    "ts-loader": "^9.2.6",
+    "tsconfig-paths-webpack-plugin": "^3.5.2",
+    "typescript": "^4.5.5",
+    "utilities": "file:utilities",
+    "webpack": "^5.68.0",
+    "webpack-cli": "^4.9.2"
+  },
+  "dependencies": {
+    "bootstrap": "^4.4.1",
+    "globby": "^13.1.1",
+    "rxjs": "^6.6.7",
+    "ws": "^8.5.0"
   },
   "repository": {
     "type": "git",
@@ -21,30 +52,5 @@
   "bugs": {
     "url": "https://github.com/cScarlson/cScarlson.github.io/issues"
   },
-  "homepage": "https://cScarlson.github.io",
-  "devDependencies": {
-    "callsite": "^1.0.0",
-    "chokidar-cli": "^2.1.0",
-    "clean-webpack-plugin": "^3.0.0",
-    "copy-webpack-plugin": "^5.1.1",
-    "css-loader": "^3.4.1",
-    "dotenv": "^8.2.0",
-    "html-webpack-plugin": "^3.2.0",
-    "node-sass": "^4.13.0",
-    "raw-loader": "^4.0.2",
-    "sass-loader": "^8.0.0",
-    "showdown": "^1.9.1",
-    "style-loader": "^1.1.2",
-    "ts-loader": "^6.2.1",
-    "tsconfig-paths-webpack-plugin": "^3.2.0",
-    "typescript": "^3.9.7",
-    "watch": "^1.0.2",
-    "webpack": "^4.44.2",
-    "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0"
-  },
-  "dependencies": {
-    "bootstrap": "^4.4.1",
-    "rxjs": "^6.5.4"
-  }
+  "homepage": "https://cScarlson.github.io"
 }

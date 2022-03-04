@@ -1,0 +1,5 @@
+{
+    "name": "tranfer-dev-therver",
+    "type": "module",
+    "main": "index.js"
+}

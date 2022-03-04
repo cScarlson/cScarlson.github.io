@@ -1,0 +1,2 @@
+
+const xxxx: any = '';

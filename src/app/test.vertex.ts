@@ -1,2 +1,0 @@
-
-const xxxx: any = '';

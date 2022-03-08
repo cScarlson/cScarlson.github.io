@@ -1,0 +1,17 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Cody Carlson!</title>
+        <script defer src="./vertices/load.js" type="module"></script>
+        <script defer src="./vertices/core.js" type="module"></script>
+        <script defer src="./main.js" type="module"></script>
+    </head>
+    <body>
+        <module type="app" src="./app/app.vertex.html"></module>
+    </body>
+    <script>
+        ( new WebSocket('ws://localhost:3000') ).addEventListener('message', e => location.reload(true), false);
+    </script>
+</html>

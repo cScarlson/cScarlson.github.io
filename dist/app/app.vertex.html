@@ -1,0 +1,335 @@
+
+<!-- @name: app -->
+<script type="module" lang="js" defer>
+    import { V } from './vertices/core.js';
+    
+    const { log } = console;
+    
+    V({
+        ['v:type']: 'app',
+        // content: null,
+        call(self, module, config) {
+            // log(`@app.call`, module, config);
+            // const { script: self } = config;
+            const { nextElementSibling: root } = self;
+            const content = root.querySelector('.app.content');
+            
+            this.content = content;
+            log(`@app.call`, this, self, module, config);  // > [object Object], <script>, <module> (this !== self)
+            // module.addEventListener('vertex:mount', handleMount, false);
+            module.addEventListener('menu:state', this.handleMenuState.bind(this), true);
+            window.addEventListener('hashchange', this.handleHashchange, false);
+        },
+        // handleMenuState(e) {
+        //     const { content } = this;
+        //     const { classList } = content;
+        //     const { detail } = e;
+        //     const { opened } = detail;
+        //     const status = 'defocused';
+            
+        //     if (opened) classList.add(status);
+        //     else classList.remove(status);
+        // },
+        // handleHashchange(e) {
+        //     setTimeout( () => location.hash = location.hash.replace('/noop', ''), 1000 );
+        // }
+    });
+</script>
+
+<div class="app root">
+    <header class="app header">
+        <module type="menu" src="./app/subsystem/menu.vertex.html" slot="menu"></module>
+    </header>
+    <main class="app content" slot="page">
+        <div class="content canvas">
+            <module id="/" type="page" src="./app/subsystem/page.vertex.html">
+                <span slot="title">Home</span>
+                <div slot="content">
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    ...
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    ...
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    ...
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    ...
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    ...
+                </div>
+            </module>
+            <module id="/app/about" type="page" src="./app/subsystem/page.vertex.html">
+                <span slot="title">About</span>
+                <div slot="content">
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    ...
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    ...
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    ...
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    ...
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    ...
+                </div>
+            </module>
+            <module id="/app/resume" type="page" src="./app/subsystem/page.vertex.html">
+                <span slot="title">Resume</span>
+                <div slot="content">
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    ...
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    ...
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    ...
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    ...
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    ...
+                </div>
+            </module>
+            <module id="/app/cv" type="page" src="./app/subsystem/page.vertex.html">
+                <span slot="title">Curriculum Vitae</span>
+                <div slot="content">
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    ...
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    ...
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    ...
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    ...
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    ...
+                </div>
+            </module>
+        </div>
+    </main>
+    <footer class="app footer">
+        <module id="/app/footer" type="page" src="./app/subsystem/page.vertex.html">
+            <span slot="title">Footer</span>
+            <div slot="content">
+                <br />
+                <br />
+                <br />
+                <br />
+                ...
+                <br />
+                <br />
+                <br />
+                <br />
+                ...
+                <br />
+                <br />
+                <br />
+                <br />
+                ...
+                <br />
+                <br />
+                <br />
+                <br />
+                ...
+                <br />
+                <br />
+                <br />
+                <br />
+                ...
+            </div>
+        </module>
+    </footer>
+</div>
+<!-- 
+    Look into leveraging interpolable templates -- especially for styling...
+    
+    <module type="any" src="...">
+        <script type="module"></script>
+        <div class="any element" template="anyTemplate">`${interpolated}`</div>
+        <style>`${styles}`</style>
+        -- THEN --
+        <template id="anyTemplate" type="html">
+            <h1 class="element title">`${pageTitle}`</h1>
+        </template>
+        -- AND --
+        <template id="cssTemplate" type="css">
+            .any.element .element.title {
+                display: `${css.display}`;
+                color: `${css.color}`;
+            }
+        </template>
+        -- OR --
+        <script type="text/css">
+            .any.element .element.title {
+                display: `${css.display}`;
+                color: `${css.color}`;
+            }
+        </script>
+    </module>
+    --------------------------------------------------------------------------------------------------------------------------------
+    ATTRIBUTES (static/primitive, not dynamic/referrential)
+    <module type="any" src="..." some-attr="static"></module>
+    Vertices should provide Element.prototype.attributes as arguments to components (registered faculties).
+    --------------------------------------------------------------------------------------------------------------------------------
+    SLOTS: Should Vertices provide internal <slot>s as arguments to components (registered faculties)?
+    --------------------------------------------------------------------------------------------------------------------------------
+    vertices.load() can look at the id of the <module> to auto-bootstrap the registered JS class, which is declared within the markup.
+    <module type="example" src="./app/example.vertex.html">
+        <script type="module">
+            import { V } from './vertices/core.js';
+            
+            V(class ExampleComponent {
+                static type = 'example';
+                
+                constructor(target: Element|Sandbox) {
+                    const { parentElement: module, nextSibling: element } = target;  // natural convention for handle on cardinal element.
+                    const { nextSibling: styles } = element;
+                    
+                    module.addEventListener('vertex:{lifecycle-event}', ...);
+                    
+                }
+                
+            });
+        </script>
+        <div class="app example">
+            <div v="directive1,directive2,...,directiveN"></div>
+        </div>
+        <style>...</style>
+    </module>
+ -->
+
+<style lang="css">
+    @import url("./vertices/revert.css");
+    @import url("./vertices/styles.css");
+    
+    module[id]:target {
+        box-shadow: 0px 0px 16px -4px white;
+    }
+    
+    .app.root {
+        background:
+            linear-gradient(transparent, lightsalmon),
+            radial-gradient(circle at 40% 200px, #f09819 80px, transparent 280px),
+            radial-gradient(circle at 36% 500px, #1845ad 80px, transparent 280px),
+            radial-gradient(circle at 64% 360px, #ff512f 80px, transparent 280px)
+            ;
+        background-size: 100%;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-origin: border-box;
+        position: relative;
+        height: 100%;
+        border-width: 0px;
+    }
+    
+    .app.root .app.header {
+        position: sticky;
+        top: 0;
+        z-index: 999;
+    }
+    
+    .app.root .app.content {
+        width: 100%;
+        border-style: solid;
+        border-width: 10px;
+        border-color: rgba(255, 255, 255, 0);
+        border-radius: 0;
+        transform: scale(1);
+        transition: transform 1s, border 1s, border-radius 1s, top 1s;
+        transform-origin: top;
+    }
+    .app.root .app.content.defocused {
+        position: sticky;
+        top: calc(var(--menu-height) + 12px);
+        height: 100vh;
+        margin-top: 12px;
+        border-color: rgba(255, 255, 255, 1);
+        border-radius: 100px;
+        transform: scale(0.2);
+        transition: transform 1s, border 1s, border-radius 1s, top 1s;
+        overflow: hidden;
+        transform-origin: top;
+        z-index: 0;
+    }
+    
+    .app.root .app.content .content.canvas {
+        width: 100%;
+        max-width: 720px;
+        margin-left: 50%;
+        border: solid 10px transparent;
+        transform: translateX(-50%);
+        transition: transform 1s;
+        /* background-color: rgba(255, 255, 255, 0.15); */
+    }
+    
+    .app.root .app.footer {
+        position: sticky;
+        top: 0;
+        margin: 0;
+        padding: 0;
+        background-color: rgb(119, 136, 153, 0.75);
+        z-index: 1;
+    }
+    
+    .app.root .app.footer [type="page"] .app.page {
+        margin-bottom: 0;
+        background-color: transparent;
+    }
+</style>

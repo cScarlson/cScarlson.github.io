@@ -1,0 +1,51 @@
+
+<script type="module">
+    import { V } from './vertices/core.js';
+    
+    const { log, warn, error } = console;
+    
+    V(class PageComponent {
+        static ['v:type'] = 'page';
+        
+        // constructor(self) {
+        //     log(`@page`, self);
+        // }
+        
+        // call(module, config) {}
+        
+    });
+</script>
+
+<section class="app page">
+    <h1 class="page title"><slot name="title"></slot></h1>
+    <slot class="page content" name="content"></slot>
+</section>
+
+<style>
+    .app.page {
+        /* border: solid 1px tomato; */
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+        margin-bottom: 32px;
+        background-color: rgba(255, 255, 255, 0.15);
+    }
+    
+    .app.page .page.title {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        height: var(--menu-height);
+        margin: 0;
+        padding: 16px;
+        color: black;
+        background-color: rgba(255, 255, 255, 0.15);
+    }
+    
+    .app.page .page.content {
+        /* border: solid 1px tomato; */
+        display: block;
+    }
+</style>

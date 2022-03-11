@@ -4,50 +4,33 @@
     
     const { log } = console;
     
-    V(class MenuComponent {
-        static ['v:type'] = 'menu';
-        // self = null;
-        // menu = null;
-        // toggle = null;
+    V(function MenuComponent({ self, module, metadata }, type='menu') {
+        const { nextElementSibling: menu } = self;
+        const toggle = menu.querySelector('.menu.control.toggle');
         
-        // constructor(self) {
-        //     const { nextElementSibling: menu } = self;
-        //     const toggle = menu.querySelector('.menu.control.toggle');
+        function handleToggle (e) {
+            const { target } = e;
+            const { checked } = target;
+            const detail = { opened: checked };
+            const event = new CustomEvent('menu:state', { detail });
             
-        //     this.self = self;
-        //     this.menu = menu;
-        //     this.toggle = toggle;
-            
-        //     toggle.addEventListener('change', this.handleToggle, false);
-        //     window.addEventListener('hashchange', this.handleHashchange, false);
-            
-        //     return this;
-        // }
+            console.log(`@TOGGLE`, checked);
+            menu.dispatchEvent(event);
+        }
         
-        // call(module, config) {
-        //     log(`@MenuComponent.call`, this, this.self, module, config);  // > [object Object], <script>, <module> (this !== self)
-        // }
-        
-        // handleToggle = (e) => {
-        //     const { menu } = this;
-        //     const { target } = e;
-        //     const { checked } = target;
-        //     const detail = { opened: checked };
-        //     const event = new CustomEvent('menu:state', { detail });
+        function handleHashchange (e) {
+            const detail = { opened: false };
+            const event = new CustomEvent('menu:state', { detail });
             
-        //     console.log(`@TOGGLE`, checked);
-        //     menu.dispatchEvent(event);
-        // };
+            toggle.checked = detail.opened;
+            menu.dispatchEvent(event);
+        }
         
-        // handleHashchange = (e) => {
-        //     const { menu, toggle } = this;
-        //     const detail = { opened: false };
-        //     const event = new CustomEvent('menu:state', { detail });
-            
-        //     toggle.checked = detail.opened;
-        //     menu.dispatchEvent(event);
-        // };
+        // OPERATIONS
+        toggle.addEventListener('change', handleToggle, false);
+        window.addEventListener('hashchange', handleHashchange, false);
         
+        return this;
     });
 </script>
 

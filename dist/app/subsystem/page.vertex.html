@@ -1,18 +1,14 @@
 
-<script type="module">
-    import { V } from './vertices/core.js';
+<script type="module" defer>
+    import V, { LIFECYCLE_EVENTS } from './vertices/core.js';
     
     const { log, warn, error } = console;
+    const { onmount } = LIFECYCLE_EVENTS;
     
     V(class PageComponent {
         static ['v:type'] = 'page';
-        
-        // constructor(self) {
-        //     log(`@page`, self);
-        // }
-        
-        // call(module, config) {}
-        
+        constructor({ self, module, metadata }) {}
+        [onmount]({ module, metadata }) {}
     });
 </script>
 

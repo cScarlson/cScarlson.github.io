@@ -1,0 +1,26 @@
+
+<script type="module" defer>
+    import { V } from './vertices/core.js';
+    
+    const { log } = console;
+    
+    V(({ self, module, metadata }, type='page:home') => {
+        
+        function handleStateChange(type) {
+            // log(`@${type}`, this);
+        }
+        
+        V.attach(handleStateChange);
+        // log(`@page:home`, self);
+        
+        return {
+            'v:init': function vOnInit({ attributes }) {
+                log(`INIT!!!!!!!!.....`, attributes);
+            }
+        };
+    });
+</script>
+<article class="home page">
+    <p class="page paragraph">... home page ...</p>
+</article>
+<style></style>

@@ -1,9 +1,9 @@
 
 import { LIFECYCLE_EVENTS } from './events.js';
-import { bootstrap } from './bootstrap.js';
+import { bootstrap, render } from './load.js';
 import { Metadata } from './metadata.js';
 import { ModuleComposite as Composite } from './module-composite.js';
-import { Queue } from './patterns/ds/queue.js';
+import utilities from './utilities/utilities.js';
 
 /*
 ---- template
@@ -32,8 +32,13 @@ import { Queue } from './patterns/ds/queue.js';
 */
 
 const { log, warn, error } = console;
-const { onverticesbootstrapinvoked, onloaded, onmount, oninit } = LIFECYCLE_EVENTS;
-const queue = new Queue();
+const {
+    onverticesbootstrapinvoked,
+    onattributeattachable,
+    onchange,
+    onmount,
+    oninit
+} = LIFECYCLE_EVENTS;
 const DEFAULTS = {};
 
 class ModuleComposite extends Composite {
@@ -98,13 +103,13 @@ class Core extends Map {
     types = new Map();
     instances = new Map();
     databindings = new Map();
+    docket = new Map();
     get state() { return Object.fromEntries(this) }
     
     constructor(options) {
         super();
         const {  } = { ...this, ...options };
-        log(`@compose...`, Core.composite);
-        Core.composite.subscribe('attribute:attachable', e => this.publish(e.type, { ...e.detail, core: this }));
+        Core.composite.subscribe(onattributeattachable, e => this.publish(e.type, { ...e.detail, core: this }));
     }
     
     static compose(data) {
@@ -128,30 +133,15 @@ class Core extends Map {
         return composite;
     }
     
+    dock(docket) {
+        for (let type in docket) this.docket.set(type, docket[type]);
+        return this;
+    }
+    
     register(type, component) {
         if ( this.types.has(type) ) return this;
         this.types.set(type, component);
         return this;
-    }
-    
-    bootstrap(details) {
-        if ( !details.module.hasAttribute('type') ) return this;  // used as partial/include. don't bootstrap.
-        const { types, instances } = this;
-        const { type, module, self, attributes } = details;
-        const component = types.get(type);
-        const isFunction = (component instanceof Function);
-        const isArrowFunction = (isFunction && !component.prototype);
-        const detail = { self, module, metadata: details };
-        const e = new CustomEvent(onmount, { detail });
-        const instance = isFunction ? isArrowFunction ? component(detail) : new component(detail) : component;
-        const result = Metadata.call(details, { instance });
-        
-        log(`... ... ... BOOTSTRAP`, type);
-        self.dispatchEvent(e);
-        if (onmount in instance) instance[onmount](detail);
-        instances.set(module, instance);
-        
-        return result;
     }
     
     bind(module) {
@@ -176,20 +166,6 @@ class Core extends Map {
         databindings.delete(module);  // delete asap as module nesting & <slot>s may trigger additional (unnecessary) binding.
         module.dispatchEvent(e);
         if (oninit in child) child[oninit]({ attributes });
-    }
-    
-    bindX(module) {
-        if ( !this.databindings.has(module) ) return module;
-        const { databindings, instances } = this;
-        const { parent, key, value } = databindings.get(module);
-        const child = instances.get(module);
-        const e = new CustomEvent(oninit);
-        
-        log(`... ... ... BIND`, key);
-        child[key] = parent[value];
-        databindings.delete(module);  // delete asap as module nesting & <slot>s may trigger additional (unnecessary) binding.
-        module.dispatchEvent(e);
-        if (oninit in child) child[oninit]({ });
     }
     
     set(key, value) {  // todo: use reducer
@@ -256,23 +232,15 @@ class Core extends Map {
 const Facade = function Facade(core) {
     const thus = this;
     
-    function getFnType(f) {
-        const fn = `${f}`;  // stringify
-        const re = /^[function]*\s*\w*\(.+,\s*(.+)\)\s*[\=\>]*\s*\{/i;  // stop caring after the first "{" of function-body.
-        const [ x, arg="type='unknown'" ] = fn.match(re) || [];
-        const [ y, value ] = arg.split('=');
-        const type = value.replace(/\s*[`'"]/g, '');
-        
-        return type;
-    }
-    
-    function register(component) {
-        const { ['v:type']: type=getFnType(component) } = component;
+    function register(type, component) {
         core.register(type, component);
         return this;
     }
     
     // export precepts
+    this.docket = core.docket;
+    this.types = core.types;
+    this.instances = core.instances;
     this.has = core.has.bind(core);
     this.get = core.get.bind(core);
     this.set = core.set.bind(core);
@@ -284,8 +252,7 @@ const Facade = function Facade(core) {
     this.publish = core.publish.bind(core);
     this.subscribe = core.subscribe.bind(core);
     this.unsubscribe = core.unsubscribe.bind(core);
-    this.bootstrap = core.bootstrap.bind(core);
-    this.bind = core.bind.bind(core);
+    this.dock = core.dock.bind(core);
     this.register = register;
     
     return this;
@@ -294,9 +261,9 @@ const Facade = function Facade(core) {
 const V = new (function Vertices(core, Facade) {
     var v = Facade.call(v, core);
     
-    function v(component) {
-        if (this instanceof V) return new Vertices(new Core(component), Facade);  // component is an options object.
-        V.register(component);
+    function v(option) {
+        if (this instanceof V) return new Vertices(new Core(option), Facade);  // option is an options object.
+        if (typeof option === 'string') return (component) => V.register(option, component);
         return V;
     }
     
@@ -308,16 +275,13 @@ function handleVerticesBootstrapInvoked(e) {
     Core.compose(data);
 }
 
-function handleVertexLoaded(e) {
-    const { type: event, detail: details } = e;
-    const { v, type, module, selector } = details;
-    const delayed = new Promise( r => setTimeout(r, 250) )  // #delayhack: wait more than 0, which is falsey.
+function handleVertexPropertyChange(e) {
+    const { type: channel, detail: details } = e;
+    const { v, type, selector, outlet, module } = details;
     
-    module.removeEventListener('load', handleVertexLoaded, true);
-    delayed
-        .then( x => v.bootstrap(details) )
-        .then( x => v.bind(module) )
-        .then( x => bootstrap(v, selector, module) )
+    render(details);
+    utilities.delay(20)
+        .then( x => bootstrap(v, selector, outlet) )
         ;
 }
 
@@ -338,8 +302,8 @@ function handleAttributeAttachable(e) {
 
 V
  .subscribe(onverticesbootstrapinvoked, handleVerticesBootstrapInvoked)
- .subscribe(onloaded, handleVertexLoaded)
- .subscribe('attribute:attachable', handleAttributeAttachable)
+ .subscribe(onchange, handleVertexPropertyChange)
+//  .subscribe('attribute:attachable', handleAttributeAttachable)
  ;
 
 export default V;

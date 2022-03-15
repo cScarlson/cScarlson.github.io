@@ -4,6 +4,9 @@ class LIFECYCLE_EVENTS {
     static onactive = 'v:active';
     static onestablished = 'v:established';
     static onloaded = 'v:loaded';
+    static onchange = 'v:property:changed';
+    static onrender = 'v:outlet:rendered';
+    static onattributeattachable = 'attribute:attachable';
     static onmount = 'v:mount';
     static oninit = 'v:init';
 }

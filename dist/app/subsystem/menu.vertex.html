@@ -1,14 +1,34 @@
 
 <script type="module" defer>
-    import { V } from './vertices/core.js';
+    import V, { LIFECYCLE_EVENTS } from './vertices/core.js';
     
     const { log } = console;
+    const { oninit, onmount, onrender } = LIFECYCLE_EVENTS;
     
-    V(function MenuComponent({ self, module, metadata }, type='menu') {
-        const { nextElementSibling: menu } = self;
-        const toggle = menu.querySelector('.menu.control.toggle');
+    V('menu')(function MenuComponent({ self, module, metadata }) {
         
-        function handleToggle (e) {
+        function init() {
+            const menu = module.querySelector('.app.menu');
+            const toggle = menu.querySelector('.menu.control.toggle');
+            
+            this.menu = menu;
+            this.toggle = toggle;
+            toggle.addEventListener('change', this, false);
+            window.addEventListener('hashchange', this, false);
+        }
+        
+        function handleEvent(e) {
+            const { type } = e;
+            const handler = {
+                'change': handleToggle,
+                'hashchange': handleHashchange,
+            }[ type ];
+            
+            if (handler) handler.call(this, e);
+        }
+        
+        function handleToggle(e) {
+            const { menu } = this;
             const { target } = e;
             const { checked } = target;
             const detail = { opened: checked };
@@ -18,7 +38,8 @@
             menu.dispatchEvent(event);
         }
         
-        function handleHashchange (e) {
+        function handleHashchange(e) {
+            const { menu, toggle } = this;
             const detail = { opened: false };
             const event = new CustomEvent('menu:state', { detail });
             
@@ -26,35 +47,24 @@
             menu.dispatchEvent(event);
         }
         
-        // OPERATIONS
-        toggle.addEventListener('change', handleToggle, false);
-        window.addEventListener('hashchange', handleHashchange, false);
+        // export precepts
+        this.menu = null;
+        this.toggle = null;
+        this[onrender] = init;
+        this.handleEvent = handleEvent;
         
         return this;
     });
 </script>
 
-<div class="app menu">
-    <input class="menu control toggle" type="checkbox" />
-    <span class="menu icon">&#8801;</span>
-    <slot class="menu canvas" name="menu">
-        <div>
-            <a href="#/noop/">Home</a>
-        </div>
-        <div>
-            <a href="#/noop/app/about">About</a>
-        </div>
-        <div>
-            <a href="#/noop/app/resume">Resume</a>
-        </div>
-        <div>
-            <a href="#/noop/app/cv">Curriculum Vitae</a>
-        </div>
-        <div>
-            <a href="#/noop/app/footer">More</a>
-        </div>
-    </slot>
-</div>
+<outlet></outlet>
+<template>
+    <div class="app menu">
+        <input class="menu control toggle" type="checkbox" />
+        <span class="menu icon">&#8801;</span>
+        <slot class="menu canvas" name="menu"></slot>
+    </div>
+</template>
 
 <style>
     :root {

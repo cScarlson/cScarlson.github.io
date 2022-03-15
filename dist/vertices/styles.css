@@ -9,7 +9,9 @@
     scroll-behavior: smooth;
 }
 
-module {
+module, outlet {
     display: block;
+    height: fit-content;
+    /* height: 100%; */
 }
 

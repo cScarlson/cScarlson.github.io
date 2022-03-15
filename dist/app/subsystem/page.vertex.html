@@ -5,17 +5,18 @@
     const { log, warn, error } = console;
     const { onmount } = LIFECYCLE_EVENTS;
     
-    V(class PageComponent {
-        static ['v:type'] = 'page';
-        constructor({ self, module, metadata }) {}
-        [onmount]({ module, metadata }) {}
+    V('page')(function PageComponent({ self, module, metadata }) {
+        return this;
     });
 </script>
 
-<section class="app page">
-    <h1 class="page title"><slot name="title"></slot></h1>
-    <slot class="page content" name="content"></slot>
-</section>
+<outlet></outlet>
+<template>
+    <section class="app page">
+        <h1 class="page title"><slot name="title"></slot></h1>
+        <slot class="page content" name="content"></slot>
+    </section>
+</template>
 
 <style>
     .app.page {

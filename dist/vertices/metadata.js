@@ -1,6 +1,6 @@
 
 const Metadata = function Metadata(options={}) {
-    const { v, src, type, self, slots, module, script, outlet, render, handler, template, selector, children, contents, instance, attributes, interpolate } = { ...this, ...options };
+    const { v, src, type, self, view, slots, module, script, outlet, render, handler, template, selector, children, contents, instance, attributes, interpolate } = { ...this, ...options };
     const thus = this;
     
     // export precepts
@@ -8,6 +8,7 @@ const Metadata = function Metadata(options={}) {
     this.src = src;
     this.type = type;
     this.self = self;
+    this.view = view;
     this.slots = slots;
     this.module = module;
     this.script = script;

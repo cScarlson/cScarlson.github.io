@@ -48,7 +48,7 @@ class VertexProxyHandler {
         const { v } = details;
         const result = Reflect.set(target, key, value, receiver);
         
-        v.publish(onchange, details);
+        v.publish(onchange, { key, details });
         
         return result;
     }
@@ -73,6 +73,146 @@ class VertexProxyHandler {
 class Context {
     [onmount]() {}
     [oninit]() {}
+}
+
+class VirtualNode {
+    
+    constructor(options={}, parent) {
+        const { node } = { ...this, ...options };
+        const { nodeType } = node;
+        const Model = {
+            [Node.ELEMENT_NODE]: VirtualElementNode,
+            [Node.TEXT_NODE]: VirtualTextNode,
+            [Node.ATTRIBUTE_NODE]: VirtualAttributeNode,
+        }[ nodeType ];
+        
+        if (!Model) return this;
+        return new Model(options, parent);
+    }
+    
+}
+
+class AbstractVirtualNode {
+    static network = new EventTarget();
+    parent = null;
+    template = null;
+    node = null;
+    nodeType = -1;
+    
+    constructor(options={}, parent) {
+        const { node } = { ...this, ...options };
+        const { nodeType } = node;
+        var parent = parent || this;
+        
+        this.parent = parent;
+        this.template = node;
+        this.node = node;
+        this.nodeType = nodeType;
+        
+        return this;
+    }
+    
+    notify(key, instance) {
+        return this;
+    }
+    
+}
+
+class VirtualElementNode extends AbstractVirtualNode {
+    tagName = 'NONE';
+    $attributes = new Map();
+    $children = new Map();
+    get attributes() { return Array.from( this.$attributes.values() ) }
+    get children() { return Array.from( this.$children.values() ) }
+    
+    constructor(options={}, parent) {
+        super(options, parent);
+        const { node } = { ...this, ...options };
+        const { tagName, attributes, childNodes } = node;
+        
+        this.tagName = tagName;
+        this.setAttr(...attributes);
+        this.setChild(...childNodes);
+        
+        return this;
+    }
+    
+    setAttr(attr, ...more) {
+        if (!attr) return attr;
+        const { $attributes } = this;
+        const { name } = attr;
+        const view = new VirtualNode({ node: attr }, this);
+        
+        $attributes.set(name, view);
+        if (more.length) return this.setAttr(...more);
+        return attr;
+    }
+    
+    setChild(node, ...more) {
+        if (!node) return node;
+        const { $children } = this;
+        const view = new VirtualNode({ node }, this);
+        
+        $children.set(node, view);
+        if (more.length) return this.setChild(...more);
+        return node;
+    }
+    
+    notify(key, instance) {
+        const { children, attributes } = this;
+        
+        for (let attr of attributes) attr.notify(key, instance);
+        for (let child of children) child.notify(key, instance);
+        
+        return this;
+    }
+    
+}
+
+class VirtualTextNode extends AbstractVirtualNode {
+    data = '';
+    
+    constructor(options={}, parent) {
+        super(options, parent);
+        const { node } = { ...this, ...options };
+        const { data } = node;
+        
+        this.data = data;
+        
+        return this;
+    }
+    
+    notify(key, instance) {
+        const { template, node, data } = this;
+        const variable = `$\{${key}\}`, re = `\\$\\{${key}\\}`;
+        const exp = new RegExp(re, 'gm');
+        const eligible = exp.test(data);
+        
+        if (eligible) node.data = utilities.interpolate(variable)(instance);
+        
+        return this;
+    }
+    
+}
+
+class VirtualAttributeNode extends AbstractVirtualNode {
+    owner = null;
+    name = '';
+    value = '';
+    expression = /^\[(.+)\]$/;
+    
+    constructor(options={}, owner) {
+        super(options);
+    }
+    
+    notify(key, instance) {
+        // if not expression.test(): return
+        // else if value is key: node.parentElement[ expression.$1 ] = instance[value] (note: don't use parentElement.setAttribute! it will overwrite the instruction)
+        // should Proxy use get and return <module>-value for instance?
+        const { node, name, value } = this;
+        return this;
+    }
+    
 }
 
 function load(options) {
@@ -122,6 +262,7 @@ function iterate(solutions) {
     const resolutions = solutions
         .map(inject)
         .map(select)
+        .map(virtualize)
         .map(clone)
         .map(addEventListener)
         .map(activate)  // notifications are unnecessary before this point.
@@ -129,6 +270,34 @@ function iterate(solutions) {
     const promises = Promise.all(resolutions).catch(katch);
     
     return promises;
+}
+
+function inject(details) {  // creates initial DOM Nodes.
+    const { module, contents } = details;
+    module.innerHTML = contents;  // CAUTION! setting innerHTML in Chrome is asynchronous op.
+    return details;
+}
+
+function select(details) {
+    const { module } = details;
+    const script = module.querySelector('script');
+    const outlet = module.querySelector('[--template]');
+    const template = module.querySelector('template');
+    
+    return Metadata.call(details, { script, outlet, template });
+}
+
+function virtualize(details) {
+    const { module, template, outlet } = details;
+    const view = new VirtualNode({ node: outlet });
+    
+    return Metadata.call(details, { view });
+}
+
+function clone(details) {
+    const { script } = details;
+    const self = document.createElement('script');
+    return Metadata.call(details, { script, self });
 }
 
 function addEventListener(details) {
@@ -161,27 +330,6 @@ function addEventListener(details) {
     module.addEventListener('load', handleVertexLoaded, true);
     
     return details;
-}
-
-function inject(details) {  // creates initial DOM Nodes.
-    const { module, contents } = details;
-    module.innerHTML = contents;  // CAUTION! setting innerHTML in Chrome is asynchronous op.
-    return details;
-}
-
-function select(details) {
-    const { module } = details;
-    const script = module.querySelector('script');
-    const outlet = module.querySelector('outlet');
-    const template = module.querySelector('template');
-    
-    return Metadata.call(details, { script, outlet, template });
-}
-
-function clone(details) {
-    const { script } = details;
-    const self = document.createElement('script');
-    return Metadata.call(details, { script, self });
 }
 
 function slot(details) {
@@ -243,24 +391,28 @@ function render(details) {
     
 function create(details) {  // refactor this.create into load.js?
     if ( !details.module.hasAttribute('type') ) return this;  // used as partial/include. don't create.
-    const { v, type, module, attributes, self, outlet, template, instance: previous } = details;
+    const { v, type, module, attributes, self, outlet, template, view, instance: previous } = details;
     const { types, instances } = v;
-    const { innerHTML: tpl } = template;
+    // const { innerHTML: tpl } = template;
     const component = types.get(type);
     const detail = { self, module, metadata: details };
     const e = new CustomEvent(onmount, { detail });
     const handler = new VertexProxyHandler(details);
     const context = new Proxy({ ...previous }, handler);
     const instance = component.call(context, detail);
-    const interpolate = utilities.interpolate(tpl);
-    const result = Metadata.call(details, { instance, interpolate, handler });
+    // const interpolate = utilities.interpolate(tpl);
+    const result = Metadata.call(details, { instance, handler });
     
-    render(result);
+    // render(result);
+    // log(`--------------------`, outlet.childNodes = view.node.childNodes);
+    // for (let child of view.node.childNodes) log(child);
+    // for (let child of view.node.childNodes) outlet.appendChild(child);
     if (onmount in instance) instance[onmount](detail);
     instances.set(module, instance);
-    template.remove();
+    // template.remove();
     handler.init();  // keeps handler from triggering onchange during setup (module implementation).
     self.dispatchEvent(e);
+    for (let key in instance) if ( !(instance[key] instanceof Function) ) view.notify(key, instance);
     
     return result;
 }

@@ -276,34 +276,16 @@ function handleVerticesBootstrapInvoked(e) {
 }
 
 function handleVertexPropertyChange(e) {
-    const { type: channel, detail: details } = e;
-    const { v, type, selector, outlet, module } = details;
+    const { type: channel, detail: data } = e;
+    const { key, details } = data;
+    const { v, type, view, selector, outlet, module, instance } = details;
     
-    render(details);
-    utilities.delay(20)
-        .then( x => bootstrap(v, selector, outlet) )
-        ;
-}
-
-function handleAttributeAttachable(e) {
-    const { detail: data } = e;
-    const { core, child, parent, attribute, key, value } = data;
-    const { instances, databindings } = core;
-    const { module } = child;
-    const { module: source } = parent;
-    const instance = instances.get(source);
-    const has = databindings.has(module);
-    const deference = { module, parent: instance, assignments: new Map() };
-    
-    if (!has) databindings.set(module, deference);
-    databindings.get(module).assignments.set(key, { key, value, attribute });
-    log(`... ... ... EVENT`, module.getAttribute('type'), key);
+    view.notify(key, instance);
 }
 
 V
  .subscribe(onverticesbootstrapinvoked, handleVerticesBootstrapInvoked)
  .subscribe(onchange, handleVertexPropertyChange)
-//  .subscribe('attribute:attachable', handleAttributeAttachable)
  ;
 
 export default V;

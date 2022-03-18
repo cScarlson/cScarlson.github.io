@@ -10,13 +10,10 @@
     });
 </script>
 
-<outlet></outlet>
-<template>
-    <section class="app page">
-        <h1 class="page title"><slot name="title"></slot></h1>
-        <slot class="page content" name="content"></slot>
-    </section>
-</template>
+<section --template class="app page">
+    <h1 class="page title"><slot name="title"></slot></h1>
+    <slot class="page content" name="content"></slot>
+</section>
 
 <style>
     .app.page {

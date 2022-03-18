@@ -57,14 +57,11 @@
     });
 </script>
 
-<outlet></outlet>
-<template>
-    <div class="app menu">
-        <input class="menu control toggle" type="checkbox" />
-        <span class="menu icon">&#8801;</span>
-        <slot class="menu canvas" name="menu"></slot>
-    </div>
-</template>
+<div --template class="app menu">
+    <input class="menu control toggle" type="checkbox" />
+    <span class="menu icon">&#8801;</span>
+    <slot class="menu canvas" name="menu"></slot>
+</div>
 
 <style>
     :root {

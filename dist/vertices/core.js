@@ -50,30 +50,7 @@ class ModuleComposite extends Composite {
         const { parent, module } = this;
         const { attributes } = module;
         
-        // log(`@.........`, module, module.attributes, attributes)
-        if (module !== document) this.bind(...attributes);
-        
         return this;
-    }
-    
-    bind(attribute, ...more) {
-        if (!attribute) return attribute;
-        const { parent, exp } = this;
-        const { name, value } = attribute;
-        const attachable = this.test(attribute);
-        const [ x, key ] = name.match(exp) || [];
-        
-        if (attachable) this.publish('attribute:attachable', { child: this, parent, attribute, key, value });
-        if (more.length) return this.bind(...more);
-        return attribute;
-    }
-    
-    test(attribute) {
-        const { exp } = this;
-        const { name } = attribute;
-        const result = exp.test(name);
-        
-        return result;
     }
     
     publish(channel, data) {
@@ -95,7 +72,7 @@ class ModuleComposite extends Composite {
 }
 
 class Core extends Map {
-    static composite = new ModuleComposite({ type: 'ROOT', module: document });
+    static composite = new ModuleComposite({ type: 'ROOT', module: document, instance: {} });
     static network = new EventTarget();
     observers = new Set();
     network = new EventTarget();

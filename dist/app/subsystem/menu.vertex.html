@@ -15,6 +15,7 @@
             this.toggle = toggle;
             toggle.addEventListener('change', this, false);
             window.addEventListener('hashchange', this, false);
+            log(`@menu`, this.menutest, this.menuTest);
         }
         
         function handleEvent(e) {
@@ -51,6 +52,7 @@
         this.menu = null;
         this.toggle = null;
         this[onrender] = init;
+        this['watch:menutest'] = (...a) => log(...a);
         this.handleEvent = handleEvent;
         
         return this;

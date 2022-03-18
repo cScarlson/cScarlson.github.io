@@ -1,10 +1,10 @@
 
 import { LIFECYCLE_EVENTS } from './events.js';
 import { Metadata } from './metadata.js';
+import { VirtualNode } from './virtualnode.js';
 import utilities from './utilities/utilities.js';
 /* ================================================================================================================================
 THIS FILE NEED MORE ATTENTION.
-    * There are object (im)mutability problems with map-returns.
     * There are ugly hacks to circumvent Race Conditions.
 PROBLEM IS.
     * Google Chrome (and others?) perform setting an element's innerHTML asynchronously.
@@ -53,6 +53,17 @@ class VertexProxyHandler {
         return result;
     }
     
+    get(target, key, receiver) {
+        const { details } = this;
+        const { module } = details;
+        const value = module[key];
+        const has = (key in target);
+        
+        if (has) return Reflect.get(target, key, receiver);  // prefer normative accessor
+        if (value instanceof Function) return value.bind(module);  // allow vertices to invoke methods on its <module>
+        return value;
+    }
+    
     init() {
         this.force(true);
         return this;
@@ -73,146 +84,6 @@ class VertexProxyHandler {
 class Context {
     [onmount]() {}
     [oninit]() {}
-}
-
-class VirtualNode {
-    
-    constructor(options={}, parent) {
-        const { node } = { ...this, ...options };
-        const { nodeType } = node;
-        const Model = {
-            [Node.ELEMENT_NODE]: VirtualElementNode,
-            [Node.TEXT_NODE]: VirtualTextNode,
-            [Node.ATTRIBUTE_NODE]: VirtualAttributeNode,
-        }[ nodeType ];
-        
-        if (!Model) return this;
-        return new Model(options, parent);
-    }
-    
-}
-
-class AbstractVirtualNode {
-    static network = new EventTarget();
-    parent = null;
-    template = null;
-    node = null;
-    nodeType = -1;
-    
-    constructor(options={}, parent) {
-        const { node } = { ...this, ...options };
-        const { nodeType } = node;
-        var parent = parent || this;
-        
-        this.parent = parent;
-        this.template = node;
-        this.node = node;
-        this.nodeType = nodeType;
-        
-        return this;
-    }
-    
-    notify(key, instance) {
-        return this;
-    }
-    
-}
-
-class VirtualElementNode extends AbstractVirtualNode {
-    tagName = 'NONE';
-    $attributes = new Map();
-    $children = new Map();
-    get attributes() { return Array.from( this.$attributes.values() ) }
-    get children() { return Array.from( this.$children.values() ) }
-    
-    constructor(options={}, parent) {
-        super(options, parent);
-        const { node } = { ...this, ...options };
-        const { tagName, attributes, childNodes } = node;
-        
-        this.tagName = tagName;
-        this.setAttr(...attributes);
-        this.setChild(...childNodes);
-        
-        return this;
-    }
-    
-    setAttr(attr, ...more) {
-        if (!attr) return attr;
-        const { $attributes } = this;
-        const { name } = attr;
-        const view = new VirtualNode({ node: attr }, this);
-        
-        $attributes.set(name, view);
-        if (more.length) return this.setAttr(...more);
-        return attr;
-    }
-    
-    setChild(node, ...more) {
-        if (!node) return node;
-        const { $children } = this;
-        const view = new VirtualNode({ node }, this);
-        
-        $children.set(node, view);
-        if (more.length) return this.setChild(...more);
-        return node;
-    }
-    
-    notify(key, instance) {
-        const { children, attributes } = this;
-        
-        for (let attr of attributes) attr.notify(key, instance);
-        for (let child of children) child.notify(key, instance);
-        
-        return this;
-    }
-    
-}
-
-class VirtualTextNode extends AbstractVirtualNode {
-    data = '';
-    
-    constructor(options={}, parent) {
-        super(options, parent);
-        const { node } = { ...this, ...options };
-        const { data } = node;
-        
-        this.data = data;
-        
-        return this;
-    }
-    
-    notify(key, instance) {
-        const { template, node, data } = this;
-        const variable = `$\{${key}\}`, re = `\\$\\{${key}\\}`;
-        const exp = new RegExp(re, 'gm');
-        const eligible = exp.test(data);
-        
-        if (eligible) node.data = utilities.interpolate(variable)(instance);
-        
-        return this;
-    }
-    
-}
-
-class VirtualAttributeNode extends AbstractVirtualNode {
-    owner = null;
-    name = '';
-    value = '';
-    expression = /^\[(.+)\]$/;
-    
-    constructor(options={}, owner) {
-        super(options);
-    }
-    
-    notify(key, instance) {
-        // if not expression.test(): return
-        // else if value is key: node.parentElement[ expression.$1 ] = instance[value] (note: don't use parentElement.setAttribute! it will overwrite the instruction)
-        // should Proxy use get and return <module>-value for instance?
-        const { node, name, value } = this;
-        return this;
-    }
-    
 }
 
 function load(options) {
@@ -289,7 +160,7 @@ function select(details) {
 
 function virtualize(details) {
     const { module, template, outlet } = details;
-    const view = new VirtualNode({ node: outlet });
+    const view = new VirtualNode({ details, node: outlet });
     
     return Metadata.call(details, { view });
 }
@@ -393,26 +264,19 @@ function create(details) {  // refactor this.create into load.js?
     if ( !details.module.hasAttribute('type') ) return this;  // used as partial/include. don't create.
     const { v, type, module, attributes, self, outlet, template, view, instance: previous } = details;
     const { types, instances } = v;
-    // const { innerHTML: tpl } = template;
     const component = types.get(type);
     const detail = { self, module, metadata: details };
     const e = new CustomEvent(onmount, { detail });
     const handler = new VertexProxyHandler(details);
     const context = new Proxy({ ...previous }, handler);
     const instance = component.call(context, detail);
-    // const interpolate = utilities.interpolate(tpl);
     const result = Metadata.call(details, { instance, handler });
     
-    // render(result);
-    // log(`--------------------`, outlet.childNodes = view.node.childNodes);
-    // for (let child of view.node.childNodes) log(child);
-    // for (let child of view.node.childNodes) outlet.appendChild(child);
+    for (let key in instance) if ( !(instance[key] instanceof Function) ) view.notify(key, instance);
     if (onmount in instance) instance[onmount](detail);
     instances.set(module, instance);
-    // template.remove();
     handler.init();  // keeps handler from triggering onchange during setup (module implementation).
     self.dispatchEvent(e);
-    for (let key in instance) if ( !(instance[key] instanceof Function) ) view.notify(key, instance);
     
     return result;
 }

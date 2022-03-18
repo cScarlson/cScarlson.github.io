@@ -42,7 +42,7 @@
             const handler = {
                 'menu:state': handleMenuState,
                 'hashchange': handleHashchange,
-                'input': (e) => log(`on${type}`, this.test = e.target.value),
+                'input': (e) => e.target.matches('#input') ? log(`on${type}`, this.test = e.target.value) : '',
             }[ type ];
             
             if (handler) handler.call(this, e);
@@ -64,7 +64,7 @@
         }
         
         // export precepts
-        this.test = 'totally tested!';
+        this.test = 'unidirectional databinding';
         this.$content = $content;
         this[onmount] = init;
         this.handleEvent = handleEvent;
@@ -98,11 +98,13 @@
         </module>
     </header>
     <main class="app content">
-        <h1>${test}</h1>
-        <input id="input" [value]="test">
         <div class="content canvas">
             <module id="/" type="page">
                 <span slot="title">Home</span>
+                <div slot="content">
+                    <h1>${test}</h1>
+                    <input id="input" [value]="test">
+                </div>
             </module>
         </div>
     </main>

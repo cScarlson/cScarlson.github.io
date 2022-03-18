@@ -51,7 +51,7 @@
         // export precepts
         this.menu = null;
         this.toggle = null;
-        this[onrender] = init;
+        this[onmount] = init;
         this['watch:menutest'] = (...a) => log(...a);
         this.handleEvent = handleEvent;
         

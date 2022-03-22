@@ -1,6 +1,6 @@
 
 import { LIFECYCLE_EVENTS } from './events.js';
-import { bootstrap, render } from './load.js';
+import { bootstrap } from './load.js';
 import { Metadata } from './metadata.js';
 import { ModuleComposite as Composite } from './module-composite.js';
 import utilities from './utilities/utilities.js';
@@ -72,13 +72,13 @@ class ModuleComposite extends Composite {
 }
 
 class Core extends Map {
-    static composite = new ModuleComposite({ type: 'ROOT', module: document, instance: {} });
+    static composite = new ModuleComposite({ type: 'ROOT', module: document, model: {} });
     static network = new EventTarget();
     observers = new Set();
     network = new EventTarget();
     store = new EventTarget();
     types = new Map();
-    instances = new Map();
+    models = new Map();
     databindings = new Map();
     docket = new Map();
     get state() { return Object.fromEntries(this) }
@@ -123,9 +123,9 @@ class Core extends Map {
     
     bind(module) {
         if ( !this.databindings.has(module) ) return module;
-        const { databindings, instances } = this;
+        const { databindings, models } = this;
         const { parent, assignments } = databindings.get(module);
-        const child = instances.get(module);
+        const child = models.get(module);
         const attributes = [ ...assignments.values() ].reduce(reduce, { });
         const e = new CustomEvent(oninit);
         
@@ -151,7 +151,7 @@ class Core extends Map {
         return this;
     }
     
-    attach(observer=() => {}, notify=true) {
+    attach(observer=()=>{}, notify=true) {
         const { observers, state } = this;
         
         observers.add(observer);
@@ -217,7 +217,7 @@ const Facade = function Facade(core) {
     // export precepts
     this.docket = core.docket;
     this.types = core.types;
-    this.instances = core.instances;
+    this.models = core.models;
     this.has = core.has.bind(core);
     this.get = core.get.bind(core);
     this.set = core.set.bind(core);
@@ -255,9 +255,9 @@ function handleVerticesBootstrapInvoked(e) {
 function handleVertexPropertyChange(e) {
     const { type: channel, detail: data } = e;
     const { key, details } = data;
-    const { v, type, view, selector, outlet, module, instance } = details;
+    const { v, type, selector, module, model, view, controller } = details;
     
-    view.notify(key, instance);
+    controller.notify(key, model);
 }
 
 V

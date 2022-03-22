@@ -10,23 +10,6 @@ PROBLEM IS.
     * Google Chrome (and others?) perform setting an element's innerHTML asynchronously.
     * See "addEventListener" (map) for more information.
 ================================================================================================================================ */
-/* ================================================================================================================================
-PROCESS PIPELINE
-         _______________________________________________________________________
-        |                                                                       |
-        |    RECURSIVE                                                          |
-        V                                                                       |
-bootstrap(modules)                                                              |
-        get(url)                                                                |
-            inject(contents)                                                    |
-                select(script, template, outlet)                                |
-                    activate(script)                                            |
-                        (register)                                              |
-                        onload: v.bootstrap(instance)                           |
-                            render(template, outlet)                            |
-                                slot(outlet, children)                          |
-                                    bootstrap( outlet.querySelectorAll(modules) )
-================================================================================================================================ */
 
 
 const { log, warn, error } = console;
@@ -34,7 +17,7 @@ const { onverticesbootstrapinvoked, onestablished, onloaded, onmount, oninit, on
 const ERROR_MODULE_UNDEFINED = new Error(`Load encountered undefined instead of module`);
 const cache = new Map();
 
-class VertexProxyHandler {
+class VertexProxyHandler {  // todo: for collections, return collection of proxy objects. for objects, return proxy. (break VertexProxyHandler into multiple classes).
     initialized = false;
     details = { };
     
@@ -43,11 +26,18 @@ class VertexProxyHandler {
     }
     
     set(target, key, value, receiver) {
-        if (!this.initialized) return Reflect.set(target, key, value, receiver);
+        if (!this.initialized) return Reflect.set(target, key, value, receiver);  // todo: return this.setInitial(target, key, value, receiver). (see if's below)
         const { details } = this;
         const { v } = details;
         const result = Reflect.set(target, key, value, receiver);
         
+        // |
+        // | these need to exist in both this.set & this.setInitial.
+        // V
+        if (value.push) log(`@@@@...is-array. create proxy for length-change`, value);
+        if (value.push) log(`@@@@...is-array. map each item to proxy for item-change`, value);
+        if (value.toString() === '[object Object]') log(`@@@@...is-object-literal. set to proxy for substructure changes`, value);
+        if (value.size || value.size === 0) log(`@@@@...is-map-or-set. set to proxy for substructure changes`, value);
         v.publish(onchange, { key, details });
         
         return result;
@@ -105,9 +95,9 @@ function initialize(details) {
     const children = [ ...childNodes ];
     const type = module.getAttribute('type');
     const src = docket.has(type) ? docket.get(type) : module.getAttribute('src');
-    const instance = { };
+    const model = { };
     
-    return Metadata.call(details, { children, type, src, attributes, instance });
+    return Metadata.call(details, { children, type, src, attributes, model });
 }
 
 function refetch(src) {
@@ -152,17 +142,15 @@ function inject(details) {  // creates initial DOM Nodes.
 function select(details) {
     const { module } = details;
     const script = module.querySelector('script');
-    const outlet = module.querySelector('[--template]');
-    const template = module.querySelector('template');
+    const view = module.querySelector('[--view]');
     
-    return Metadata.call(details, { script, outlet, template });
+    return Metadata.call(details, { script, view });
 }
 
 function virtualize(details) {
-    const { module, template, outlet } = details;
-    const view = new VirtualNode({ details, node: outlet });
-    
-    return Metadata.call(details, { view });
+    const { module, view } = details;
+    const controller = new VirtualNode({ details, node: view });
+    return Metadata.call(details, { controller });
 }
 
 function clone(details) {
@@ -182,7 +170,7 @@ function addEventListener(details) {
     ].join('\n');
         
     const handleVertexLoaded = (function handleVertexStyleLoaded(e) {
-        const { v, selector, outlet } = this;  // ATTENTION! details bound as this.
+        const { v, selector, view } = this;  // ATTENTION! details bound as this.
         const { target } = e;
         const { parentElement: module } = target;
         
@@ -191,7 +179,7 @@ function addEventListener(details) {
             .then(utilities.delay)
             .then( x => slot(this) )
             .then(utilities.delay)
-            .then( x => bootstrap(v, selector, outlet) )
+            .then( x => bootstrap(v, selector, view) )
             ;
         e.stopImmediatePropagation();  // ensure only one listener hears this as modules can be nested (capture/bubble continues).
         module.removeEventListener('load', handleVertexLoaded, true);
@@ -208,8 +196,8 @@ function slot(details) {
 }
 
 function query(details) {  // gets all <slot>s from within initial DOM scope.
-    const { outlet } = details;
-    const slots = [ ...outlet.querySelectorAll('slot') ];
+    const { view } = details;
+    const slots = [ ...view.querySelectorAll('slot') ];
     return Metadata.call(details, { slots });
 }
 
@@ -246,35 +234,23 @@ function activate(details) {
     
     return details;
 }
-        
-function render(details) {
-    const { v, outlet, module, handler, instance, selector, interpolate } = details;
-    const interpolated = interpolate(instance);
-    
-    outlet.innerHTML = interpolated;
-    handler.force(false);
-    if (onrender in instance) instance[onrender]();
-    handler.toggle();
-    v.publish(onrender, details);
-    
-    return details;
-}
     
 function create(details) {  // refactor this.create into load.js?
     if ( !details.module.hasAttribute('type') ) return this;  // used as partial/include. don't create.
-    const { v, type, module, attributes, self, outlet, template, view, instance: previous } = details;
-    const { types, instances } = v;
+    const { v, type, module, attributes, self, view, controller } = details;
+    const { types, models } = v;
     const component = types.get(type);
     const detail = { self, module, metadata: details };
     const e = new CustomEvent(onmount, { detail });
     const handler = new VertexProxyHandler(details);
-    const context = new Proxy({ ...previous }, handler);
-    const instance = component.call(context, detail);
-    const result = Metadata.call(details, { instance, handler });
+    const context = new Proxy(new Context(), handler);
+    const model = component.call(context, detail);
+    const result = Metadata.call(details, { model, handler });
     
-    for (let key in instance) if ( !(instance[key] instanceof Function) ) view.notify(key, instance);
-    if (onmount in instance) instance[onmount](detail);
-    instances.set(module, instance);
+    // for (let key in model) if ( !(model[key] instanceof Function) ) controller.notify(key, model);
+    controller.initialize(model);
+    if (onmount in model) model[onmount](detail);
+    models.set(module, model);
     handler.init();  // keeps handler from triggering onchange during setup (module implementation).
     self.dispatchEvent(e);
     
@@ -296,4 +272,4 @@ function katch(error) {
     warn(`@LOAD-KATCH`, error);
 }
 
-export { bootstrap, slot, render };
+export { bootstrap, slot };

@@ -15,7 +15,7 @@
             this.toggle = toggle;
             toggle.addEventListener('change', this, false);
             window.addEventListener('hashchange', this, false);
-            log(`@menu`, this.menutest, this.menuTest);
+            log(`@menu`, this.menutest);
         }
         
         function handleEvent(e) {
@@ -59,7 +59,7 @@
     });
 </script>
 
-<div --template class="app menu">
+<div --view class="app menu">
     <input class="menu control toggle" type="checkbox" />
     <span class="menu icon">&#8801;</span>
     <slot class="menu canvas" name="menu"></slot>

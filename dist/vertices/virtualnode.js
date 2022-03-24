@@ -175,10 +175,13 @@ class VirtualElementInstructionNode extends AbstractVirtualElementNode {
         return this;
     }
     
-    clone() {
-        const { details, template, model, $children, alias, key, instruction, position } = this;
+    clone() {  // todo: cleanup. factor out multiline if-else blocks into separate operations.
+        const { details, template, model, $children, alias, key, position } = this;
         const { [key]: collection } = model;
+        const { activeElement } = document;
+        const { selectionStart, selectionEnd, selectionDirection } = activeElement;
         const thus = this;
+        let index;
         
         function scope(item, i) {
             const clone = template.cloneNode(true);
@@ -188,15 +191,28 @@ class VirtualElementInstructionNode extends AbstractVirtualElementNode {
             const data = { ...details, model: proxy };
             
             clone.removeAttribute('+');
-            clone.setAttribute('v-reflect', `${instruction} (${i})`);
+            clone.setAttribute('v-index', `${i}`);
             position.before(clone);
             $children.set( clone, new VirtualNode({ details: data, node: clone }, thus) );  // set manually. create virtuant after removing *[...]
             $children.get(clone).initialize(proxy);
         }
         
+        if (activeElement) index = activeElement.getAttribute('v-index');
         $children.forEach( ({ node: clone }) => clone.remove() );
-        collection.forEach(scope);
-        
+        if ( $children.has(activeElement) ) {
+            $children.clear();
+            collection.forEach(scope);
+            const active = [ ...$children.values() ].map( ({ node }) => node )[index];
+            if (active) {
+                active.selectionStart = selectionStart;
+                active.selectionEnd = selectionEnd;
+                active.selectionDirection = selectionDirection;
+                active.focus();
+            }
+        } else {
+            $children.clear();
+            collection.forEach(scope);
+        }
         return this;
     }
     

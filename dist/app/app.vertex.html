@@ -72,10 +72,10 @@
         this[onmount] = init;
         this.handleEvent = handleEvent;
         log(`@app`, this.matches('[type="app"]'));
-        // setTimeout( x => this.test = `${this.test}!!!`, 2000 );
-        // setTimeout( x => this.items.push({ id: 993, title: 'D' }), 3000 );
-        setTimeout( x => this.items = [ ...this.items, E ], 1000 );
-        setTimeout( x => this.items[3].title = 'GGG', 5000 );
+        setTimeout( x => this.items.push({ id: 993, title: 'D' }), 2000 );
+        setTimeout( x => this.items = [ ...this.items, E ], 3000 );
+        setTimeout( x => this.items[4].title = 'GGG', 4000 );
+        setTimeout( x => this.test = `${this.test}!!!`, 5000 );
         
         return this;
     });

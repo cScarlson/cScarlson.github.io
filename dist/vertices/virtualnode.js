@@ -1,4 +1,5 @@
 
+import { CloneScopeProxyHandler } from './proxy.js';
 import utilities from './utilities/utilities.js';
 
 const { log, warn, error } = console;
@@ -178,28 +179,11 @@ class VirtualElementInstructionNode extends AbstractVirtualElementNode {
         const { [key]: collection } = model;
         const thus = this;
         
-        class CloneScopeProxyHandler {  // todo: move this outta here!
-            details = { };
-            get model() { return this.details.model }
-            
-            constructor(details) {
-                this.details = details;
-            }
-            
-            get(target, key, receiver) {
-                const { model } = this;
-                const has = (key in target);
-                
-                if (has) return Reflect.get(target, key, receiver);
-                return model[key];
-            }
-            
-        }
-        
         function scope(item, i) {
             const clone = node.cloneNode(true);
+            const scope = { [alias]: item };
             const handler = new CloneScopeProxyHandler(details);
-            const proxy = new Proxy({ [alias]: item }, handler);
+            const proxy = new Proxy(scope, handler);
             const data = { ...details, model: proxy };
             
             clone.removeAttribute('+');

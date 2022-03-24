@@ -74,8 +74,8 @@
         log(`@app`, this.matches('[type="app"]'));
         // setTimeout( x => this.test = `${this.test}!!!`, 2000 );
         // setTimeout( x => this.items.push({ id: 993, title: 'D' }), 3000 );
-        setTimeout( x => this.items = [ ...this.items, E ], 3000 );
-        // setTimeout( x => E.title = 'GGG', 3000 );
+        setTimeout( x => this.items = [ ...this.items, E ], 1000 );
+        setTimeout( x => this.items[3].title = 'GGG', 5000 );
         
         return this;
     });
@@ -110,6 +110,9 @@
                 <div slot="content">
                     <h1>${test}</h1>
                     <input id="input" .="value:test">
+                    <div +="item of items">
+                        <input id="input" .="value:test" .="dataset.length:items.length" .="dataset.test:item.title">
+                    </div>
                     <input id="input" .="value:test" +="item of items" .="dataset.length:items.length" .="dataset.test:item.title">
                     <div .="innerHTML:test">...</div>
                     <div>${items.length}</div>

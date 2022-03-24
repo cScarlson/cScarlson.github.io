@@ -158,6 +158,7 @@ class VirtualElementInstructionNode extends AbstractVirtualElementNode {
         this.alias = alias;
         this.key = key;
         node.after(position);
+        node.remove();
         
         return this;
     }
@@ -175,12 +176,12 @@ class VirtualElementInstructionNode extends AbstractVirtualElementNode {
     }
     
     clone() {
-        const { details, node, model, $children, alias, key, instruction, position } = this;
+        const { details, template, model, $children, alias, key, instruction, position } = this;
         const { [key]: collection } = model;
         const thus = this;
         
         function scope(item, i) {
-            const clone = node.cloneNode(true);
+            const clone = template.cloneNode(true);
             const scope = { [alias]: item };
             const handler = new CloneScopeProxyHandler(details);
             const proxy = new Proxy(scope, handler);
@@ -193,9 +194,8 @@ class VirtualElementInstructionNode extends AbstractVirtualElementNode {
             $children.get(clone).initialize(proxy);
         }
         
-        $children.forEach( ({ node }) => node.remove() );
+        $children.forEach( ({ node: clone }) => clone.remove() );
         collection.forEach(scope);
-        node.remove();
         
         return this;
     }

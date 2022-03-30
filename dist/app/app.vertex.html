@@ -72,10 +72,12 @@
         this[onmount] = init;
         this.handleEvent = handleEvent;
         log(`@app`, this.matches('[type="app"]'));
-        setTimeout( x => this.items.push({ id: 993, title: 'D' }), 2000 );
-        setTimeout( x => this.items = [ ...this.items, E ], 3000 );
-        setTimeout( x => this.items[4].title = 'GGG', 4000 );
-        setTimeout( x => this.test = `${this.test}!!!`, 5000 );
+        // setTimeout( x => this.items.push({ id: 993, title: 'D' }), 2000 );
+        // setTimeout( x => this.items = [ ...this.items, E ], 3000 );
+        // setTimeout( x => this.items[4].title = 'GGG', 4000 );
+        setTimeout( x => this.test = `bi${this.test.substring(3)}...?`, 1000 );
+        setTimeout( x => this.items.splice(1, 1, { id: 995, title: 'X' }), 2000 );
+        setTimeout( x => this.items.push(E), 3000 );
         
         return this;
     });
@@ -109,12 +111,9 @@
                 <span slot="title">Home</span>
                 <div slot="content">
                     <h1>${test}</h1>
-                    <input id="input" .="value:test">
                     <div id="theDiv" +="item of items">
                         <input id="input" .="value:test" .="dataset.length:items.length" .="dataset.test:item.title">
                     </div>
-                    <input id="input" .="value:test" +="item of items" .="dataset.length:items.length" .="dataset.test:item.title">
-                    <div .="innerHTML:test">...</div>
                     <div>${items.length}</div>
                     <div .="innerHTML:items.length">...</div>
                     <div +="item of items" .="innerHTML:item.title">...</div>

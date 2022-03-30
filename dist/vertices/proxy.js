@@ -14,12 +14,13 @@ class VertexProxyHandler {  // todo: for collections, return collection of proxy
     }
     
     set(target, key, value, receiver) {
-        if (!this.initialized) return this.setInitial(target, key, value, receiver);  // todo: return this.setInitial(target, key, value, receiver). (see if's below)
+        if (!this.initialized) return this.setInitial(target, key, value, receiver);
         const { details } = this;
         const { v } = details;
         const result = this.reflect(target, key, value, receiver);
         
-        v.publish(onchange, { key, details });
+        log(`@Proxy.set`, key, value);
+        v.publish(onchange, { target, key, value, details });
         
         return result;
     }

@@ -254,10 +254,10 @@ function handleVerticesBootstrapInvoked(e) {
 
 function handleVertexPropertyChange(e) {
     const { type: channel, detail: data } = e;
-    const { key, details } = data;
+    const { target, key, value, details } = data;
     const { v, type, selector, module, model, view, controller } = details;
     
-    controller.notify(key, model);
+    controller.notify({ ...data, model });
 }
 
 V

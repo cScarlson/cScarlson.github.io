@@ -19,8 +19,8 @@ class VirtualNode {
             [Node.ATTRIBUTE_NODE]: VirtualAttributeNode,
         }[ nodeType ];
         
-        if (!Model) return this;
-        return new Model(options, parent);
+        if (Model) return new Model(options, parent);
+        return this;
     }
     
 }
@@ -51,11 +51,11 @@ class AbstractVirtualNode {
         return this;
     }
     
-    initialize(model) {
+    initialize({ model }) {
         return this;
     }
     
-    notify(key, model) {
+    notify({ target, key, value, model, details }) {
         return this;
     }
     
@@ -65,12 +65,11 @@ class VirtualElementNode extends AbstractVirtualNode {
     
     constructor(options={}, parent) {
         super(options, parent);
-        const { node } = { ...this, ...options };
-        const isLoopInstruction = node.hasAttribute('+');
-        const isLoopDerivative = node.matches('[v-reflect]');
+        const { node, derivative } = { ...this, ...options };
+        const instructive = node.hasAttribute('+');
         
-        if (isLoopInstruction) return new VirtualElementInstructionNode(options, parent);
-        if (isLoopDerivative) return new VirtualElementInstructionDerivativeNode(options, parent);
+        if (instructive) return new VirtualElementInstructionNode(options, parent);
+        if (derivative) return new VirtualElementInstructionDerivativeNode(options, parent);
         return new AbstractVirtualElementNode(options, parent);
     }
     
@@ -116,20 +115,20 @@ class AbstractVirtualElementNode extends AbstractVirtualNode {
         return node;
     }
     
-    initialize(model) {
+    initialize({ model }) {
         const { children, attributes } = this;
         
-        for (let attr of attributes) attr.initialize(model);
-        for (let child of children) child.initialize(model);
+        for (let attr of attributes) attr.initialize({ model });
+        for (let child of children) child.initialize({ model });
         
         return this;
     }
     
-    notify(key, model) {
+    notify({ target, key, value, model, details }) {
         const { children, attributes } = this;
         
-        for (let attr of attributes) attr.notify(key, model);
-        for (let child of children) child.notify(key, model);
+        for (let attr of attributes) attr.notify({ target, key, value, model, details });
+        for (let child of children) child.notify({ target, key, value, model, details });
         
         return this;
     }
@@ -138,7 +137,8 @@ class AbstractVirtualElementNode extends AbstractVirtualNode {
 
 class VirtualElementInstructionNode extends AbstractVirtualElementNode {
     expression = /^(.+)\sof\s(.+)$/;
-    position = document.createComment('');
+    start = document.createComment('');
+    end = document.createComment('');
     clones = new Set();
     alias = '';
     key = '';
@@ -146,95 +146,125 @@ class VirtualElementInstructionNode extends AbstractVirtualElementNode {
     
     constructor(options={}, parent) {
         super(options, parent);
-        const { expression, node, position } = { ...this, ...options };
+        const { expression, node, start } = { ...this, ...options };
         const { attributes } = node;
         const { '+': attr } = attributes;
         const { name, value: instruction } = attr;
         const [ x, alias, key ] = expression.exec(instruction) || [ ];
         const comment = `v: ${name}="${instruction}"`;
         
-        position.data = comment;
+        start.data = comment;
         this.instruction = instruction;
         this.alias = alias;
         this.key = key;
-        node.after(position);
+        node.after(start);
         node.remove();
         
         return this;
     }
     
-    initialize(model) {
-        this.clone();
-        super.initialize(model);
+    initialize(data) {
+        this.clone(data);
+        super.initialize(data);
         return this;
     }
     
-    notify(key, model) {
-        this.clone();
-        super.notify(key, model);
+    notify(data) {
+        this.remodel(data);
+        super.notify(data);
         return this;
     }
     
-    clone() {  // todo: cleanup. factor out multiline if-else blocks into separate operations.
-        const { details, template, model, $children, alias, key, position } = this;
-        const { [key]: collection } = model;
-        const { activeElement } = document;
-        const { selectionStart, selectionEnd, selectionDirection } = activeElement;
-        const thus = this;
-        let index;
+    remodel(data) {
+        if (data.key === 'length') return log(`remodel #key`, this.model[this.key].length, this.$children.size);
         
-        function scope(item, i) {
+        function resolve(child, i) {
+            if (i != data.key) return log(`dismissing`, i, data.key);
+            const { model, key } = this;
+            const { [key]: collection } = model;
+            const { [i]: item } = collection;
+            const scope = this.scope(item);
+            
+            child.remodel(scope);
+        }
+        
+        this.children.forEach( resolve.bind(this) );
+        
+        return this;
+    }
+    
+    clone(data) {
+        const { model, $children, key } = this;
+        const { [key]: collection } = model;
+        
+        function attach(item, index) {
+            const { details, template, $children, alias, key, start } = this;
             const clone = template.cloneNode(true);
-            const scope = { [alias]: item };
-            const handler = new CloneScopeProxyHandler(details);
-            const proxy = new Proxy(scope, handler);
+            const proxy = this.scope(item);
             const data = { ...details, model: proxy };
             
             clone.removeAttribute('+');
-            clone.setAttribute('v-index', `${i}`);
-            position.before(clone);
-            $children.set( clone, new VirtualNode({ details: data, node: clone }, thus) );  // set manually. create virtuant after removing *[...]
-            $children.get(clone).initialize(proxy);
+            clone.setAttribute('v-index', `${index}`);
+            start.before(clone);
+            $children.set( clone, new VirtualNode({ details: data, node: clone, alias, key, collection, index, derivative: true }, this) );  // set manually. create virtuant after removing *[...]
+            $children.get(clone).initialize({ model: proxy });
         }
         
-        if (activeElement) index = activeElement.getAttribute('v-index');
-        $children.forEach( ({ node: clone }) => clone.remove() );
-        if ( $children.has(activeElement) ) {
-            $children.clear();
-            collection.forEach(scope);
-            const active = [ ...$children.values() ].map( ({ node }) => node )[index];
-            if (active) {
-                active.selectionStart = selectionStart;
-                active.selectionEnd = selectionEnd;
-                active.selectionDirection = selectionDirection;
-                active.focus();
-            }
-        } else {
-            $children.clear();
-            collection.forEach(scope);
-        }
+        $children.clear();
+        collection.forEach( attach.bind(this) );
+        
         return this;
+    }
+    
+    scope(item) {
+        const { details, alias } = this;
+        const scope = { [alias]: item };
+        const handler = new CloneScopeProxyHandler(details);
+        const proxy = new Proxy(scope, handler);
+        
+        return proxy;
     }
     
 }
 
 class VirtualElementInstructionDerivativeNode extends AbstractVirtualElementNode {
+    alias = '';
+    key = '';
+    index = -1;
+    collection = [ ];
     
     constructor(options={}, parent) {
         super(options, parent);
-        const { node } = { ...this, ...options };
+        const { node, alias, key, index, collection } = { ...this, ...options };
+        
+        this.alias = alias;
+        this.key = key;
+        this.index = index;
+        this.collection = collection;
+        
         return this;
     }
     
-    initialize() {
+    initialize(data) {
         const { model } = this;
-        super.initialize(model);
+        super.initialize({ model });
         return this;
     }
     
-    notify(key) {
-        const { model } = this;
-        super.notify(key, model);
+    remodel(model) {
+        this.details.model = model;
+        super.notify({ model });
+        return this;
+    }
+    
+    notifyX(data) {
+        if (data.key === 'length') return this;
+        const { model, index } = this;
+        const { key } = data;
+        
+        if (data.target instanceof Array && data.key == this.index) super.notify({ ...data, model: { [this.alias]: this.collection[key] } }, 'test');
+        else super.notify({ ...data, model });
+        
         return this;
     }
     
@@ -254,21 +284,22 @@ class VirtualTextNode extends AbstractVirtualNode {
         return this;
     }
     
-    initialize(model) {
-        const { expression, data } = this;
-        const variables = (data.match(expression) || []).map( placeholder => placeholder.replace(/[${}]/g, '') );
+    initialize(data) {
+        const { expression, data: text } = this;
+        const variables = (text.match(expression) || []).map( placeholder => placeholder.replace(/[${}]/g, '') );
         
         if (!variables.length) return this;
-        for (let key of variables) this.notify(key, model);
+        for (let key of variables) this.notify({ ...data, key });
         
         return this;
     }
     
-    notify(key, model) {
+    notify(data, test) {
         const { template, node } = this;
-        const { data } = template;
-        
-        node.data = utilities.interpolate(data)(model);
+        const { model } = data;
+        const { data: text } = template;
+        if (test) log(`TEXT`, test, model, node);
+        node.data = utilities.interpolate(text)(model);
         
         return this;
     }
@@ -313,7 +344,7 @@ class AbstractVirtualAttributeNode extends AbstractVirtualNode {
         return this;
     }
     
-    notify(key, model) {
+    notify(data) {  // todo: delete me?
         return this;
     }
     
@@ -336,21 +367,23 @@ class VirtualAttributeBindingNode extends AbstractVirtualAttributeNode {
         return this;
     }
     
-    initialize(model) {
+    initialize(data) {
         const { property, namespace } = this;
-        this.notify(namespace, model);
+        this.notify({ ...data, key: namespace });
         return this;
     }
     
-    notify(key) {
+    notify(data) {
         const { node, property, namespace, owner } = this;
+        const { key } = data;
         const { ownerElement } = node;
         const { model } = owner;
-        const has = !~namespace.indexOf(key);
+        const has = !!~namespace.indexOf(key);
         const instruction = (owner instanceof VirtualElementInstructionNode);
+        const derivative = (owner instanceof VirtualElementInstructionDerivativeNode);
         
-        if (namespace !== key && has) return this;
-        if (!instruction) (new Function('element', `element.${property} = this.${namespace};`)).call(model, ownerElement);
+        if (!instruction) (new Function('element', `element.${property} = this.${namespace}`)).call(owner.model, ownerElement);
+        // if (derivative) (new Function('element', `element.${property} = this.${namespace}; console.log("---->", element.${property}, this)`)).call(data.model, ownerElement);
         
         return this;
     }

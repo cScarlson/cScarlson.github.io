@@ -189,8 +189,7 @@ function create(details) {  // refactor this.create into load.js?
     const model = component.call(context, detail);
     const result = Metadata.call(details, { model, handler });
     
-    // for (let key in model) if ( !(model[key] instanceof Function) ) controller.notify(key, model);
-    controller.initialize(model);
+    controller.initialize({ model });
     if (onmount in model) model[onmount](detail);
     models.set(module, model);
     handler.init();  // keeps handler from triggering onchange during setup (module implementation).

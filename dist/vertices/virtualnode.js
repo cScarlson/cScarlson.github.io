@@ -164,8 +164,13 @@ class VirtualElementInstructionNode extends AbstractVirtualElementNode {
     }
     
     initialize(data) {
-        this.clone(data);
+        const { key, model, $children } = this;
+        const { [key]: collection } = model;
+        
+        $children.clear();
+        this.clone(collection);
         super.initialize(data);
+        
         return this;
     }
     
@@ -176,26 +181,44 @@ class VirtualElementInstructionNode extends AbstractVirtualElementNode {
     }
     
     remodel(data) {
-        if (data.key === 'length') return log(`remodel #key`, this.model[this.key].length, this.$children.size);
+        if ( !(data.target instanceof Array) && !(data.value instanceof Array) ) return this;  // only interested in scenarios involving arrays as the target or value.
+        const { key, model, children } = this;
+        const { key: property } = data;
+        const { [key]: collection } = model;
         
-        function resolve(child, i) {
-            if (i != data.key) return log(`dismissing`, i, data.key);
+        function redact(property, thus, child, i) {
+            if (i != property) return thus;
             const { model, key } = this;
             const { [key]: collection } = model;
             const { [i]: item } = collection;
             const scope = this.scope(item);
             
             child.remodel(scope);
+            return this;
         }
         
-        this.children.forEach( resolve.bind(this) );
+        if (property !== key && property !== 'length') return children.reduce( redact.bind(this, property), this );
+        else return this.equalize(collection);
+    }
+    
+    equalize(collection) {
+        const { $children, children } = this;
+        
+        while ($children.size > collection.length) this.delete( children[children.length - 1] );
+        while ($children.size < collection.length) this.clone( collection.slice($children.size, collection.length) );
         
         return this;
     }
     
-    clone(data) {
-        const { model, $children, key } = this;
-        const { [key]: collection } = model;
+    delete(child) {
+        const { $children } = this;
+        const { node } = child;
+        
+        $children.delete(node);
+        node.remove();
+    }
+    
+    clone(collection) {
         
         function attach(item, index) {
             const { details, template, $children, alias, key, start } = this;
@@ -210,7 +233,6 @@ class VirtualElementInstructionNode extends AbstractVirtualElementNode {
             $children.get(clone).initialize({ model: proxy });
         }
         
-        $children.clear();
         collection.forEach( attach.bind(this) );
         
         return this;
@@ -254,17 +276,6 @@ class VirtualElementInstructionDerivativeNode extends AbstractVirtualElementNode
     remodel(model) {
         this.details.model = model;
         super.notify({ model });
-        return this;
-    }
-    
-    notifyX(data) {
-        if (data.key === 'length') return this;
-        const { model, index } = this;
-        const { key } = data;
-        
-        if (data.target instanceof Array && data.key == this.index) super.notify({ ...data, model: { [this.alias]: this.collection[key] } }, 'test');
-        else super.notify({ ...data, model });
-        
         return this;
     }
     

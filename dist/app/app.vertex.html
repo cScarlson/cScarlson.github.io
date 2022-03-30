@@ -78,6 +78,8 @@
         setTimeout( x => this.test = `bi${this.test.substring(3)}...?`, 1000 );
         setTimeout( x => this.items.splice(1, 1, { id: 995, title: 'X' }), 2000 );
         setTimeout( x => this.items.push(E), 3000 );
+        setTimeout( x => this.items = [ ...this.items, E ], 4000 );
+        setTimeout( x => this.items.pop(), 7000 );
         
         return this;
     });

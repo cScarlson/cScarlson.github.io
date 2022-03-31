@@ -6,7 +6,7 @@ const { log, warn, error } = console;
 
 /**
  * @name: Virtual Node
- * @patterns: { The State Pattern }
+ * @patterns: { The State Pattern / The Abstract Factory Pattern }
  */
 class VirtualNode {
     
@@ -146,18 +146,19 @@ class VirtualElementInstructionNode extends AbstractVirtualElementNode {
     
     constructor(options={}, parent) {
         super(options, parent);
-        const { expression, node, start } = { ...this, ...options };
+        const { expression, node, start, end } = { ...this, ...options };
         const { attributes } = node;
         const { '+': attr } = attributes;
         const { name, value: instruction } = attr;
         const [ x, alias, key ] = expression.exec(instruction) || [ ];
-        const comment = `v: ${name}="${instruction}"`;
         
-        start.data = comment;
+        start.data = `(v: ${name}="${instruction}" start)`;
+        end.data = `(v: ${name}="${instruction}" end)`;
         this.instruction = instruction;
         this.alias = alias;
         this.key = key;
         node.after(start);
+        start.after(end);
         node.remove();
         
         return this;
@@ -221,14 +222,14 @@ class VirtualElementInstructionNode extends AbstractVirtualElementNode {
     clone(collection) {
         
         function attach(item, index) {
-            const { details, template, $children, alias, key, start } = this;
+            const { details, template, $children, alias, key, end } = this;
             const clone = template.cloneNode(true);
             const proxy = this.scope(item);
             const data = { ...details, model: proxy };
             
             clone.removeAttribute('+');
             clone.setAttribute('v-index', `${index}`);
-            start.before(clone);
+            end.before(clone);
             $children.set( clone, new VirtualNode({ details: data, node: clone, alias, key, collection, index, derivative: true }, this) );  // set manually. create virtuant after removing *[...]
             $children.get(clone).initialize({ model: proxy });
         }
@@ -257,7 +258,7 @@ class VirtualElementInstructionDerivativeNode extends AbstractVirtualElementNode
     
     constructor(options={}, parent) {
         super(options, parent);
-        const { node, alias, key, index, collection } = { ...this, ...options };
+        const { alias, key, index, collection } = { ...this, ...options };
         
         this.alias = alias;
         this.key = key;
@@ -305,11 +306,11 @@ class VirtualTextNode extends AbstractVirtualNode {
         return this;
     }
     
-    notify(data, test) {
+    notify(data) {
         const { template, node } = this;
         const { model } = data;
         const { data: text } = template;
-        if (test) log(`TEXT`, test, model, node);
+        
         node.data = utilities.interpolate(text)(model);
         
         return this;
@@ -326,8 +327,6 @@ class VirtualAttributeNode {
         const Model = {
             '.': VirtualAttributeBindingNode,
         }[ name ];
-        
-        node.addEventListener('change', e => log(`@ttr#change`, e), true);
         
         if (Model) return new Model(options, owner);  // catches recognized types
         return new AbstractVirtualAttributeNode(options, owner);
@@ -367,8 +366,8 @@ class VirtualAttributeBindingNode extends AbstractVirtualAttributeNode {
     
     constructor(options={}, owner) {
         super(options, owner);
-        const { expression, node } = { ...this, ...options };
-        const { name, value: instruction } = node;
+        const { node } = { ...this, ...options };
+        const { value: instruction } = node;
         const [ property, namespace ] = instruction.split(':');
         var owner = owner || this;
         
@@ -379,22 +378,18 @@ class VirtualAttributeBindingNode extends AbstractVirtualAttributeNode {
     }
     
     initialize(data) {
-        const { property, namespace } = this;
+        const { namespace } = this;
         this.notify({ ...data, key: namespace });
         return this;
     }
     
     notify(data) {
         const { node, property, namespace, owner } = this;
-        const { key } = data;
         const { ownerElement } = node;
         const { model } = owner;
-        const has = !!~namespace.indexOf(key);
         const instruction = (owner instanceof VirtualElementInstructionNode);
-        const derivative = (owner instanceof VirtualElementInstructionDerivativeNode);
         
-        if (!instruction) (new Function('element', `element.${property} = this.${namespace}`)).call(owner.model, ownerElement);
-        // if (derivative) (new Function('element', `element.${property} = this.${namespace}; console.log("---->", element.${property}, this)`)).call(data.model, ownerElement);
+        if (!instruction) (new Function('element', `element.${property} = this.${namespace}`)).call(model, ownerElement);
         
         return this;
     }

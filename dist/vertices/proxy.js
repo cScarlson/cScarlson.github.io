@@ -19,7 +19,6 @@ class VertexProxyHandler {  // todo: for collections, return collection of proxy
         const { v } = details;
         const result = this.reflect(target, key, value, receiver);
         
-        log(`@Proxy.set`, key, value);
         v.publish(onchange, { target, key, value, details });
         
         return result;
@@ -53,6 +52,7 @@ class VertexProxyHandler {  // todo: for collections, return collection of proxy
           ;
         
         if ({ undefined: true, null: true }[ value ]) return Reflect.set(target, key, value, receiver);
+        if (value instanceof Node) return Reflect.set(target, key, value, receiver);  // let DOM Nodes be DOM Nodes.
         if (value instanceof Array) return this.setArray(target, key, value, receiver);
         if (value instanceof Set) return this.setSet(target, key, value, receiver);
         if (value instanceof Map) return this.setMap(target, key, value, receiver);

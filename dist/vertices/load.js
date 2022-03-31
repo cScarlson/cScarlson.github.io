@@ -14,7 +14,7 @@ PROBLEM IS.
 
 
 const { log, warn, error } = console;
-const { onverticesbootstrapinvoked, onestablished, onloaded, onmount, oninit, onrender, onchange } = LIFECYCLE_EVENTS;
+const { onverticesbootstrapinvoked, onmount } = LIFECYCLE_EVENTS;
 const ERROR_MODULE_UNDEFINED = new Error(`Load encountered undefined instead of module`);
 const cache = new Map();
 
@@ -112,7 +112,7 @@ function addEventListener(details) {
     ].join('\n');
         
     const handleVertexLoaded = (function handleVertexStyleLoaded(e) {
-        const { v, selector, view } = this;  // ATTENTION! details bound as this.
+        const { v, selector, view } = this;
         const { target } = e;
         const { parentElement: module } = target;
         

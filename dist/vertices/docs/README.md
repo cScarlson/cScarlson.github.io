@@ -11,7 +11,7 @@ Vertices (plural for _vertex_) are single files declared with the partial file n
 <script type="module">
     ...
 </script>
-<div>
+<div --view>
     ...
 </div>
 <style>
@@ -27,13 +27,13 @@ Also note that _we do not necessarily have to declare the JavaScript & CSS **inl
 ...
 ```html
 <script type="module">
-    import v, { LIFECYCLE_EVENTS } from './vertices/core.js';
+    import V, { LIFECYCLE_EVENTS } from './vertices/core.js';
     
     const { onmount } = LIFECYCLE_EVENTS;
     
-    V({
-        ['v:type']: '{some-type}',
-        [onmount](self, { module, metadata }) {}
+    V('{some-type}')(function SometypeComponent() {
+        this[onmount] = function(self, { module, metadata }) {}
+        return this;
     });
 </script>
 ```
@@ -42,42 +42,26 @@ Also note that _we do not necessarily have to declare the JavaScript & CSS **inl
 ...
 ```html
 <script type="module">
-    import v, { LIFECYCLE_EVENTS } from './vertices/core.js';
+    import V, { LIFECYCLE_EVENTS } from './vertices/core.js';
     
     const { onmount } = LIFECYCLE_EVENTS;
     
-    V(function SometypeComponent({ self, module, metadata }, type='{some-type}') {
+    V('{some-type}')(function SometypeComponent({ self, module, metadata }) {
         return this;
     });
 </script>
 ```
 
-##### Arrow `(function) =>` Components
+##### Arrow `(function) =>` Components (Breakout Components)
 ...
 ```html
 <script type="module">
-    import v, { LIFECYCLE_EVENTS } from './vertices/core.js';
+    import V, { LIFECYCLE_EVENTS } from './vertices/core.js';
     
     const { onmount } = LIFECYCLE_EVENTS;
     
-    V(({ self, module, metadata }, type='{some-type}') => {
-        return {};
-    });
-</script>
-```
-
-#####  `class` Components
-...
-```html
-<script type="module">
-    import v, { LIFECYCLE_EVENTS } from './vertices/core.js';
-    
-    const { onmount } = LIFECYCLE_EVENTS;
-    
-    V(class SometypeComponent {
-        static ['v:type'] = '{some-type}';
-        constructor({ self, module, metadata }) {}
-        [onmount]({ self, module, metadata }) {}
+    V(('{some-type}')({ self, module, metadata }) => {
+        return {};  // no change-detection! we returned our own object.
     });
 </script>
 ```
@@ -110,7 +94,7 @@ metadata.clone === self;  // see "self"
 Vertices expects the following ordinal convention for a vertex:
 ```html
 <script type="module"></script>     <!-- 0 -->
-<div></div>                         <!-- 1 -->
+<div --view></div>                  <!-- 1 -->
 <style></style>                     <!-- 2 -->
 ```
 While the `<script>` and HTML fragment (`<div>` in this case) may not matter too much (for the current version), having the `<style>` element declared last is _at least convenient_ as Vertices literally depends on the `load` event emitted from it to determine if everything has loaded. It _is_ possible (but not recommended) to add another empty `<style>` element at the bottom of the page if another order of elements is necessary. Leaving the `<script>` at the top makes it easier to access the `<module>` from the "_self_" reference (as its `parentElement`) and vice versa (as the `<module>`'s `firstElementChild`). Moreover, access to your HTML fragment can be made through the `nextElementSibling` of the _self_ (`<script>`) handle. Suffice to say that, as versions change, there may be more dependency on the convention above and, as support grows for _leveraging Sandboxes_, this may become either more or less relevant.
@@ -135,20 +119,19 @@ Assuming we called `V.set(key, value)` elsewhere in our application, we have the
 #### `Object` Observers
 ```html
 <script type="module">
-    import v, { LIFECYCLE_EVENTS } from './vertices/core.js';
+    import V, { LIFECYCLE_EVENTS } from './vertices/core.js';
     
     const { onmount } = LIFECYCLE_EVENTS;
     
-    V({
-        ['v:type']: 'some-vertex',
-        [onmount](self, { module, metadata }) {
+    V('{some-type}')(function SometypeComponent({ self, module, metadata }) {
+        this[onmount] = function() {
             const self = this;
             V.attach(this);  // this has `call` method
             return this;
-        },
-        call(state, type) {
+        };
+        this.call = function(state, type) {
             log(state, type)  // > {...} "some:key"
-        }
+        };
     });
 </script>
 ```
@@ -158,8 +141,7 @@ Assuming we called `V.set(key, value)` elsewhere in our application, we have the
 <script type="module">
     import { V } from './vertices/core.js';
     
-    V(function SomeVertex({ module, metadata }, type='some-vertex') {
-        const self = this;
+    V('{some-type}')(function SomeVertex({ self, module, metadata }) {
         
         function handleStateChange(type) {
             log(this, type)  // > {...} "some:key"
@@ -178,8 +160,7 @@ Another deviation from The Observer Pattern's specification is that an observer 
 <script type="module">
     import { V } from './vertices/core.js';
     
-    V(function SomeVertex({ module, metadata }, type='some-vertex') {
-        const self = this;
+    V('{some-type}')(function SomeVertex({ self, module, metadata }) {
         
         function handleStateChange(type) {
             log(this, type)  // > {...} "some:key"
@@ -200,10 +181,7 @@ The Vertices object (`V`) leverages a JavaScript Design Pattern developed by Cod
 ### `V(...)`
 Invoking `V`...
 ```javascript
-V({
-    ['v:type']: 'my-component',
-    ...
-});
+V('{some-type}');
 ```
 
 
@@ -219,13 +197,18 @@ Discrete Media.
 ```javascript
 const appA = new V({ ... });
 const appB = new V({ ... });
+const appZ = new new new new ... V({ ... });  // why!
 ```
 
 
 ### `V(component0)(component1)...(componentN)`
 Curry Chaining...
 ```javascript
-V(component0)(component1)...(componentN);
+V('{some-type-0}')(component0)
+ ('{some-type-1}')(component1)
+ ...
+ ('{some-type-n}')(componentN)
+ ;
 ```
 
 
@@ -240,7 +223,7 @@ V[method0](...)[method1](...)...[methodN](...);
 ...
 
 
-#### `V()` and `V.register()`
+#### `V(string)()` and `V.register()`
 ```typescript
 type TRestistrant = TComponentFunction | TComponentObjectLiteral | TComponentClass;
 type TArgument = TRegistrant | TVerticesOptions;
@@ -269,4 +252,4 @@ Vertices was built with architecture in mind. We try to keep it as simple and fl
 - archetype: EDA, MVA, MVC, MVVM, etc.
 
 
-Entropy
+Entropy...

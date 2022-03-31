@@ -11,34 +11,19 @@ Vertices (plural for _vertex_) are single files declared with the partial file n
 <script type="module">
     ...
 </script>
-<div --view>
+<div --view>  <!-- don't forget to demarcate which fragment is the view! -->
     ...
 </div>
 <style>
     ...
 </style>
 ```
-Also note that _we do not necessarily have to declare the JavaScript & CSS **inline**_. These could be a `script[src]` & `link[href][rel="stylesheet"]`. This _weakly recommended_, however, as keeping them in a single file reduces overhead of scaffolding, packaging, and arguably readability.
+Also note that _we do not necessarily have to declare the JavaScript & CSS **inline**_. These could be a `script[src]` & `link[href][rel="stylesheet"]`. This is _weakly recommended_, however, as keeping them in a single file reduces overhead of scaffolding, packaging, and arguably readability.
 
 #### Leveraging Different Styles of Components
 ...
 
-#####  Object-Literal Components (**Singleton**)
-...
-```html
-<script type="module">
-    import V, { LIFECYCLE_EVENTS } from './vertices/core.js';
-    
-    const { onmount } = LIFECYCLE_EVENTS;
-    
-    V('{some-type}')(function SometypeComponent() {
-        this[onmount] = function(self, { module, metadata }) {}
-        return this;
-    });
-</script>
-```
-
-#####  `function` Components
+##### `function` Components (Live Components)
 ...
 ```html
 <script type="module">
@@ -47,7 +32,7 @@ Also note that _we do not necessarily have to declare the JavaScript & CSS **inl
     const { onmount } = LIFECYCLE_EVENTS;
     
     V('{some-type}')(function SometypeComponent({ self, module, metadata }) {
-        return this;
+        return this;  // return this for databinding / automatic change-detection.
     });
 </script>
 ```
@@ -108,6 +93,28 @@ As a vertex is essentially just a fancy lazy-loaded _include_ or _partial_, we d
 ```
 Note that we also added both a `type` and a `src` attribute to the declaration. This is necessary for the current version of Vertices, though future versions are anticipated to have more flexibility (for _unregistered_/"_static_"/"_typeless_" modules) and automation (for "_inline_"/"_self-defined_" and|or "_sourceless_"/"_source-mapped_" modules) around this.
 
+As of _03/31/22_, we now have the option of...
+##### `./**/*.vertext.html`
+```html
+<module type="app"></module>
+<module type="other"></module>
+...
+```
+...as long as it is accommodated by...
+##### `./main.js`
+```javascript
+import V, { bootstrap } from './vertices/core.js';
+
+const { docket } = V;
+
+docket
+    .set('app', './app/app.vertex.html')
+    .set('other', './app/subsystem/other.vertex.html')
+    ...
+    ;
+...
+```
+
 
 ### State Management
 Vertices comes with some basic state-management. It leverages _The Observer Pattern_ on every instance of a _Vertices Medium_ (see Vertices API). That is, the default medium (`V`) can be leverages with the `new` keyword to created more instances of itself. For example: `const app1 = new V(options)`.
@@ -124,14 +131,8 @@ Assuming we called `V.set(key, value)` elsewhere in our application, we have the
     const { onmount } = LIFECYCLE_EVENTS;
     
     V('{some-type}')(function SometypeComponent({ self, module, metadata }) {
-        this[onmount] = function() {
-            const self = this;
-            V.attach(this);  // this has `call` method
-            return this;
-        };
-        this.call = function(state, type) {
-            log(state, type)  // > {...} "some:key"
-        };
+        this.call = (state, type) => log(state, type);  // > {...} "some:key"
+        V.attach(this);  // this has `call` method
     });
 </script>
 ```
@@ -147,7 +148,7 @@ Assuming we called `V.set(key, value)` elsewhere in our application, we have the
             log(this, type)  // > {...} "some:key"
         }
         
-        V.attach(handleStateChange);  // handleStateChange has an `call` method
+        V.attach(handleStateChange);  // handleStateChange has a `call` method (Function.prototype.call).
         
         return this;
     });
@@ -197,7 +198,7 @@ Discrete Media.
 ```javascript
 const appA = new V({ ... });
 const appB = new V({ ... });
-const appZ = new new new new ... V({ ... });  // why!
+const appZ = new new new new ... V({ ... });  // why? because we can.
 ```
 
 
@@ -215,7 +216,11 @@ V('{some-type-0}')(component0)
 ### `V[method0](...)[method1](...)...[methodN](...)`
 Method Chaning...
 ```javascript
-V[method0](...)[method1](...)...[methodN](...);
+V[method0](...)
+ [method1](...)
+ ...
+ [methodN](...)
+ ;
 ```
 
 
@@ -225,7 +230,7 @@ V[method0](...)[method1](...)...[methodN](...);
 
 #### `V(string)()` and `V.register()`
 ```typescript
-type TRestistrant = TComponentFunction | TComponentObjectLiteral | TComponentClass;
+type TRestistrant = Function;
 type TArgument = TRegistrant | TVerticesOptions;
 type VFunction = (object: TArgument): VFunction;
 
@@ -244,7 +249,7 @@ Vertices was built with architecture in mind. We try to keep it as simple and fl
 
 
 ## Our Perspective on Application Architecture
-... (infrastructure, suprastructure, scaffolding, archetype), EDA, Addy Osmony, Nicholas Zakas / pyramid / sandbox theory / module theory, ...
+... (infrastructure, suprastructure, scaffolding, archetype), EDA, Addy Osmani, Nicholas Zakas / pyramid / sandbox theory / module theory, ...
 
 - suprastructure: fw (see Nich Zakas pyramid)
 - infrastructure: (see Sandboxes, Facades, Application/Module Mediators, Addy diags)

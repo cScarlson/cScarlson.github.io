@@ -6,11 +6,9 @@
     const { log } = console;
     const { onmount, onrender } = LIFECYCLE_EVENTS;
     
-    new new new new new new new new new new new new new new new new new new new new new new new new V({})
-    
     V('app')(function App({ self, module, metadata }) {
         const thus = this;
-        const $content = new Map();
+        const data = [ ];
         
         function init() {
             const { nextElementSibling: root } = self;
@@ -19,35 +17,34 @@
             const CONTENT = fetch('./api/v1/content', { headers: { 'Content-Type': 'application/json' } })
                 .then( r => r.json() )
                 ;
+            const event = CONTENT.then( detail => new CustomEvent('app:data', { detail }) );
             
-            log(`#####`, content, input)
             this.content = content;
+            module.addEventListener('app:data', this, true);
             module.addEventListener('menu:state', this, true);
             module.addEventListener('input', this, true);
             window.addEventListener('hashchange', this, false);
+            event.then( e => module.dispatchEvent(e) );
             
             return this;
-        }
-        
-        function handleContent(collection) {
-            collection.reduce(set, this.$content);
-            
-            function set($, data) {
-                const { name } = data;
-                V.set(`content:${name}`, data);
-                return $.set(name, data);
-            }
         }
         
         function handleEvent(e) {
             const { type } = e;
             const handler = {
+                'app:data': handleData,
                 'menu:state': handleMenuState,
                 'hashchange': handleHashchange,
                 'input': (e) => e.target.matches('#input') ? log(`on${type}`, this.test = e.target.value) : '',
             }[ type ];
             
             if (handler) handler.call(this, e);
+        }
+        
+        function handleData(e) {
+            const { detail: data } = e;
+            log(`@DATA`, e.type, data)
+            this.data = data;
         }
         
         function handleMenuState(e) {
@@ -68,9 +65,9 @@
         const E = { id: 994, title: 'E' };
         
         // export precepts
+        this.data = data;
         this.test = 'unidirectional databinding';
         this.items = [ { id: 990, title: 'A' }, { id: 991, title: 'B' }, { id: 992, title: 'C' } ];
-        this.$content = $content;
         this[onmount] = init;
         this.handleEvent = handleEvent;
         log(`@app`, this.matches('[type="app"]'));
@@ -115,6 +112,10 @@
             <module id="/" type="page">
                 <span slot="title">Home</span>
                 <div slot="content">
+                    <p +="item of data">
+                        ${item.title}
+                        <span +="p of item.content">${p}</span>
+                    </p>
                     <h1>${test}</h1>
                     <div id="theDiv" +="item of items">
                         <input id="input" .="value:test" .="dataset.length:items.length" .="dataset.test:item.title">

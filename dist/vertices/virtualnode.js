@@ -166,7 +166,7 @@ class VirtualElementInstructionNode extends AbstractVirtualElementNode {
     
     initialize(data) {
         const { key, model, $children } = this;
-        const { [key]: collection } = model;
+        const collection = (new Function(`return this.${key}`)).call(model);
         
         $children.clear();
         this.clone(collection);
@@ -185,12 +185,12 @@ class VirtualElementInstructionNode extends AbstractVirtualElementNode {
         if ( !(data.target instanceof Array) && !(data.value instanceof Array) ) return this;  // only interested in scenarios involving arrays as the target or value.
         const { key, model, children } = this;
         const { key: property } = data;
-        const { [key]: collection } = model;
+        const collection = (new Function(`return this.${key}`)).call(model);
         
         function redact(property, thus, child, i) {
             if (i != property) return thus;
             const { model, key } = this;
-            const { [key]: collection } = model;
+            const collection = (new Function(`return this.${key}`)).call(model);
             const { [i]: item } = collection;
             const scope = this.scope(item);
             
@@ -205,6 +205,7 @@ class VirtualElementInstructionNode extends AbstractVirtualElementNode {
     equalize(collection) {
         const { $children, children } = this;
         
+        if (!collection) return this;
         while ($children.size > collection.length) this.delete( children[children.length - 1] );
         while ($children.size < collection.length) this.clone( collection.slice($children.size, collection.length) );
         
@@ -311,7 +312,9 @@ class VirtualTextNode extends AbstractVirtualNode {
         const { model } = data;
         const { data: text } = template;
         
-        node.data = utilities.interpolate(text)(model);
+        try {  // might not have scope for, say, empty sets where `item` in "${item.x}" does not exist. TODO: change to conditional execution instead of try/catch.
+            node.data = utilities.interpolate(text)(model);
+        } catch(e) {}
         
         return this;
     }

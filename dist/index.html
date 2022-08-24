@@ -9,7 +9,13 @@
         <script defer src="./main.js" type="module"></script>
     </head>
     <body>
-        <module type="app"></module>
+        <app>
+            <h1>JS Starter</h1>
+            <child:now></child:now>
+            <div id="later"></div>
+            <include  src="./app/sample.partial.html"></include>
+            <module type="vertex" src="./app/sample.vertex.html"></module>
+        </app>
     </body>
     <script>
         ( new WebSocket('ws://localhost:3000') ).addEventListener('message', e => location.reload(true), false);

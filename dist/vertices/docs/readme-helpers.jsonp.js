@@ -1,2 +1,0 @@
-
-jsonp('readme:data:x', {});

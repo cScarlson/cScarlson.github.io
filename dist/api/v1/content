@@ -9,5 +9,35 @@
             "P2",
             "P3"
         ]
+    },
+    {
+        "id": 1,
+        "name": "about",
+        "title": "About",
+        "content": [
+            "P1",
+            "P2",
+            "P3"
+        ]
+    },
+    {
+        "id": 2,
+        "name": "resume",
+        "title": "Resume",
+        "content": [
+            "P1",
+            "P2",
+            "P3"
+        ]
+    },
+    {
+        "id": 3,
+        "name": "cv",
+        "title": "Curriculum Vitae",
+        "content": [
+            "P1",
+            "P2",
+            "P3"
+        ]
     }
 ]

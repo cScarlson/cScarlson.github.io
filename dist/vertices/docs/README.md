@@ -115,6 +115,34 @@ docket
 ...
 ```
 
+#### Template Syntax
+##### Interpolation
+```html
+${someScopeVariable}
+```
+##### Looping
+```html
+<li +="something of somethingElse">${something.else}</li>
+```
+#### Property Binding
+```html
+<input .="value:someText" .="placeholder:somePlaceholder" .="dataset.x:someDataDashAttr" />
+```
+#### Slots
+##### `./**/*.vertex.html`
+```html
+...
+<span slot="title">Some Title</span>
+...
+```
+##### Given
+###### `./**/header.vertex.html`
+```html
+...
+<h1 class="page title"><slot name="title"></slot></h1>
+...
+```
+
 
 ### State Management
 Vertices comes with some basic state-management. It leverages _The Observer Pattern_ on every instance of a _Vertices Medium_ (see Vertices API). That is, the default medium (`V`) can be leverages with the `new` keyword to created more instances of itself. For example: `const app1 = new V(options)`.
@@ -230,7 +258,7 @@ V[method0](...)
 
 #### `V(string)()` and `V.register()`
 ```typescript
-type TRestistrant = Function;
+type TRegistrant = Function;
 type TArgument = TRegistrant | TVerticesOptions;
 type VFunction = (object: TArgument): VFunction;
 

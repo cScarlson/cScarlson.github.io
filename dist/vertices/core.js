@@ -8,7 +8,6 @@ class Core {
     registry = new Map();
     instances = new Map();
     observers = new Map();
-    dependencies = new Map();
     decorators = [
         DOMIO,
         Namespace,
@@ -23,8 +22,14 @@ class Core {
     }
     
     register(id, ...modules) {
-        const { registry, dependencies } = this;
-        registry.set(id, modules);  // is an element tagName.
+        const { registry } = this;
+        registry.set(id, modules);  // id should be an element tagName.
+        return this;
+    }
+    
+    unregister(id) {
+        const { registry } = this;
+        registry.delete(id);
         return this;
     }
     
@@ -40,9 +45,9 @@ class Core {
         const has = registry.has(id);
         const decorators = registry.get(id);
         
-        if (children.length) this.mount(...children);
         if (has) this.decorate(element, ...[ ...CORE_DECORATORS, ...decorators ]);
         if (has) observers.set( element, new Mutations({ core: this, element }) );
+        if (children.length) this.mount(...children);
         if (element.init) element.init();
         
         if (more.length) return this.mount(...more);

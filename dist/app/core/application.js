@@ -1,4 +1,6 @@
 
+const { log } = console;
+
 class Application {  // The Singleton Pattern
     static INSTANCE = null;
     target = new EventTarget();
@@ -11,6 +13,11 @@ class Application {  // The Singleton Pattern
         this.store = store;
         
         return this;
+    }
+    
+    call(element) {
+        element.core = this;  // set core on element for sandbox.
+        return element;
     }
     
     publish(channel, data) {

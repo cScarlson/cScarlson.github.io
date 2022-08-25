@@ -16,7 +16,5 @@ const reducer = new Reducer(middleware);
 const store = new Store({ state, reducer });
 const app = new Application({ store });
 
-Sandbox.prototype.core = app;  // this needs to have a more elegant solution man.
-
-V('sandbox', Sandbox);
+V('sandbox', app, Sandbox);
 V.bootstrap(document.body.parentElement);

@@ -12,3 +12,7 @@ html, body {
     opacity: 1;
     transition: opacity 500ms 500ms ease-in-out;
 }
+
+[routelet="always"] {  /* used for parent routes */
+    opacity: 1;
+}

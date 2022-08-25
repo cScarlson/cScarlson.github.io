@@ -2,7 +2,7 @@
 const { log } = console;
 
 const Sandbox = function Sandbox(element) {
-    const { core } = Sandbox.prototype;
+    const { core } = element;
     const { store } = core;
     
     function publish(...splat) {
@@ -43,6 +43,9 @@ const Sandbox = function Sandbox(element) {
     this.attach = attach;
     this.detach = detach;
     this.dispatch = dispatch;
+    
+    // ops
+    delete element.core;  // delete core so that modules cannot touch it directly.
     
     return this;
 };

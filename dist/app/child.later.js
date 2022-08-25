@@ -1,8 +1,7 @@
 
 import V, {} from '/vertices/core.js';
-import { Sandbox } from './core/sandbox.js';
 
-V('child:later', Sandbox, function ChildLater($) {
+V('child:later', 'sandbox', function ChildLater($) {
     const thus = this;
     const items = [
         { id: 0, name: 'a', title: "A" },

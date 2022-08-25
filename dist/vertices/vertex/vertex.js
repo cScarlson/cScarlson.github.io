@@ -6,7 +6,7 @@ const { log } = console;
 /**
  * @patterns : { Exponential Backoff / Incremental Backoff }
  */
-V('module', 'partial', function Module(element) {
+V('module', 'partial', function Vertex(element) {
     const { attributes, init: $init } = element;
     var { type } = attributes;
     var { value: type } = type;

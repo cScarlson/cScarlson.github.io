@@ -2,10 +2,13 @@
 import { DOMIO, Namespace, ChildNodes, Slot, BindingExchangeSlot, BindingExchangeEach } from './decorators.js';
 import { Mutations } from './mutation/mutation.js';
 
+const { log } = console;
+
 class Core {
     registry = new Map();
     instances = new Map();
     observers = new Map();
+    dependencies = new Map();
     decorators = [
         DOMIO,
         Namespace,
@@ -20,8 +23,8 @@ class Core {
     }
     
     register(id, ...modules) {
-        const { registry } = this;
-        registry.set(id, modules);
+        const { registry, dependencies } = this;
+        registry.set(id, modules);  // is an element tagName.
         return this;
     }
     
@@ -46,14 +49,21 @@ class Core {
         return this;
     }
     
+    decorate(element, sandbox, Decorator, ...more) {
+        
+        return element;
+    }
+    
     decorate(element, Decorator, ...more) {
-        var { registry } = this;
+        var { registry, dependencies } = this;
         var Decorator = typeof Decorator === 'string' ? registry.get(Decorator) : Decorator;
         var instance = Decorator.constructor === Array ? this.decorate(element, ...Decorator) : Decorator.call(element, element);
         
         if (more.length) return this.decorate(instance, ...more);
         return instance;
     }
+    
+    instantiate() {}
     
 };
 
@@ -77,7 +87,7 @@ const Facade = function Facade(core) {
     return this;
 };
 
-var V = new (function Vertex(Core, Facade) {
+const V = new (function Vertex(Core, Facade) {
     var v = Facade.call(function v(id, ...decorators) {
         if (this instanceof V) return new Vertex(Core, Facade);  // if invoked with `new`, create new instance.
         return v.register(id, ...decorators);

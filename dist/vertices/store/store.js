@@ -16,10 +16,11 @@ class Store {  // uses The Observer Pattern (with ".call()" instead of ".update(
     
     dispatch(action) {
         var { reducer, state } = this;
+        var ref = state;
         var state = reducer.execute(state, action);
         
         this.state = state;
-        this.notify();
+        if (state !== ref) this.notify();
         
         return this;
     }

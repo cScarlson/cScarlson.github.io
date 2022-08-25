@@ -1,5 +1,14 @@
 
 <script type="module">
+    import V, {} from '/vertices/core.js';
+    
+    const { log } = console;
+    V('sample:vertex', 'sandbox', function SampleVertex($) {
+        log(`@sample:vertex`, this);
+        this.fire('vertex:ready', this)
+        return this;
+    });
+    
     console.log(`test`);
 </script>
 

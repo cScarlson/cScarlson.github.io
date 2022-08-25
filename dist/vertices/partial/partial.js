@@ -1,7 +1,7 @@
 
 import V, {} from '../core.js';
 
-V('include', function Include(element) {
+V('partial', function Include(element) {
     const { attributes } = element;
     var { type, src } = attributes;
     var { value: src } = src;

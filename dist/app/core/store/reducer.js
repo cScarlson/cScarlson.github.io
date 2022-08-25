@@ -1,6 +1,6 @@
 
 
-class Reducer {
+class Reducer {  // make this extend Vertices Core Reducer.
     middleware = new Set();
     
     constructor(middleware = new Set()) {

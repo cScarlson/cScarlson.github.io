@@ -23,7 +23,7 @@ V('child:now', 'sandbox', function ChildNow($) {
                     `{{title}}`,
                     `<s><slot></slot></s>`,
                     `{{#children}}`,
-                        `<div>{{text}}</div>`,
+                        `<div>{{text}}--<slot name="test"></slot></div>`,
                     `{{/children}}`,
                 `</li>`,
             `{{/collection}}`,

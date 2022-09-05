@@ -34,7 +34,16 @@ V('app', 'sandbox', function App($) {
     this.after('...app');
     // $.log(`@app`, this, $);
     setTimeout(function tiemout() {
-        later.innerHTML = `<child:later><span slot="header">Laterz</span><span slot="">Prefix</span> + Another Prefix + </child:later><p></p>`;
+        const html = [
+            // `<child:later>`,
+            //     `<span slot="header">Laterz</span>`,
+            //     `<span slot="">Prefix</span>`,
+            //     ` + Another Prefix + `,
+            // `</child:later>`,
+            `<p></p>`,
+        ].join('');
+        
+        later.innerHTML = html;
         fake().then(handleContent);
         setTimeout(function tiemout() {
             const { firstElementChild } = later;
@@ -47,5 +56,5 @@ V('app', 'sandbox', function App($) {
     this.handleEvent = handleEvent;
     this.call = handleState;
     
-    return this.init();
+    return this;
 });

@@ -135,5 +135,6 @@ Property Binding?
 
 ## ToDos
 - ~~rename include to partial~~
-- complete module. rename to vertex?
+- ~~complete module. rename to vertex?~~
+- test nested `<each>`s
 - module for `<input>`s to help with databinding?

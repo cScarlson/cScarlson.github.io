@@ -5,12 +5,13 @@
         <meta charset="utf-8" />
         <title>Cody Carlson!</title>
         <link href="./app/spa.css" rel="stylesheet" />
+        <script defer src="./lib/handlebars.min-v4.7.7.js"></script>
         <script defer src="./main.js" type="module"></script>
     </head>
     <body>
         <app id="/" routelet="always">
             <h1>JS Starter</h1>
-            <child:now></child:now>
+            <child:now>some text</child:now>
             <div id="later"></div>
             <partial src="./app/sample.partial.html"></partial>
             <module type="sample:vertex" src="./app/sample.vertex.html"></module>

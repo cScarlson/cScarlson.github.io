@@ -6,14 +6,25 @@ class Mutations {
     config = { childList: true, subtree: true };
     
     constructor({ core, element }) {
-        const { config } = this;
         const observer = new MutationObserver(this.observe);
         
         this.core = core;
         this.observer = observer;
         this.element = element;
         element.addEventListener('destroy', this.handleDestroy, false);
+        // observer.observe(element, config);
+    }
+    
+    connect() {
+        const { config, element, observer } = this;
         observer.observe(element, config);
+        return this;
+    }
+    
+    destroy() {
+        const { observer } = this;
+        observer.disconnect();
+        return this;
     }
     
     observe = (mutations, observer) => {
@@ -51,12 +62,6 @@ class Mutations {
         const e = new MessageEvent('destroy', { data: node });
         node.dispatchEvent(e);
     };
-    
-    destroy() {
-        const { observer } = this;
-        observer.disconnect();
-        // log(`destroyed`);
-    }
     
     handleDestroy = (e) => {
         if (this.element !== e.data) return;

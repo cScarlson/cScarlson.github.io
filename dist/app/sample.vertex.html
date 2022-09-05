@@ -5,7 +5,7 @@
     const { log } = console;
     V('sample:vertex', 'sandbox', function SampleVertex($) {
         log(`@sample:vertex`, this);
-        this.fire('vertex:ready', this)
+        this.fire('vertex:ready', this);
         return this;
     });
     

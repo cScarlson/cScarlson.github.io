@@ -3,7 +3,7 @@ import V, {} from '/vertices/core.js';
 
 V('slot', function Slot(element) {
     const { attributes, innerHTML: template, outerHTML } = this;
-    const { ['name']: attr } = attributes;
+    const { name: attr={} } = attributes;
     const { name, value = '' } = attr;
     const key = 'projections';
     

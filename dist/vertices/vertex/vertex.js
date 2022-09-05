@@ -1,16 +1,17 @@
 
 import V, {} from '../core.js';
 
-const { log } = console;
+const { log, warn } = console;
 
 /**
- * @patterns : { Exponential Backoff / Incremental Backoff }
+ * @patterns : { Exponential Backoff }
  */
 V('module', 'partial', function Vertex(element) {
     const { attributes, init: $init } = element;
     var { type } = attributes;
     var { value: type } = type;
     var TIMEOUT = 1;
+    var LIMIT = 1024;
     
     function handleLoad(e) {
         const { firstElementChild: script } = element;
@@ -28,7 +29,7 @@ V('module', 'partial', function Vertex(element) {
     
     function handleCloneReady(e) {
         if (!TIMEOUT) return;
-        if (TIMEOUT > 2000) return;  // throw warning? error?
+        if (TIMEOUT > LIMIT) return warn(`Warning! Exponential Backoff limit for vertex "${type}" was reached.`);  // throw warning? error?
         V.start(type, element);
         setTimeout( handleTimeout, (TIMEOUT *= 2) );
     }

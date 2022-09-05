@@ -10,7 +10,6 @@ const Slot = function Slot(element) {
         
         if (!has) $.set(slot, [ ]);
         $.get(slot).push(node);
-        // log(`@Slot.reduce`, element.tagName, `"${slot}"`, $);
         
         return $;
     }
@@ -30,7 +29,7 @@ const BindingExchangeSlot = function BindingExchangeSlot(element) {
         const { projections: data = fallback } = $;
         
         if (!data) return;
-        if ({ 'SLOT': true, 'EACH': true }[ tagName ]) return;  // <slot>s & <each>s are assumed to have children naturally.
+        if (tagName === 'SLOT') return;  // <slot>s are assumed to have children naturally.
         target.fire('binding:response:slot', data);
         e.stopPropagation();
         e.stopImmediatePropagation();

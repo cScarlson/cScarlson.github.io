@@ -1,9 +1,20 @@
 
 const { log } = console;
+const { compile } = Handlebars;
 
+log(`@sandbox`, compile('<h1>{{test}}</h1>')({ test: 'ze tiest' }));
 const Sandbox = function Sandbox(element) {
     const { core } = element;
     const { store } = core;
+    var set = set.bind(this);
+    
+    function set(value) {
+        const template = compile(value);
+        const content = template(this);
+        
+        element.innerHTML = content;
+        log(`YES. AUTOBIND.`, value, content);
+    }
     
     function publish(...splat) {
         core.publish(...splat);
@@ -36,6 +47,7 @@ const Sandbox = function Sandbox(element) {
     }
     
     // export precepts
+    Object.defineProperty(this, 'template', { set });
     this.log = log.bind(console, '@');
     this.publish = publish;
     this.subscribe = subscribe;

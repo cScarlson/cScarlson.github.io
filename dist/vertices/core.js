@@ -18,9 +18,7 @@ class Core {
         BindingExchangeEach,
     ];
     
-    constructor() {
-        
-    }
+    constructor() {}
     
     register(id, ...modules) {
         const { registry } = this;
@@ -45,10 +43,12 @@ class Core {
         const id = tagName.toLowerCase();
         const has = registry.has(id);
         const decorators = registry.get(id);
+        const observer = new Mutations({ core: this, element });
         
         if (has) this.decorate(element, ...[ ...CORE_DECORATORS, ...decorators ]);
-        if (has) observers.set( element, new Mutations({ core: this, element }) );
+        if (has) observers.set(element, observer);
         if (children.length) this.mount(...children);
+        if (has) observer.connect();
         if (element.init) element.init();
         
         if (more.length) return this.mount(...more);

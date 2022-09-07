@@ -1,4 +1,5 @@
 
+const { log } = console;
 
 class Reducer {  // make this extend Vertices Core Reducer.
     middleware = new Set();
@@ -19,6 +20,11 @@ class Reducer {  // make this extend Vertices Core Reducer.
     
     ['ANOTHER:TEST'](state, payload) {
         var state = { ...state, ...payload };
+        return state;
+    }
+    
+    ['CONTENT:ACQUIRED'](state, content) {
+        var state = { ...state, content };
         return state;
     }
     

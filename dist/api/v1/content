@@ -39,5 +39,15 @@
             "P2",
             "P3"
         ]
+    },
+    {
+        "id": 3,
+        "name": "vertices",
+        "title": "Vertices",
+        "content": [
+            "P1",
+            "P2",
+            "P3"
+        ]
     }
 ]

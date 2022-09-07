@@ -11,9 +11,17 @@ const Sandbox = function Sandbox(element) {
     function set(value) {
         const template = compile(value);
         const content = template(this);
-        
         element.innerHTML = content;
-        log(`YES. AUTOBIND.`, value, content);
+    }
+    
+    function use(uri) {
+        const headers = { 'Content-Type': 'text/html' };
+        const options = { headers };
+        const promise = fetch(uri, options).then( r => r.text() );
+        
+        promise.then( template => this.template = template );
+        
+        return promise;
     }
     
     function publish(...splat) {
@@ -47,7 +55,8 @@ const Sandbox = function Sandbox(element) {
     }
     
     // export precepts
-    Object.defineProperty(this, 'template', { set });
+    if ( !this.hasOwnProperty('template') ) Object.defineProperty(this, 'template', { set });
+    this.use = use;
     this.log = log.bind(console, '@');
     this.publish = publish;
     this.subscribe = subscribe;

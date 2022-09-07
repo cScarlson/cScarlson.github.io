@@ -3,8 +3,8 @@ const middleware = new Set()
     .add(test)
     ;
 
-function test(state, action) {
-    return state;
+function test(action) {
+    return this;
 }
 
 export { middleware as default, middleware };

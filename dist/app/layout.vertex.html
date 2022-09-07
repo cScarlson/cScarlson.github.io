@@ -1,0 +1,128 @@
+
+<script type="module">
+    import V, {} from '/vertices/core.js';
+    
+    const { log } = console;
+    V('layout', 'sandbox', function Layout(element) {
+        const { firstElementChild: script } = element;
+        const { nextElementSibling: layout } = script;
+        const { firstElementChild: header } = layout;
+        const { nextElementSibling: menu } = header;
+        const { nextElementSibling: main } = menu;
+        
+        function handleMenuStateChange(e) {
+            if ( !e.target.matches('.menu.button.main .button.control') ) return;
+            const { target } = e;
+            const { checked } = target;
+            const operation = { 'true': 'add', 'false': 'remove' }[ checked ];
+            
+            header.classList[operation]('active');
+            main.classList[operation]('inactive');
+            log(`@layout#handleMenuStateChange`, checked, main);
+        }
+        
+        function handleEvent(e) {
+            const { type, target } = e;
+            const handler = {
+                'change': handleMenuStateChange,
+            }[ type ];
+            
+            if (handler) handler.call(this, e);
+        }
+        
+        this.handleEvent = handleEvent;
+        this.on('change', this, true);
+        this.fire('vertex:ready', this);
+        
+        return this;
+    });
+    
+</script>
+
+<layout class="layout container">
+    <header class="layout header"></header>
+    <div class="layout menu">
+        <br />
+        <br />
+        <br />
+        <br />
+        <hr />
+        <br />
+        <br />
+        <br />
+        <br />
+        <hr />
+        <br />
+        <br />
+        <br />
+        <br />
+        <hr />
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+    <main class="layout content">
+        <slot></slot>
+        <slot name="main"></slot>
+    </main>
+    <footer class="layout footer">
+        <slot name="footer"></slot>
+    </footer>
+</layout>
+
+<style>
+    .layout.container {
+        position: relative;
+    }
+    
+    .layout.container .layout.header {
+        position: sticky;
+        top: 0;
+        margin: 0;
+        padding: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        box-shadow: 0px 0px 6px 2px black;
+        z-index: 999;
+    }
+    
+    .layout.container .layout.menu {
+        position: absolute;
+        top: 64px;
+        bottom: 100%;
+        left: 0;
+        right: 0;
+        border-top-style: double;
+        border-top-width: 0;
+        border-top-color: transparent;
+        overflow: hidden;
+        transition: bottom 1s 0.25s ease-in-out, border-width 1s 0.25s ease-in-out, border-top-color 1s 0.25s ease-in-out;
+        background-color: rgba(0, 0, 0, 0.7);
+        background-clip: padding-box;
+    }
+    
+    .layout.container .layout.header.active ~ .layout.menu {
+        bottom: calc(0% - 64px);
+        border-top-color: rgba(0, 0, 0, 0.3);
+        border-top-width: 12px;
+    }
+    
+    .layout.container .layout.content {
+        margin: 0 5%;
+        padding: 16px;
+        border: solid 0px transparent;
+        border-radius: 30px;
+        transform-origin: top;
+        transition: transform 1s 0.25s ease-in-out, border 1s 0.25s ease-in-out;
+        background-color: rgba(255, 255, 255, 0.3);
+    }
+    .layout.container .layout.content.inactive {
+        transform: scale(0.25);
+        border: solid 16px white;
+    }
+    
+    .layout.container .layout.footer {
+        min-height: 100vh;
+        background-color: rgba(123, 87, 99, 0.5);
+    }
+</style>

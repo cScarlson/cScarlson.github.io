@@ -4,20 +4,34 @@
     <head>
         <meta charset="utf-8" />
         <title>Cody Carlson!</title>
+        <link href="./app/reset.css" rel="stylesheet" />
         <link href="./app/spa.css" rel="stylesheet" />
         <script defer src="./lib/handlebars.min-v4.7.7.js"></script>
         <script defer src="./main.js" type="module"></script>
     </head>
     <body>
         <app id="/" routelet="always">
-            <h1>JS Starter</h1>
+            <vertex type="layout" src="./app/layout.vertex.html">
+                <div slot="main">
+                    <home></home>
+                    <about></about>
+                    <resume></resume>
+                    <cv></cv>
+                    <vertices></vertices>
+                </div>
+                <div slot="footer">footer</div>
+            </vertex>
+            <!-- <h1>JS Starter</h1>
             <child:now>some text<span slot="test">some test</span></child:now>
             <div id="later"></div>
             <partial src="./app/sample.partial.html"></partial>
-            <module type="sample:vertex" src="./app/sample.vertex.html"></module>
+            <vertex type="sample:vertex" src="./app/sample.vertex.html"></vertex>
             <ul style="position: sticky; top: 0;">
                 <li>
-                    <a href="#/">Home</a>
+                    <a href="#/">top</a>
+                </li>
+                <li>
+                    <a href="#/home">Home</a>
                 </li>
                 <li>
                     <a href="#/about">About</a>
@@ -295,7 +309,7 @@
                 <br />
                 <br />
                 <br />
-            </div>
+            </div> -->
         </app>
     </body>
     <script>

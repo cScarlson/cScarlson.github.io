@@ -1,0 +1,8 @@
+
+.header.menu {
+    /* border: solid 1px tomato; */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-around;
+}

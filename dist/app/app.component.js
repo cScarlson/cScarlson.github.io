@@ -11,15 +11,14 @@ V('app', 'sandbox', function App($) {
     const later = $.querySelector('#later');
     
     function init() {
+        const $content = fetch('/api/v1/content', { headers: { 'Content-Type': 'text/html' } }).then( r => r.json() );
+        
         this.on('click', this);
         this.subscribe('child:later:ready', this);
-        // this.attach(handleState);
         this.attach(this);
+        $content.then( payload => $.dispatch({ type: 'CONTENT:ACQUIRED', payload }) );
+        
         return this;
-    }
-    
-    function handleContent(content) {
-        // log(`@handleContent`, content);
     }
     
     function handleEvent(e) {
@@ -30,26 +29,6 @@ V('app', 'sandbox', function App($) {
     function handleState(state) {
         log(`@app.call`, state);
     }
-    
-    this.after('...app');
-    // $.log(`@app`, this, $);
-    setTimeout(function tiemout() {
-        const html = [
-            // `<child:later>`,
-            //     `<span slot="header">Laterz</span>`,
-            //     `<span slot="">Prefix</span>`,
-            //     ` + Another Prefix + `,
-            // `</child:later>`,
-            `<p></p>`,
-        ].join('');
-        
-        later.innerHTML = html;
-        fake().then(handleContent);
-        setTimeout(function tiemout() {
-            const { firstElementChild } = later;
-            later.removeChild(firstElementChild);
-        }, (1000 * 10));
-    }, (1000 * 3));
     
     // export precepts
     this.init = init;

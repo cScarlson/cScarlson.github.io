@@ -9,8 +9,6 @@ import { translate } from './utilities/translate.js';
 //
 import '/vertices/vertices.js';
 import './app.component.js';
-import './child.now.js';
-import './child.later.js';
 import './subsystem/top/top.component.js';
 import './subsystem/sharable/sharable.component.js';
 import './header/header.component.js';

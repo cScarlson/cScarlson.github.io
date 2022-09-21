@@ -1,5 +1,5 @@
 
-import V, {} from '/vertices/core.js';
+import V, {} from '/dist/vertices/core.js';
 
 V('child:later', 'sandbox', function ChildLater($) {
     const thus = this;

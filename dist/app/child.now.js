@@ -1,6 +1,6 @@
 
-import V, {} from '/vertices/core.js';
-import utils, {} from '/vertices/utilities.js';
+import V, {} from '/dist/vertices/core.js';
+import utils, {} from '/dist/vertices/utilities.js';
 
 const { log } = console;
 

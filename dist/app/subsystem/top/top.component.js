@@ -1,6 +1,6 @@
 
-import V, {} from '/vertices/core.js';
-import { Page } from '/app/subsystem/page.js';
+import V, {} from '/dist/vertices/core.js';
+import { Page } from '/dist/app/subsystem/page.js';
 
 const { log } = console;
 V('top', 'sandbox', function AboutComponent($) {

@@ -1,5 +1,5 @@
 
-import V, {} from '/vertices/core.js';
+import V, {} from '/dist/vertices/core.js';
 
 V('sharable', 'sandbox', function Sharable($) {
     const { attributes } = this;

@@ -1,5 +1,5 @@
 
-import V, {} from '/vertices/core.js';
+import V, {} from '/dist/vertices/core.js';
 
 const articles = [];
 const { log } = console;

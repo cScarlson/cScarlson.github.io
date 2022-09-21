@@ -1,13 +1,13 @@
 
-import V, {} from '/vertices/core.js';
-import { Store } from '/vertices/store/store.js';
+import V, {} from '/dist/vertices/core.js';
+import { Store } from '/dist/vertices/store/store.js';
 import { Sandbox } from './core/sandbox.js';
 import { Application } from './core/application.js';
 import { Reducer } from './core/store/reducer.js';
 import { middleware } from './core/store/middleware.js';
 import { translate } from './utilities/translate.js';
 //
-import '/vertices/vertices.js';
+import '/dist/vertices/vertices.js';
 import './app.component.js';
 import './child.now.js';
 import './child.later.js';

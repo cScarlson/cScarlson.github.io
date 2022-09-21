@@ -1,5 +1,5 @@
 
-import V, {} from '/vertices/core.js';
+import V, {} from '/dist/vertices/core.js';
 
 V('slot', function Slot(element) {
     const { attributes, innerHTML: template, outerHTML } = this;

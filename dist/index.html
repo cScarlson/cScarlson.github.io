@@ -6,6 +6,7 @@
         <title>Cody Carlson!</title>
         <link href="./app/reset.css" rel="stylesheet" />
         <link href="./app/spa.css" rel="stylesheet" />
+        <link href="./app/theme.css" rel="stylesheet" />
         <script defer src="./lib/handlebars.min-v4.7.7.js"></script>
         <script defer src="./main.js" type="module"></script>
     </head>
@@ -14,12 +15,13 @@
             <vertex type="layout" src="./app/layout.vertex.html">
                 <div slot="main">
                     <home></home>
-                    <about></about>
                     <resume></resume>
                     <cv></cv>
+                    <about></about>
                     <vertices></vertices>
+                    <blog></blog>
                 </div>
-                <div slot="footer">footer</div>
+                <div slot="footer">[coming soon]</div>
             </vertex>
             <!-- <h1>JS Starter</h1>
             <child:now>some text<span slot="test">some test</span></child:now>

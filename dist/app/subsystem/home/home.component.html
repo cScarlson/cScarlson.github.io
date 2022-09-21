@@ -1,7 +1,10 @@
 
-<section id="/home" routeletX>
-    <h2>{{page.title}}</h2>
-    {{#each page.content}}
-        <p>{{this}}</p>
-    {{/each}}
+<section id="/home" class="page home" routelet="always">
+    <h2>{{use 'TITLE:HOME'}}</h2>
+    <blog:article>
+        <p>{{{use 'CONTENT:INTRO:P:0'}}}</p>
+        <p>{{{use 'CONTENT:INTRO:P:1'}}}</p>
+        <p>{{{use 'CONTENT:INTRO:P:2'}}}</p>
+        <p>{{{use 'CONTENT:INTRO:P:3'}}}</p>
+    </blog:article>
 </section>

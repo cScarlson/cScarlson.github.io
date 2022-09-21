@@ -1,22 +1,22 @@
 
 import V, {} from '/vertices/core.js';
 
-const content = [];
+const articles = [];
 const { log } = console;
 const delay = (delay) => new Promise( r => setTimeout(r, delay) );
-const fake = () => delay(3_000).then( x => content );
+const fake = () => delay(3_000).then( x => articles );
 
 V('app', 'sandbox', function App($) {
     const thus = this;
     const later = $.querySelector('#later');
     
     function init() {
-        const $content = fetch('/api/v1/content', { headers: { 'Content-Type': 'text/html' } }).then( r => r.json() );
+        const $articles = fetch('/api/v1/content/blog/articles', { headers: { 'Content-Type': 'text/html' } }).then( r => r.json() );
         
         this.on('click', this);
         this.subscribe('child:later:ready', this);
         this.attach(this);
-        $content.then( payload => $.dispatch({ type: 'CONTENT:ACQUIRED', payload }) );
+        $articles.then( payload => $.dispatch({ type: 'CONTENT:BLOG:ARTICLES:ACQUIRED', payload }) );
         
         return this;
     }

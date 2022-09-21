@@ -4,7 +4,7 @@ html, body {
 }
 
 [routelet] {
-    opacity: 0;
+    /* opacity: 0; */
     transition: opacity 500ms 500ms ease-in-out;
 }
 

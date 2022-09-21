@@ -21,10 +21,24 @@
             log(`@layout#handleMenuStateChange`, checked, main);
         }
         
+        function handleNavigation(e) {
+            if ( !e.target.matches('a.link.view') ) return;
+            const { target } = e;
+            const { href } = target;
+            const { hash } = new URL(href);
+            const toggle = header.querySelector('menu .menu.button.main .button.control');
+            
+            toggle.checked = false;
+            toggle.dispatchEvent( new CustomEvent('change') );
+            setTimeout( x => window.location.hash = hash, 1000 * 1.5 );
+            e.preventDefault();
+        }
+        
         function handleEvent(e) {
             const { type, target } = e;
             const handler = {
                 'change': handleMenuStateChange,
+                'click': handleNavigation,
             }[ type ];
             
             if (handler) handler.call(this, e);
@@ -32,6 +46,7 @@
         
         this.handleEvent = handleEvent;
         this.on('change', this, true);
+        this.on('click', this, true);
         this.fire('vertex:ready', this);
         
         return this;
@@ -41,39 +56,33 @@
 
 <layout class="layout container">
     <header class="layout header"></header>
-    <div class="layout menu">
-        <br />
-        <br />
-        <br />
-        <br />
-        <hr />
-        <br />
-        <br />
-        <br />
-        <br />
-        <hr />
-        <br />
-        <br />
-        <br />
-        <br />
-        <hr />
-        <br />
-        <br />
-        <br />
-        <br />
-    </div>
+    <menu:links class="layout menu"></menu:links>
     <main class="layout content">
         <slot></slot>
         <slot name="main"></slot>
     </main>
-    <footer class="layout footer">
+    <footer id="/footer" class="layout footer">
         <slot name="footer"></slot>
     </footer>
+    <top></top>
 </layout>
 
 <style>
     .layout.container {
+        display: block;
         position: relative;
+        background:
+            linear-gradient(transparent, lightsalmon),
+            radial-gradient(circle at 40% 100px, #f09819 80px, transparent 270px),
+            radial-gradient(circle at 36% 250px, #1845ad 80px, transparent 270px),
+            radial-gradient(circle at 64% 180px, #ff512f 80px, transparent 270px)
+            ;
+        background-size: 100%;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-origin: border-box;
+        height: 100%;
+        border-width: 0px;
     }
     
     .layout.container .layout.header {
@@ -83,10 +92,11 @@
         padding: 0;
         background-color: rgba(0, 0, 0, 0.7);
         box-shadow: 0px 0px 6px 2px black;
-        z-index: 999;
+        z-index: 9999;
     }
     
     .layout.container .layout.menu {
+        display: block;
         position: absolute;
         top: 64px;
         bottom: 100%;
@@ -99,26 +109,38 @@
         transition: bottom 1s 0.25s ease-in-out, border-width 1s 0.25s ease-in-out, border-top-color 1s 0.25s ease-in-out;
         background-color: rgba(0, 0, 0, 0.7);
         background-clip: padding-box;
+        z-index: 999;
     }
     
     .layout.container .layout.header.active ~ .layout.menu {
-        bottom: calc(0% - 64px);
-        border-top-color: rgba(0, 0, 0, 0.3);
-        border-top-width: 12px;
+        bottom: 0%;
+        border-top-color: rgba(255, 255, 255, 0.7);
+        overflow: unset;
+        transition: overflow 0s 1s;
+        /* border-top-width: 12px; */
     }
     
     .layout.container .layout.content {
-        margin: 0 5%;
+        height: 100%;
+        margin: 8px 5%;
         padding: 16px;
         border: solid 0px transparent;
         border-radius: 30px;
         transform-origin: top;
-        transition: transform 1s 0.25s ease-in-out, border 1s 0.25s ease-in-out;
-        background-color: rgba(255, 255, 255, 0.3);
+        transition: transform 1s 0.25s ease-in-out, border 1s 0.25s ease-in-out, height 0s 1.25s ease-in-out;
+        overflow: hidden;
     }
     .layout.container .layout.content.inactive {
+        height: 100vh;
         transform: scale(0.25);
+        transition: transform 1s 0.25s ease-in-out, border 1s 0.25s ease-in-out, height 0s 0s ease-in-out;
         border: solid 16px white;
+    }
+    .layout.container .layout.content .page {
+        background-color: rgba(255, 255, 255, 0.3);
+        padding: 4px 8px;
+        margin: 8px 0;
+        border-radius: 4px;
     }
     
     .layout.container .layout.footer {

@@ -23,8 +23,8 @@ class Reducer {  // make this extend Vertices Core Reducer.
         return state;
     }
     
-    ['CONTENT:ACQUIRED'](state, content) {
-        var state = { ...state, content };
+    ['CONTENT:BLOG:ARTICLES:ACQUIRED'](state, articles) {
+        var state = { ...state, articles };
         return state;
     }
     

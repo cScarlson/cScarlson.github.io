@@ -7,7 +7,7 @@ V('resume', 'sandbox', function ResumeComponent($) {
     const uri = `./app/subsystem/resume/resume.component.html`;
     
     // export precepts
-    Page.call(this, { name: 'resume', uri });
+    this.use(uri);
     
     return this;
 });

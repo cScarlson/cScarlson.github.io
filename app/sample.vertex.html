@@ -1,0 +1,21 @@
+
+<script type="module">
+    import V, {} from '/vertices/core.js';
+    
+    const { log } = console;
+    V('sample:vertex', 'sandbox', function SampleVertex($) {
+        log(`@sample:vertex`, this);
+        this.fire('vertex:ready', this);
+        return this;
+    });
+    
+    console.log(`test`);
+</script>
+
+<h2 class="sample vertex">Sample Vertex</h2>
+
+<style>
+    .sample.vertex {
+        background-color: blueviolet;
+    }
+</style>

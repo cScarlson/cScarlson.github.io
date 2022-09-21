@@ -6,7 +6,7 @@ import utilities from 'utilities/utilities.js';
 
 const { log } = console;
 const OBSERVATION_DEBOUNCE_RATE = (1000 * 0.25);
-const location = './dist', directory = express.static(location);
+const location = './', directory = express.static(location);
 const app = express();
 const server = app
     .use('/', examine, directory)
@@ -22,7 +22,7 @@ function observe() {
     const options = { recursive: true };
     const debounced = utilities.debounce(handleFilesystemChanges, OBSERVATION_DEBOUNCE_RATE);
     const observers = new Set()
-        .add( fs.watch('./dist', options, debounced) )
+        .add( fs.watch('./', options, debounced) )
         ;
     console.log(`observing...(${observers.size})`);
     

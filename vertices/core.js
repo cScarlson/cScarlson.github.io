@@ -1,5 +1,5 @@
 
-import { DOMIO, Namespace, ChildNodes, Slot, BindingExchangeSlot, BindingExchangeEach } from './decorators.js';
+import { DOMIO, Namespace, ChildNodes, Slot, BindingExchangeSlot, BindingExchangeEach } from '/vertices/decorators.js';
 import { Mutations } from './mutation/mutation.js';
 
 const { log } = console;

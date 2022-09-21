@@ -8,7 +8,6 @@ V('blog', 'sandbox', function PageComponent($) {
     function update({ articles } = {}) {
         if (!articles) return;
         this.articles = articles;
-        log(`@@@@`, articles);
     }
     
     // export precepts

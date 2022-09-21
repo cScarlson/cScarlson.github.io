@@ -1,6 +1,6 @@
 
-import { Slot, BindingExchangeSlot } from './slot/decorators.js';
-import { BindingExchangeEach } from './each/decorators.js';
+import { Slot, BindingExchangeSlot } from '/vertices/slot/decorators.js';
+import { BindingExchangeEach } from '/vertices/each/decorators.js';
 
 // CORE DECORATORS
 const DOMIO = function DOMIO(element) {

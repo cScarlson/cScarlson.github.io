@@ -15,7 +15,7 @@
     "prod:deploy": "npm run prod:build && git add . && git commit -am 'Deploying...' && git push origin master"
   },
   "devDependencies": {
-    "@webpack-cli/generators": "^2.4.2",
+    "@webpack-cli/generators": "^2.5.0",
     "copy-webpack-plugin": "^10.2.4",
     "css-loader": "^6.5.1",
     "express": "^4.17.3",

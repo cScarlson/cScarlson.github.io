@@ -42,8 +42,9 @@ V('some:element', function SomeElement($) {
 <partial src="./some/path/to/static/{name}.html"></partial>
 ```
 ## Modules (`*.vertex.html`)
+SvelteJS style components. 
 ```html
-<module type="{name}" src="./some/path/to/static/{name}.vertex.html"></module>
+<vertex type="{name}" src="./some/path/to/static/{name}.vertex.html"></vertex>
 ```
 ### `**/some/path/to/static/{name}.vertex.html`
 ```html
@@ -78,16 +79,19 @@ const output = interpolate({ ... });
 ```
 
 ## SDK
-Turning elements off. `V.unregister(id)`.
+Later versions of Vertices are expected to have an SDK that is composed of reusable elements such as classical Design Patterns, basic Data-Structures and Algorithms, alongside additional DOM components. Below are some teasers for what to expect.
 
 ### Decorators
-
-### `each[for]`
+TBD
 
 ### `<slot>`s
+Slot elements in Vertices work just [about] like they do natively. Define a `<slot>` in a template and it will receive the elements injected into the component, depending on `*[slot]` & `slot[name]` conventions. The only place this deviates from native behavior is: `<slot>`s do not necessarily need a `name` property to function. Nameless slots simply adopt any injected content that either has no name (such as `TextNode`s) or elements defining `slot=""` (empty string).
 
 ### `Store`
-#### `Reducer`?
+Verticies ships with the convenience of a store which implements _The Observer Pattern_ in order to attach and detach observers. The only place the interface deviates from the classical Observer Pattern is: instead of providing an `update` method on one's observer, it invokes `call`. This means that the developer call pass-in any object with a `call` method -- which includes a `Function`, as its `prototype` encapsulates a `call` method.
+
+#### `Reducer`
+Vertices currently does not shop with a reducer base-class, thought, this is expected to change _very_ soon. The `Reducer` class simply provides apparatus around action-routing in tandem with triggering `notify` on the `Store`.
 
 ## Patterns
 TBD
@@ -103,7 +107,9 @@ TBD
 ## API
 
 ### `V(...)` & `V.register(...)`
-Same thing.
+Calling Vertices as a function (`V()`) is the same as calling the `register` method (`V.register(...)`). This method simply takes an id, 0 or more _Decorators_, alongside a component definition. Take note, however, that modifications to `V`'s signature are dependent upon version, thought backward compatibility will always remain a top goal.
+
+### `V.unregister(id)`
 
 ### `V('x', 'y', X)` vs `V('x', Y, X)` vs `V('x', y, X)`
 Consider we have a component named "x" with its corresponding class `X`. We have 3 different ways of adding decorators. This assumes that a definition for "y" has taken place before bootstrap.
@@ -117,24 +123,23 @@ This performs no lookup relating to decorator `Y` but still uses Y as a decorato
 #### Object: `V('x', y, X)`
 This is the same as using a Function Constructor. However, object `y` must bear a `call` method whose signature takes the target-element as its first argument (`y.call(element)`).
 
-### `new V(...)` instances
-
+### `new V(...)` Instances
+Constructing a new instance of `V` returns a new, sandboxed instance of an application core. That is, media for broadcasting data across modules is scoped only to those registered to a particular core instance. This allows one to restrict messages to a given context without every module in your app hearing those messages.
 
 ### Garbage Collection
+Vertices manages most of everything when DOM Nodes are added or removed from the DOM. However, the developer still must take the usual heed of unsubscribing from particular events. More Garbage Collection methods are expected to be added in the near future.
 
 ### Exentensibility
-Data-Exchange Event Protocol.
+Data-Exchange Event Protocol. Coming soon.
 
 ### Limitations
-Routing?
-Environments?
-Property Binding?
+- Routing: Vertices does not currently ship with a router.
+- Environments: Vertices remains indifferent to environmental configuration.
+- Property: Vertices tries to be as light weight as possible while keeping modules as close to the action as possible. Convenience usually derives from the use of Decorators as opposed to core apparatus.
 
 ### Contributing
-...
+We're still in Alpha phases for Vertices and not excepting contribution at the moment.
 
 ## ToDos
-- ~~rename include to partial~~
-- ~~complete module. rename to vertex?~~
-- test nested `<each>`s
-- module for `<input>`s to help with databinding?
+- module for `<input>`s to help with databinding.
+- automatic scope binding for event-handlers based upon template syntax.

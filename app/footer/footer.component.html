@@ -1,0 +1,16 @@
+
+<link href="./app/footer/footer.component.css" rel="stylesheet" />
+<div class="app footer page">
+    <h1 class="footer header title">More Resources</h1>
+    <ul class="footer resource collection">
+        {{#each resources}}
+            <li class="resource item {{name}}">
+                <h4 class="item header title">{{title}}</h4>
+                {{#each children}}
+                    <a class="item action" href="{{href}}" target="{{target}}">{{title}}</a>
+                {{/each}}
+            </li>
+        {{/each}}
+    </ul>
+    
+</div>

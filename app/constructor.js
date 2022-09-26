@@ -12,6 +12,7 @@ import './app.component.js';
 import './subsystem/top/top.component.js';
 import './subsystem/sharable/sharable.component.js';
 import './header/header.component.js';
+import './footer/footer.component.js';
 import './header/subsystem/menu/menu.component.js';
 import './header/subsystem/menu/links/links.component.js';
 import './subsystem/home/home.component.js';

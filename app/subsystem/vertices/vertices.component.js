@@ -1,13 +1,22 @@
 
 import V, {} from '/vertices/core.js';
-import { Page } from '/app/subsystem/page.js';
 
 const { log } = console;
 V('vertices', 'sandbox', function VerticesComponent($) {
-    const uri = `./app/subsystem/vertices/vertices.component.html`;
+    const thus = this;
+    const readme = fetch('/vertices/README.md', { 'Content-Type': 'text/utf-8' }).then( r => r.text() );
+    
+    function handleReadme(readme) {
+        const markup = marked.parse(readme);
+        log(`@README`, markup);
+        thus.readme = markup;
+    }
+    
+    readme.then(handleReadme);
     
     // export precepts
-    Page.call(this, { name: 'vertices', uri });
+    this.readme = '';
+    this.use(`./app/subsystem/vertices/vertices.component.html`);
     
     return this;
 });

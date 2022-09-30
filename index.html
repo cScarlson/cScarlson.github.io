@@ -4,6 +4,9 @@
     <head>
         <meta charset="utf-8" />
         <title>Cody Carlson!</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap" rel="stylesheet" />
         <link href="./app/reset.css" rel="stylesheet" />
         <link href="./app/spa.css" rel="stylesheet" />
         <link href="./app/theme.css" rel="stylesheet" />
@@ -13,17 +16,7 @@
     </head>
     <body>
         <app id="/" routelet="always">
-            <vertex type="layout" src="./app/layout.vertex.html">
-                <div slot="main">
-                    <home></home>
-                    <resume></resume>
-                    <cv></cv>
-                    <about></about>
-                    <vertices></vertices>
-                    <blog></blog>
-                </div>
-                <div slot="footer">[coming soon]</div>
-            </vertex>
+            <vertex type="layout" src="./app/layout.vertex.html"></vertex>
         </app>
     </body>
     <script>

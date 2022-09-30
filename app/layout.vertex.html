@@ -28,6 +28,7 @@
             const { hash } = new URL(href);
             const toggle = header.querySelector('menu .menu.button.main .button.control');
             
+            window.location.hash = '/';
             toggle.checked = false;
             toggle.dispatchEvent( new CustomEvent('change') );
             setTimeout( x => window.location.hash = hash, 1000 * 1.5 );
@@ -58,8 +59,14 @@
     <header class="layout header"></header>
     <menu:links class="layout menu"></menu:links>
     <main class="layout content">
-        <slot></slot>
-        <slot name="main"></slot>
+        <home></home>
+        <resume></resume>
+        <cv></cv>
+        <consulting></consulting>
+        <contact></contact>
+        <about></about>
+        <blog></blog>
+        <vertices></vertices>
     </main>
     <footer id="/footer" class="layout footer">
         <slot name="footer"></slot>
@@ -97,27 +104,24 @@
     
     .layout.container .layout.menu {
         display: block;
-        position: absolute;
+        width: 100%;
+        height: calc(100vh - 64px);
+        position: fixed;
         top: 64px;
-        bottom: 100%;
         left: 0;
-        right: 0;
-        border-top-style: double;
-        border-top-width: 0;
-        border-top-color: transparent;
-        overflow: hidden;
-        transition: bottom 1s 0.25s ease-in-out, border-width 1s 0.25s ease-in-out, border-top-color 1s 0.25s ease-in-out;
+        transform: scale(0);
+        transform-origin: top;
+        transition: transform 1s 0.25s ease-in-out;
+        z-index: 999;
         background-color: rgba(0, 0, 0, 0.7);
         background-clip: padding-box;
-        z-index: 999;
+        border-top-style: double;
+        border-top-width: 12px;
+        border-top-color: rgba(255, 255, 255, 0.7);
     }
     
     .layout.container .layout.header.active ~ .layout.menu {
-        bottom: 0%;
-        border-top-color: rgba(255, 255, 255, 0.7);
-        overflow: unset;
-        transition: overflow 0s 1s;
-        /* border-top-width: 12px; */
+        transform: scale(1);
     }
     
     .layout.container .layout.content {
@@ -131,9 +135,8 @@
         overflow: hidden;
     }
     .layout.container .layout.content.inactive {
-        height: 100vh;
-        transform: scale(0.25);
-        transition: transform 1s 0.25s ease-in-out, border 1s 0.25s ease-in-out, height 0s 0s ease-in-out;
+        transform: scale(0.25) translateY(25vh);
+        transition: transform 1s 0.25s ease-in-out, border 1s 0.25s ease-in-out;
         border: solid 16px white;
     }
     .layout.container .layout.content .page {

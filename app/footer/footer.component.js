@@ -5,6 +5,7 @@ const site = [
     { id: 0, name: 'home', title: "Home", href: '#/home' },
     { id: 1, name: 'resume', title: "Resume", href: '#/resume' },
     { id: 2, name: 'cv', title: "Curriculum Vitae", href: '#/cv' },
+    { id: 2, name: 'consulting', title: "Consulting", href: '#/consulting' },
     { id: 3, name: 'about', title: "About", href: '#/about' },
     { id: 4, name: 'vertices', title: "Vertices", href: '#/vertices' },
     { id: 5, name: 'blog', title: "Articles", href: '#/blog' },

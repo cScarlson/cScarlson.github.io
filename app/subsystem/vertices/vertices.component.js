@@ -8,7 +8,6 @@ V('vertices', 'sandbox', function VerticesComponent($) {
     
     function handleReadme(readme) {
         const markup = marked.parse(readme);
-        log(`@README`, markup);
         thus.readme = markup;
     }
     

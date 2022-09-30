@@ -4,7 +4,7 @@ Vertices
 A workaround to other frameworks.
 
 ## TL;DR
-...
+Quickstart...
 
 ## Components
 ```javascript
@@ -91,7 +91,7 @@ Slot elements in Vertices work just [about] like they do natively. Define a `<sl
 Verticies ships with the convenience of a store which implements _The Observer Pattern_ in order to attach and detach observers. The only place the interface deviates from the classical Observer Pattern is: instead of providing an `update` method on one's observer, it invokes `call`. This means that the developer call pass-in any object with a `call` method -- which includes a `Function`, as its `prototype` encapsulates a `call` method.
 
 #### `Reducer`
-Vertices currently does not shop with a reducer base-class, thought, this is expected to change _very_ soon. The `Reducer` class simply provides apparatus around action-routing in tandem with triggering `notify` on the `Store`.
+Vertices currently does not ship with a reducer base-class, though, this is expected to change _very_ soon. The `Reducer` class simply provides apparatus around action-routing in tandem with triggering `notify` on the `Store`.
 
 ## Patterns
 TBD
@@ -107,7 +107,7 @@ TBD
 ## API
 
 ### `V(...)` & `V.register(...)`
-Calling Vertices as a function (`V()`) is the same as calling the `register` method (`V.register(...)`). This method simply takes an id, 0 or more _Decorators_, alongside a component definition. Take note, however, that modifications to `V`'s signature are dependent upon version, thought backward compatibility will always remain a top goal.
+Calling Vertices as a function (`V()`) is the same as calling the `register` method (`V.register(...)`). This method simply takes an id, 0 or more _Decorators_, alongside a component definition. Take note, however, that modifications to `V`'s signature are dependent upon version, though backward compatibility will always remain a top goal.
 
 ### `V.unregister(id)`
 

@@ -27,7 +27,7 @@ export default {
     "CONTENT:ABOUT:HOBBY:MORE": "Woodworking, philosophy & mythology, ...more.",
     "CONTENT:ABOUT:P:4": `That's about enough about me, unless we belabor the subject. I hope you enjoyed getting to know a little more about me. If you'd like to see a bit more about how I tick, please checkout <a href="#/blog">the blog section</a>.`,
     "TITLE:CONTACT": "Contact Me",
-    "CONTENT:CONTACT:P:0": `The best way to get a hold of me is either through <a href="{{use 'CONTENT:CONTACT:SOCIAL:LINKEDIN'}}" target="_blank">my LinkedIn</a> direct messages or SMS (Text Message). Thank you for your understanding as the industry of spam in thriving.`,
+    "CONTENT:CONTACT:P:0": `The best way to get a hold of me is either through <a href="{{use 'CONTENT:CONTACT:SOCIAL:LINKEDIN'}}" target="_blank">my LinkedIn</a> direct messages or SMS (Text Message). Thank you for your understanding as the industry of spam is thriving.`,
     "CONTENT:CONTACT:SOCIAL:LINKEDIN": "https://www.linkedin.com/in/cody-s-carlson-1b837259",
     "CONTENT:CONTACT:PHONE": `(720)515-2226`,
     "CONTENT:CONTACT:EMAIL": "Please download and reference resume.",

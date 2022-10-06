@@ -1,0 +1,10 @@
+
+<link href="./app/subsystem/search/search.component.css" rel="stylesheet" />
+<form class="app search global" title="{{use 'SOME:KEY'}}">
+    <input class="search box" type="search" name="search" autocomplete="off" placeholder="search" list="searchbar" />
+    <datalist id="searchbar">
+        {{#each options}}
+            <option value="{{title}}">{{title}}</option>
+        {{/each}}
+    </datalist>
+</form>

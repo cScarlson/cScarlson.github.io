@@ -1,5 +1,6 @@
 
 import V, {} from '/vertices/core.js';
+import { translate } from '/app/utilities/translate.js';
 
 const site = [
     { id: 0, name: 'home', title: "Home", href: '#/home' },
@@ -12,12 +13,12 @@ const site = [
 ];
 const portfolio = [
     { id: 0, name: 'this', title: "This Site", href: '#/' },
-    { id: 0, name: 'github', title: "GitHub", href: 'https://github.com/cScarlson', target: '_blank' },
-    { id: 0, name: 'codepen', title: "CodePen", href: 'https://codepen.io/cScarlson', target: '_blank' },
-    { id: 0, name: 'stackblitz', title: "StackBlitz", href: 'https://stackblitz.com/@cScarlson', target: '_blank' },
+    { id: 0, name: 'github', title: "GitHub", href: translate('CONTENT:CONTACT:SOCIAL:GITHUB'), target: '_blank' },
+    { id: 0, name: 'codepen', title: "CodePen", href: translate('CONTENT:CONTACT:SOCIAL:CODEPEN'), target: '_blank' },
+    { id: 0, name: 'stackblitz', title: "StackBlitz", href: translate('CONTENT:CONTACT:SOCIAL:STACKBLITZ'), target: '_blank' },
 ];
 const social = [
-    { id: 0, name: 'linkedin', title: "LinkedIn", href: 'https://www.linkedin.com/in/cody-s-carlson-1b837259', target: '_blank' },
+    { id: 0, name: 'linkedin', title: "LinkedIn", href: translate('CONTENT:CONTACT:SOCIAL:LINKEDIN'), target: '_blank' },
 ];
 const inspiration = [
     { id: 0, name: 'nicholaszakas', title: "Nicholas Zakas: Scalable Application Architecture", href: 'https://www.slideshare.net/nzakas/scalable-javascript-application-architecture', target: '_blank' },

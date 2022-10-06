@@ -24,6 +24,7 @@ import './subsystem/vertices/vertices.component.js';
 import './subsystem/blog/blog.component.js';
 import './subsystem/contact/contact.component.js';
 import './subsystem/consulting/consulting.component.js';
+import './subsystem/search/search.component.js';
 
 const state = { };
 const reducer = new Reducer(middleware);

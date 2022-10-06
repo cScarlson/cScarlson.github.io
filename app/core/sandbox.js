@@ -17,9 +17,9 @@ const Sandbox = function Sandbox(element) {
     function use(uri) {
         const headers = { 'Content-Type': 'text/html' };
         const options = { headers };
-        const promise = fetch(uri, options).then( r => r.text() );
-        
-        promise.then( template => this.template = template );
+        var promise = fetch(uri, options).then( r => r.text() )
+          , promise = promise.then( template => this.template = template )
+          ;
         
         return promise;
     }

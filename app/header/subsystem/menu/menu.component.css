@@ -38,6 +38,10 @@
     display: none;
 }
 
+.menu.button.main .button.control:focus ~ .button.display * {
+    outline: solid 1px white;
+}
+
 .menu.button.main .button.control:checked ~ .button.display .display.off {
     display: none;
 }

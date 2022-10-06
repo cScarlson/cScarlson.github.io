@@ -3,12 +3,16 @@
     import V, {} from '/vertices/core.js';
     
     const { log } = console;
-    V('layout', 'sandbox', function Layout(element) {
-        const { firstElementChild: script } = element;
+    V('layout', 'sandbox', function Layout($) {
+        const { firstElementChild: script } = this;
         const { nextElementSibling: layout } = script;
         const { firstElementChild: header } = layout;
         const { nextElementSibling: menu } = header;
         const { nextElementSibling: main } = menu;
+        const keyboardActions = new Set();
+        const keyboardHandlers = {
+            'Control+f': handleSearch,
+        };
         
         function handleMenuStateChange(e) {
             if ( !e.target.matches('.menu.button.main .button.control') ) return;
@@ -35,11 +39,32 @@
             e.preventDefault();
         }
         
+        function handleKeydown(e) {
+            const { type, key } = e;
+            keyboardActions.add(key);
+            if (key === 'f') e.preventDefault();  // last key for Ctrl+f
+        }
+        
+        function handleKeyup(e) {
+            const keys = [ ...keyboardActions ];
+            const combo = keys.join('+');
+            const handle = keyboardHandlers[combo];
+            
+            if (handle) handle.call(this, e);
+            keyboardActions.clear();
+        }
+        
+        function handleSearch(e) {
+            $.publish('USER:SEARCH:INVOKED');
+        }
+        
         function handleEvent(e) {
             const { type, target } = e;
             const handler = {
                 'change': handleMenuStateChange,
                 'click': handleNavigation,
+                'keydown': handleKeydown,
+                'keyup': handleKeyup,
             }[ type ];
             
             if (handler) handler.call(this, e);
@@ -48,6 +73,8 @@
         this.handleEvent = handleEvent;
         this.on('change', this, true);
         this.on('click', this, true);
+        document.addEventListener('keydown', this, true);
+        document.addEventListener('keyup', this, true);
         this.fire('vertex:ready', this);
         
         return this;

@@ -1,7 +1,23 @@
 
-.header.menu {
+.app.header {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr;
+    padding: 0 8px;
+}
+
+.app.header .header.branding {}
+
+.app.header .header.menu {
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: space-around;
+}
+
+.app.header .header.searchbar {
+    /* border: solid 1px tomato; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

@@ -1,9 +1,0 @@
-
-.vertices.page {}
-
-.vertices.page pre {
-    background-color: rgba(0, 0, 0, 0.5);
-    color: limegreen;
-    overflow-x: auto;
-    padding: 8px;
-}

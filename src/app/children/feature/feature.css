@@ -1,0 +1,40 @@
+
+:host {}
+
+.app.feature {
+    
+    .feature.header {
+        
+        .header.title {
+            margin: 0;
+        }
+        .header.subtitle {
+            margin: 2px auto 8px;
+        }
+        
+    }
+    
+    .feature.body {
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .feature.footer {}
+    
+}
+
+@media screen and (max-width: 400px) {
+    .app.feature .feature.body {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 720px) {
+    .app.feature .feature.body {
+        display: block;
+    }
+}
+
+@media screen and (min-width: 1200px) {}
+
+@media screen and (min-width: 1600px) {}

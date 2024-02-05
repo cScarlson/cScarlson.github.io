@@ -1,0 +1,128 @@
+
+.page, ::part(page) {
+    min-height: 98vh;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+}
+
+.glass, ::part(glass) {
+    padding: 8px;
+    border-radius: 3px;
+    background-color: rgba(255, 255, 255, 0.513);
+    box-shadow: 0px 0px 1px 0px #333;
+}
+
+my-menu.global {
+    position: fixed;
+    top: -8px;
+    left: 0;
+    /* transform: translateX(-50%); */
+    width: 100%;
+    height: 38px;
+    /* border-radius: 3px; */
+    overflow: hidden;
+    opacity: 1;
+    animation: spawn-soft 1s linear;
+    cursor: pointer;
+    box-shadow: 0px 0px 3px 0px #333;
+    
+    &::part(glass) {
+        background-color: rgba(255, 255, 255, 0.913);
+    }
+    
+    &:focus-within {
+        height: auto;
+    }
+    
+}
+
+@keyframes spawn-soft {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.app.background {
+    --stripes: repeating-linear-gradient(
+        100deg,
+        #fff 0%,
+        #fff 7%,
+        transparent 10%,
+        transparent 12%,
+        #fff 16%
+    );
+    --stripesDark: repeating-linear-gradient(
+        100deg,
+        #000 0%,
+        #000 7%,
+        transparent 10%,
+        transparent 12%,
+        #000 16%
+    );
+    --rainbow: repeating-linear-gradient(
+        100deg,
+        #60a5fa 10%,
+        #e879f9 15%,
+        #60a5fa 20%,
+        #5eead4 25%,
+        #60a5fa 30%
+    );
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-image: var(--stripes), var(--rainbow);
+    background-size: 300%, 200%;
+    filter: blur(10px) invert(100%);
+    mask-image: radial-gradient(ellipse at 100% 0%, black 40%, transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+    
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: var(--stripes), var(--rainbow);
+        background-size: 200%, 100%;
+        animation: waves 60s linear infinite;
+        background-attachment: fixed;
+        mix-blend-mode: difference;
+    }
+}
+
+@keyframes waves {
+    from {
+        background-position: 50% 50%, 50% 50%;
+    }
+    to {
+        background-position: 350% 50%, 350% 50%;
+    }
+}
+
+@media screen and (min-width: 400px) {
+    .page, ::part(page) {
+        margin: 1vh 4vw;
+    }
+}
+
+@media screen and (min-width: 720px) {
+    .page, ::part(page) {
+        margin: 1vh 8vw;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .page, ::part(page) {
+        margin: 1vh 12vw;
+    }
+}
+
+@media screen and (min-width: 1600px) {
+    .page, ::part(page) {
+        margin: 1vh 16vw;
+    }
+}

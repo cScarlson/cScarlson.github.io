@@ -5,13 +5,14 @@ import fs from 'fs';
 import utilities from 'utilities/utilities.js';
 
 const { log } = console;
+const PORT = 3000;
 const OBSERVATION_DEBOUNCE_RATE = (1000 * 0.25);
 const location = './', directory = express.static(location);
 const app = express();
 const server = app
     .use('/', examine, directory)
     .get( '*', (req, res) => res.redirect('/') )
-    .listen(3000)
+    .listen( PORT, () => log(`LESTENING @localhost on port ${PORT}`) )
     ;
 const connection = new WebSocketServer({ server });
 const observers = observe();

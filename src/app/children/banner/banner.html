@@ -1,0 +1,14 @@
+
+<div class="app banner">
+    <div class="banner textground" slot="default"></div>
+    <my-block class="banner block">
+        <my-feature class="block feature" slot="default" style="padding-top: 50px; padding-bottom: 50px;">
+            <span class="feature title" slot="title">${title}</span>
+            <span class="feature subtitle" slot="subtitle">${subtitle}</span>
+            <div class="feature content blurb" slot="content">${content}</div>
+            <div class="feature content action" slot="content">
+                <a class="action link" href="#/contact">${action}</a>
+            </div>
+        </my-feature>
+    </my-block>
+</div>

@@ -3,23 +3,29 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>Cody Carlson!</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap" rel="stylesheet" />
-        <link href="./app/reset.css" rel="stylesheet" />
-        <link href="./app/spa.css" rel="stylesheet" />
-        <link href="./app/theme.css" rel="stylesheet" />
-        <script defer src="./lib/handlebars.min-v4.7.7.js"></script>
-        <script defer src="./lib/marked.min.js"></script>
-        <script defer src="./main.js" type="module"></script>
+        <title>Cody Carlson</title>
+        <link href="./src/reset.css" rel="stylesheet" />
+        <link href="./src/global.css" rel="stylesheet" />
+        <link href="./src/theme.css" rel="stylesheet" />
+        <link href="./src/spa.css" rel="stylesheet" />
+        <script src="./lib/marked.min.js"></script>
+        <script src="./lib/handlebars.min-v4.7.8.js"></script>
     </head>
     <body>
-        <app id="/" routelet="always">
-            <vertex type="layout" src="./app/layout.vertex.html"></vertex>
-        </app>
+        <div class="app background"></div>
+        <my-app id="/">
+            <my-about id="/about" class="page" slot="about" style="padding: 200px auto"></my-about>
+            <my-pricing id="/pricing" class="page glass" slot="pricing"></my-pricing>
+            <my-contact id="/contact" class="page glass" slot="contact"></my-contact>
+            <my-footer id="/footer" slot="footer"></my-footer>
+        </my-app>
     </body>
+    <script defer src="./main.js" type="module"></script>
     <script>
-        ( new WebSocket('ws://localhost:3000') ).addEventListener('message', e => location.reload(true), false);
+        (function connect() {
+            if (window.location.hostname !== 'localhost') return;
+            const websocket = new WebSocket('ws://localhost:3000');
+            websocket.addEventListener('message', e => location.reload(true), false);
+        })();
     </script>
 </html>

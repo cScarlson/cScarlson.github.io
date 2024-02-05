@@ -1,0 +1,33 @@
+
+:host {
+    /* background-color: rgba(0, 255, 0, 0.8); */
+    padding: 0 8px;
+}
+
+@media screen and (min-width: 400px) {
+    :host {
+        /* background-color: rgba(255, 0, 0, 0.13); */
+        padding: 0 4vw;
+    }
+}
+
+@media screen and (min-width: 720px) {
+    :host {
+        /* background-color: rgba(0, 255, 0, 0.13); */
+        padding: 0 8vw;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    :host {
+        /* background-color: rgba(0, 0, 255, 0.13); */
+        padding: 0 12vw;
+    }
+}
+
+@media screen and (min-width: 1600px) {
+    :host {
+        /* background-color: rgba(255, 0, 0, 0.13); */
+        padding: 0 16vw;
+    }
+}

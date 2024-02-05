@@ -1,0 +1,50 @@
+
+<div class="thank you">
+    <h2 class="you title">${feedback.title}</h2>
+    <h4 class="you subtitle">${feedback.subtitle}</h4>
+</div>
+
+<form id="form" class="contact form">
+    <div class="form errors" tabindex="-1"></div>
+    <fieldset>
+        <legend>${name.legend}</legend>
+        <label class="form control label name first">
+            <input class="form control input name first" type="text" name="firstname" placeholder="${name.first}" required />
+        </label>
+        
+        <label class="form control label name last">
+            <input class="form control input name last" type="text" name="lastname" placeholder="${name.last}" />
+        </label>
+    </fieldset>
+    <fieldset>
+        <legend>${contact.legend}</legend>
+        <label class="form control label email">
+            <input id="email" class="form control input email" type="email" name="email" placeholder="${contact.email}" />
+        </label>
+        <label class="form control label phone">
+            <input class="form control input phone" type="tel" name="phone" placeholder="${contact.phone}" />
+            <label class="form control label sms">
+                ${contact.sms}
+                <input class="form control input sms" type="checkbox" name="sms" checked />
+            </label>
+        </label>
+    </fieldset>
+    
+    <fieldset>
+        <legend>${service.legend}</legend>
+        <select id="service" class="form control input service" type="text" name="service" required>
+            <option selected disabled>${service.default}</option>
+            <option value="enhancement">${service.enhancement}</option>
+            <option value="consultation">${service.consultation}</option>
+            <option value="support">${service.support}</option>
+            <option value="other">${service.other}</option>
+        </select>
+    </fieldset>
+    
+    <input type="text" name="website" tabindex="-1" autocomplete="deny" />
+    
+    <fieldset>
+        <button class="form control button submit" type="submit">${action.submit}</button>
+        <button class="form control button reset" type="reset">${action.reset}</button>
+    </fieldset>
+</form>

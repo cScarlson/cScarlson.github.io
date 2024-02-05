@@ -1,17 +1,10 @@
 
 :host {}
 
-:host(:--submitting)::after {
-    content: "";
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background-color: rgba(255, 255, 255, 0.75);
-    z-index: 1;
+:host(:--submitting) .contact.form .form.loading {
+    display: flex;
 }
+
 :host(:--submitted) .thank.you {
     display: flex;
 }
@@ -33,7 +26,41 @@
     
 }
 
+@keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+
 .contact.form {
+    position: relative;
+    
+    .form.loading {
+        display: flex;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        border-radius: 3px;
+        background-color: rgba(0, 0, 0, 0.75);
+        z-index: 1;
+        
+        .loading.indicator {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+    }
     
     .form.control {
         

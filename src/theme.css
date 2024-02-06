@@ -1,8 +1,14 @@
 
+:root {
+    --bp-sm: 430px;
+    --bp-md: 768px;
+    --bp-lg: 1200px;
+    --outset: 1vw;
+}
+
 .page, ::part(page) {
     min-height: 98vh;
-    margin-top: 1vh;
-    margin-bottom: 1vh;
+    margin: 1vh var(--outset);
 }
 
 .glass, ::part(glass) {
@@ -16,10 +22,8 @@ my-menu.global {
     position: fixed;
     top: -8px;
     left: 0;
-    /* transform: translateX(-50%); */
     width: 100%;
     height: 38px;
-    /* border-radius: 3px; */
     overflow: hidden;
     opacity: 1;
     animation: spawn-soft 1s linear;
@@ -34,15 +38,6 @@ my-menu.global {
         height: auto;
     }
     
-}
-
-@keyframes spawn-soft {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
 }
 
 .app.background {
@@ -103,26 +98,29 @@ my-menu.global {
     }
 }
 
-@media screen and (min-width: 400px) {
-    .page, ::part(page) {
-        margin: 1vh 4vw;
+@keyframes spawn-soft {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
     }
 }
 
-@media screen and (min-width: 720px) {
-    .page, ::part(page) {
-        margin: 1vh 8vw;
+@media (min-width: 430px) {
+    :root {
+        --outset: 1vw;
     }
 }
 
-@media screen and (min-width: 1200px) {
-    .page, ::part(page) {
-        margin: 1vh 12vw;
+@media (min-width: 768px) {
+    :root {
+        --outset: 8vw;
     }
 }
 
-@media screen and (min-width: 1600px) {
-    .page, ::part(page) {
-        margin: 1vh 16vw;
+@media (min-width: 1200px) {
+    :root {
+        --outset: 16vw;
     }
 }

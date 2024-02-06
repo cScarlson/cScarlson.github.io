@@ -17,24 +17,16 @@
     .feature.body {
         display: flex;
         justify-content: space-between;
+        align-items: center;
+        flex-direction: column;
     }
     
     .feature.footer {}
     
 }
 
-@media screen and (max-width: 400px) {
+@media (min-width: 768px) {
     .app.feature .feature.body {
-        display: block;
+        flex-direction: row;
     }
 }
-
-@media screen and (max-width: 720px) {
-    .app.feature .feature.body {
-        display: block;
-    }
-}
-
-@media screen and (min-width: 1200px) {}
-
-@media screen and (min-width: 1600px) {}

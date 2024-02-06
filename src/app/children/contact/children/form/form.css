@@ -26,13 +26,6 @@
     
 }
 
-@keyframes spin {
-  to { -webkit-transform: rotate(360deg); }
-}
-@-webkit-keyframes spin {
-  to { -webkit-transform: rotate(360deg); }
-}
-
 .contact.form {
     position: relative;
     
@@ -99,6 +92,7 @@
     }
     
     .form.control.input.phone {
+        display: block;
         
         & ~ .form.control.label.sms {
             display: none;
@@ -135,4 +129,11 @@
         
     }
     
+}
+
+@keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
 }

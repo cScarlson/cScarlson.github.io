@@ -49,6 +49,14 @@
             
             .feature.content {
                 
+                &.blurb {
+                    
+                    ul {
+                        padding: 0 16px;
+                    }
+                    
+                }
+                
                 &.action {
                     display: flex;
                     justify-content: center;

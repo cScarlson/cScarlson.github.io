@@ -2,16 +2,3 @@
 html, body {
     scroll-behavior: smooth;
 }
-
-/* [routelet] {
-    transition: opacity 500ms 500ms ease-in-out;
-}
-
-[routelet]:target {
-    opacity: 1;
-    transition: opacity 500ms 500ms ease-in-out;
-}
-
-[routelet="always"] {
-    opacity: 1;
-} */

@@ -1,0 +1,8 @@
+
+body {
+    padding: 0 var(--outset);
+}
+
+.app.router {
+    border: solid 1px tomato;
+}

@@ -1,0 +1,10 @@
+
+@import url('/developers/reset.css');
+@import url('/developers/global.css');
+
+iframe[partial] {
+    border: none;
+    /* border: solid firebrick 10px; */
+    /* background-color: pink; */
+    display: block;
+}

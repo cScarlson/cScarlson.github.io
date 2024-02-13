@@ -1,0 +1,28 @@
+
+<meta type="partial" name="ascii-view" />
+<link rel="partial" href="./view.css" />
+<script type="partial" src="./view.js"></script>
+
+<template type="partial">
+    <dialog class="ascii tile view">
+        <form class="view close" method="dialog">
+            <button class="close button" autofocus>&times;</button>
+        </form>
+        <div class="view content"></div>
+    </dialog>
+    <iframe partial name="ascii/pager" src="./children/pager/pager.html?prop=true" root="./app/children/pages/ascii/children/view"></iframe>
+    <div class="ascii collection view">
+        <ul class="view list"></ul>
+    </div>
+    <template id="asciiTile">
+        <li class="list tile" data-code="${code}">
+            <input class="tile facade" type="radio" name="tile" value="${code}" />
+            <div class="tile display">
+                <span class="tile character">${character}</span>
+                <span class="tile code">${code}</span>
+                <span class="tile unicode">${unicode}</span>
+                <span class="tile tags">${ tags.join(' ') }</span>
+            </div>
+        </li>
+    </template>
+</template>

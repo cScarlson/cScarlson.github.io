@@ -1,0 +1,43 @@
+
+app-menu {
+    border: solid 1px tomato;
+    display: block;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+.app.header {
+    border: solid 1px black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: var(--header-height);
+    background-color: #333;
+    color: white;
+    
+    .header.branding {
+        display: inline-block;
+        
+        .branding.title {
+            border: solid 1px tomato;
+            display: inline-block;
+            margin: 0;
+            padding: 0;
+        }
+    }
+    .header.menu {
+        border: solid 1px tomato;
+        display: inline-block;
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+        
+        .menu.title {
+            font-size: xxx-large;
+            cursor: pointer;
+        }
+        
+    }
+    
+}

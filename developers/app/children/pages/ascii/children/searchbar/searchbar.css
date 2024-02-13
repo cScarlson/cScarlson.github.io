@@ -1,0 +1,18 @@
+
+.ascii.searchbar {
+    border: solid 1px tomato;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    .searchbar.control.input.search {
+        margin: 16px;
+        border-radius: 12px;
+        padding: 16px;
+        min-width: 50%;
+        text-align: center;
+        outline: none;
+        border: solid 1px #aaa;
+    }
+    
+}

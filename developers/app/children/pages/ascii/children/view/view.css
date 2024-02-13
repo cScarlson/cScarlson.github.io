@@ -1,0 +1,220 @@
+
+:root {
+    --tile-length: 100px;
+}
+
+.ascii.collection.view {
+    border: solid 1px tomato;
+    
+    .view.list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 100px);
+        grid-gap: 8px;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+        
+        .list.tile {
+            border: solid 1px black;
+            position: relative;
+            display: inline-flex;
+            flex-direction: column;
+            width: var(--tile-length);
+            height: var(--tile-length);
+            overflow: hidden;
+            
+            .tile.display {
+                width: var(--tile-length);
+                height: var(--tile-length);
+                padding: 4px;
+                background-color: #333;
+                color: white;
+            
+                .tile.character, .tile.code, .tile.unicode, .tile.tags {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+                
+                .tile.character {
+                    height: calc( var(--tile-length) - 36px );
+                    font-size: xx-large;
+                }
+                .tile.code, .tile.unicode, .tile.tags {
+                    height: calc( var(--tile-length) - 84px );
+                    font-size: calc( var(--tile-length) - 84px );
+                    overflow: hidden;
+                    white-space: nowrap;
+                }
+                .tile.code {}
+                .tile.unicode {
+                    border: solid 1px blue;
+                    display: none;
+                }
+                .tile.tags {
+                    display: none;
+                }
+                
+            }
+            .tile.facade {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                opacity: 0;
+                cursor: pointer;
+            }
+            .tile.facade:checked ~ .tile.display {
+                background-color: white;
+                color: black;
+            }
+            
+        }
+        
+    }
+    
+}
+
+.ascii.tile.view {
+    position: fixed;
+    top: 0;
+    left: 100%;
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.9);
+    transition: left 0.5s 0s ease-in-out;
+    overflow: hidden;
+    z-index: 1;
+    
+    &[open] {
+        left: 0%;
+    }
+    
+    &::backdrop {
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+    
+    .view.close {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        cursor: pointer;
+        
+        .close.button {
+            border: none;
+            background-color: transparent;
+            color: white;
+            font-size: x-large;
+            font-weight: bolder;
+            text-shadow: 0px 1px 1px black, 0px -1px 1px black;
+            
+            &:focus {
+                box-shadow: 0px 0px 6px 0px blue;
+            }
+            
+            &:hover {
+                box-shadow: 0px 0px 6px 0px orange;
+            }
+            
+            &:hover:focus {
+                box-shadow: 0px 0px 6px 0px green;
+            }
+            
+        }
+        
+    }
+    
+    .view.content {
+        /* border: solid 1px black; */
+        display: flex;
+        justify-content: center;
+        
+        .list.tile {
+            border: solid 1px black;
+            position: relative;
+            display: inline-flex;
+            flex-direction: column;
+            width: 360px;
+            height: 360px;
+            overflow: hidden;
+            
+            .tile.display {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                width: 360px;
+                height: 360px;
+                padding: 4px;
+                background-color: #333;
+                color: white;
+                
+                .tile.character, .tile.code, .tile.unicode, .tile.tags {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+                
+                .tile.character {
+                    height: calc( var(--tile-length) - 36px );
+                    font-size: xxx-large;
+                }
+                .tile.code, .tile.unicode, .tile.tags {
+                    min-height: calc( var(--tile-length) - 84px );
+                    font-size: calc( var(--tile-length) - 84px );
+                    padding: 4px;
+                    overflow: hidden;
+                    border-bottom: solid 1px cyan;
+                }
+                .tile.code {
+                    &::before {
+                        content: "Code:\00a0 ";
+                    }
+                    &:empty::after {
+                        content: "No ASCII Code to display";
+                    }
+                }
+                .tile.unicode {
+                    &::before {
+                        content: "Unicode:\00a0 ";
+                    }
+                    &:empty::after {
+                        content: "No Unicode to display";
+                    }
+                }
+                .tile.tags {
+                    &::before {
+                        content: "Tags:\00a0 ";
+                    }
+                    &:empty::after {
+                        content: "No tags to display";
+                    }
+                }
+                
+            }
+            .tile.facade {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                opacity: 0;
+                cursor: pointer;
+            }
+            .tile.facade:checked ~ .tile.display {
+                background-color: white;
+                color: black;
+            }
+            
+        }
+        
+        
+    }
+    
+}

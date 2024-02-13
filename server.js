@@ -4,6 +4,32 @@ import express from 'express';
 import fs from 'fs';
 import utilities from 'utilities/utilities.js';
 
+class Deferred {
+    promise = Promise.resolve('uninitialized');
+    _resolve = () => console.log(`RESOLVE?`);
+    _reject = () => console.log(`REJECT?`);
+    
+    constructor() {
+        this.promise = new Promise(this.execute);
+    }
+    
+    execute = (resolve, reject) => {
+        this._resolve = resolve;
+        this._reject = reject;
+    };
+    
+    resolve = (data) => {
+        this._resolve(data);
+        return this;
+    };
+    
+    reject = (reason) => {
+        this._reject(reason);
+        return this;
+    };
+    
+}
+
 const { log } = console;
 const PORT = 3000;
 const OBSERVATION_DEBOUNCE_RATE = (1000 * 0.25);
@@ -17,7 +43,8 @@ const server = app
 const connection = new WebSocketServer({ server });
 const observers = observe();
 const debounced = utilities.debounce(handleSocketConnection, OBSERVATION_DEBOUNCE_RATE);
-let websocket = null;
+const deferred = new Deferred();
+const websockets = new Set();
 
 function observe() {
     const options = { recursive: true };
@@ -39,13 +66,20 @@ function examine(req, res, next) {
 }
 
 function handleSocketConnection(socket) {
+    const { resolve } = deferred;
     log(`websocket connected...`);
-    websocket = socket;
+    websockets.add(socket);
+    resolve(socket);
 }
     
-function handleFilesystemChanges(type, filename) {
-    console.log(`handling:filesystem:changes...`);
-    websocket.send('something');
+async function handleFilesystemChanges(type, filename) {
+    log(`handling:filesystem:changes...`);
+    const { promise } = deferred;
+    const websocket = await promise;
+    
+    log(`handling:filesystem:changes...`);
+    websockets.forEach( websocket => websocket.send('something') );
+    log(`HANDLED:filesystem:changes...`, websockets.length);
 }
 
 connection.on('connection', debounced);

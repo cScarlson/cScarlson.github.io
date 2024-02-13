@@ -1,0 +1,32 @@
+
+:root {
+    --outset: 1vw;
+    --compensate: calc(var(--outset) * -1);
+    --iframe-width: 100%;
+    --header-height: 64px;
+    --ascii-search-height: 85px;
+}
+
+iframe[partial] {
+    border: none;
+    display: block;
+    width: var(--iframe-width);
+}
+
+@media (min-width: 430px) {
+    :root {
+        --outset: 1vw;
+    }
+}
+
+@media (min-width: 768px) {
+    :root {
+        --outset: 8vw;
+    }
+}
+
+@media (min-width: 1200px) {
+    :root {
+        --outset: 16vw;
+    }
+}

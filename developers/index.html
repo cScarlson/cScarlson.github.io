@@ -2,36 +2,132 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8" />
         <title>Developers</title>
-        <style>
-            body {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-                min-height: 100vh;
-                background-color: rgba(0, 255, 100, 0.6);
-            }
-        </style>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport" />
+        <link rel="stylesheet" href="./reset.css" />
+        <link rel="stylesheet" href="./global.css" />
+        <link rel="stylesheet" href="./main.css" />
+        <script type="module" src="./main.js"></script>
+        <script type="module" src="./frameless.js"></script>
     </head>
     <body>
-        <h1>COMING SOON</h1>
-        <ul>
-            <li>About this site (technical)</li>
-            <li>ASCII Stuff</li>
-            <li>Other Developer goodies</li>
-            <li>More</li>
-        </ul>
-        <a href="/#/footer">
-            <h2>BACK TO MARKETING SITE</h2>
-        </a>
+        <iframe partial name="menu"   src="./app/children/menu/menu.html"><small>By Cody Carlson</small></iframe>
+        <!-- <iframe partial name="router" src="./app/children/router/router.html"></iframe> -->
+        <iframe partial name="router" src="./app/children/pages/ascii/ascii.html"></iframe>
+        <div>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <hr />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <hr />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <hr />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <hr />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <hr />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <hr />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <hr />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <hr />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <hr />
+        </div>
+        <iframe partial name="footer" src="./app/children/footer/footer.html"></iframe>
     </body>
     <script>
         (function connect() {
-            if (window.location.hostname !== 'localhost') return;
-            const websocket = new WebSocket('ws://localhost:3000');
-            websocket.addEventListener('message', e => location.reload(true), false);
+            if (!{ 'localhost': true }[ window.location.hostname ]) return;
+            const { hostname } = location;
+            const websocket = new WebSocket(`ws://${hostname}:3000`);
+            
+            websocket.addEventListener('message', function handleWebsocketMessage(e) {
+                console.log(`SOCKET MESSAGE`, e.type);
+                location.reload(true);
+            }, false);
         })();
     </script>
 </html>

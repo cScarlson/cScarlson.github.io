@@ -1,6 +1,5 @@
 
 .ascii.searchbar {
-    border: solid 1px tomato;
     display: flex;
     justify-content: center;
     align-items: center;

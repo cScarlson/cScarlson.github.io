@@ -36,7 +36,7 @@ const ROOT_PATH = config.get('@root');
     }
 
     function compile({ frame, metadata, sheets, scripts, template, templates, root, properties, attributes, children }) {
-        const { name } = metadata;
+        const { name, attributes: attrs } = metadata;
         const { content } = template;
         const host = document.createElement(name);
         const slots = content.querySelectorAll('slot');
@@ -50,6 +50,7 @@ const ROOT_PATH = config.get('@root');
             return $.set(slot, [ ...existing, node ]);
         }
         
+        for (let attr of attrs) host.attributes.setNamedItem( attr.cloneNode(true) );
         for (let [key, val] of properties) host[key] = val;
         for (let { name, value } of attributes) host.setAttribute(name, value);
         slot(injections, ...collection);
@@ -129,7 +130,7 @@ const ROOT_PATH = config.get('@root');
         if (!partial) return log(`!partial`, partial);
         const { contentWindow, contentDocument, src, attributes: attrs, innerHTML } = partial;
         const { href, origin, pathname, searchParams } = new URL(src);
-        const { name } = contentDocument.querySelector('meta[type="partial"]') || { name: 'div' };
+        const { name, attributes: props } = contentDocument.querySelector('meta[type="partial"]') || document.createElement('meta');
         const sheets = contentDocument.querySelectorAll('link[rel="partial"], style');
         const scripts = contentDocument.querySelectorAll('script[type="partial"]');
         const template = contentDocument.querySelector('template[type="partial"]') || document.createElement('template');
@@ -139,7 +140,7 @@ const ROOT_PATH = config.get('@root');
         const segments = pathname.split('/');
         const filename = segments.pop();
         const reformed = segments.join('/');
-        const metadata = { name: 'div', name };
+        const metadata = { name: 'div', name, attributes: props };
         const url = new URL(`${origin}${reformed}`);
         const properties = (searchParams);
         const attributes = getAttributes([ ...attrs ]);

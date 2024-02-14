@@ -41,10 +41,7 @@ const pager = {
     }
 };
 
-$.set('ascii-view', 'load', 'click', 'change', 'close', 'error', class Test {
-    static selector = 'h2[x="true"]';
-    modal = null;
-    details = null;
+$.set('ascii-view', 'click', 'change', 'hook:ready', 'pager:advancement', class {
     template = '';
     query = '';
     pager = pager;
@@ -57,16 +54,12 @@ $.set('ascii-view', 'load', 'click', 'change', 'close', 'error', class Test {
     
     constructor($) {
         const { innerHTML: template } = document.querySelector('template#asciiTile');
-        const dialog = document.querySelector('dialog.ascii.tile.view');
-        const details = dialog.querySelector('.view.content');
         
         this.$ = $;
         this.template = template;
-        this.modal = dialog;
-        this.details = details;
-        $.on('hook:ready', this.handlePagerReady);
-        $.on('pager:advancement', this.handlePagerAdvancement);
-        $.subscribe('ASCII:SEARCH:QUERY', this.handleQuery);
+        
+        $.subscribe('ASCII:SEARCH:QUERY', this);
+        $.subscribe('ASCII:TILE:DESELECTION', this);
     }
     
     async initialize() {
@@ -127,8 +120,7 @@ $.set('ascii-view', 'load', 'click', 'change', 'close', 'error', class Test {
     }
     
     select(tile, data) {
-        const { modal, details } = this;
-        const { open } = modal;
+        const { $ } = this;
         const { parentElement: listitem } = tile;
         const clone = listitem.cloneNode(true);
         
@@ -136,28 +128,29 @@ $.set('ascii-view', 'load', 'click', 'change', 'close', 'error', class Test {
         this.tile = tile;
         this.selection = data;
         clone.querySelector('input').remove();
-        details.appendChild(clone);
-        if (!open) modal.show();
+        $.publish('ASCII:TILE:SELECTION', { id: 'ascii:tile', active: true, data, template: clone.outerHTML });
         
         return this;
     }
     
-    deselect(data) {
+    deselect() {
         if (!this.tile) return this;
         if (!this.selection?.code) return this;
-        const { tile, modal, details } = this;
-        const { open } = modal;
+        const { $, tile } = this;
         
-        details.innerHTML = '';
         tile.checked = false;
         this.tile = null;
         this.selection = {};
-        if (open) modal.close();
+        $.publish('ASCII:TILE:SELECTION', { id: 'ascii:tile', active: false });
         
         return this;
     }
     
     handleEvent(e) {
+        if (e.type === 'hook:ready') return this.handlePagerReady(e);
+        if (e.type === 'pager:advancement') return this.handlePagerAdvancement(e);
+        if (e.type === 'ASCII:SEARCH:QUERY') return this.handleQuery(e);
+        if (e.type === 'ASCII:TILE:DESELECTION') return this.handlePreviewDismissed(e);
         const { $ } = this;
         const { type, target } = e;
         const { classList } = target;
@@ -185,7 +178,7 @@ $.set('ascii-view', 'load', 'click', 'change', 'close', 'error', class Test {
     }
     
     handleTileDeselection(e) {
-        if (!this.selection.code) return;
+        if (!this.selection?.code) return;
         const { selection } = this;
         const { target } = e;
         const { value: code } = target;
@@ -221,6 +214,12 @@ $.set('ascii-view', 'load', 'click', 'change', 'close', 'error', class Test {
         
         this.query = query;
         this.render(this.items).configurePager();
+    };
+    
+    handlePreviewDismissed = (e) => {
+        const { data: request } = e;
+        const { id } = request;
+        if (id === 'ascii:tile') this.deselect();
     };
     
 });

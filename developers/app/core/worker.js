@@ -27,13 +27,11 @@ export class Worker {
     }
     
     subscribe(channel, handler) {
-        // log(`@WinComm.subscribe`, channel, this.medium);
         this.medium.addEventListener(channel, handler, true);
         return this;
     }
     
     unsubscribe(channel, handler) {
-        // log(`@WinComm.unsubscribe`, channel);
         this.medium.removeEventListener(channel, handler, true);
         return this;
     }

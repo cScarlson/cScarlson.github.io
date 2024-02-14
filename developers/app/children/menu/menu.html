@@ -1,14 +1,39 @@
 
 <meta type="partial" name="app-menu" />
 <link rel="partial" href="./menu.css" />
+<script type="partial" src="./menu.js"></script>
 
 <template type="partial">
     <header class="app header">
         <div class="header branding">
-            <h1 class="branding title">Developers (<slot></slot>)</h1>
+            <h1 class="branding title">
+                <a class="title link" href="/developers">Developers (<slot></slot>)</a>
+            </h1>
         </div>
-        <ul class="header menu">
-            <li class="menu title">&equiv;</li>
-        </ul>
+        <button class="header button menu">
+            <input class="menu facade" type="checkbox" name="menu" />
+            <div class="menu display">&equiv;</div>
+        </button>
     </header>
+</template>
+
+<template id="navs">
+    <ul class="header menu">
+        <li class="menu item title">Menu</li>
+        <li class="menu item link">
+            <a class="link control" href="javascript: 0" disabled>Home</a>
+        </li>
+        <li class="menu item link">
+            <a class="link control" href="javascript: 0" disabled>How It's Made (This Site)</a>
+        </li>
+        <li class="menu item link">
+            <a class="link control" href="javascript: 0" disabled>How It's Made (Marketing Site)</a>
+        </li>
+        <li class="menu item link">
+            <a class="link control" href="/developers">ASCII Lookup</a>
+        </li>
+        <li class="menu item link">
+            <a class="link control" href="/">Back to marketing site</a>
+        </li>
+    </ul>
 </template>

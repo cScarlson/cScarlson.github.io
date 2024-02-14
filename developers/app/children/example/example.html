@@ -1,6 +1,8 @@
 
-<link rel="stylesheet" href="/developers/app/common.css" />
-<link rel="stylesheet" href="./example.css" />
-<script type="module" src="./example.js"></script>
-<h2 x="true" tabindex="0">Example Module</h2>
-<iframe partial name='{ "name": "child-iframe", "type": "x" }' src="/developers/app/children/test/children/test/test.html?name=child-frame&type=x&more=y"></iframe>
+<meta type="partial" name="{component-name}" />
+<link rel="partial" href="./example.css" />
+<script type="partial" src="./example.js"></script>
+
+<template type="partial">
+    <h2>Example Module</h2>
+</template>

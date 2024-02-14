@@ -10,7 +10,7 @@ class Channels {
 }
 
 export class Sandbox extends Channels {
-    static worker = new Worker({ worker: new NativeWorker('/developers/app/worker.js') });
+    static worker = new Worker({ worker: new NativeWorker('/developers/app/mediator.js') });
     static window = new Wincomm({ });
     get worker() { return Sandbox.worker }
     get window() { return Sandbox.window }

@@ -1,4 +1,4 @@
 
-iframe[partial][name="ascii/searchbar"] {
-    height: var(--ascii-search-height);
+.ascii.application {
+    display: block;
 }

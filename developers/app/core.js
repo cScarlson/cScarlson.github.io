@@ -5,6 +5,7 @@ const { log } = console;
 const config = new Map();
 
 export { default as utilities } from '/browserless/utilities/utilities.js';
+export { Queue } from './core/utilities/ds/queue.js';
 export { config };
 export const $ = new (class Core extends Map {
     instances = new Map();

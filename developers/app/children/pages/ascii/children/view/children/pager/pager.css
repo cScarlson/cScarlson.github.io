@@ -1,25 +1,21 @@
 
 .ascii.pager {
-    border: solid 1px black;
+    /* border: solid 1px black; */
     display: flex;
     justify-content: center;
     margin: 16px 0;
     
     .pager.control {
-        border: solid 1px black;
+        /* border: solid 1px black; */
         display: inline-block;
         margin: 0 8px;
-        cursor: pointer;
         
         &.quicknav {
-            border: solid 1px black;
-            border-top: none;
-            border-bottom: none;
             
             .quicknav.control {
                 display: inline-flex;
                 justify-content: center;
-                margin: 0 4px;
+                margin: 0;
                 width: 16px;
                 color: blue;
                 text-decoration: none;
@@ -44,6 +40,8 @@
         }
         
         &.control.button, &.quicknav .quicknav.control {
+            padding: 12px;
+            cursor: pointer;
                 
             &:hover, &:focus, &.active {
                 text-decoration: underline;

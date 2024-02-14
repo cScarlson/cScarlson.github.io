@@ -1,41 +1,106 @@
 
 app-menu {
-    border: solid 1px tomato;
     display: block;
     position: sticky;
     top: 0;
     z-index: 999;
+    background-color: #333;
+    color: white;
+    box-shadow: 0 0 4px 3px black;
 }
 
 .app.header {
-    border: solid 1px black;
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: var(--header-height);
-    background-color: #333;
-    color: white;
+    margin: auto var(--outset);
     
     .header.branding {
         display: inline-block;
         
         .branding.title {
-            border: solid 1px tomato;
             display: inline-block;
             margin: 0;
             padding: 0;
+            font-size: 1.5em;
+            
+            .title.link {
+                text-decoration: none;
+                color: white;
+            }
+            
         }
     }
-    .header.menu {
-        border: solid 1px tomato;
-        display: inline-block;
+    .header.button.menu {
+        position: relative;
+        border: none;
         margin: 0;
         padding: 0;
-        list-style-type: none;
+        background-color: transparent;
+        color: white;
+        font-size: xxx-large;
+        z-index: 1;
         
-        .menu.title {
-            font-size: xxx-large;
+        .menu.facade {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            opacity: 0;
             cursor: pointer;
+            z-index: 1;
+        }
+        .menu.display {}
+        .menu.facade:checked ~ .menu.display {
+            outline: 4px solid steelblue;
+        }
+        
+    }
+    
+    .header.button.menu:focus-within {
+        
+    }
+    
+}
+
+
+.sideload.modal {
+    
+    .modal.body {
+        
+        .body.content {
+            
+            .header.menu {
+                margin: 0;
+                padding: 8px;
+                list-style-type: none;
+                
+                .menu.item {
+                    
+                    &.title {
+                        margin-bottom: 16px;
+                        text-transform: uppercase;
+                    }
+                    &.link {
+                        
+                        .link.control {
+                            
+                            &[disabled] {
+                                cursor: not-allowed;
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+            
         }
         
     }

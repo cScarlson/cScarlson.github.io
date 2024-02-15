@@ -29,7 +29,7 @@ body {
 .main.app.view {
     min-height: calc( 100vh - var(--header-height) );
     margin: auto var(--outset);
-    padding: 32px auto;
+    padding: 32px 0;
 }
 
 iframe[partial] {

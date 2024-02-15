@@ -21,7 +21,7 @@
     </body>
     <script>
         (function connect() {
-            if (!{ 'localhost': true, '10.0.0.51': true }[ window.location.hostname ]) return;
+            if (!{ 'localhost': true }[ window.location.hostname ]) return;
             const { hostname } = location;
             const websocket = new WebSocket(`ws://${hostname}:3000`);
             

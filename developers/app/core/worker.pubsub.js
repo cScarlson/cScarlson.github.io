@@ -1,28 +1,28 @@
 
 const { log } = console;
+const SOURCE = 'cScarlson.github.io';
 
 export class Worker {
     worker = null;
     medium = new EventTarget();
     
     constructor({ worker }) {
-        const { port } = worker;
         this.worker = worker;
-        port.start();
-        port.addEventListener('message', this.handleMessage, true);
+        worker.addEventListener('message', this.handleMessage, true);
     }
     
     handleMessage = (e) => {
-        const { type, data = [] } = e;
-        const [ channel, payload ] = data;
+        if (e.data?.source !== SOURCE) return;
+        const { type, data = {} } = e;
+        const { source, channel, payload } = data;
         const event = new MessageEvent(channel, { data: payload });
         
         this.medium.dispatchEvent(event);
     };
     
-    publish(channel, data) {
+    publish(channel, payload) {
         const { worker } = this;
-        worker.port.postMessage([ channel, data ]);
+        worker.postMessage({ source: SOURCE, channel, payload });
         return this;
     }
     

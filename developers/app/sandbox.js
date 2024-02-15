@@ -1,16 +1,24 @@
 
-import { Worker } from '/developers/app/core/worker.js';
+import { SharedWorker as SharedWorkerPubSub } from '/developers/app/core/sharedworker.pubsub.js';
+import { Worker as WorkerPubSub } from '/developers/app/core/worker.pubsub.js';
 import { Wincomm } from '/developers/app/core/wincomm.js';
 
-const { SharedWorker: NativeWorker } = window;
+const { SharedWorker: NativeSharedWorker, Worker: NativeWorker } = window;
 const { log } = console;
+const options = { type: 'module' };
+const Worker =   NativeSharedWorker ? NativeSharedWorker : NativeWorker;
+const PubSub =   NativeSharedWorker ? SharedWorkerPubSub : WorkerPubSub;
+const filename = NativeSharedWorker ? 'worker.shared' : 'worker';
+const uri = `/developers/app/${filename}.js`;
+
+log(`CONNECTED TO WORKER`, uri);
 
 class Channels {
     static ['FRAME:HEIGHT:CHANGE'] = 'io://change/frame/height';
 }
 
 export class Sandbox extends Channels {
-    static worker = new Worker({ worker: new NativeWorker('/developers/app/mediator.js') });
+    static worker = new PubSub({ worker: new Worker(uri, options) });
     static window = new Wincomm({ });
     get worker() { return Sandbox.worker }
     get window() { return Sandbox.window }

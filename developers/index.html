@@ -12,17 +12,16 @@
         <script type="module" src="./frameless.js"></script>
     </head>
     <body>
-        <iframe partial name="sideload" src="./app/children/sideload/sideload.html"></iframe>
         <iframe partial name="menu"   src="./app/children/menu/menu.html"><small>By Cody Carlson</small></iframe>
         <main class="main app view">
-            <!-- <iframe partial name="router" src="./app/children/router/router.html"></iframe> -->
             <iframe partial name="router" src="./app/children/pages/ascii/ascii.html"></iframe>
         </main>
         <iframe partial name="footer" src="./app/children/footer/footer.html"></iframe>
+        <iframe partial name="sideload" src="./app/children/sideload/sideload.html"></iframe>
     </body>
     <script>
         (function connect() {
-            if (!{ 'localhost': true }[ window.location.hostname ]) return;
+            if (!{ 'localhost': true, '10.0.0.51': true }[ window.location.hostname ]) return;
             const { hostname } = location;
             const websocket = new WebSocket(`ws://${hostname}:3000`);
             

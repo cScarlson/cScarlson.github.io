@@ -121,7 +121,6 @@ $.set('dialog', 'close', 'cancel', class {
         
         queue.enqueue(request);
         this.execute();
-        log(`@Sideload.handleRequest`, request);
     }
     
 });

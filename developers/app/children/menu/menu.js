@@ -15,7 +15,6 @@ $.set('app-menu', 'change', class Menu {
         this.control = control;
         this.navs = navs;
         
-        log(this.constructor.name, $);
         $.subscribe('MENU:DISMISSED', this);
     }
     
@@ -38,7 +37,6 @@ $.set('app-menu', 'change', class Menu {
         const { checked: active } = target;
         const { outerHTML: content } = navs;
         
-        log(`TOGGLED`, active);
         $.publish('MENU:ACTION', { id: 'app:menu', active, content });
     }
     

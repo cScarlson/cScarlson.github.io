@@ -1,12 +1,6 @@
 
 const { log } = console;
-const mediator = new (class Mediator {
-    medium = self;
-    clients = new Set();
-    
-    constructor() {
-        this.medium.addEventListener('connect', this);
-    }
+export class Mediator {
     
     handleEvent(e) {
         const { type } = e;
@@ -16,28 +10,6 @@ const mediator = new (class Mediator {
         };
         
         if (handle) handle.call(this, e);
-    }
-    
-    handleConnect(e) {
-        const { clients } = this;
-        const { ports } = e;
-        const [ port ] = ports;
-        
-        clients.add(port);
-        port.addEventListener('message', this);
-        port.start();
-    }
-    
-    handleMessage(e) {
-        const { data = [] } = e;
-        const [ channel, payload ] = data;
-        this.publish(channel, payload);
-    }
-    
-    dispatch(channel, payload) {
-        const { clients } = this;
-        clients.forEach( port => port.postMessage([ channel, payload ]) );
-        return this;
     }
     
     publish(channel, payload) {
@@ -64,4 +36,4 @@ const mediator = new (class Mediator {
         if (id === 'app:menu') this.dispatch('MENU:DISMISSED', request);
     }
     
-})();
+}

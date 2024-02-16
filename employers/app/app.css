@@ -67,12 +67,13 @@
         grid-template-columns: repeat(var(--LENGTH), 100%);
         grid-gap: 100%;
         height: calc(100vh - 32px);
-        padding-top: var(--header-height);
+        padding-top: calc( var(--header-height) + 100px );
         
         .app.section {
             padding: 16px;
             background-color: steelblue;
             color: white;
+            /* border-top: solid 10px orangered; */
             overflow-y: auto;
             
             &:target {
@@ -91,6 +92,8 @@
                 
                 .header.title, .header.subtitle {
                     text-transform: uppercase;
+                    margin: 0;
+                    padding: 20px 0;
                 }
                 
                 .header.title {

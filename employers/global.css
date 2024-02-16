@@ -1,0 +1,40 @@
+
+@font-face {
+    font-family: 'Roboto'; /*a name to be used later*/
+    src: url('/font/Roboto/Roboto-Regular.ttf'); /*URL to font*/
+}
+@font-face {
+    font-family: 'Lobster'; /*a name to be used later*/
+    src: url('/font/Lobster/Lobster-Regular.ttf'); /*URL to font*/
+}
+@font-face {
+    font-family: 'Satisfy'; /*a name to be used later*/
+    src: url('/font/Satisfy/Satisfy-Regular.ttf'); /*URL to font*/
+}
+@font-face {
+    font-family: 'Tangerine'; /*a name to be used later*/
+    src: url('/font/Tangerine/Tangerine-Regular.ttf'); /*URL to font*/
+}
+
+:root {}
+
+body {
+    font-family: Roboto;
+    overflow: hidden;
+}
+
+.main.app.view {
+    height: 100vh;
+}
+
+@media (min-width: 430px) {
+    :root {}
+}
+
+@media (min-width: 768px) {
+    :root {}
+}
+
+@media (min-width: 1200px) {
+    :root {}
+}

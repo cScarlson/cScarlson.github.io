@@ -5,36 +5,27 @@
         <title>Developers</title>
         <meta charset="utf-8" />
         <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport" />
-        <style>
-            body {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-                min-height: 100vh;
-                background-color: rgba(0, 255, 100, 0.6);
-            }
-        </style>
-        <script src="./main.js" type="module" async="false"></script>
+        <link rel="stylesheet" href="./reset.css" />
+        <link rel="stylesheet" href="./global.css" />
+        <link rel="stylesheet" href="./app/app.css" />
+        <script src="/lib/marked.min.js"></script>
+        <script src="./main.js" type="module"></script>
     </head>
     <body>
-        <h1 x="true" tabindex="0">COMING SOON</h1>
-        <ul>
-            <li>Resume & Stuff</li>
-            <li>Elaborations</li>
-            <li>Getting in touch</li>
-            <li>More</li>
-        </ul>
-        <a href="/#/footer">
-            <h2>BACK TO MARKETING SITE</h2>
-        </a>
-        <img src="/asdf.png" x="true" />
+        <main class="main app view">
+            <app></app>
+        </main>
     </body>
     <script>
         (function connect() {
-            if (window.location.hostname !== 'localhost') return;
-            const websocket = new WebSocket('ws://localhost:3000');
-            websocket.addEventListener('message', e => location.reload(true), false);
+            if (!{ 'localhost': true }[ window.location.hostname ]) return;
+            const { hostname } = location;
+            const websocket = new WebSocket(`ws://${hostname}:3000`);
+            
+            websocket.addEventListener('message', function handleWebsocketMessage(e) {
+                console.log(`SOCKET MESSAGE`, e.type);
+                location.reload(true);
+            }, false);
         })();
     </script>
 </html>

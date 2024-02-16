@@ -1,0 +1,241 @@
+
+:root {
+    --header-height: 200px;
+}
+
+.app.container {
+    position: relative;
+    display: block;
+    height: 100vh;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    background-color: mintcream;
+    
+    .app.header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: var(--header-height);
+        padding: 16px;
+        background-color: mintcream;
+        z-index: 9;
+    
+        .header.menu {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+            
+            .menu.item {
+                text-transform: uppercase;
+                
+                &.header {
+                    
+                    .header.title {
+                        margin: 0;
+                        padding: 8px 0;
+                        text-transform: uppercase;
+                        color: orangered;
+                    }
+                    
+                }
+                
+                &.control {
+                    padding-bottom: 2px;
+                    
+                    .control.link {
+                        text-decoration: none;
+                        color: steelblue;
+                        &:focus, &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+                    
+                }
+                
+            }
+            
+        }
+        
+    }
+    
+    .app.body {
+        --LENGTH: 4;
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(var(--LENGTH), 100%);
+        grid-gap: 100%;
+        height: calc(100vh - 32px);
+        padding-top: var(--header-height);
+        
+        .app.section {
+            padding: 16px;
+            background-color: steelblue;
+            color: white;
+            overflow-y: auto;
+            
+            &:target {
+                transform: rotate(0deg);
+            }
+            
+            &.blank {}
+            
+            &.about {
+                #cody-s-carlson {
+                    font-size: medium;
+                }
+            }
+            
+            .section.header {
+                
+                .header.title, .header.subtitle {
+                    text-transform: uppercase;
+                }
+                
+                .header.title {
+                    color: white;
+                }
+                
+                .header.subtitle {
+                    font-size: medium;
+                }
+                
+            }
+            
+            .section.header .header.subtitle, &.about #cody-s-carlson {
+                color: rgb(0, 0, 100);
+            }
+            
+            .section.body {
+                max-width: 768px;
+                
+                .body.document {
+                    --length: 48px;
+                    position: relative;
+                    width: 100%;
+                    min-height: 200px;
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    /* border: solid 1px black; */
+                    
+                    &::before, &::after {
+                        content: "";
+                        display: block;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        bottom: 0;
+                        right: 0;
+                        background-color: rgba(0, 0, 0, 0.6);
+                        
+                    }
+                        
+                    &::after {
+                        content: attr(data-version);
+                        background-color: rgba(0, 0, 0, 0.6);
+                        top: unset;
+                        height: 32px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                    
+                    .document.link.download {
+                        display: flex;
+                        display: none;
+                        justify-content: center;
+                        align-items: center;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        bottom: 0;
+                        right: 0;
+                        background-color: rgb(255, 255, 255, 0.8);
+                        text-decoration: none;
+                        color: white;
+                        z-index: 1;
+                        
+                        &:focus, &:hover {
+                            
+                            .download.icon, .download.title {
+                                /* background-color: rgb(255, 127, 80, 1); */
+                                color: black;
+                            }
+                            
+                        }
+                        
+                        .download.icon, .download.title {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            height: var(--length);
+                            font-weight: bolder;
+                        }
+                        
+                        .download.icon {
+                            width: var(--length);
+                            font-size: 2em;
+                            background-color: rgb(255, 127, 80, 0.8);
+                        }
+                        
+                        .download.title {
+                            width: 240px;
+                            background-color: rgb(255, 127, 80, 1);
+                        }
+                        
+                    }
+                    
+                    .document.link.open {
+                        display: flex;
+                        display: none;
+                        justify-content: center;
+                        align-items: center;
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        width: var(--length);
+                        height: var(--length);
+                        background-color: rgb(255, 127, 80, 1);
+                        color: white;
+                        text-decoration: none;
+                        color: white;
+                        font-size: 2em;
+                        font-weight: bolder;
+                        z-index: 2;
+                        
+                        &:focus, &:hover {
+                            background-color: rgb(255, 127, 80, 1);
+                            color: black;
+                        }
+                        
+                    }
+                    
+                }
+                .body.document:hover, .body.document:focus-within {
+                    .document.link.download, .document.link.open {
+                        display: flex;
+                    }
+                }
+                .body.document.resume {
+                    background-image: url("/assets/CodySCarlsonResume_5.18.1.screenshot.png");
+                }
+                .body.document.cv {
+                    background-image: url("/assets/CodySCarlsonCurriculumVitae_5.23.2.screenshot.png");
+                }
+                
+            }
+            
+        }
+        
+    }
+    
+}
+
+@media (hover: none) {
+    .app.container .app.body .app.section .section.body .body.document {
+        .document.link.download, .document.link.open {
+            display: flex;
+        }
+    }
+}

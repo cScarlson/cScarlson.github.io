@@ -1,0 +1,85 @@
+
+<header class="app header">
+    
+    <ul class="header menu">
+        <li class="menu item header">
+            <h2 class="header title">&equiv; Employers</h2>
+        </li>
+        <li class="menu item control">
+            <a class="control link" href="#/">Home</a>
+        </li>
+        <li class="menu item control">
+            <a class="control link" href="#/app/sections/about">About</a>
+        </li>
+        <li class="menu item control">
+            <a class="control link" href="#/app/sections/resume">resume</a>
+        </li>
+        <li class="menu item control">
+            <a class="control link" href="#/app/sections/cv">Curriculum Vitae</a>
+        </li>
+        <li class="menu item control">
+            <a class="control link" href="/developers">For Devs</a>
+        </li>
+        <li class="menu item control">
+            <a class="control link" href="/">Back to Marketing Site</a>
+        </li>
+    </ul>
+
+</header>
+    
+<div class="app body" data-length="4">
+    
+    <form class="app login" style="display: none;">
+        <input class="login username" type="text" name="username" />
+        <input class="login password" type="password" name="password" />
+        <button class="login button submit" type="submit">Login</button>
+    </form>
+    
+    <section id="/" class="app section blank">
+        <header class="section header">
+            <h2 class="header title">Welcome.</h1>
+            <h3 class="header subtitle">Please have a look around.</h3>
+        </header>
+    </section>
+    
+    <section id="/app/sections/about" class="app section about">
+        <header class="section header">
+            <h2 class="header title">About</h2>
+        </header>
+        <div class="section body">${letter}</div>
+        <footer class="section footer"></footer>
+    </section>
+
+    <section id="/app/sections/resume" class="app section resume">
+        <header class="section header">
+            <h2 class="header title">Resume</h2>
+        </header>
+        <div class="section body">
+            <div class="body document resume" data-version="v5.18.1" tabindex="0">
+                <a class="document link download" href="/assets/CodySCarlsonResume_5.18.1.pdf" download title="Download to device">
+                    <div class="download icon">&DownArrowBar;</div>
+                    <div class="download title">Download</div>
+                </a>
+                <a class="document link open" href="/assets/CodySCarlsonResume_5.18.1.pdf" target="_blank" title="Open in new tab">&nearr;</a>
+            </div>
+        </div>
+        <footer class="section footer"></footer>
+    </section>
+
+    <section id="/app/sections/cv" class="app section cv">
+        <header class="section header">
+            <h2 class="header title">Curriculum Vitae</h2>
+        </header>
+        <div class="section body">
+            <div class="body document cv" data-version="v5.23.2" tabindex="0">
+                <a class="document link download" href="/assets/CodySCarlsonCurriculumVitae_5.23.2.pdf" download title="Download to device">
+                    <div class="download icon">&DownArrowBar;</div>
+                    <div class="download title">Download</div>
+                </a>
+                <a class="document link open" href="/assets/CodySCarlsonCurriculumVitae_5.23.2.pdf" target="_blank" title="Open in new tab">&nearr;</a>
+            </div>
+        </div>
+        <footer class="section footer"></footer>
+    </section>
+    
+</div>

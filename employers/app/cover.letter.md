@@ -1,0 +1,8 @@
+Cody S. Carlson
+================
+
+With a plenitude of experience across various technologies, processes, and industries I hold a diverse skill-set that teams & managers find attractive. The breadth-wise experience that Contracting & Consulting has provided me lends itself well to lowering a company's risk as the technology landscape is always changing. At the same time, I have managed to master several key technologies to provide expertise in areas such as JavaScript & TypeScript, the Document Object Model, CSS, Frontend Application Architecture, multiple frontend frameworks, NodeJS, and REST API development.
+
+Additionally, having a thorough understanding of Software Design Patterns, SOLID Principles & Software Coupling and incorporating their usage into daily practice -- at pace -- puts my experience above others. It pays dividends on Application Architecture & Design, algorithmic efficacy, code readability & self-documenting code, and thus software stability.
+
+Over the years, I have demonstrated the ability to help teams & companies come out on the other side through both leadership roles and supportive roles that either help the team through tight gaps or endure medium-to-long term initiatives with grit. The hard & fast soft-skills I have accumulated -- mentorship, consuting, interfacing with C-Suite, interfacing with 3rd-Party vendors & teams, wearing the Business Analyst's hat, wearing the UX Designer's hat, being the go-to in the office or across multiple regions -- alongside a large body of breadth-wise experience, has made me a key player in helping to bridge skills-gaps within and across teams.

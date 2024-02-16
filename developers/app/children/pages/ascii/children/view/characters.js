@@ -963,7 +963,7 @@ export const collection = [
         "character": "⧉",
         "code": "boxbox;",
         "unicode": "U+029C9",
-        "tags": []
+        "tags": [ "boxes", "frames", "windows", "other", "open", "external", "copy", "past", "text", "select", "clip", "board" ]
     },
     {
         "character": "╗",
@@ -2673,7 +2673,7 @@ export const collection = [
         "character": "⤓",
         "code": "DownArrowBar;",
         "unicode": "U+02913",
-        "tags": []
+        "tags": [ "download", "save", "load" ]
     },
     {
         "character": "⇵",
@@ -6939,13 +6939,13 @@ export const collection = [
         "character": "↗",
         "code": "nearr;",
         "unicode": "U+02197",
-        "tags": []
+        "tags": [ "boxes", "frames", "windows", "other", "open", "external" ]
     },
     {
         "character": "↗",
         "code": "nearrow;",
         "unicode": "U+02197",
-        "tags": []
+        "tags": [ "boxes", "frames", "windows", "other", "open", "external" ]
     },
     {
         "character": "≐̸",
@@ -12315,7 +12315,7 @@ export const collection = [
         "character": "↗",
         "code": "UpperRightArrow;",
         "unicode": "U+02197",
-        "tags": []
+        "tags": [ "boxes", "frames", "windows", "other", "open", "external" ]
     },
     {
         "character": "ϒ",
@@ -13385,4 +13385,4 @@ export const collection = [
         "unicode": "U+0200C",
         "tags": []
     }
-]
+];

@@ -92,13 +92,12 @@
     }
     
     .form.control.input.phone {
-        display: block;
         
         & ~ .form.control.label.sms {
             display: none;
         }
         &:not(:placeholder-shown) ~ .form.control.label.sms {
-            display: unset;
+            display: block;
         }
         
     }

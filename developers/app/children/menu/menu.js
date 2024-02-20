@@ -3,7 +3,7 @@ import { $ } from '/developers/app/core.js';
 
 const { log } = console;
 
-$.set('app-menu', 'change', class Menu {
+$.set('app:menu', 'change', class Menu {
     
     constructor($) {
         const { target } = $;

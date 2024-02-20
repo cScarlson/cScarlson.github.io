@@ -52,6 +52,7 @@ f('my-contact-form', metadata, Sandbox, new class {
             
             website.style = 'display: none !important';
             shadow.addEventListener('submit', this, false);
+            shadow.addEventListener('click', this, false);
             $.subscribe('CONTACT:FORM:SUBMISSION', this);
         },
         err(html) {
@@ -63,6 +64,7 @@ f('my-contact-form', metadata, Sandbox, new class {
             const { type } = e;
             const handle = {
                 'submit': this.handleSubmit,
+                'click': this.handleClick,
                 'CONTACT:FORM:SUBMISSION': this.handleFormSubmission,
             }[ type ];
             
@@ -110,6 +112,18 @@ f('my-contact-form', metadata, Sandbox, new class {
             $.states.add('--submitted');
             $.unsubscribe('CONTACT:FORM:SUBMISSION', this);  // auto self-unsubscribe
         },
+        handleClick(e) {
+            const { type, target } = e;
+            const { className } = target;
+            const handle = {
+                'you refresh': this.handleRefresh,
+            }[ className ];
+            
+            if (handle) handle.call(this, e);
+        },
+        handleRefresh(e) {
+            window.location.reload();
+        }
     })
 });
 

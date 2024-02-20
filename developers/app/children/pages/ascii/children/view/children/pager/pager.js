@@ -4,7 +4,7 @@ import { $ } from '/developers/app/core.js';
 const { log } = console;
 const core = $;
 
-$.set('ascii-pager', 'load', 'click', 'focus', 'error', class Test {
+$.set('ascii:pager', 'load', 'click', 'focus', 'error', class Test {
     static selector = 'h2[x="true"]';
     params = {};
     root = null;

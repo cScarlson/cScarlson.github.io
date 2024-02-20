@@ -79,6 +79,7 @@ $.set('dialog', 'close', 'cancel', class {
         this.content = content;
         
         $.subscribe('SIDELOAD:REQUEST', this);
+        $.subscribe('SIDELOAD:DISMISS', this);
     }
     
     execute() {
@@ -94,6 +95,7 @@ $.set('dialog', 'close', 'cancel', class {
     
     handleEvent(e) {
         if (e.type === 'SIDELOAD:REQUEST') return this.handleRequest(e);
+        if (e.type === 'SIDELOAD:DISMISS') return this.handleDismiss(e);
         const { $ } = this;
         const { type, target } = e;
         const { className } = target;
@@ -121,6 +123,12 @@ $.set('dialog', 'close', 'cancel', class {
         
         queue.enqueue(request);
         this.execute();
+    }
+    
+    handleDismiss(e) {
+        const { queue, dialog } = this;
+        queue.clear();
+        dialog.close();
     }
     
 });

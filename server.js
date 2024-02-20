@@ -79,7 +79,7 @@ async function handleFilesystemChanges(type, filename) {
     
     log(`handling:filesystem:changes...`);
     websockets.forEach( websocket => websocket.send('something') );
-    log(`HANDLED:filesystem:changes...`, websockets.length);
+    log(`HANDLED:filesystem:changes...`, websockets.size);
 }
 
 connection.on('connection', debounced);

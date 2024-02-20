@@ -1,0 +1,40 @@
+
+.app.article {
+    
+    .article.content {
+        
+        .content.template {
+                
+            #how-name-was-made {
+                text-transform: capitalize;
+            }
+            
+            code {
+                color: limegreen;
+            }
+            
+            pre {
+                max-width: 100%;
+                padding: 4px;
+                overflow-y: hidden;
+                overflow-x: auto;
+                background-color: black;
+            }
+            
+            &.developers {
+                /* border: solid 1px tomato; */
+            }
+            
+            &.marketing {
+                /* border: solid 1px tomato; */
+            }
+            
+            &.employers {
+                /* border: solid 1px tomato; */
+            }
+            
+        }
+        
+    }
+    
+}

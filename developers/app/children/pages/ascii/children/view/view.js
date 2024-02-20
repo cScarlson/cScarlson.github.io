@@ -41,7 +41,7 @@ const pager = {
     }
 };
 
-$.set('ascii-view', 'click', 'change', 'hook:ready', 'pager:advancement', class {
+$.set('ascii:view', 'click', 'change', 'hook:ready', 'pager:advancement', class {
     template = '';
     query = '';
     pager = pager;
@@ -53,7 +53,8 @@ $.set('ascii-view', 'click', 'change', 'hook:ready', 'pager:advancement', class 
     get items() { return this.filter(this.query, this.collection) }
     
     constructor($) {
-        const { innerHTML: template } = document.querySelector('template#asciiTile');
+        const { target } = $;
+        const { innerHTML: template } = target.querySelector('template#asciiTile');
         
         this.$ = $;
         this.template = template;
@@ -83,8 +84,9 @@ $.set('ascii-view', 'click', 'change', 'hook:ready', 'pager:advancement', class 
     }
     
     render(collection) {
-        const { template } = this;
-        const container = document.querySelector('.ascii.view .view.list');
+        const { template, $ } = this;
+        const { target } = $;
+        const container = target.querySelector('.ascii.view .view.list');
         const html = this.hydrate(template, collection);
         
         container.innerHTML = html;
@@ -192,7 +194,7 @@ $.set('ascii-view', 'click', 'change', 'hook:ready', 'pager:advancement', class 
     }
     
     handlePagerReady = (e) => {
-        if (e.target.tagName !== 'ASCII-PAGER') return log(e.target.tagName);
+        if (e.target.tagName !== 'ASCII:PAGER') return log(e.target.tagName);
         const { target } = e;
         
         this.navigation = target;

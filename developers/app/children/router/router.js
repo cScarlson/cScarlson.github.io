@@ -1,34 +1,65 @@
 
+import { frameless } from '/developers/frameless.js';
 import { $ } from '/developers/app/core.js';
+import { Route } from './route.js';
 
 const { log } = console;
+const ROOT = '/developers';
 
-$.set('load', 'click', 'focus', 'error', class Test {
-    static selector = 'h2[x="true"]';
+$.set('router', 'error', class Test {
+    iframe = document.createElement('iframe');
+    container = document.createElement('div');
+    detail = {};
     
     constructor($) {
-        const { name: data } = window;
+        const { iframe } = this;
+        const { target } = $;
+        const container = target.querySelector('.app.router .router.content');
         
-        // log(`@Test.constructor`, $.publish.name, data, location.search);
-        // document.addEventListener('load', function handleLoad(e) {
-        //     if (e.target.tagName !== 'IFRAME') return;
-        //     log(`iframe onload`, e.type, e);
-        //     document.removeEventListener('load', handleLoad, true);
-        // }, true);
+        iframe.setAttribute('partial', '');
+        this.$ = $;
+        this.container = container;
+        target.addEventListener('hook:ready', this, true);
+        Route.attach(this);
     }
     
-    bootstrap = ($) => this.$ = $;
+    render({ uri, data }) {
+        log(data, data, data);
+        const { iframe, container } = this;
+        const clone = iframe.cloneNode(true);
+        
+        this.detail = data;
+        clone.src = uri;
+        container.innerHTML = '';
+        container.appendChild(clone);
+        setTimeout(x => frameless.process(clone), 450);
+    }
+    
+    call(router, state) {
+        if (!state?.route?.target) return;
+        const { route, params, routes } = state;
+        const { id, target } = route;
+        const { data } = route;
+        const uri = `${ROOT}/${target}`;
+        
+        log(`@ROUTER`, state);
+        this.render({ uri, data });
+    }
     
     handleEvent(e) {
+        if (`${e.type}:${e.target.className}` === 'hook:ready:app article') return this.handleCloneLoad(e);
         const { $ } = this;
         const { target } = e;
-        log(`@Router.handleEvent`, e.type, e.target, $);
-        // if (target.tagName && target.matches('iframe.app.router')) setTimeout(function x() {
-        //     const html = `<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><hr />`;
-        //     target.after(`${html}${html}${html}${html}${html}${html}${html}${html}${html}${html}`);
-        //     setTimeout(x, 5_000);
-        // }, 5_000);
-        return e;
+        log(`@Router.handleEvent`, e.type, e.target, e.target.className);
     }
     
-}).bind(window, document);
+    handleCloneLoad(e) {  // ALWAYS FIRES AFTER this.call
+        const { detail } = this;
+        const { type, target } = e;
+        const event = new CustomEvent('router:data', { detail });
+        
+        log(`@CLONE-LOAD`, e.type, e.target);
+        target.dispatchEvent(event);
+    }
+    
+});

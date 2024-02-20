@@ -4,8 +4,7 @@ import { $, config } from './app/core.js';
 
 const { log } = console;
 const ROOT_PATH = config.get('@root');
-
-(async function start(document) {
+const frameless = (function start(document) {
 
     function boot(name, element) {
         $.boot(name, element);
@@ -127,7 +126,7 @@ const ROOT_PATH = config.get('@root');
     }
     
     function process(partial, ...more) {
-        if (!partial) return log(`!partial`, partial);
+        if (!partial?.isConnected) return;// log(`!partial?.isConnected`, partial);
         const { contentWindow, contentDocument, src, attributes: attrs, innerHTML } = partial;
         const { href, origin, pathname, searchParams } = new URL(src);
         const { name, attributes: props } = contentDocument.querySelector('meta[type="partial"]') || document.createElement('meta');
@@ -156,6 +155,7 @@ const ROOT_PATH = config.get('@root');
         host.setAttribute('data-src', reformed);
         partial.replaceWith(host);
         setTimeout(x => start(document), 450);
+        if (more.length) setTimeout(x => process.call(this, ...more), 450);
     }
     
     function onLoad(e) {
@@ -169,4 +169,11 @@ const ROOT_PATH = config.get('@root');
     if (document.readyState !== 'complete') document.addEventListener('readystatechange', onLoad, true);
     else onLoad({ type: 'manual', target: document });
     
+    
+    return {
+        start,
+        process,
+    };
 })(document);
+
+export { frameless };

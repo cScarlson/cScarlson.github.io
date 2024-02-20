@@ -73,7 +73,6 @@
             padding: 16px;
             background-color: steelblue;
             color: white;
-            /* border-top: solid 10px orangered; */
             overflow-y: auto;
             
             &:target {

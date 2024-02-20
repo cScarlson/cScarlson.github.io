@@ -3,7 +3,7 @@ import { $ } from '/developers/app/core.js';
 
 const { log } = console;
 
-$.set('ascii-searchbar', 'load', 'click', 'input', 'error', class Test {
+$.set('ascii:searchbar', 'load', 'click', 'input', 'error', class Test {
     static selector = 'h2[x="true"]';
     
     constructor($) {

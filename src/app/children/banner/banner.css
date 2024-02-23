@@ -53,6 +53,7 @@
                     
                     ul {
                         padding: 0 16px;
+                        strong {}
                     }
                     
                 }
@@ -64,7 +65,7 @@
                     min-width: 50%;
                     
                     .action.link {
-                        margin: 64px;
+                        margin: 36px;
                         font-family: Satisfy;
                         font-size: xxx-large;
                         font-weight: 1000;

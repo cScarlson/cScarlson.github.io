@@ -1,11 +1,21 @@
 
 <meta type="partial" name="app:home" />
 <template type="partial">
-    <h1>Ahem...</h1>
-    <p>
-        This is a little embarassing... The homepage is not quite here yet. But please feel free to look around the other pages under 
-        the menu.
-    </p>
-    <p>Cheers,</p>
-    <p>Cody</p>
+    <iframe partial name="articles" src="./children/feature/feature.html?position=left">
+        <span slot="icon">&para;</span>
+        <h2>Exclusive Dev Articles</h2>
+        <p>Learn how different websites & webapps were built, patterns used, and other tips & tricks.</p>
+        <p>Start by looking at the menu or see <a href="#/articles/how/developers">how this site was made</a>.</p>
+    </iframe>
+    <iframe partial name="tooling" src="./children/feature/feature.html?position=right">
+        <span slot="icon">&angsph;</span>
+        <h2>Tools For Devs</h2>
+        <p>Useful tooling, micro-apps, and resources for you, the developer.</p>
+        <p>Dive into the <a href="#/tooling/ascii">ASCII Search</a> tool.</p>
+    </iframe>
+    <iframe partial name="more"  src="./children/feature/feature.html?position=center">
+        <span slot="icon">&triplus;</span>
+        <h2>Other Scrumptious Delights</h2>
+        <p>Check in occasionally for more dev goodies. Reach out to me on LinkedIn to connect. Let me know of anything else you'd like to see.</p>
+    </iframe>
 </template>

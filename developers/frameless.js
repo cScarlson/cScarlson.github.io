@@ -2,12 +2,18 @@
 import { default as utilities } from '/browserless/utilities/utilities.js';
 import { $, config } from './app/core.js';
 
-const { log } = console;
+const { log, error: err } = console;
 const ROOT_PATH = config.get('@root');
+const attachments = new Map();
 const frameless = (function start(document) {
 
     function boot(name, element) {
-        $.boot(name, element);
+        const { tagName, events, Class, instance, event } = $.boot(name, element);
+        const properties = attachments.get(element);
+        
+        instance.config = properties;
+        element.dispatchEvent(event);
+        attachments.delete(element);
     }
     
     function setup(script) {
@@ -15,6 +21,7 @@ const frameless = (function start(document) {
         const uuid = utilities.uuid();
         
         function handleLoad(e) {
+            if (e.target.id !== uuid) return;
             e.target.removeAttribute('id');
             script.removeEventListener('load', handleLoad, true);
             boot(name, host);
@@ -50,7 +57,6 @@ const frameless = (function start(document) {
         }
         
         for (let attr of attrs) host.attributes.setNamedItem( attr.cloneNode(true) );
-        for (let [key, val] of properties) host[key] = val;
         for (let { name, value } of attributes) host.setAttribute(name, value);
         slot(injections, ...collection);
         host.append(content, ...templates);
@@ -148,6 +154,7 @@ const frameless = (function start(document) {
         const javascripts = [ ...scripts ].map(clone.bind({ type: 'script' }));
         const host = compile({ frame: partial, metadata, sheets, scripts, template, templates, root: reformed, properties, attributes, children });
         
+        attachments.set(host, properties);
         processDormant.call(url, ...partials);
         javascripts.forEach( setup.bind({ name, host }) );
         host.append(...styles);

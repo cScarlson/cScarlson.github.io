@@ -6,15 +6,16 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node server.js",
+    "dev": "gulp serve",
     "prod:deploy": "git add . && git commit -am 'Deploying...' && git push origin master"
   },
   "devDependencies": {
+    "browser-sync": "^3.0.2",
     "express": "^4.17.3",
-    "ws": "^8.5.0",
-    "utilities": "file:utilities"
+    "gulp": "^4.0.2",
+    "utilities": "file:utilities",
+    "ws": "^8.5.0"
   },
-  "dependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cScarlson/cScarlson.github.io.git"

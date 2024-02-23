@@ -1,0 +1,27 @@
+
+<meta type="partial" name="feature" class="app home feature" />
+<link rel="partial" href="./feature.css" />
+<script type="partial" src="./feature.js"></script>
+
+<template type="partial">
+    <div class="feature background">
+        <div class="background canvas">
+            <span class="background cloud top-x left-x"></span>
+            <span class="background cloud top-1 left-2"></span>
+            <span class="background cloud top-3 left-9"></span>
+            <span class="background cloud top-2 left-8"></span>
+            <span class="background cloud top-3 left-5"></span>
+            <span class="background cloud top-5 left-3"></span>
+            <span class="background cloud top-8 left-2"></span>
+            <span class="background cloud top-9 left-1"></span>
+            <span class="background cloud top-2 left-1"></span>
+            <span class="background cloud top-2 left-2"></span>
+        </div>
+    </div>
+    <div class="feature body">
+        <slot class="feature icon" name="icon"></slot>
+        <div class="feature content">
+            <slot></slot>
+        </div>
+    </div>
+</template>

@@ -54,6 +54,9 @@ We don't use CSS modules because a CSS _class-chaining_ pattern obviates the nee
 import { $ } from '/{location}/core.js';
 
 $.set('some:element', ...eventTypes, class {
+    get data() { return this.config.get('data') }  // derived from iframe location.search
+    get send() { return this.config.get('send') }  // derived from iframe location.search
+    get host() { return this.config.get('host') }  // derived from iframe location.search
     
     constructor(sandbox) {}
     

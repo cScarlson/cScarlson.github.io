@@ -1,0 +1,188 @@
+
+.app.home.feature {
+    --HEIGHT: 20vh;
+    --offset: 1vw;
+    position: relative;
+    display: block;
+    margin: 16px calc( var(--offset) * -1 );
+    overflow: hidden;
+    
+    .feature.background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: -1;
+        background-color: aqua;
+        
+        .background.canvas {
+            position: relative;
+            height: 100%;
+            
+            .background.cloud {
+                position: absolute;
+                display: block;
+                width: 64px;
+                height: 64px;
+                border-radius: 50%;
+                transform: translateX(48px);
+                background-color: white;
+                
+                &::before, &::after {
+                    content: "";
+                    position: absolute;
+                    width: 96px;
+                    height: 32px;
+                    border-radius: 32px;
+                    background-color: white;
+                }
+                
+                &::before {
+                    content: "";
+                    bottom: 8px;
+                    left: 0;
+                    transform: translateX(-16px);
+                }
+                
+                &::after {
+                    content: "";
+                    bottom: 0;
+                    right: 0;
+                    height: 24px;
+                    transform: translateX(32px);
+                }
+                
+                &.top-0 {
+                    top: 8%;
+                }
+                &.top-1 {
+                    top: 16%;
+                }
+                &.top-2 {
+                    top: 24%;
+                }
+                &.top-3 {
+                    top: 32%;
+                }
+                &.top-4 {
+                    top: 40%;
+                }
+                &.top-5 {
+                    top: 48%;
+                }
+                &.top-6 {
+                    top: 56%;
+                }
+                &.top-7 {
+                    top: 64%;
+                }
+                &.top-8 {
+                    top: 72%;
+                }
+                &.top-9 {
+                    top: 80%;
+                }
+                
+                &.left-0 {
+                    left: 80%;
+                }
+                &.left-1 {
+                    left: 72%;
+                }
+                &.left-2 {
+                    left: 64%;
+                }
+                &.left-3 {
+                    left: 56%;
+                }
+                &.left-4 {
+                    left: 48%;
+                }
+                &.left-5 {
+                    left: 40%;
+                }
+                &.left-6 {
+                    left: 32%;
+                }
+                &.left-7 {
+                    left: 24%;
+                }
+                &.left-8 {
+                    left: 16%;
+                }
+                &.left-9 {
+                    left: 8%;
+                }
+                
+            }
+            
+        }
+    }
+    
+    .feature.body {
+        display: flex;
+        justify-content: space-between;
+        margin: 0 calc( var(--offset) * 1 );
+        
+        .feature.icon, .feature.content {
+            margin: 32px 0;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        
+        .feature.icon {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            min-width: var(--HEIGHT);
+            min-height: var(--HEIGHT);
+            margin-right: 16px;
+            border: solid 25px rgba(255, 255, 255, 1);
+            border-radius: 5px;
+            background-color: rgba(51, 51, 51, 0.9);
+            color: white;
+            font-size: 8em;
+        }
+        
+        .feature.content {
+            display: block;
+            width: 100%;
+            border-radius: 8px;
+            padding: 16px;
+            color: white;
+            
+            a, a:visited {
+                color: white;
+            }
+            
+        }
+        
+    }
+    
+}
+
+@media (min-width: 430px) {
+    .app.home.feature {
+        --offset: 1vw;
+    }
+}
+
+@media (min-width: 768px) {
+    .app.home.feature {
+        --offset: 8vw;
+    }
+}
+
+@media (min-width: 1200px) {
+    .app.home.feature {
+        --offset: 16vw;
+    }
+}
+
+/* ... */
+
+@media (min-width: 430px) {
+    .app.home.feature .feature.body .feature.icon {
+        display: flex;
+    }
+}

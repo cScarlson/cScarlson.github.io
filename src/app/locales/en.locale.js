@@ -19,7 +19,7 @@ export default {
     "BANNER:FEATURE:TITLE": "In a Hurry?",
     "BANNER:FEATURE:SUBTITLE": "Get a free estimate!",
     "BANNER:FEATURE:CONTENT": "./src/app/locales/banner.en.md",
-    "BANNER:FEATURE:ACTION:CONTACT": "Let's do it!",
+    "BANNER:FEATURE:ACTION:CONTACT": "Let's get poppin'!",
     
     "ABOUT:TITLE": "About",
     "ABOUT:CONTENT": "./src/app/locales/about.en.md",
@@ -54,10 +54,9 @@ export default {
     "FOOTER:TITLE": "",
     "FOOTER:CONTENT": "",
     
-    "CONTENT:CONTACT:P:0": `The best way to get a hold of me is either through <a href="{{use 'CONTENT:CONTACT:SOCIAL:LINKEDIN'}}" target="_blank">my LinkedIn</a> direct messages or SMS (Text Message). Thank you for your understanding as the industry of spam is thriving.`,
     "CONTENT:CONTACT:SOCIAL:LINKEDIN": "https://www.linkedin.com/in/cody-s-carlson-1b837259",
     "CONTENT:CONTACT:SOCIAL:GITHUB": "https://github.com/cScarlson",
     "CONTENT:CONTACT:SOCIAL:CODEPEN": "https://codepen.io/cScarlson",
     "CONTENT:CONTACT:SOCIAL:STACKBLITZ": "https://stackblitz.com/@cScarlson",
-    "CONTENT:CONTACT:PHONE": `(720)515-2226`,
+    "CONTENT:CONTACT:PHONE": `(720)319-8833`,
 };

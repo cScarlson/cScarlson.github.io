@@ -1,12 +1,11 @@
 
-We don't just provide people with a Web Presence. When we build you a website, you get more than just a website. Here's what you get...
+The Pop Sites Approach gets you...
 
-- A beautiful, eye-catching digital presence that sets you apart.
-- Years of expertise behind engineering solutions that are both high quality _and_ affordable.
-- A quicker turnaround than the other guys.
-- Mobile Friendliness and Responsive Design out of the box! Your clients & customers get a premium experience no matter what device they are on.
-- <a href="https://en.wikipedia.org/wiki/Internationalization_and_localization" target="_blank">_Localization_</a> Ready. If you decide to expand your user-base by adding a language (e.g. Spanish, French, etc), you can do it with minimal expense (see <a href="#/pricing">Pricing</a>).
-- <a href="https://en.wikipedia.org/wiki/Reasonable_accommodation" target="_blank">ADA Compliance</a>
-- _Your_ content. Your content is yours, nobody else's. If you ever outgrow us, we'll be sad to see you go and glad to see you grow! This in mind, your content can easily be passed onto another developer in a format they can easily reuse and still Localization Ready for other languages.
+- **A quick turnaround**. Years of expertise allows you to get a quality digital presence so you can quickly begin scaling your brand.
+- **An attractive, personal Web Presence** that makes you stand out. You audience gets to enjoy learning about what sets you apart.
+- **Mobile Friendliness & Responsive Design**. Your audience gets a premium experience from any device.
+- **Adaptability** of your content. If you want to add another language to your site -- Spanish, French, etc -- it's ready for that at minimal cost to you.
+- **Portability** of your content. Your content can be easily ported to another platform if you upgrade your site or hand it off to another team.
+- **Built-In design for the Accessibility audience & power-users** allows them to quickly & effectively navigate and interact with your site.
 
-We could list out all of the services we provide, but that would take too long! We can accommodate virtually _anything_ you need, so let's do it!
+We could list out all of the services we provide, but that would take too long! We can accommodate virtually _anything_ you need, so let's poppin'!

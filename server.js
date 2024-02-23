@@ -52,7 +52,7 @@ function observe() {
     const observers = new Set()
         .add( fs.watch('./', options, debounced) )
         ;
-    console.log(`observing...(${observers.size})`);
+    log(`observing...(${observers.size})`);
     
     return observers;
 }
@@ -61,25 +61,31 @@ function examine(req, res, next) {
     const { method, protocol, hostname, path, socket } = req;
     const { localPort: port } = socket;
     
-    console.log(`[${method}] ${protocol}://${hostname}:${port}${path}`);
+    websockets.forEach( socket => socket.terminate() );
+    websockets.forEach( socket => websockets.delete(socket) );
+    log(`[${method}] ${protocol}://${hostname}:${port}${path}`);
     next();
 }
 
 function handleSocketConnection(socket) {
-    const { resolve } = deferred;
     log(`websocket connected...`);
+    socket.on('disconnect', handleSocketDisconnection);
     websockets.add(socket);
-    resolve(socket);
+}
+
+function handleSocketDisconnection(socket) {
+    log('socket disconnected');
+    socket.off('disconnect', handleSocketDisconnection);
 }
     
 async function handleFilesystemChanges(type, filename) {
-    log(`handling:filesystem:changes...`);
-    const { promise } = deferred;
-    const websocket = await promise;
+    // const [ dir ] = filename.split('\\');
     
-    log(`handling:filesystem:changes...`);
+    // if (dir === '.git') return log(`git file touched`, filename, dir);
+    log(`handling:filesystem:changes...`, type, filename);
     websockets.forEach( websocket => websocket.send('something') );
     log(`HANDLED:filesystem:changes...`, websockets.size);
 }
 
 connection.on('connection', debounced);
+log(`RUNNING SERVER`);

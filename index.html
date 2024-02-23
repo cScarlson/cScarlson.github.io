@@ -22,16 +22,4 @@
         </my-app>
     </body>
     <script defer src="./main.js" type="module"></script>
-    <script>
-        (function connect() {
-            if (!{ 'localhost': true }[ window.location.hostname ]) return;
-            const { hostname } = location;
-            const websocket = new WebSocket(`ws://${hostname}:3000`);
-            
-            websocket.addEventListener('message', function handleWebsocketMessage(e) {
-                console.log(`SOCKET MESSAGE`, e.type);
-                location.reload(true);
-            }, false);
-        })();
-    </script>
 </html>

@@ -6267,7 +6267,7 @@ export const collection = [
         "character": "‹",
         "code": "lsaquo;",
         "unicode": "U+02039",
-        "tags": []
+        "tags": [ "greater", "than", "less", "chevron", "left", "right", "skep", "next", "back", "navigate", "navigation", "angle", "bracket", "braces", "arrow" ]
     },
     {
         "character": "ℒ",
@@ -6891,7 +6891,7 @@ export const collection = [
         "character": "⩭̸",
         "code": "ncongdot;",
         "unicode": "U+02A6D U+00338",
-        "tags": []
+        "tags": [ "hiker", "hiking" ]
     },
     {
         "character": "⩂",
@@ -7731,7 +7731,7 @@ export const collection = [
         "character": "⨔",
         "code": "npolint;",
         "unicode": "U+02A14",
-        "tags": []
+        "tags": [ "pregnant", "seahorse" ]
     },
     {
         "character": "⊀",
@@ -8745,13 +8745,13 @@ export const collection = [
         "character": "¶",
         "code": "para;",
         "unicode": "U+000B6",
-        "tags": []
+        "tags": [ "paragraph", "text", "font", "articles", "copy", "content" ]
     },
     {
         "character": "¶",
         "code": "para",
         "unicode": "U+000B6",
-        "tags": []
+        "tags": [ "paragraph", "text", "font", "articles", "copy", "content" ]
     },
     {
         "character": "∥",
@@ -8865,7 +8865,7 @@ export const collection = [
         "character": "☎",
         "code": "phone;",
         "unicode": "U+0260E",
-        "tags": []
+        "tags": [ "telephone", "landline", "contact", "dialpad", "ring" ]
     },
     {
         "character": "Π",
@@ -10155,7 +10155,7 @@ export const collection = [
         "character": "›",
         "code": "rsaquo;",
         "unicode": "U+0203A",
-        "tags": []
+        "tags": [ "greater", "than", "less", "chevron", "left", "right", "skep", "next", "back", "navigate", "navigation", "angle", "bracket", "braces", "arrow" ]
     },
     {
         "character": "ℛ",

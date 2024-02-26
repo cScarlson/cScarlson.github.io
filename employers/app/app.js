@@ -1,8 +1,10 @@
 
 import { default as utilities } from '/browserless/utilities/utilities.js';
+import { Broadcast } from '/developers/app/core/broadcast.js';
 
 const { console, fetch, marked } = window;
 const { log } = console;
+const broadcast = new Broadcast('DEMO:BROADCAST:MESSAGE');
 
 log(`LOADED APP.JS`);
 
@@ -46,6 +48,7 @@ $('app', class {
         location.hash = '/';
         setTimeout(x => (location.hash === '#/') ? location.hash = '#/app/sections/about' : '', 5_000);
         window.addEventListener('resize', this, true);
+        broadcast.subscribe('DEMO:BROADCAST:MESSAGE', this);
     }
     
     rehash({ hash, pre = '/noop' }, delay = 0) {
@@ -54,6 +57,7 @@ $('app', class {
     }
     
     handleEvent(e) {
+        if (e.type === 'DEMO:BROADCAST:MESSAGE') return this.handleBroadcast(e);
         if (e.type === 'hook:ready') return this.handleReady(e);
         if (e.type === 'resize') return this.resize(e);
         const { type, target } = e;
@@ -90,6 +94,11 @@ $('app', class {
     handleFormSubmission(e) {
         e.preventDefault();
         window.location.reload();
+    }
+    
+    handleBroadcast(e) {
+        const confirmed = window.confirm(e.data.message);
+        if (confirmed || !confirmed) window.close('', '_self', '');
     }
     
 }, 'submit', 'click', 'resize');

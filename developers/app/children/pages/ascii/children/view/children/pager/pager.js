@@ -4,7 +4,7 @@ import { $ } from '/developers/app/core.js';
 const { log } = console;
 const core = $;
 
-$.set('ascii:pager', 'load', 'click', 'focus', 'error', class Test {
+$.set('ascii:pager', 'load', 'click', 'focus', 'error', class {
     static selector = 'h2[x="true"]';
     params = {};
     root = null;
@@ -27,7 +27,6 @@ $.set('ascii:pager', 'load', 'click', 'focus', 'error', class Test {
         this.quicknav = quicknav;
         this.numbers = numbers;
         $.on('pager:config', this.handleConfig);
-        log(`@ASCII/pager`);
     }
     
     update() {

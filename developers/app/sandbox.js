@@ -1,13 +1,14 @@
 
-import { SharedWorker as SharedWorkerPubSub } from '/developers/app/core/sharedworker.pubsub.js';
-import { Worker as WorkerPubSub } from '/developers/app/core/worker.pubsub.js';
+import { SharedWorker as SharedWorkerIO } from '/developers/app/core/sharedworker.io.js';
+import { Worker as WorkerIO } from '/developers/app/core/worker.io.js';
 import { Wincomm } from '/developers/app/core/wincomm.js';
+import { Broadcast } from '/developers/app/core/broadcast.js';
 
 const { SharedWorker: NativeSharedWorker, Worker: NativeWorker } = window;
 const { log } = console;
 const options = { type: 'module' };
 const Worker =   NativeSharedWorker ? NativeSharedWorker : NativeWorker;
-const PubSub =   NativeSharedWorker ? SharedWorkerPubSub : WorkerPubSub;
+const PubSub =   NativeSharedWorker ? SharedWorkerIO : WorkerIO;
 const filename = NativeSharedWorker ? 'worker.shared' : 'worker';
 const uri = `/developers/app/${filename}.js`;
 
@@ -17,11 +18,15 @@ class Channels {
     static ['FRAME:HEIGHT:CHANGE'] = 'io://change/frame/height';
 }
 
-export class Sandbox extends Channels {
+export const Sandbox = (class Sandbox extends Channels {
+    static medium = new EventTarget();
     static worker = new PubSub({ worker: new Worker(uri, options) });
     static window = new Wincomm({ });
+    static broadcast = new Broadcast({ });
+    get medium() { return Sandbox.medium }
     get worker() { return Sandbox.worker }
     get window() { return Sandbox.window }
+    get broadcast() { return Sandbox.broadcast }
     
     constructor(event) {
         super();
@@ -29,38 +34,47 @@ export class Sandbox extends Channels {
         this.target = target;
     }
     
+    static initialize() {
+        const { worker, window, channel } = this;
+        
+        // |
+        // | Provides throughput from workert -> medium
+        // V
+        worker.subscribe('SIDELOAD:REQUEST', this.#handleWorkerEvent);
+        worker.subscribe('SIDELOAD:DISMISS', this.#handleWorkerEvent);
+        worker.subscribe('ASCII:TILE:DESELECTION', this.#handleWorkerEvent);
+        worker.subscribe('MENU:DISMISSED', this.#handleWorkerEvent);
+        
+        return this;
+    }
+    
+    static #handleWorkerEvent = (e) => {
+        const { type, data } = e;
+        const { [type]: handle } = this;
+        
+        if (handle) handle.call(this, type, data);
+        else this.#dispatch(type, data);
+    };
+    
+    static #dispatch(channel, data) {
+        const event = new MessageEvent(channel, { data });
+        this.medium.dispatchEvent(event);
+        return this;
+    }
+    
     publish(channel, data) {
-        this.worker.publish(channel, data);
+        if (channel in this) this[channel](channel, data);
+        else this.worker.publish(channel, data);  // default to worker as medium
         return this;
     }
     
     subscribe(channel, handler) {
-        this.worker.subscribe(channel, handler);
+        this.medium.addEventListener(channel, handler, true);
         return this;
     }
     
     unsubscribe(channel, handler) {
-        this.worker.unsubscribe(channel, handler);
-        return this;
-    }
-    
-    upstream(channel, data) {
-        this.window.upstream(channel, data);
-        return this;
-    }
-    
-    downstream(channel, data) {
-        this.window.downstream(channel, data);
-        return this;
-    }
-    
-    open(channel, handler) {
-        this.window.subscribe(channel, handler);
-        return this;
-    }
-    
-    unopen(channel, handler) {
-        this.window.unsubscribe(channel, handler);
+        this.medium.removeEventListener(channel, handler, true);
         return this;
     }
     
@@ -80,4 +94,9 @@ export class Sandbox extends Channels {
         return this;
     }
     
-};
+    ['DEMO:BROADCAST:MESSAGE'](channel, data) {  // dispatch to broadcast
+        log(`@${channel}`, data);
+        this.broadcast.publish(channel, data);
+    }
+    
+}).initialize();

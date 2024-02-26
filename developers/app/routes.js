@@ -35,6 +35,13 @@ export default {
             data: { name: 'employers', doc: './app/children/pages/articles/docs/how/employers.md' },
             children: []
         },
+        {
+            path: 'articles/how/broadcast',
+            name: 'articles:how:broadcast',
+            target: './app/children/pages/articles/broadcast/broadcast.html',
+            data: { name: 'JavaScript Broadcast Channels', doc: './app/children/pages/articles/docs/how/broadcast.md' },
+            children: []
+        },
         { path: '**', name: '404:root', target: './app/children/pages/404/404.html' },
     ]
 };

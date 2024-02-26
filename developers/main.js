@@ -8,8 +8,8 @@ const root = new Route(schema);
 const clicks = {
     handleEvent(e) {
         if ( !e.target.matches('dialog.sideload.modal a.link.control') ) return;
-        $.sandbox.publish('SIDELOAD:DISMISS');
-        $.sandbox.publish('MENU:DISMISSED');
+        $.sandbox.publish('SIDELOAD:DISMISS');  // to dismiss sideload
+        $.sandbox.publish('MENU:DISMISSED');  // to uncheck menu toggle
     }
 };
 

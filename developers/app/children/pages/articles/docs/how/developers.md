@@ -111,6 +111,12 @@ interface ISandbox {
     downstream(channel: string, data: any): ISandbox;  // publish indefinitely down in scope toward nth grandchildren frames/windows
     open(channel: string, handler: Function | { handleEvent: Function }): ISandbox;  // subscribe to both up & down stream comms
     unopen(channel: string, handler: Function | { handleEvent: Function }): ISandbox;  // unsubscribe to both up & down stream comms
+    // |
+    // | BroadcastChannel PubSub
+    // V
+    broadcast(channel: string, data: any): ISandbox;
+    connect(channel: string, handler: Function | { handleEvent: Function }): ISandbox;
+    disconnect(channel: string, handler: Function | { handleEvent: Function }): ISandbox;
 }
 ```
 

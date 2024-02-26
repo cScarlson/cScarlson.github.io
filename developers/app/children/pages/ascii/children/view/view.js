@@ -194,7 +194,7 @@ $.set('ascii:view', 'click', 'change', 'hook:ready', 'pager:advancement', class 
     }
     
     handlePagerReady = (e) => {
-        if (e.target.tagName !== 'ASCII:PAGER') return log(e.target.tagName);
+        if (e.target.tagName !== 'ASCII:PAGER') return;
         const { target } = e;
         
         this.navigation = target;
@@ -207,7 +207,6 @@ $.set('ascii:view', 'click', 'change', 'hook:ready', 'pager:advancement', class 
         const { n } = data;
         
         this.render( pager.set(n).slice(items) ).configurePager();
-        log(e.type, n, pager.index);
     };
     
     handleQuery = (e) => {

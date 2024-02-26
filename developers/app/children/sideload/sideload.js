@@ -105,7 +105,7 @@ $.set('dialog', 'close', 'cancel', class {
         }[ action ];
         
         if (handle) handle.call(this, e);
-        else log(`@Sideload.handleEvent`, e.type, e.target, $);
+        else log(`@Sideload.handleEvent`, e.type, e.target);
     }
     
     handleClose(e) {

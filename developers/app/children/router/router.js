@@ -24,7 +24,6 @@ $.set('router', 'error', class Test {
     }
     
     render({ uri, data }) {
-        log(data, data, data);
         const { iframe, container } = this;
         const clone = iframe.cloneNode(true);
         
@@ -40,9 +39,9 @@ $.set('router', 'error', class Test {
         const { route, params, routes } = state;
         const { id, target } = route;
         const { data } = route;
-        const uri = `${ROOT}/${target}`;
+        const search = new URLSearchParams(data);
+        const uri = `${ROOT}/${target}?${search}`;
         
-        log(`@ROUTER`, state);
         this.render({ uri, data });
     }
     
@@ -50,15 +49,14 @@ $.set('router', 'error', class Test {
         if (`${e.type}:${e.target.className}` === 'hook:ready:app article') return this.handleCloneLoad(e);
         const { $ } = this;
         const { target } = e;
-        log(`@Router.handleEvent`, e.type, e.target, e.target.className);
+        log(`@Router.handleEvent`, e.type, e.target);
     }
     
-    handleCloneLoad(e) {  // ALWAYS FIRES AFTER this.call
+    handleCloneLoad(e) {
         const { detail } = this;
         const { type, target } = e;
         const event = new CustomEvent('router:data', { detail });
         
-        log(`@CLONE-LOAD`, e.type, e.target);
         target.dispatchEvent(event);
     }
     

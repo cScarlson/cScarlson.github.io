@@ -1,0 +1,16 @@
+
+<meta type="partial" name="broadcast" class="broadcast article" />
+<link rel="partial" href="./broadcast.css" />
+<script type="partial" src="./broadcast.js"></script>
+
+<template type="partial">
+    <div class="broadcast container"></div>
+</template>
+
+<template class="broadcast article">
+    <iframe partial name="article:broadcast" src="./app/children/pages/articles/readme/readme.html?${config}"></iframe>
+    <form class="broadcast form">
+        <textarea class="form message" name="message">Hello Employers Site, from Developers site.</textarea>
+        <button class="form button submit" type="submit">Send</button>
+    </form>
+</template>

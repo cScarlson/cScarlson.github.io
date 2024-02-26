@@ -1,0 +1,19 @@
+
+.broadcast.article {
+    display: block;
+    
+    .broadcast.form {
+        
+        .form.message {
+            display: block;
+            min-width: 300px;
+            min-height: 100px;
+        }
+        .form.button {
+            margin-top: 16px;
+            padding: 16px 32px;
+        }
+        
+    }
+    
+}

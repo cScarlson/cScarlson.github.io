@@ -3,12 +3,10 @@ import { $ } from '/developers/app/core.js';
 
 const { log } = console;
 
-$.set('ascii:searchbar', 'load', 'click', 'input', 'error', class Test {
-    static selector = 'h2[x="true"]';
+$.set('ascii:searchbar', 'load', 'click', 'input', 'error', class {
     
     constructor($) {
         this.$ = $;
-        log(`@ASCII/searchbar`);
     }
     
     handleEvent(e) {
@@ -21,7 +19,7 @@ $.set('ascii:searchbar', 'load', 'click', 'input', 'error', class Test {
         }[ action ];
         
         if (handle) handle.call(this, e);
-        else log(`@ASCII/searchbar.handleEvent`, e.type, e.target, $);
+        else log(`@ASCII/searchbar.handleEvent`, e.type, e.target);
         
         return e;
     }
@@ -33,7 +31,6 @@ $.set('ascii:searchbar', 'load', 'click', 'input', 'error', class Test {
         const { target } = e;
         const { value: query } = target;
         
-        log(`@SEARCH`, query);
         $.publish('ASCII:SEARCH:QUERY', { query });
     }
     

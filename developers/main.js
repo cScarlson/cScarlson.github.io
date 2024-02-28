@@ -3,7 +3,9 @@ import { $, config } from './app/core.js';
 import { Route } from './app/children/router/route.js';
 import { default as schema } from './app/routes.js';
 
-const { log } = console;
+const { console, navigator } = window;
+const { log, error: err } = console;
+const { serviceWorker } = navigator;
 const root = new Route(schema);
 const clicks = {
     handleEvent(e) {
@@ -29,6 +31,17 @@ function observeLocation(state) {
     log(`@observeLocation`, id === path, id, path, target, params, routes);
 }
 
+function handleFulfilled(registration) {
+    log(`Service Worker successfully registered`, registration);
+    // setTimeout(x => registration.update(), 10_000)
+}
+
+function handleRejected(error) {
+    err(`Service Worker registeration FAILED`, error);
+}
+
+if (serviceWorker) serviceWorker.register('./worker.service.js', { type: 'module' }).then(handleFulfilled, handleRejected);
+else log(`Service Workers not supported`);
 config.set('@root', '/developers/');
 $.sandbox.subscribe('WORKER:EVENT:LOG', logEvents);
 window.addEventListener('click', clicks, true);

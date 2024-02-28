@@ -5,6 +5,7 @@ import { $, config } from './app/core.js';
 const { log, error: err } = console;
 const ROOT_PATH = config.get('@root');
 const attachments = new Map();
+const replacements = new Map();
 const frameless = (function start(document) {
 
     function boot(name, element) {
@@ -12,23 +13,19 @@ const frameless = (function start(document) {
         const properties = attachments.get(element);
         
         instance.config = properties;
-        element.dispatchEvent(event);
         attachments.delete(element);
     }
     
     function setup(script) {
         const { name, host } = this;
-        const uuid = utilities.uuid();
         
         function handleLoad(e) {
-            if (e.target.id !== uuid) return;
-            e.target.removeAttribute('id');
+            if (e.target !== script) return;
             script.removeEventListener('load', handleLoad, true);
             boot(name, host);
         }
         
-        script.id = uuid;
-        script.addEventListener('load', handleLoad, true);
+        host.addEventListener('load', handleLoad, true);
     }
     
     function slot(map, receiver, ...more) {
@@ -133,9 +130,11 @@ const frameless = (function start(document) {
     
     function process(partial, ...more) {
         if (!partial?.isConnected) return;// log(`!partial?.isConnected`, partial);
-        const { contentWindow, contentDocument, src, attributes: attrs, innerHTML } = partial;
+        if ( replacements.has(partial.src) ) return partial.replaceWith( replacements.get(partial.src) ), log(`@cached`, partial.src);
+        if ( !partial.contentDocument?.querySelector('meta') ) return log(`NO CONTENT`, partial);
+        const { contentWindow, contentDocument, src, attributes: attrs, innerHTML, parentElement } = partial;
         const { href, origin, pathname, searchParams } = new URL(src);
-        const { name, attributes: props } = contentDocument.querySelector('meta[type="partial"]') || document.createElement('meta');
+        const { name, attributes: props } = contentDocument.querySelector('meta');
         const sheets = contentDocument.querySelectorAll('link[rel="partial"], style');
         const scripts = contentDocument.querySelectorAll('script[type="partial"]');
         const template = contentDocument.querySelector('template[type="partial"]') || document.createElement('template');
@@ -153,16 +152,34 @@ const frameless = (function start(document) {
         const styles = [ ...sheets ].map(clone.bind({ type: 'link' }));
         const javascripts = [ ...scripts ].map(clone.bind({ type: 'script' }));
         const host = compile({ frame: partial, metadata, sheets, scripts, template, templates, root: reformed, properties, attributes, children });
+        const subject = new HostSubject(host);
+        const ready = new CustomEvent('hook:ready', { detail: {} });
         
-        attachments.set(host, properties);
+        function observe({ host, mutation }) {
+            subject.detach(observe);
+            process.call(url, ...more);
+        }
+        
+        function handleHostSubtreeLoad(e) {
+            if (!e.target?.matches) return;
+            if ( !e.target.matches('iframe[partial]') ) return;
+            const { target: partial } = e;
+            
+            process.call(url, partial);
+        }
+        
         processDormant.call(url, ...partials);
-        javascripts.forEach( setup.bind({ name, host }) );
-        host.append(...styles);
-        host.append(...javascripts);
         host.setAttribute('data-src', reformed);
+        subject.attach(observe);
+        subject.connect(parentElement);
+        host.addEventListener('load', handleHostSubtreeLoad, true);
+        attachments.set(host, properties);
+        javascripts.forEach( setup.bind({ name, host }) );
+        host.append(...javascripts);
+        host.append(...styles);
         partial.replaceWith(host);
-        setTimeout(x => start(document), 450);
-        if (more.length) setTimeout(x => process.call(this, ...more), 450);
+        setTimeout(x => host.dispatchEvent(ready), 100);
+        replacements.set(partial.src, host);
     }
     
     function onLoad(e) {
@@ -171,6 +188,57 @@ const frameless = (function start(document) {
         const partials = document.querySelectorAll('iframe[partial]');
         
         if (partials.length) process.call(location, ...partials);
+    }
+    
+    class HostSubject {  // USE MUTATION OBSERVER TO FIX THE TIMEOUT CRAP ONCE & FOR ALL
+        observers = new Set();
+        
+        constructor(host) {
+            const observer = new MutationObserver(this.observe);
+            this.host = host;
+            this.observer = observer;
+        }
+        
+        observe = (mutations, observer) => {
+            for (const mutation of mutations) if (mutation.type in this) this[mutation.type](mutation);
+        };
+        
+        connect(target) {
+            const { observer } = this;
+            observer.observe(target, { childList: true });
+            return this;
+        }
+        
+        disconnect() {
+            const { observer } = this;
+            observer.disconnect();
+            return this;
+        }
+        
+        ['childList'](mutation) {
+            const { host } = this;
+            const { addedNodes } = mutation;
+            for (let node of addedNodes) if (node === host) this.notify({ host, mutation });
+        }
+        
+        attach(observer) {
+            const { observers } = this;
+            observers.add(observer);
+            return this;
+        }
+        
+        detach(observer) {
+            const { observers } = this;
+            observers.delete(observer);
+            return this;
+        }
+        
+        notify(state) {
+            const { observers } = this;
+            observers.forEach( observer => observer.call(this, state) );
+            return this;
+        }
+        
     }
     
     if (document.readyState !== 'complete') document.addEventListener('readystatechange', onLoad, true);

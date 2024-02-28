@@ -1,0 +1,27 @@
+{
+    "name": "Cody Carlson Developers",
+    "short_name": "CSC Devs",
+    "description": "Tooling & articles for developers, by Cody Carlson.",
+    "start_url": "/developers",
+    "theme_color": "#333",
+    "background_color": "#fff",
+    "display": "standalone",
+    "icons": [
+        { "src": "./favicon.png", "sizes": "460x460" }
+    ],
+    "screenshots": [
+        {
+            "src": "./screenshots/screenshot.page.home.png",
+            "sizes": "1099x921",
+            "type": "image/png",
+            "form_factor": "wide",
+            "label": "Homepage"
+        },
+        {
+            "src": "./screenshots/screenshot.page.ascii.png",
+            "sizes": "389x845",
+            "type": "image/png",
+            "label": "ASCII Search"
+        }
+    ]
+  }

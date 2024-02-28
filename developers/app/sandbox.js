@@ -38,12 +38,13 @@ export const Sandbox = (class Sandbox extends Channels {
         const { worker, window, channel } = this;
         
         // |
-        // | Provides throughput from workert -> medium
+        // | Provides throughput from worker -> medium
         // V
         worker.subscribe('SIDELOAD:REQUEST', this.#handleWorkerEvent);
         worker.subscribe('SIDELOAD:DISMISS', this.#handleWorkerEvent);
         worker.subscribe('ASCII:TILE:DESELECTION', this.#handleWorkerEvent);
         worker.subscribe('MENU:DISMISSED', this.#handleWorkerEvent);
+        worker.subscribe('ASCII:SEARCH:QUERY', this.#handleWorkerEvent);
         
         return this;
     }
@@ -95,7 +96,6 @@ export const Sandbox = (class Sandbox extends Channels {
     }
     
     ['DEMO:BROADCAST:MESSAGE'](channel, data) {  // dispatch to broadcast
-        log(`@${channel}`, data);
         this.broadcast.publish(channel, data);
     }
     

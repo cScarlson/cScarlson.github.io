@@ -25,13 +25,12 @@ export const $ = new (class Core extends Map {
         const sandbox = new Sandbox({ target: element });
         const instance = new Class(sandbox);
         const detail = { name, element, tagName, events, Class, instance };
-        const hookReady ='hook:ready';
+        const hookReady = 'hook:ready';
         const hooks = [ hookReady ];
-        const event = new CustomEvent(hookReady, { detail });
         
         [ ...hooks, ...events ].forEach( type => element.addEventListener(type, instance, true) );
         
-        return { ...detail, event };
+        return detail;
     }
     
 });

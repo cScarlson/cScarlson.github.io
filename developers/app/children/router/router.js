@@ -40,7 +40,7 @@ $.set('router', 'error', class Test {
         const { id, target } = route;
         const { data } = route;
         const search = new URLSearchParams(data);
-        const uri = `${ROOT}/${target}?${search}`;
+        const uri = `${ROOT}/${target}?routed&${search}`;
         
         this.render({ uri, data });
     }

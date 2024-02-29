@@ -54,7 +54,11 @@
             overflow: hidden;
             white-space: nowrap;
         }
-        .tile.code {}
+        .tile.code {
+            .code.text {
+                width: 100%;
+            }
+        }
         .tile.unicode {
             display: none;
             &::before {
@@ -115,7 +119,7 @@
                     }
                     .tile.code {
                         &::before {
-                            content: "ASCII:\00a0";
+                            content: "Code:\00a0";
                         }
                     }
                     .tile.unicode {

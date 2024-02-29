@@ -1,5 +1,5 @@
 
-The Pop Sites Approach gets you...
+<i class="las la-cube" icon></i> The Pop Sites Approach gets you...
 
 - **A quick turnaround**. Years of expertise allows you to get a quality digital presence so you can quickly begin scaling your brand.
 - **An attractive, personal Web Presence** that makes you stand out. You audience gets to enjoy learning about what sets you apart.

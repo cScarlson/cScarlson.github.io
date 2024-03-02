@@ -1431,7 +1431,7 @@ export const collection = [
         "character": "⩍",
         "code": "ccaps;",
         "unicode": "U+02A4D",
-        "tags": []
+        "tags": [ "notifications", "bell", "messages" ]
     },
     {
         "character": "Č",

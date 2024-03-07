@@ -1,5 +1,17 @@
 
+/* ================================================================================================================================
+NOTES
+On install, we target all `resources` and automatically cache them. We could instead lazily cache each of the `resources` if 
+preferred.
+On fetch, we have the option to `respondWith` 2 different functions. 1) `serve` prefers to attempt retrieval from the cache 
+while falling back to a network call. 2) `fetch` prefers to attempt a network call and, if that fails, it is caught with an 
+attempt to retrieve the resource from the cache. For both (1 & 2), if the 2nd fallback fails, it ultimately responds with a 
+404 response. NOTE that another option would be to simply look at `navigator.onLine` and, (1) if true then always return the 
+result of a network call and, (2) if false then alway assume the resource exists in the cache. This strategy, assuming that it is 
+safe to make such assumptions based upon `onLine`, may even be an optimization as we never make a 1st attempt that may fail.
+================================================================================================================================ */
 const { log } = console;
+const HTTP_404 = new Response(null, { status: 404 });
 const service = new (class ServiceWorker {
     VERSION = 'v1.0.0';
     CACHE_NAME = `CSC-Devs-${this.VERSION}`;
@@ -116,14 +128,26 @@ const service = new (class ServiceWorker {
         await clients.claim();
     };
     
-    fetch = async (e) => {
+    fetch = async (e) => {  // uses greedy fetching. prefers new content.
+        if (!navigator.onLine) return this.serve(e);  // optimize for known offline cases.
+        const { CACHE_NAME } = this;
+        const { request } = e;
+        const { url } = request;
+        const response = await fetch(request)
+            .catch( e => caches.open(CACHE_NAME).then( cache => cache.match(request) ) )
+            .catch( e => HTTP_404 )
+            ;
+        return response;
+    };
+    
+    serve = async (e) => {  // uses 'stingy' caching. prefers cached content.
         const { CACHE_NAME } = this;
         const { request } = e;
         const { url } = request;
         const cache = await caches.open(CACHE_NAME);
         const response = await cache.match(request)
             .then( response => response ? response : fetch(request) )
-            .catch( e => new Response(null, { status: 404 }) )
+            .catch(e => HTTP_404)
             ;
         return response;
     };

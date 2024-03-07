@@ -82,15 +82,23 @@ $.set('dialog', 'close', 'cancel', class {
         $.subscribe('SIDELOAD:DISMISS', this);
     }
     
+    show() {
+        if (this.dialog.open) return this;
+        if (this.queue.front?.id === 'app:menu') this.dialog.showModal();
+        else this.dialog.show();
+        
+        return this;
+    }
+    
     execute() {
         const { queue, types, dialog, content } = this;
         const { front: next } = queue;
-        const { type } = next;
+        const { type, id } = next;
         const { [type]: Class } = types;
         const handler = new Class(next);
         
         handler.execute(content);
-        dialog.showModal();
+        this.show();
     }
     
     handleEvent(e) {
@@ -101,7 +109,7 @@ $.set('dialog', 'close', 'cancel', class {
         const { className } = target;
         const action = `${type}:${className}`;
         const handle = {
-            'close:sideload modal': this.handleClose
+            'close:sideload modal': this.handleClose,
         }[ action ];
         
         if (handle) handle.call(this, e);
@@ -114,7 +122,7 @@ $.set('dialog', 'close', 'cancel', class {
         const request = queue.dequeue();
         
         $.publish('SIDELOAD:REQUEST:COMPLETE', request);
-        if (!queue.empty) dialog.showModal();
+        if (!queue.empty) this.execute();
     }
     
     handleRequest(e) {

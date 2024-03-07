@@ -1,17 +1,12 @@
 
+const { log } = console;
 export class Queue {
     data = [];
     get size() { return this.data.length }
     get empty() { return !this.size }
-    get front() {
-        const { data } = this;
-        const { length } = data;
-        const { [length - 1]: item } = data;
-        
-        return item;
-    }
+    get front() { return this.data[0] }
     
-    constructor(initial = []) {
+    constructor(initial = this.data) {
         this.data = initial;
     }
     

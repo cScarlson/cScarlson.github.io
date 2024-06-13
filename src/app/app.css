@@ -1,6 +1,69 @@
 
+html {
+    scroll-behavior: smooth;
+    scroll-snap-type: block proximity;
+}
 
-:host {
-    width: 100%;
-    min-height: 100vh;
+body {
+    position: relative;
+    background-color: var(--color-dominant);
+}
+
+.app.section {
+    min-height: 100dvh;
+    padding-inline: var(--outset);
+    padding-block: 64px;
+    &::part(cta) {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        margin: 4px;
+        padding-block: 1em;
+        padding-inline: 2em;
+        outline: solid 1px transparent;
+        border-width: 3px;
+        border-style: solid;
+        border-radius: 2em;
+        border-color: var(--color-button-border);
+        background-clip: padding-box;
+        text-decoration: none;
+        text-transform: uppercase;
+        text-align: center;
+        font-size: 0.75em;
+        background-clip: border-box;
+    }
+    &::part(cta):hover, &::part(cta):focus {
+        --color-dominant: var(--color-dark);
+        --color-compliment: var(--color-dark);
+        --color-accent: var(--color-light);
+        --color-button-border: var(--color-dark);
+        filter: invert(1);
+    }
+}
+
+.container.block {
+    /* this ensures sections are full-height on pageload to prevent pre-snapping onto elements lower in the page before custom elements are rendered */
+    min-height: 100dvh;
+}
+
+.snap {
+    scroll-snap-align: start;
+}
+
+@media (min-width: 430px) {
+    :root {
+        --outset: 2vw;
+    }
+}
+
+@media (min-width: 768px) {
+    :root {
+        --outset: 4vw;
+    }
+}
+
+@media (min-width: 1200px) {
+    :root {
+        --outset: 16vw;
+    }
 }

@@ -1,0 +1,32 @@
+
+<link href= "/lib/line-awesome-1.3.0/1.3.0/css/line-awesome.min.css" rel="stylesheet" />
+<div class="app section pricing">
+    <div class="section header">
+        <h1 class="header title">${ content['PRICING:TITLE'] }</h1>
+    </div>
+    <div class="section body">
+        <article class="body subsection article tier">
+            ${ content['PRICING:TIER:TEXT:0'] }
+            <h2 class="article title">${ content['PRICING:TIER:TITLE'] }</h2>
+            <ul class="app pricing group tier">
+                ${ tiers.map(interpolate).join('') }
+            </ul>
+            ${ content['PRICING:TIER:TEXT:1'] }
+        </article>
+        <hr class="body subsection divider" />
+        <article class="body subsection article rate">
+            ${ content['PRICING:RATE:TEXT:0'] }
+            <h2 class="article title">${ content['PRICING:RATE:TITLE'] }</h2>
+            <ul class="app pricing group rate">
+                ${ rates.map(interpolate).join('') }
+            </ul>
+            ${ content['PRICING:RATE:TEXT:1'] }
+        </article>
+    </div>
+    <div class="section footer">
+        <div class="footer cta group">
+            <a class="cta control primary" part="cta primary" href="#/contact">${ content['CTA:ESTIMATE'] }</a>
+            <a class="cta control secondary" part="cta secondary" href="#/about">${ content['CTA:ABOUT'] }</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+
+:host {
+    /* border: solid 1px tomato; */
+    display: block;
+    
+    .app.menu.icon {
+        /* border: solid 1px tomato; */
+        
+        .icon.symbol {
+            /* border: solid 1px tomato; */
+            display: block;
+            font-size: 3.5em;
+            color: var(--color-accent);
+        }
+        
+    }
+    
+}

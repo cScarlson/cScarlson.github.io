@@ -1,0 +1,184 @@
+
+:host {
+    /* border: solid 1px tomato; */
+    display: flex;
+    align-items: center;
+    border: solid 2vw transparent;  /* use for alignment with sibling sections */
+    background-color: var(--color-dominant);
+    color: var(--color-light);
+    
+    .app.section.contact {
+        /* border: solid 1px tomato; */
+                
+        .section.header {
+            &.title {}
+            &.content {}
+        }
+        
+        .section.body {
+            /* border: solid 1px tomato; */
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 16px;
+            
+            .body.column {
+                /* border: solid 1px tomato; */
+                display: block;
+                &.cta, &.form .contact.form .form.body {
+                    display: grid;
+                    grid-template-rows: auto 1fr auto;
+                    align-items: end;
+                }
+                &.form .contact.form .form.body {
+                    
+                    fieldset {
+                        /* border: solid 1px tomato; */
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        margin-block: 8px;
+                        border: none;
+                        padding: 0;
+                        &.form.fieldset.contact {
+                            align-items: baseline;
+                        }
+                        
+                        .icon {
+                            font-size: 1.25em;
+                        }
+                        
+                        .form.control.label {
+                            /* border: solid 1px tomato; */
+                        }
+                        
+                        .form.control.label.phone {
+                            
+                            .form.control.label.sms {
+                                display: inline-flex;
+                                align-items: center;
+                                margin: 4px;
+                                margin-top: 8px;
+                                white-space: nowrap;
+                                
+                                .form.control.input.sms {
+                                    --SIZE: 32px;
+                                    margin: 0;
+                                    margin-right: 8px;
+                                    min-width: 0;
+                                    width: var(--SIZE);
+                                    height: var(--SIZE);
+                                }
+                                
+                            }
+                            
+                        }
+                        
+                        .form.control.group {
+                            /* border: solid 1px tomato; */
+                        }
+                        
+                        .form.control.button {
+                            display: inline-flex;
+                            justify-content: center;
+                            align-items: center;
+                            min-width: 100px;
+                            margin: 0;
+                            outline: none;
+                            padding-block: 0.40em;
+                            padding-inline: 0.80em;
+                            border-width: 3px;
+                            border-style: solid;
+                            border-radius: 2em;
+                            border-color: var(--color-button-border);
+                            background-clip: padding-box;
+                            text-decoration: none;
+                            text-transform: uppercase;
+                            text-align: center;
+                            font-size: 0.75em;
+                            transition: box-shadow 250ms 0s ease-in-out;
+                            &:hover, &:focus {
+                                box-shadow: 0 0 6px 0 white;
+                            }
+                            &.submit {
+                                border: solid 3px var(--color-accent);
+                                background-color: var(--color-accent);
+                                background-clip: border-box;
+                            }
+                            &.reset {
+                                border: solid 3px var(--color-light);
+                                background-color: var(--color-dominant);
+                                color: var(--color-light);
+                            }
+                        }
+                        
+                    }
+                    
+                }
+                &.cta {
+                    /* border: solid 1px tomato; */
+                    
+                    .cta.text, .cta.group {
+                        /* border: solid 1px tomato; */
+                    }
+                    
+                    .cta.text {
+                        /* display: flex; */
+                        /* align-items: center; */
+                    }
+                    
+                    .cta.group {
+                        display: flex;
+                        justify-content: end;
+                        translate: 0 -8px;  /* #hack */
+                        
+                        .cta.control {
+                            &.primary {
+                                background-color: var(--color-light);
+                                color: var(--color-dark);
+                            }
+                        }
+                        
+                    }
+                    
+                }
+                
+                .section.content {
+                    color: var(--color-light);
+                }
+                
+                .section.image {
+                    /* border: solid 1px tomato; */
+                    display: flex;
+                    justify-content: center;
+                    
+                    .image.element {
+                        /* border: solid 1px tomato; */
+                        max-width: 100%;
+                    }
+                    
+                }
+                
+            }
+            
+        }
+        
+    }
+    
+}
+
+input, select {
+    /* border: solid 1px tomato; */
+    display: block;
+    min-width: 184px;
+    border-radius: 6px;
+    margin: 4px;
+    outline: none;
+    border-width: 1px;
+    border-style: solid;
+    padding: 1em;
+    box-shadow: 0 0 0 0 black;
+    transition: box-shadow 250ms 0s ease-in-out;
+    &:hover, &:focus {
+        box-shadow: 0 0 6px 0 white;
+    }
+}

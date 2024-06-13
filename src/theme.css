@@ -1,126 +1,32 @@
 
 :root {
-    --bp-sm: 430px;
-    --bp-md: 768px;
-    --bp-lg: 1200px;
     --outset: 1vw;
+    --color-dominant: #5900FF;
+    --color-compliment: #B030B0;  /* C100B5 */
+    --color-accent: #4DFCE0;
+    --color-dark: black;
+    --color-light: white;
+    --color-button-border: transparent;
 }
 
-.page, ::part(page) {
-    min-height: 98vh;
-    margin: 1vh var(--outset);
+:root {
+    --margin-bottom-xxs: 4px;
+    --margin-bottom-xs:  8px;
+    --margin-bottom-sm:  16px;
+    --margin-bottom-md:  24px;
+    --margin-bottom-lg:  32px;
+    --margin-bottom-xl:  40px;
+    --margin-bottom-xxl: 48px;
 }
 
-.glass, ::part(glass) {
-    padding: 8px;
-    border-radius: 3px;
-    background-color: rgba(255, 255, 255, 0.513);
-    box-shadow: 0px 0px 1px 0px #333;
-}
-
-my-menu.global {
-    position: fixed;
-    top: -8px;
-    left: 0;
-    width: 100%;
-    height: 38px;
-    overflow: hidden;
-    opacity: 1;
-    animation: spawn-soft 1s linear;
-    cursor: pointer;
-    box-shadow: 0px 0px 3px 0px #333;
-    
-    &::part(glass) {
-        background-color: rgba(255, 255, 255, 0.913);
+/* h1, h2, h3, h4, h5, h6 {
+    & > h2, & > h3, & > h4, & > h5, & > h6 {
+        margin-bottom: var(--margin-bottom-xs);
+        & > h3, & > h4, & > h5, & > h6 {
+            margin-bottom: var(--margin-bottom-sm);
+        }
     }
-    
-    &:focus-within {
-        height: auto;
+    & > p {
+        margin-bottom: var(--margin-bottom-md);
     }
-    
-}
-
-.app.background {
-    --stripes: repeating-linear-gradient(
-        100deg,
-        #fff 0%,
-        #fff 7%,
-        transparent 10%,
-        transparent 12%,
-        #fff 16%
-    );
-    --stripesDark: repeating-linear-gradient(
-        100deg,
-        #000 0%,
-        #000 7%,
-        transparent 10%,
-        transparent 12%,
-        #000 16%
-    );
-    --rainbow: repeating-linear-gradient(
-        100deg,
-        #60a5fa 10%,
-        #e879f9 15%,
-        #60a5fa 20%,
-        #5eead4 25%,
-        #60a5fa 30%
-    );
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background-image: var(--stripes), var(--rainbow);
-    background-size: 300%, 200%;
-    filter: blur(10px) invert(100%);
-    mask-image: radial-gradient(ellipse at 100% 0%, black 40%, transparent 70%);
-    pointer-events: none;
-    z-index: -1;
-    
-    &::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background-image: var(--stripes), var(--rainbow);
-        background-size: 200%, 100%;
-        animation: waves 60s linear infinite;
-        background-attachment: fixed;
-        mix-blend-mode: difference;
-    }
-}
-
-@keyframes waves {
-    from {
-        background-position: 50% 50%, 50% 50%;
-    }
-    to {
-        background-position: 350% 50%, 350% 50%;
-    }
-}
-
-@keyframes spawn-soft {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@media (min-width: 430px) {
-    :root {
-        --outset: 1vw;
-    }
-}
-
-@media (min-width: 768px) {
-    :root {
-        --outset: 8vw;
-    }
-}
-
-@media (min-width: 1200px) {
-    :root {
-        --outset: 16vw;
-    }
-}
+} */

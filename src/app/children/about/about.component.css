@@ -1,0 +1,144 @@
+
+:host {
+    /* border: solid 1px tomato; */
+    display: flex;
+    align-items: center;
+    border: solid 2vw var(--color-dominant);
+    border-block-width: 8px;
+    border-top-left-radius: 65em 10em;
+    border-top-right-radius: 65em 10em;
+    animation: bend linear both, shift linear both;
+    animation-timeline: view(), view();
+    animation-range: 5% 10%, -150px 10%;
+    translate: 0 -160px;
+    background-color: var(--color-light);
+    background-clip: padding-box;
+    
+    .app.section.about {
+        /* border: solid 1px tomato; */
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        animation: slide linear both;
+        animation-timeline: view();
+        animation-range: 5% 10%;
+        translate: 0 160px;
+        
+        .section.header {
+            /* border: solid 1px tomato; */
+            .header.title {
+                color: var(--color-dark);
+            }
+        }
+        
+        .section.body {
+            /* border: solid 1px tomato; */
+            
+            .body.subsection.article {
+                
+                .about.cody.photo {
+                    position: relative;
+                    margin: 8px;
+                    float: left;
+                    
+                    .photo.image {
+                        max-width: 320px;
+                    }
+                    .photo.caption {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        padding: 8px;
+                        background-color: rgba(0, 0, 0, 0.75);
+                        color: var(--color-light);
+                    }
+                    
+                }
+                
+                blockquote {
+                    position: relative;
+                    margin: 0;
+                    padding: 8px;
+                    padding-left: 32px;
+                    background-color: rgba(0, 0, 0, 0.75);
+                    background-color: var(--color-dominant);
+                    color: var(--color-light);
+                    margin-inline: calc(var(--outset) * -1);
+                    padding-inline: var(--outset);
+                    animation: quote linear both;
+                    animation-timeline: view();
+                    animation-range: 0% 10%;
+                    translate: 0 100px;
+                    box-shadow: 
+                        inset 0 12px 6px -12px black,
+                        inset 0 12px 6px -12px black,
+                        inset 0 -12px 6px -12px black,
+                        inset 0 -12px 6px -12px black
+                    ;
+                }
+                
+            }
+            
+        }
+        
+        .section.footer {
+            /* border: solid 1px tomato; */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            
+            .footer.cta.group {
+                /* border: solid 1px tomato; */
+                display: flex;
+                justify-content: end;
+                width: 100%;
+                margin-block: 16px;
+                
+                .cta.control {
+                    &.primary {
+                        background-color: var(--color-dominant);
+                        color: var(--color-light);
+                        &:hover {
+                            --color-dominant: var(--color-light);
+                            --color-dark: white;
+                            color: black;
+                        }
+                    }
+                    &.secondary {
+                        background-color: var(--color-accent);
+                        color: var(--color-dark);
+                    }
+                }
+                
+            }
+            
+        }
+        
+    }
+    
+}
+                
+@keyframes bend {
+    from { border-top-left-radius: 65em 20em; border-top-right-radius: 65em 20em }
+    to { border-top-left-radius: 0 0; border-top-right-radius: 0 0 }
+}
+
+@keyframes shift {
+    from { translate: 0 -160px }
+    to { translate: 0 0 }
+}
+
+@keyframes slide {
+    from { translate: 0 160px }
+    to { translate: 0 0 }
+}
+
+@keyframes quote {
+    from { translate: 0 100px }
+    to { translate: 0 0 }
+}

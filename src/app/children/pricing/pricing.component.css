@@ -3,8 +3,8 @@
     /* border: solid 1px tomato; */
     display: flex;
     align-items: center;
-    border: solid 2vw var(--color-dominant);
     border-block-width: 8px;
+    padding-inline: var(--outset);
     background-color: var(--color-compliment);
     background-clip: padding-box;
     
@@ -39,10 +39,9 @@
             
                 .app.pricing.group {
                     /* border: solid 1px tomato; */
-                    display: grid;
-                    grid-template-columns: repeat(3, 1fr);
-                    grid-gap: 16px;
-                    align-items: baseline;
+                    display: flex;
+                    justify-content: center;
+                    flex-wrap: wrap;
                     margin: 0;
                     padding: 0;
                     list-style-type: none;
@@ -53,10 +52,11 @@
                         justify-content: center;
                         align-items: center;
                         flex-direction: column;
-                        padding: 8px;
+                        width: 100%;
+                        padding-block: 8px;
                         animation: count linear both;
                         animation-timeline: view();
-                        animation-range: 3% 50%;
+                        animation-range: 100px 200px;
                         translate: 0 calc(var(--i) * 100px);
                         background-color: var(--color-compliment);
                         
@@ -76,6 +76,7 @@
                         }
                         .item.text {
                             /* border: solid 1px tomato; */
+                            width: 100%;
                         }
                         
                     }
@@ -104,7 +105,7 @@
             .footer.cta.group {
                 /* border: solid 1px tomato; */
                 display: flex;
-                justify-content: end;
+                justify-content: center;
                 width: 100%;
                 margin-block: 16px;
                 
@@ -129,6 +130,30 @@
 }
 
 @keyframes count {
-    from { translate: 0 calc(var(--i) * 100px); box-shadow: 0 0 6px 0 black }
-    to { translate: 0 0; box-shadow: 0 0 0 0 black }
+    from { translate: 0 calc(var(--i) * 100px) }
+    to { translate: 0 0 }
+}
+
+@media (min-width: 768px) {
+    :host {
+        border: solid 2vw var(--color-dominant);
+        
+        .app.section.pricing {
+            .section.body {
+                .body.subsection.article {
+                    .app.pricing.group {
+                        display: grid;
+                        grid-template-columns: repeat(3, 1fr);
+                        grid-gap: 16px;
+                        align-items: baseline;
+                    }
+                }
+            }
+            .section.footer {
+                .footer.cta.group {
+                    justify-content: end;
+                }
+            }
+        }
+    }
 }

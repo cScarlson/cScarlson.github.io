@@ -52,13 +52,13 @@ body {
 
 @media (min-width: 430px) {
     :root {
-        --outset: 2vw;
+        --outset: 4vw;
     }
 }
 
 @media (min-width: 768px) {
     :root {
-        --outset: 4vw;
+        --outset: 7vw;
     }
 }
 

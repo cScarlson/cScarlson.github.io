@@ -3,7 +3,6 @@
     /* border: solid 1px tomato; */
     display: flex;
     align-items: center;
-    border: solid 2vw var(--color-dominant);
     border-block-width: 8px;
     border-top-left-radius: 65em 10em;
     border-top-right-radius: 65em 10em;
@@ -16,9 +15,6 @@
     
     .app.section.about {
         /* border: solid 1px tomato; */
-        display: flex;
-        flex-direction: column;
-        width: 100%;
         animation: slide linear both;
         animation-timeline: view();
         animation-range: 5% 10%;
@@ -39,6 +35,7 @@
                 .the.founder.cody {
                     /* border: solid 1px tomato; */
                     display: flex;
+                    flex-direction: column;
                     gap: 16px;
                     margin-block: 32px;
                 
@@ -47,14 +44,16 @@
                         position: relative;
                         display: flex;
                         justify-content: center;
-                        max-width: 320px;
-                        margin: 0;
+                        max-width: 300px;
+                        width: 100%;
+                        margin: 0 auto;
                         border: solid 1px var(--color-dominant);
                         border-radius: 16px;
                         
                         .photo.image {
                             /* border: solid 1px tomato; */
-                            max-width: 320px;
+                            /* max-width: 320px; */
+                            width: 100%;
                             object-fit: cover;
                             border-radius: 16px;
                         }
@@ -81,7 +80,7 @@
                 .descriptions.list {
                     /* border: solid 1px tomato; */
                     display: grid;
-                    grid-template-columns: 1fr 1fr 1fr;
+                    grid-template-columns: 1fr;
                     grid-gap: 16px;
                     margin: 0;
                     padding: 0;
@@ -133,7 +132,7 @@
             .footer.cta.group {
                 /* border: solid 1px tomato; */
                 display: flex;
-                justify-content: end;
+                justify-content: center;
                 width: 100%;
                 margin-block: 16px;
                 
@@ -179,4 +178,36 @@
 @keyframes quote {
     from { translate: 0 100px }
     to { translate: 0 0 }
+}
+
+@media (min-width: 768px) {
+    :host {
+        border: solid 2vw var(--color-dominant);
+        
+        .app.section.about {
+            .section.body {
+                .body.subsection.article {
+                    .the.founder.cody {
+                        display: grid;
+                        grid-template-columns: auto 1fr;
+                        
+                        .cody.photo {
+                            .photo.image {
+                                
+                            }
+                        }
+                        
+                    }
+                    .descriptions.list {
+                        grid-template-columns: 1fr 1fr 1fr;
+                    }
+                }
+            }
+            .section.footer {
+                .footer.cta.group {
+                    justify-content: end;
+                }
+            }
+        }
+    }
 }

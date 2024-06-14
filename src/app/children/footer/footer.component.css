@@ -19,15 +19,21 @@
         
         .section.link.group {
             /* border: solid 1px tomato; */
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-gap: 16px;
+            /* display: grid; */
+            /* grid-template-columns: 1fr; */
+            /* grid-gap: 16px; */
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
             
             .link.list {
                 /* border: solid 1px tomato; */
                 margin: 0;
                 padding: 0;
                 list-style-type: none;
+                flex-grow: 1;
+                border-top: solid 1px var(--color-accent);
+                padding-top: 16px;
                 
                 .list.item {
                     /* border: solid 1px tomato; */
@@ -66,4 +72,14 @@
         color: var(--color-light);
     }
     
+}
+
+@media (min-width: 768px) {
+    :host {
+        .app.section.footer {
+            .section.link.group {
+                /* grid-template-columns: 1fr 1fr 1fr; */
+            }
+        }
+    }
 }

@@ -3,12 +3,7 @@
     /* border: solid 1px tomato; */
     display: flex;
     align-items: center;
-    border-inline: solid 2vw var(--color-accent);
     background-color: var(--color-accent);
-    background-clip: padding-box;
-    animation: inset linear both;
-    animation-timeline: view();
-    animation-range: 70% 80%;
     
     .app.section.services {
         /* border: solid 1px tomato; */
@@ -25,10 +20,8 @@
             
             .app.service.group {
                 /* border: solid 1px tomato; */
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                grid-template-rows: repeat(2, 1fr);
-                grid-gap: 16px;
+                display: flex;
+                flex-wrap: wrap;
                 align-items: baseline;
                 margin: 0;
                 padding: 0;
@@ -108,4 +101,25 @@
 @keyframes inset {
     from { border-color: var(--color-accent) }
     to { border-color: transparent }
+}
+
+@media (min-width: 768px) {
+    :host {
+        border-inline: solid 2vw var(--color-accent);
+        background-clip: padding-box;
+        animation: inset linear both;
+        animation-timeline: view();
+        animation-range: 70% 80%;
+        
+        .app.section.services {
+            .section.body {
+                .app.service.group {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    grid-template-rows: repeat(2, 1fr);
+                    grid-gap: 16px;
+                }
+            }
+        }
+    }
 }

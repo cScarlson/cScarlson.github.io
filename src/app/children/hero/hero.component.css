@@ -7,14 +7,14 @@
     
     .app.section.hero {
         /* border: solid 1px tomato; */
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-gap: 16px;
+        display: flex;
+        flex-wrap: wrap-reverse;
         width: 100%;
         
         .section.column {
             /* border: solid 1px tomato; */
             display: block;
+            width: 100%;
             
             .section.header {
                 &.title {
@@ -31,7 +31,7 @@
             
             .section.cta.group {
                 display: flex;
-                justify-content: end;
+                justify-content: center;
                 
                 .cta.control {
                     &.primary {
@@ -62,4 +62,21 @@
         
     }
     
+}
+
+@media (min-width: 768px) {
+    :host {
+        .app.section.hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 16px;
+            
+            .section.column {
+                .section.cta.group {
+                    justify-content: end;
+                }
+            }
+            
+        }
+    }
 }

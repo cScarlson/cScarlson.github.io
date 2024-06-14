@@ -24,9 +24,9 @@ $('csc-pricing', class extends CustomElement {
             'CTA:ABOUT': await $.translate('CTA:ABOUT'),
         };
         const tiers = [
-            { i: -2.75, icon: 'la la-trophy', title: await $.translate('PRICING:TIER:0:TITLE'), text: await $.translate('PRICING:TIER:0:TEXT') },
-            { i: -2, icon: 'la la-medal', title: await $.translate('PRICING:TIER:1:TITLE'), text: await $.translate('PRICING:TIER:1:TEXT') },
-            { i: -1, icon: 'la la-award', title: await $.translate('PRICING:TIER:2:TITLE'), text: await $.translate('PRICING:TIER:2:TEXT') },
+            { i: 1, icon: 'la la-trophy', title: await $.translate('PRICING:TIER:0:TITLE'), text: await $.translate('PRICING:TIER:0:TEXT') },
+            { i: 2.5, icon: 'la la-medal', title: await $.translate('PRICING:TIER:1:TITLE'), text: await $.translate('PRICING:TIER:1:TEXT') },
+            { i: 3.75, icon: 'la la-award', title: await $.translate('PRICING:TIER:2:TITLE'), text: await $.translate('PRICING:TIER:2:TEXT') },
         ];
         const rates = [
             { i: 0.75, icon: 'la la-feather', title: await $.translate('PRICING:RATE:0:TITLE'), text: await $.translate('PRICING:RATE:0:TEXT') },

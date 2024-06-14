@@ -46,9 +46,7 @@ body {
     min-height: 100dvh;
 }
 
-.snap {
-    scroll-snap-align: start;
-}
+.snap {}
 
 @media (min-width: 430px) {
     :root {
@@ -59,6 +57,9 @@ body {
 @media (min-width: 768px) {
     :root {
         --outset: 7vw;
+    }
+    .snap {
+        scroll-snap-align: start;
     }
 }
 

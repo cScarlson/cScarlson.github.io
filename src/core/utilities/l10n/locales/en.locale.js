@@ -69,7 +69,7 @@ export default {
     "CONTACT:FORM:CONTACT:LABEL:GROUP": "Email or Phone",
     "CONTACT:FORM:CONTACT:EMAIL:LABEL": "email address",
     "CONTACT:FORM:CONTACT:PHONE:LABEL": "phone number",
-    "CONTACT:FORM:CONTACT:SMS:LABEL": "OK to Text Message?",
+    "CONTACT:FORM:CONTACT:SMS:LABEL": "OK to Text?",
     "CONTACT:FORM:SERVICE:LABEL:GROUP": "Service Request type",
     "CONTACT:FORM:SERVICE:DEFAULT:OPTION": "Please select an option...",
     "CONTACT:FORM:SERVICE:ENHANCEMENT:OPTION": "New feature on existing site",

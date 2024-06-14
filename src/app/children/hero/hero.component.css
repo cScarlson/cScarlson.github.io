@@ -1,15 +1,27 @@
 
 :host {
     /* border: solid 1px tomato; */
+    position: relative;
     display: flex;
     align-items: center;
+    justify-content: center;
+    flex-direction: column;
     background-color: var(--color-dark);
+
+    csc-header[type="static"] {
+        position: absolute;
+        width: 100%;
+        animation: unset;
+        animation-timeline: unset;
+        animation-range: unset;
+    }
     
     .app.section.hero {
         /* border: solid 1px tomato; */
         display: flex;
         flex-wrap: wrap-reverse;
         width: 100%;
+        margin-top: 16px;
         
         .section.column {
             /* border: solid 1px tomato; */

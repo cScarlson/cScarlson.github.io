@@ -36,25 +36,59 @@
             
             .body.subsection.article {
                 
-                .about.cody.photo {
-                    position: relative;
-                    margin: 8px;
-                    float: left;
-                    
-                    .photo.image {
-                        max-width: 320px;
-                    }
-                    .photo.caption {
+                .the.founder.cody {
+                    /* border: solid 1px tomato; */
+                    display: flex;
+                    gap: 16px;
+                    margin-block: 32px;
+                
+                    .cody.photo {
+                        /* border: solid 1px tomato; */
+                        position: relative;
                         display: flex;
                         justify-content: center;
-                        align-items: center;
-                        position: absolute;
-                        bottom: 0;
-                        left: 0;
-                        right: 0;
-                        padding: 8px;
-                        background-color: rgba(0, 0, 0, 0.75);
-                        color: var(--color-light);
+                        max-width: 320px;
+                        margin: 0;
+                        border: solid 1px var(--color-dominant);
+                        border-radius: 16px;
+                        
+                        .photo.image {
+                            /* border: solid 1px tomato; */
+                            max-width: 320px;
+                            object-fit: cover;
+                            border-radius: 16px;
+                        }
+                        .photo.caption {
+                            /* border: solid 1px tomato; */
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            position: absolute;
+                            bottom: 0;
+                            left: 50%;
+                            right: -50%;
+                            translate: -50% 0;
+                            border-radius: 0 0 16px 16px;
+                            padding: 8px;
+                            background-color: rgba(0, 0, 0, 0.75);
+                            color: var(--color-light);
+                        }
+                        
+                    }
+                    
+                }
+                
+                .descriptions.list {
+                    /* border: solid 1px tomato; */
+                    display: grid;
+                    grid-template-columns: 1fr 1fr 1fr;
+                    grid-gap: 16px;
+                    margin: 0;
+                    padding: 0;
+                    list-style-type: none;
+                    
+                    li {
+                        /* border: solid 1px tomato; */
                     }
                     
                 }
@@ -79,6 +113,10 @@
                         inset 0 -12px 6px -12px black,
                         inset 0 -12px 6px -12px black
                     ;
+                }
+                
+                #why-pop-site-technology {
+                    margin-block: 32px;
                 }
                 
             }

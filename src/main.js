@@ -1,4 +1,5 @@
 
+import './app/children/header/children/menu/mobile/mobile.component.js';
 import './app/children/header/header.component.js';
 import './app/children/hero/hero.component.js';
 import './app/children/services/services.component.js';

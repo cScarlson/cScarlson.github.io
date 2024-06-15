@@ -18,6 +18,7 @@
             .item.control {
                 position: relative;
                 display: block;
+                outline: none;
                 border: solid 1px transparent;
                 border-bottom: none;
                 border-radius: 3px 3px 0 0;
@@ -26,7 +27,7 @@
                 text-transform: uppercase;
                 transition: border-color 500ms 0s ease-in-out;
                 color: var(--color-accent);
-                &:hover {
+                &:hover, &:focus {
                     border-color: var(--color-accent);
                     &::after {
                         width: 0%;

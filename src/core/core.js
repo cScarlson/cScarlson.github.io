@@ -92,16 +92,14 @@ class Core {
         const { state } = this.#store;
         const { isMenuOpen } = state;
         
-        this.publish('MODAL:REQUESTED', { content: '<grp-menu></grp-menu>' });
-        this.#store.dispatch({ type: channel, payload: true });
+        if (isMenuOpen) this.publish('MENU:REQUEST:HIDE');
+        else this.publish('MENU:REQUEST:SHOW');
+        this.#store.dispatch({ type: channel, payload: !isMenuOpen });
         this.#dispatch(channel);
     }
     
-    async ['MODAL:DISMISSED'](channel) {
-        const { state } = this.#store;
-        const { isMenuOpen } = state;
-        
-        this.#store.dispatch({ type: channel, payload: false });
+    async ['MENU:CLOSED'](channel) {
+        this.#store.dispatch({ type: 'HEADER:MENU:CLICK', payload: false });
         this.#dispatch(channel);
     }
     

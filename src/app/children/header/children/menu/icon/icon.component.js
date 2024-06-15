@@ -7,6 +7,7 @@ $('csc-menu-icon', class extends CustomElement {
     
     constructor() {
         super({ templateURL: '/src/app/children/header/children/menu/icon/icon.component.html', styleURL: '/src/app/children/header/children/menu/icon/icon.component.css' });
+        this.addEventListener('click', e => $.publish('HEADER:MENU:CLICK'), true);
     }
     
     async connectedCallback() {

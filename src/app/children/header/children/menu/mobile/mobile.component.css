@@ -33,12 +33,12 @@
             /* border: solid 1px tomato; */
             padding: 0;
             background-color: transparent;
-            color: var(--color-accent);
+            color: var(--color-compliment);
             font-size: 2em;
             cursor: pointer;
             &:hover, &:focus {
                 .control.icon {
-                    color: var(--color-compliment)
+                    color: var(--color-accent);
                 }
             }
         }

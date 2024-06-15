@@ -188,7 +188,7 @@ input, select {
 }
 
 input {
-    border: solid 1px tomato;
+    /* border: solid 1px tomato; */
     width: 100%;
 }
 

@@ -173,7 +173,7 @@
 }
 
 input, select {
-    border: solid 1px tomato;
+    /* border: solid 1px tomato; */
     border-radius: 6px;
     margin: 4px;
     outline: none;

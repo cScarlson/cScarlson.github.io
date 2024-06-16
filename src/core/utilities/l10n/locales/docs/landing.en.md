@@ -1,2 +1,0 @@
-
-We make websites that pop, sites that come into existence quickly. Pop Site Technology leverages Artificial Intelligence to save you time and money. Whether just starting out or a seasoned professional, there's no better time to get a website that drives another income stream and gives you a pathway away from the corporate grid.

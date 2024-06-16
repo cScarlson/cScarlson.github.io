@@ -10,6 +10,7 @@
 
     csc-header[type="static"] {
         position: absolute;
+        top: 0;
         width: 100%;
         animation: unset;
         animation-timeline: unset;
@@ -89,6 +90,14 @@
                 }
             }
             
+        }
+    }
+}
+
+@supports not (animation-timeline: scroll()) {
+    :host {
+        csc-header[type="static"] {
+            position: fixed;
         }
     }
 }

@@ -15,7 +15,7 @@ export default {
     
     "HERO:TITLE": "Get A Web Presence Today",
     "HERO:SUBTITLE": "Let us build it for you",
-    "HERO:CONTENT": "./src/core/utilities/l10n/locales/docs/landing.en.md",
+    "HERO:CONTENT": "./src/core/utilities/l10n/locales/docs/hero.en.md",
     
     "MENU:TITLE": "Menu",
     "MENU:ACTION:HOME": "Home",
@@ -26,7 +26,6 @@ export default {
     "MENU:ACTION:MORE": "More",
     
     "SERVICES:TITLE": "What You Get",
-    "SERVICES:CONTENT": "./src/core/utilities/l10n/locales/banner.en.md",
     "SERVICES:0:TITLE": "Quick Turnaround",
     "SERVICES:0:TEXT": "Years of expertise allows you to get a quality digital presence so you can quickly begin scaling your brand.",
     "SERVICES:1:TITLE": "Stand Out",

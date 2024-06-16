@@ -106,6 +106,7 @@
 @media (min-width: 768px) {
     :host {
         border-inline: solid 2vw var(--color-accent);
+        border-top: solid 2vw var(--color-dominant);
         background-clip: padding-box;
         animation: inset linear both;
         animation-timeline: view();

@@ -1,2 +1,0 @@
-
-Thank you for your interest in Pop Sites! Whether you are a future customer or a current customer, please use the form below to make a request with a given service-type and we will be thrilled to get back to you. This form is a basic mechanism to simply request that we contact you. This, in tandem with other anti-spam techniques, helps us protect your privacy against spam & scam bots. Once notified of your request, someone from our team network (likely me, Cody) will reach out as soon as possible to open up broader communications for your request.

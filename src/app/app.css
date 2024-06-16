@@ -1,12 +1,19 @@
 
-html {
-    scroll-behavior: smooth;
-    scroll-snap-type: block proximity;
-}
+html {}
 
 body {
     position: relative;
     background-color: var(--color-dominant);
+}
+
+.app.container {
+    height: 100dvh;
+    border: solid 1px black;
+    scroll-behavior: smooth;
+    scroll-snap-type: block proximity;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    background-clip: content-box;
 }
 
 .app.section {
@@ -46,7 +53,10 @@ body {
     min-height: 100dvh;
 }
 
-.snap {}
+.snap {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+}
 
 @media (min-width: 430px) {
     :root {

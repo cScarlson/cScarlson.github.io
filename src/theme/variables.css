@@ -1,0 +1,20 @@
+
+:root {
+    --outset: 4vw;
+    --color-dominant: #5900FF;
+    --color-compliment: #B030B0;  /* C100B5 */
+    --color-accent: #4DFCE0;
+    --color-dark: black;
+    --color-light: white;
+    --color-button-border: transparent;
+}
+
+:root {
+    --spacing-xxs: 4px;
+    --spacing-xs:  8px;
+    --spacing-sm:  16px;
+    --spacing-md:  24px;
+    --spacing-lg:  32px;
+    --spacing-xl:  40px;
+    --spacing-xxl: 48px;
+}

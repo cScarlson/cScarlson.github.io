@@ -1,8 +1,8 @@
 
-import { console, fetch, utilities } from '/browserless/core.js';
+import { $ } from '/src/core/core.js';
 
 const { log } = console;
-const TEMPLATE_URL = `./src/app/children/contact/children/form/sms/sms.template.html`;
+const TEMPLATE_URL = `/src/app/children/contact/sms/sms.template.html`;
 const SERVICE_URL = `https://api.emailjs.com/api/v1.0/email/send`;
 const USER_ID = 'AJqR9xQ32JBxxo54l';
 const SERVICE_ID = 'otocarlson';
@@ -35,7 +35,7 @@ class EmailJSTemplateParams {
     
 }
 
-export class SMSService {
+export default new (class SMSService {
     template = fetch(TEMPLATE_URL).then( res => res.text() );
     
     constructor(options = {}) {}
@@ -43,7 +43,7 @@ export class SMSService {
     async send(data = {}) {
         const { template: promise } = this;
         const template = await promise;
-        const message = utilities.interpolate(template)(data);
+        const message = $.utilities.interpolate(template)(data);
         const request = new EmailJSRequest({ message });
         const body = JSON.stringify(request);
         const response = await fetch(SERVICE_URL, { headers: HEADERS, body, method: 'POST' });
@@ -59,4 +59,4 @@ export class SMSService {
         return output;
     }
     
-};
+})();

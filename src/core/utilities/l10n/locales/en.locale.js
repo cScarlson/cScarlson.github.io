@@ -61,7 +61,7 @@ export default {
     "PRICING:RATE:TEXT:1": "The first, initial consultation is **FREE**! Consultations after the first are charged at $20 an hour. However, this charge is easily waived when provided a mean Latte, a wicked-good Hazy API, awesome company shwag, ... you get the point. We follow the nominal practice of charging for the first hour automatically (just like an Electrician). It is good to mention, after delivery, most customers decide it is a wise idea to bundle simple changes together so that you are getting the most for your money on the hourly rate.",
     
     "CONTACT:TITLE": "Contact",
-    "CONTACT:CONTENT": "Thank you for your interest in Pop Sites! Whether you are a future customer or a current customer, please use the form below to make a request with a given service-type and we will be thrilled to get back to you. This form is a basic mechanism to simply request that we contact you. This, in tandem with other anti-spam techniques, helps us protect your privacy against spam & scam bots. Once notified of your request, someone from our team network (likely me, Cody) will reach out as soon as possible to open up broader communications for your request.",
+    "CONTACT:CONTENT": "Thank you for your interest in Pop Site Technology. Whether you are a future customer or a current customer, please use the form below to make a request with a given service-type and we will be thrilled to get back to you. Once notified of your request, someone from our team will reach out to open up broader communications.",
     "CONTACT:FORM:NAME:LABEL:GROUP": "Name",
     "CONTACT:FORM:NAME:FIRST:LABEL": "first name",
     "CONTACT:FORM:NAME:LAST:LABEL": "last name (optional)",

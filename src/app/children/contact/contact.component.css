@@ -30,6 +30,33 @@
                     grid-template-rows: auto 1fr auto;
                     align-items: end;
                 }
+                &.form .contact.form {
+                    --RADIUS: 10px;
+                    position: relative;
+                    border-radius: var(--RADIUS);
+                    border: solid 1px var(--color-dark);
+                    padding: 8px;
+                }
+                &.form .contact.form .form.header {
+    
+                    .form.errors {
+                        --COLOR: red;
+                        border: solid 1px var(--COLOR);
+                        border-radius: 2px;
+                        padding: 8px;
+                        &:empty {
+                            display: none;
+                        }
+                        
+                        .error.message {
+                            display: block;
+                            color: var(--COLOR);
+                            cursor: pointer;
+                        }
+                        
+                    }
+                    
+                }
                 &.form .contact.form .form.body {
                     
                     fieldset {
@@ -120,6 +147,12 @@
                     }
                     
                 }
+                &.form .thank.you {
+                    display: none;
+                    .you.refresh {
+                        color: var(--color-accent);
+                    }
+                }
                 &.cta {
                     /* border: solid 1px tomato; */
                     
@@ -164,6 +197,100 @@
                     
                 }
                 
+            }
+            
+        }
+        
+    }
+    
+}
+
+/* SUBMITTED */
+:host(:--submitted) {  /* [Deprecation] Custom state pseudo classes are changing from ":--submitted" to ":state(submitted)" soon. See more here: https://github.com/w3c/csswg-drafts/issues/4805 */
+    
+    .app.section.contact {
+        
+        .section.body {
+            
+            .body.column.form {
+                .thank.you {
+                    display: block;
+                }
+                .contact.form {
+                    display: none;
+                }
+            }
+            
+        }
+        
+    }
+    
+}
+
+:host:state(submitted) {
+    
+    .app.section.contact {
+        
+        .section.body {
+            
+            .body.column.form {
+                .thank.you {
+                    display: block;
+                }
+                .contact.form {
+                    display: none;
+                }
+            }
+            
+        }
+        
+    }
+    
+}
+
+/* SUBMITTING */
+:host(:--submitting) {  /* [Deprecation] Custom state pseudo classes are changing from ":--submitted" to ":state(submitted)" soon. See more here: https://github.com/w3c/csswg-drafts/issues/4805 */
+    
+    .app.section.contact {
+        
+        .section.body {
+            
+            .body.column.form {
+                .contact.form {
+                    &::before {
+                        content: "";
+                        display: block;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        bottom: 0;
+                        right: 0;
+                        border-radius: var(--RADIUS);
+                        opacity: 0.5;
+                        background-color: var(--color-light);
+                    }
+                }
+            }
+            
+        }
+        
+    }
+    
+}
+
+:host:state(submitting) {
+    
+    .app.section.contact {
+        
+        .section.body {
+            
+            .body.column.form {
+                .thank.you {
+                    display: block;
+                }
+                .contact.form {
+                    display: none;
+                }
             }
             
         }

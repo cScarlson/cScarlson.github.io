@@ -3,10 +3,11 @@ import { CustomElement } from './custom.element.js';
 import { Page } from './page.js';
 import { translate } from './utilities/l10n/translate.js';
 import { default as utilities } from './utilities/utilities.js';
+import { default as $sms } from '/src/app/children/contact/sms/sms.service.js';
 
 const { customElements, console } = window;
 const { log } = console;
-const store = new (class Store {  // cheap store. provide interface for scalability. no reactivity needed yet.
+const store = new (class CheapoStore {  // cheap store. provide interface for scalability. no reactivity needed yet.
     state = {
         isMenuOpen: false,
     };
@@ -101,6 +102,11 @@ class Core {
     async ['MENU:CLOSED'](channel) {
         this.#store.dispatch({ type: 'HEADER:MENU:CLICK', payload: false });
         this.#dispatch(channel);
+    }
+    
+    async ['CONTACT:FORM:SUBMISSION'](channel, data) {
+        const response = await $sms.send(data);
+        this.#dispatch(channel, response);
     }
     
 }

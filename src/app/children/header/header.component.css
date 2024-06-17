@@ -8,8 +8,10 @@
     display: block;
     z-index: 9999;
     animation: reposition linear both;
-    animation-timeline: scroll();
-    animation-range: 0 80dvh;
+    animation-timeline: view();
+    animation-range-start: 50dvh;
+    animation-range-end: 80dvh;
+    animation-range: 50dvh 80dvh;
     
     .app.header {
         /* border: solid 1px tomato; */
@@ -56,7 +58,7 @@
 }
     
 @keyframes reposition {
-    from { translate: 0 -300dvh }
+    from { translate: 0 -400dvh }
     to { translate: 0 0dvh }
 }
 

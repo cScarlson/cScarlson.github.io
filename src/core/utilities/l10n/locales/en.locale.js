@@ -33,7 +33,7 @@ export default {
     "SERVICES:2:TITLE": "Mobile Friendly",
     "SERVICES:2:TEXT": "Mobile Friendliness & Responsive Design. Your audience gets a premium experience from any device.",
     "SERVICES:3:TITLE": "Adaptability",
-    "SERVICES:3:TEXT": "Mobile Friendliness & Responsive Design. Your audience gets a premium experience from any device.",
+    "SERVICES:3:TEXT": "Adaptability of your content. If you want to add another language to your site -- Spanish, French, etc -- it's ready for that at minimal cost to you.",
     "SERVICES:4:TITLE": "Portability",
     "SERVICES:4:TEXT": "Portability of your content. Your content can be easily ported to another platform if you upgrade your site or hand it off to another team.",
     "SERVICES:5:TITLE": "Accessibility",

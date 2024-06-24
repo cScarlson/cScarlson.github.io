@@ -37,7 +37,11 @@ body {
         text-transform: uppercase;
         text-align: center;
         font-size: 0.75em;
+        line-height: 1.5em;
+        font-weight: 600;
+        letter-spacing: 1px;
         background-clip: border-box;
+        /* transition: all 500ms 0s ease-in-out; */
     }
     &::part(cta):hover, &::part(cta):focus {
         --color-dominant: var(--color-dark);

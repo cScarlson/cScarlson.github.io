@@ -12,6 +12,7 @@
     .app.section.footer {
         /* border: solid 1px tomato; */
         width: 100%;
+        padding-bottom: 64px;
         
         .section.header.title {
             /* border: solid 1px tomato; */
@@ -34,6 +35,13 @@
                 flex-grow: 1;
                 border-top: solid 1px var(--color-accent);
                 padding-top: 16px;
+                &.cta {
+                    .list.item {
+                        /* border: solid 1px tomato; */
+                        display: grid;
+                        justify-content: end;
+                    }
+                }
                 
                 .list.item {
                     /* border: solid 1px tomato; */
@@ -44,6 +52,13 @@
                         color: var(--color-accent);
                         text-decoration: none;
                         font-size: 1.25em;
+                        &.cta {
+                            &.primary {
+                                background-color: var(--color-accent);
+                                color: var(--color-dark);
+                                margin-inline: 0 !important;
+                            }
+                        }
                         
                         .control.icon {}
                         

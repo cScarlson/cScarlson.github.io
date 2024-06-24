@@ -20,6 +20,7 @@ $('csc-footer', class extends CustomElement {
             'FOOTER:ACTION:EMPLOYERS':await $.translate('FOOTER:ACTION:EMPLOYERS'),
             'FOOTER:ACTION:DEVELOPERS':await $.translate('FOOTER:ACTION:DEVELOPERS'),
             'FOOTER:COPYRIGHT': await $.translate('FOOTER:COPYRIGHT'),
+            'CTA:CONTACT': await $.translate('CTA:CONTACT'),
         };
         
         this.content = content;

@@ -7,6 +7,15 @@
     padding-inline: var(--outset);
     background-color: var(--color-compliment);
     background-clip: padding-box;
+}
+
+/* :host { */
+    /* display: flex; */
+    /* align-items: center; */
+    /* border-block-width: 8px; */
+    /* padding-inline: var(--outset); */
+    /* background-color: var(--color-compliment); */
+    /* background-clip: padding-box; */
     
     .app.section.pricing {
         /* border: solid 1px tomato; */
@@ -127,7 +136,7 @@
         
     }
     
-}
+/* } */
 
 @keyframes count {
     from { translate: 0 calc(var(--i) * 100px) }
@@ -137,6 +146,10 @@
 @media (min-width: 768px) {
     :host {
         border: solid 2vw var(--color-dominant);
+    }
+    
+    /* :host { */
+        /* border: solid 2vw var(--color-dominant); */
         
         .app.section.pricing {
             .section.body {
@@ -155,5 +168,5 @@
                 }
             }
         }
-    }
+    /* } */
 }

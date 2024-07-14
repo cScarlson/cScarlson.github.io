@@ -3,6 +3,11 @@
     /* border: solid 1px tomato; */
     display: block;
     cursor: pointer;
+}
+
+/* :host { */
+    /* display: block; */
+    /* cursor: pointer; */
     
     .app.menu.icon {
         /* border: solid 1px tomato; */
@@ -16,4 +21,4 @@
         
     }
     
-}
+/* } */

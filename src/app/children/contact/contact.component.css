@@ -7,6 +7,15 @@
     border: solid 2vw transparent;  /* use for alignment with sibling sections */
     background-color: var(--color-dominant);
     color: var(--color-light);
+}
+
+/* :host { */
+    /* display: flex; */
+    /* align-items: center; */
+    /* margin-block: 64px; */
+    /* border: solid 2vw transparent; */
+    /* background-color: var(--color-dominant); */
+    /* color: var(--color-light); */
     
     .app.section.contact {
         /* border: solid 1px tomato; */
@@ -203,7 +212,7 @@
         
     }
     
-}
+/* } */
 
 /* SUBMITTED */
 :host(:--submitted) {  /* [Deprecation] Custom state pseudo classes are changing from ":--submitted" to ":state(submitted)" soon. See more here: https://github.com/w3c/csswg-drafts/issues/4805 */
@@ -320,7 +329,7 @@ input {
 }
 
 @media (min-width: 768px) {
-    :host {
+    /* :host { */
         .app.section.contact {
             .section.body {
                 grid-template-columns: 1fr 1fr;
@@ -332,5 +341,5 @@ input {
             }
             
         }
-    }
+    /* } */
 }

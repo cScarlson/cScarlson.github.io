@@ -8,6 +8,16 @@
     border-block-width: 8px;
     background-color: rgba(0, 0, 0, 0.8);
     color: var(--color-accent);
+}
+
+/* :host { */
+    /* position: relative; */
+    /* display: flex; */
+    /* align-items: center; */
+    /* border-inline: solid 2vw transparent; */
+    /* border-block-width: 8px; */
+    /* background-color: rgba(0, 0, 0, 0.8); */
+    /* color: var(--color-accent); */
     
     .app.section.footer {
         /* border: solid 1px tomato; */
@@ -87,14 +97,14 @@
         color: var(--color-light);
     }
     
-}
+/* } */
 
 @media (min-width: 768px) {
-    :host {
+    /* :host { */
         .app.section.footer {
             .section.link.group {
                 /* grid-template-columns: 1fr 1fr 1fr; */
             }
         }
-    }
+    /* } */
 }

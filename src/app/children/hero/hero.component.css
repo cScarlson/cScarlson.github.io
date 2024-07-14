@@ -7,6 +7,15 @@
     justify-content: center;
     flex-direction: column;
     background-color: var(--color-dark);
+}
+
+/* :host { */
+    /* position: relative; */
+    /* display: flex; */
+    /* align-items: center; */
+    /* justify-content: center; */
+    /* flex-direction: column; */
+    /* background-color: var(--color-dark); */
 
     csc-header[type="static"] {
         position: absolute;
@@ -82,10 +91,10 @@
         
     }
     
-}
+/* } */
 
 @media (min-width: 768px) {
-    :host {
+    /* :host { */
         .app.section.hero {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -103,13 +112,13 @@
             }
             
         }
-    }
+    /* } */
 }
 
 @supports not (animation-timeline: scroll()) {
-    :host {
+    /* :host { */
         csc-header[type="static"] {
             position: fixed;
         }
-    }
+    /* } */
 }

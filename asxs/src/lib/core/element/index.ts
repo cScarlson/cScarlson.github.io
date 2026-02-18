@@ -10,10 +10,10 @@ interface RemoteElementDefinition extends HTMLCollection {  // Schema/Protocol f
 }
 
 interface RemoteElementDefinitionOptions {
-    meta: HTMLMetaElement,
-    template: HTMLTemplateElement,
-    styles: HTMLStyleElement,
-    script: HTMLScriptElement,
+    meta: HTMLMetaElement;
+    template: HTMLTemplateElement;
+    styles: HTMLStyleElement;
+    script: HTMLScriptElement;
 }
 
 const { log } = console;
@@ -72,19 +72,14 @@ class Renderer extends Interpolator {
 }
 
 class Frameless extends Interpolator {
-    protected __meta__: string = '';
-    protected __html__: string = '';
-    protected __styles__: string = '';
-    protected __script__: string = '';
+    protected get __meta__(): HTMLMetaElement { return this.options.meta };
+    protected get __template__(): HTMLTemplateElement { return this.options.template };
+    protected get __styles__(): HTMLStyleElement { return this.options.styles };
+    protected get __script__(): HTMLScriptElement { return this.options.script };
     
     constructor(protected options: RemoteElementDefinitionOptions) {
         super();
     }
-    
-    // compose(html: string, styles: string) {
-    //     const template = `<style>${styles}</style>\n${html}`;
-    //     super.update(template);
-    // }
     
 }
 

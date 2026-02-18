@@ -43,7 +43,7 @@ export @customElement(TAGNAME, { extends: 'iframe' }) class FramelessElement ext
         const slotted = nodes.filter(child => child !== this);
         const module = this.#define(script);
         const Class = customElements.get(tagName) as typeof Frameless;
-        const element = new Class({ meta, template, styles, script });
+        const element = new Class({ meta, template, styles, script });  // should everything after this be done by the RED?
         const css = utilities.interpolate(styles.innerHTML)(element.__state__);
         const $template = document.createElement('template');
         const sentinel = document.createElement('style');

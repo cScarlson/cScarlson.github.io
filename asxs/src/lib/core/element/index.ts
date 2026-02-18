@@ -2,6 +2,20 @@
 import type { ToDo } from '@asxs/core/types';
 import { utilities } from '@asxs/core/utilities';
 
+interface RemoteElementDefinition extends HTMLCollection {  // Schema/Protocol for RED (Remote Element Definition)
+    0: HTMLMetaElement,
+    1: HTMLTemplateElement,
+    2: HTMLStyleElement,
+    3: HTMLScriptElement,
+}
+
+interface RemoteElementDefinitionOptions {
+    meta: HTMLMetaElement,
+    template: HTMLTemplateElement,
+    styles: HTMLStyleElement,
+    script: HTMLScriptElement,
+}
+
 const { log } = console;
 
 class Basic extends HTMLElement {
@@ -63,13 +77,21 @@ class Frameless extends Interpolator {
     protected __styles__: string = '';
     protected __script__: string = '';
     
-    compose(html: string, styles: string) {
-        const template = `<style>${styles}</style>\n${html}`;
-        super.update(template);
+    constructor(protected options: RemoteElementDefinitionOptions) {
+        super();
     }
+    
+    // compose(html: string, styles: string) {
+    //     const template = `<style>${styles}</style>\n${html}`;
+    //     super.update(template);
+    // }
     
 }
 
 class CustomElement extends Renderer {}
 
-export { CustomElement, Basic };
+export { CustomElement, Basic, Interpolator, Renderer, Frameless };
+export type {
+    RemoteElementDefinition,
+    RemoteElementDefinitionOptions,
+};

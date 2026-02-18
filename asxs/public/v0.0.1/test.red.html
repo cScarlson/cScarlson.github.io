@@ -1,0 +1,29 @@
+
+<meta name="as-test" />
+<template>
+    <h1>Dogs Aren't Always Lazy</h1>
+    <slot></slot>
+    <slot name=""></slot>
+</template>
+<style>
+    :host {
+        color: firebrick;
+    }
+</style>
+<script>
+    const { log } = console;
+    log(`@test.red.html`);
+    customElements.define('as-test', class Test extends HTMLElement {
+        
+        constructor() {
+            super();
+            this.attachShadow({ mode: 'open' });
+        }
+        
+        connectedCallback() {
+            log(`@TEST.RED.HTML -> connected`);
+        }
+        
+    });
+</script>
+<h2>Rendered?</h2>

@@ -1,7 +1,12 @@
 
 <p>The ${speed} brown fox jumped over the lazy ${animal}.</p>
-<iframe src="./v0.0.1/test.red.html" is="as-frameless">
-    <p>Default Slot Content</p>
-    <span>More Default Content</span>
-    <span name="named">Named Slot</span>
-</iframe>
+<as-frameless-slots>
+    <iframe src="./v0.0.1/test.red.html" is="as-frameless">
+        <p>Default Slot Content</p>
+        <div>More Default Content</div>
+        <div slot="named">Named Slot</div>
+    </iframe>
+    <p>Default Slot Content 2</p>
+    <div>More Default Content 2</div>
+    <div slot="named">Named Slot 2</div>
+</as-frameless-slots>

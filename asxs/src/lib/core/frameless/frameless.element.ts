@@ -15,6 +15,7 @@ export const TAGNAME = 'as-frameless';
 export @customElement(TAGNAME, { extends: 'iframe' }) class FramelessElement extends HTMLIFrameElement {
     #deferred: ToDo = (Promise as ToDo).withResolvers();
     #lightdom: HTMLCollection = document.createElement('div').children;
+    #parent: any = null;
     
     constructor() {
         super();
@@ -31,27 +32,34 @@ export @customElement(TAGNAME, { extends: 'iframe' }) class FramelessElement ext
     };
     
     #compose(red: RemoteElementDefinition) {
-        const { innerHTML } = this;
+        const { innerHTML, parentElement } = this;
         const { [0]: meta, [1]: template, [2]: styles, [3]: script } = red;  // RED (Remote Element Definition) protocol
         const { attributes: { [0]: { value: tagName } } } = meta as HTMLMetaElement;
         const { content } = template as HTMLTemplateElement;
         const element = document.createElement(tagName);
         const module = document.createElement('script');
         const sentinel = document.createElement('style');
+        const nodes = getSlottedNodes(parentElement!);
+        const slotted = nodes.filter(child => child !== this);
+        
+        function getSlottedNodes(parentElement: HTMLUnknownElement) {
+            if (!parentElement) return [];
+            if (!parentElement.matches('as-frameless-slots')) return [];
+            return Array.from(parentElement.childNodes);
+        }
         
         function handleScriptLoad(e: Event) {
             if (e.target !== sentinel) return;
-            const { shadowRoot } = element as HTMLUnknownElement
+            const { shadowRoot } = element as HTMLUnknownElement;
             const shadow = shadowRoot!;
             
-            log(`@@@@@@@@@@@@@@@@`, e.target, e);
             shadow.appendChild(styles);
             shadow.appendChild(content);
+            for (const child of slotted) element.appendChild(child);
             element.removeEventListener('load', handleScriptLoad, true);
+            module.remove();
             sentinel.remove();
         }
-        
-        function interplateHTML() {}
         
         log(`@compose... %O`, this, innerHTML, element, this.childNodes);
         module.innerHTML = script.innerHTML;
@@ -59,7 +67,9 @@ export @customElement(TAGNAME, { extends: 'iframe' }) class FramelessElement ext
         element.addEventListener('load', handleScriptLoad, true);
         element.appendChild(module);
         element.appendChild(sentinel);
-        this.replaceWith(element);
+        if (!parentElement) this.replaceWith(element);
+        else if (parentElement.matches('as-frameless-slots')) parentElement.replaceWith(element);
+        else this.replaceWith(element);
     }
     
     #handleLoad(e: Event) {

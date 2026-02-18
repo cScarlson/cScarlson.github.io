@@ -21,6 +21,8 @@ class Basic extends HTMLElement {
     
     adoptedCallback() {}
     
+    connectedMoveCallback() {}
+    
     attributeChangedCallback(name: string, old: string, val: string) {
         if (`attr:${name}` in this) this[`attr:${name}`](val, old);
     }

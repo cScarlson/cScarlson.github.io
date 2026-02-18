@@ -1,11 +1,11 @@
 
 import type { ToDo } from '@asxs/core/types';
-import type { RemoteElementDefinition, RemoteElementDefinitionOptions } from '@asxs/core/element';
+import type { RemoteElementDefinition } from '@asxs/core/element';
 import { Frameless } from '@asxs/core/element';
 import { customElement } from '@asxs/core/customelement';
-import { utilities } from '@asxs/core/utilities';
 
 const { log } = console;
+const WRAPPER_TAGNAME = 'as-frameless-slots';
 
 export const TAGNAME = 'as-frameless';
 export @customElement(TAGNAME, { extends: 'iframe' }) class FramelessElement extends HTMLIFrameElement {
@@ -30,17 +30,11 @@ export @customElement(TAGNAME, { extends: 'iframe' }) class FramelessElement ext
         const { innerHTML: content, parentElement } = this;
         const { [0]: meta, [1]: template, [2]: styles, [3]: script } = red;  // RED (Remote Element Definition) protocol
         const { attributes: { [0]: { value: tagName } } } = meta as HTMLMetaElement;
-        const nodes = getSlottedNodes(parentElement);
+        const nodes = parentElement?.matches(WRAPPER_TAGNAME) ? Array.from(parentElement.childNodes) : [];
         const slotted = nodes.filter(child => child !== this);
         const Class = customElements.get(tagName) as typeof Frameless;
         const element = new Class({ meta, template, styles, script });  // should everything after this be done by the RED?
         const sentinel = document.createElement('style');
-        
-        function getSlottedNodes(parentElement: HTMLUnknownElement | null) {
-            if (!parentElement) return [];
-            if (!parentElement.matches('as-frameless-slots')) return [];
-            return Array.from(parentElement.childNodes);
-        }
         
         function handleScriptLoad(e: Event) {
             if (e.target !== sentinel) return;

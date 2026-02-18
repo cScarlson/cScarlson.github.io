@@ -22,7 +22,6 @@
     
     log(`@test.red.html`);
     if ( !customElements.get('as-test') ) customElements.define('as-test', class Test extends HTMLElement {
-        #options = {};
         get __state__() {
             return { animals: 'foxes', adjective: 'lazy -- AND stupid', cursor: 'pointer' };
         }
@@ -30,9 +29,7 @@
         constructor(options) {
             super();
             this.attachShadow({ mode: 'open' });
-            this.#options = options;
             this.#setup(options);
-            log(`@TEST.RED.HTML -> constructed`, options);
         }
         
         #setup(options) {
@@ -53,4 +50,3 @@
         
     });
 </script>
-<h2>Rendered?</h2>

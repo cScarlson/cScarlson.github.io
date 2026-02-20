@@ -14,6 +14,8 @@ interface RemoteElementDefinitionOptions {
     template: HTMLTemplateElement;
     styles: HTMLStyleElement;
     script: HTMLScriptElement;
+    attributes: NamedNodeMap;
+    contentDocument: Document;
 }
 
 const { log } = console;

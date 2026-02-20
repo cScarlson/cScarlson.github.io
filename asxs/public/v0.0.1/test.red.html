@@ -1,57 +1,59 @@
 
-<meta name="as-test" />
-<template>
-    <h1>Dogs Aren't Always Lazy</h1>
-    <h2>Maybe ${animals} are ${adjective}.</h2>
-    <slot></slot>
-    <slot name="named"></slot>
-    <iframe src="./v0.0.1/test2.red.html" is="as-frameless">
-        <p>(2) -- Default Slot Content</p>
-        <div>(2) -- More Default Content</div>
-        <div slot="named">(2) -- Named Slot</div>
-    </iframe>
-</template>
-<style>
-    :host {
-        color: firebrick;
-        cursor: ${cursor};
-    }
-</style>
-<script>
-    const { parent } = window;
-    const { customElements, HTMLElement } = parent;  // ensure is from parent frame
-    const { log } = console;
-    const utilities = new (class Utilities {
-        interpolate = (template) => (data) => (new Function(`with (this) return \`${template}\`;`) ).call(data);
-    })();
-    
-    log(`@test.red.html`);
-    if ( !customElements.get('as-test') ) customElements.define('as-test', class Test extends HTMLElement {
-        get __state__() {
-            return { animals: 'foxes', adjective: 'lazy -- AND stupid', cursor: 'pointer' };
+<body>
+    <meta name="as-test" />
+    <template>
+        <h1>Dogs Aren't Always Lazy</h1>
+        <h2>Maybe ${animals} are ${adjective}.</h2>
+        <slot></slot>
+        <slot name="named"></slot>
+        <iframe src="./v0.0.1/test2.red.html" is="as-frameless">
+            <p>(2) -- Default Slot Content</p>
+            <div>(2) -- More Default Content</div>
+            <div slot="named">(2) -- Named Slot</div>
+        </iframe>
+    </template>
+    <style>
+        :host {
+            color: firebrick;
+            cursor: ${cursor};
         }
+    </style>
+    <script>
+        const { parent } = window;
+        const { customElements, HTMLElement } = parent;  // ensure is from parent frame
+        const { log } = console;
+        const utilities = new (class Utilities {
+            interpolate = (template) => (data) => (new Function(`with (this) return \`${template}\`;`) ).call(data);
+        })();
         
-        constructor(options) {
-            super();
-            this.attachShadow({ mode: 'open' });
-            this.#setup(options);
-        }
-        
-        #setup(options) {
-            const { __state__: state } = this;
-            const { meta, template, styles, script } = options;
-            const { innerHTML: html } = template;
-            const { innerHTML: css } = styles;
+        log(`@test.red.html`);
+        if ( !customElements.get('as-test') ) customElements.define('as-test', class Test extends HTMLElement {
+            get __state__() {
+                return { animals: 'foxes', adjective: 'lazy -- AND stupid', cursor: 'pointer' };
+            }
             
-            styles.innerHTML = utilities.interpolate(css)(state);
-            template.innerHTML = utilities.interpolate(html)(state);
-            this.shadowRoot.appendChild(styles);
-            this.shadowRoot.appendChild(template.content);
-        }
-        
-        connectedCallback() {
-            log(`@TEST.RED.HTML -> connected`);
-        }
-        
-    });
-</script>
+            constructor(options) {
+                super();
+                this.attachShadow({ mode: 'open' });
+                this.#setup(options);
+            }
+            
+            #setup(options) {
+                const { __state__: state } = this;
+                const { meta, template, styles, script } = options;
+                const { innerHTML: html } = template;
+                const { innerHTML: css } = styles;
+                
+                styles.innerHTML = utilities.interpolate(css)(state);
+                template.innerHTML = utilities.interpolate(html)(state);
+                this.shadowRoot.appendChild(styles);
+                this.shadowRoot.appendChild(template.content);
+            }
+            
+            connectedCallback() {
+                log(`@TEST.RED.HTML -> connected`);
+            }
+            
+        });
+    </script>
+</body>

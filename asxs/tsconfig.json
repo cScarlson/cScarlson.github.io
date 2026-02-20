@@ -18,8 +18,8 @@
     /* Linting */
     "strict": true,
     "noUnusedLocals": false,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": false,
     "noImplicitAny": false,
     "noImplicitThis": false,
     "noImplicitReturns": false,

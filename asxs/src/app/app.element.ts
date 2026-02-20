@@ -2,6 +2,7 @@
 import { CustomElement, customElement } from '@asxs/core';
 import { default as template } from './app.element.html?raw';
 import { default as styles } from './app.element.css?raw';
+import { default as hero } from './children/hero/hero.red.html?url';
 
 const { log } = console;
 
@@ -9,7 +10,7 @@ export const TAGNAME = 'as-app';
 export @customElement(TAGNAME) class AppElement extends CustomElement {
     static observedAttributes: string[] = [ 'test' ];
     get __state__() {
-        return { styles, speed: 'quick', animal: 'dog' };
+        return { styles, hero, speed: 'quick', animal: 'dog' };
     }
     
     [`attr:test`](val: string) {

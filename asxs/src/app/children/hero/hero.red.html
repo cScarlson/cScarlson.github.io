@@ -1,0 +1,50 @@
+
+<script src="https://cdn.jsdelivr.net/gh/pjdeveloper896/TSNova@latest/dist/ts-runtime.min.js"></script>
+<script src="../../../lib/core/frameless/typescript.element.ts" type="module"></script>
+<body>
+    <meta name="as-hero" />
+    <template>
+        <h1>HERO!</h1>
+    </template>
+    <style></style>
+    <script is="as-typescript-x" type="text/javascript">
+        // import { TypeScriptElement } from '../../../lib/core/frameless/typescript.element';
+        
+        const { parent } = window;
+        const { customElements: registry, HTMLElement } = parent;
+        const { log } = console;
+        const TAGNAME = 'as-hero';
+        // const x: any = 'asdfasdfsadf';
+        log(`@TYPESCRIPT RED!`, customElements.get('as-typescript'));
+        setTimeout(x => log(`@TYPESCRIPT RED!`, customElements.get('as-typescript')), 1_000);
+        
+        if ( !registry.get(TAGNAME) ) registry.define(TAGNAME, class HeroElement extends HTMLElement {
+            
+            constructor(options) {
+                super();
+                const child = document.createElement('h1');
+                
+                child.innerHTML = `Is this displayed?`;
+                this.attachShadow({ mode: 'open' });
+                log(`@${this.constructor.name}`, TAGNAME, 'constructed...', options, this.ownerDocument === window.parent.document, this);
+                window.parent.setTimeout(x => log(`CONNECTED?...`, this.isConnected), 1_000 * 3);
+                this.shadowRoot.appendChild(child);
+                child.innerHTML = `Is this displayed?...`;
+                window.parent.setTimeout(x => child.innerHTML = `..........`, 1_000 * 0);
+                window.parent.setTimeout(x => child.innerHTML = `IsConnected...`, 1_000 * 3);
+                setTimeout(x => child.innerHTML = `IsConnected?...`, 1_000 * 3);
+            }
+            
+            connectedCallback() {
+                log(`@${this.constructor.name}`, TAGNAME, 'connected...');
+            }
+            
+            disconnectedCallback() {
+                log(`@${this.constructor.name}`, TAGNAME, '...disconnected');
+            }
+            
+        });
+    </script>
+    <!-- <script src="https://cdn.jsdelivr.net/gh/pjdeveloper896/TSNova@latest/dist/ts-runtime.min.js"></script> -->
+    <!-- <script src="http://localhost:4000/src/lib/core/frameless/typescript.element.ts?t=1771575290051"></script> -->
+</body>

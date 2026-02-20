@@ -2,6 +2,8 @@
 import type { ToDo } from '@asxs/core/types';
 import { utilities } from '@asxs/core/utilities';
 
+// TODO: export { Easy, Normal, Heroic, Legendary };
+
 interface RemoteElementDefinition extends HTMLCollection {  // Schema/Protocol for RED (Remote Element Definition)
     0: HTMLMetaElement,
     1: HTMLTemplateElement,

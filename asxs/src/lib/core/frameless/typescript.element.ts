@@ -2,26 +2,20 @@
 import type { ToDo } from '@asxs/core/types';
 import { customElement } from '@asxs/core/customelement';
 
-const { parent } = window;
-// const { HTMLScriptElement } = parent as any;
-const { log } = console;
-
-log(`@as-typescript -> LOADED`);
+const { log, warn, error: err } = console;
 
 export const TAGNAME = 'as-typescript';
 export @customElement(TAGNAME, { extends: 'script' }) class TypeScriptElement extends HTMLScriptElement {
     
-    constructor() {
-        super();
-        log(`@${TAGNAME}`, this.innerHTML);
+    #compile(typescript: string) {
+        warn(`@${this.constructor.name} Error ("${TAGNAME}"): TypeScript compilation is not yet supported.`);
+        return `${typescript}\n\n // TYPESCRIPT NOT YET SUPPORTED`;
     }
     
-    #handleLoad(e: Event) {}
-    
-    handleEvent(e: Event) {}
-    
     connectedCallback() {
-        log(`@${this.constructor.name}`, TAGNAME, this.innerText);
+        const { innerHTML: typescript } = this;
+        const javascript = this.#compile(typescript);
+        this.innerHTML = javascript;
     }
     
     disconnectedCallback() {}

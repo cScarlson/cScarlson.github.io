@@ -16,6 +16,7 @@ export @customElement(TAGNAME, { extends: 'iframe' }) class FramelessElement ext
         this.height = '0';  // ensure no iframe actually appears to user
         this.style.border = 'none';  // ensure no iframe actually appears to user
         this.style.display = 'none';  // ensure no iframe actually appears to user
+        log(`@@@@@@@@@@@@@@@@@@@`, this);
     }
     
     #initialize = () => {

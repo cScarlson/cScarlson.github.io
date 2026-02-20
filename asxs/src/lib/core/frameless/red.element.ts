@@ -20,8 +20,8 @@ export @customElement(TAGNAME) class RemotelyDefinedElement extends HTMLElement 
         const Class = customElements.get(tagName) as typeof Frameless;
         const defined = !!Class;
         
-        if (defined) return this['compose:webcomponent'](red, frame);
-        if (handle) return handle.call(this, red, frame) as RemotelyDefinedElement;
+        if (defined) return this['compose:webcomponent'](red, frame);  // return this
+        if (handle) return handle.call(this, red, frame) as RemotelyDefinedElement;  // return this
     }
     
     ['compose:webcomponent'](red: RemoteElementDefinitionOptions, frame: HTMLIFrameElement) {
@@ -31,7 +31,7 @@ export @customElement(TAGNAME) class RemotelyDefinedElement extends HTMLElement 
         const { value: tagName } = attr;
         const { innerHTML: content, parentElement } = frame;
         const nodes = parentElement?.matches(WRAPPER_TAGNAME) ? Array.from(parentElement.childNodes) : [];
-        const slotted = nodes.filter(child => child !== this);
+        const slotted = nodes.filter(child => child !== frame);
         const Class = customElements.get(tagName) as typeof Frameless;
         const element = new Class({ meta, template, styles, script, attributes, contentDocument });
         
@@ -45,6 +45,7 @@ export @customElement(TAGNAME) class RemotelyDefinedElement extends HTMLElement 
     
     ['compose:static'](red: RemoteElementDefinitionOptions, frame: HTMLIFrameElement) {  // <meta name="static" />
         warn(`Static RED HMTL is not implemented yet`);
+        return this;
     }
     
     handleEvent(e: Event) {}

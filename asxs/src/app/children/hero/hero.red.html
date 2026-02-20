@@ -16,7 +16,7 @@
         const TAGNAME = 'as-hero';
         // const x: any = 'asdfasdfsadf';
         log(`@TYPESCRIPT RED!`, customElements.get('as-typescript'));
-        setTimeout(x => log(`@TYPESCRIPT RED!`, customElements.get('as-typescript')), 1_000);
+        setTimeout(x => log(`@TYPESCRIPT RED!`, !!customElements.get('as-typescript')), 1_000);
         
         if ( !registry.get(TAGNAME) ) registry.define(TAGNAME, class HeroElement extends HTMLElement {
             

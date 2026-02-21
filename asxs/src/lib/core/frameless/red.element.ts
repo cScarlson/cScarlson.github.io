@@ -11,9 +11,9 @@ const WRAPPER_TAGNAME = 'as-frameless-slots';
 export const TAGNAME = 'as-red';
 export @customElement(TAGNAME) class RemotelyDefinedElement extends HTMLElement {
     
-    constructor(red: RemoteElementDefinitionOptions, frame: HTMLIFrameElement) {
+    constructor(red: RemoteElementDefinitionOptions) {
         super();
-        const { meta } = red;  // RED (Remote Element Definition) protocol
+        const { meta, frame } = red;  // RED (Remote Element Definition) protocol
         const { attributes: attrs } = meta as HTMLMetaElement;
         const { [0]: attr } = attrs;
         const { value: tagName } = attr;
@@ -22,12 +22,12 @@ export @customElement(TAGNAME) class RemotelyDefinedElement extends HTMLElement 
         const defined = !!Class;
         
         this.attachShadow({ mode: 'open' });
-        if (defined) return this['compose:webcomponent'](red, frame);  // return this
+        if (defined) return this['compose:webcomponent'](red);  // return this
         if (handle) return handle.call(this, red, frame) as RemotelyDefinedElement;  // return this
     }
     
-    ['compose:webcomponent'](red: RemoteElementDefinitionOptions, frame: HTMLIFrameElement) {  // <meta name="{tagName}" />
-        const { meta, template, styles, script, attributes, contentDocument } = red;  // RED (Remote Element Definition) protocol
+    ['compose:webcomponent'](red: RemoteElementDefinitionOptions) {  // <meta name="{tagName}" />
+        const { meta, template, styles, script, attributes, contentDocument, frame } = red;  // RED (Remote Element Definition) protocol
         const { attributes: attrs } = meta as HTMLMetaElement;
         const { [0]: attr } = attrs;
         const { value: tagName } = attr;
@@ -35,7 +35,7 @@ export @customElement(TAGNAME) class RemotelyDefinedElement extends HTMLElement 
         const nodes = parentElement?.matches(WRAPPER_TAGNAME) ? Array.from(parentElement.childNodes) : [];
         const slotted = nodes.filter(child => child !== frame);
         const Class = customElements.get(tagName) as typeof Frameless;
-        const element = new Class({ meta, template, styles, script, attributes, contentDocument });
+        const element = new Class(red);
         
         element.innerHTML = content;  // weakly-slotted content
         for (const child of slotted) element.appendChild(child);  // strongly-slotted content
@@ -44,22 +44,25 @@ export @customElement(TAGNAME) class RemotelyDefinedElement extends HTMLElement 
         return this;
     }
     
-    ['compose:partial'](red: RemoteElementDefinitionOptions, frame: HTMLIFrameElement) {  // <meta name="partial" />
-        const { meta, template, styles, script, attributes, contentDocument } = red;  // RED (Remote Element Definition) protocol
+    ['compose:partial'](red: RemoteElementDefinitionOptions) {  // <meta name="partial" />
+        const { meta, template, styles, script, attributes, contentDocument, frame } = red;  // RED (Remote Element Definition) protocol
         const { type } = script;
         
-        if (type === 'application/json') this['compose:partial:json'](script, template);
+        if (type === 'application/json') this['compose:partial:json'](red);
         this.shadowRoot?.appendChild(styles);
         this.shadowRoot?.appendChild(template.content);
-        this.shadowRoot?.appendChild(script);
+        
         return this;
     }
     
-    ['compose:partial:json'](script: HTMLScriptElement, template: HTMLTemplateElement) {
+    ['compose:partial:json'](red: RemoteElementDefinitionOptions) {
+        const { meta, template, styles, script } = red;  // RED (Remote Element Definition) protocol
         const { innerHTML: json } = script;
         const { innerHTML } = template;
+        const { innerHTML: css } = styles;
         const data = JSON.parse(json);
         
+        styles.innerHTML = utilities.interpolate(css)(data);
         template.innerHTML = utilities.interpolate(innerHTML)(data);
     }
     

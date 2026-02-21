@@ -24,7 +24,7 @@ export @customElement(TAGNAME, { extends: 'iframe' }) class FramelessElement ext
         const { body: red } = contentDocument!;
         const { children } = red;
         const { [0]: meta, [1]: template, [2]: styles, [3]: script } = children as RemoteElementDefinition;  // RED (Remote Element Definition) protocol
-        const container = new RemotelyDefinedElement({ meta, template, styles, script, attributes, contentDocument }, this);
+        const container = new RemotelyDefinedElement({ meta, template, styles, script, attributes, contentDocument, frame: this });
         
         this.after(container);
     };

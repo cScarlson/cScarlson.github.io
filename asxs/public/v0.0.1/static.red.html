@@ -12,12 +12,16 @@
         .static.partial {
             color: darkcyan;
             cursor: not-allowed;
+            &::after {
+                content: "${content}";
+            }
         }
     </style>
     <script type="application/json">
         {
             "name": "Avery Juan",
-            "nouns": "lawyers"
+            "nouns": "lawyers",
+            "content": "Disclaimer"
         }
     </script>
     <script>

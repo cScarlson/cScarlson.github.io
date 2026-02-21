@@ -10,7 +10,7 @@ export const TAGNAME = 'as-app';
 export @customElement(TAGNAME) class AppElement extends CustomElement {
     static observedAttributes: string[] = [ 'test' ];
     get __state__() {
-        return { styles, hero, speed: 'quick', animal: 'dog' };
+        return { hero, speed: 'quick', animal: 'dog' };
     }
     
     [`attr:test`](val: string) {

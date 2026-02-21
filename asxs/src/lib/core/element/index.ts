@@ -18,6 +18,7 @@ interface RemoteElementDefinitionOptions {
     script: HTMLScriptElement;
     attributes: NamedNodeMap;
     contentDocument: Document;
+    frame: HTMLIFrameElement;
 }
 
 const { log } = console;

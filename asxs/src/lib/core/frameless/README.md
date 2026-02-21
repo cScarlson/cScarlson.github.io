@@ -305,3 +305,4 @@ The implications of this are significant. It means that, without even the need t
 - VSCode plugin for syntax highlighting of `.red.html` files.
 - Better way to compile REDs, preprocess them with TypeScript, and output their static outputs to bundled or public folders.
 - Strongly Slotted `Nodes` nested as `iframe[is="as-frameless"]` (like Weakly Slotted Content).
+- Replace entire `<as-red>` element with `<{tagName}>` instead of nesting it.

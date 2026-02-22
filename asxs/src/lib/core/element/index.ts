@@ -88,9 +88,17 @@ class Frameless extends Interpolator {
     
 }
 
+class Sandbox extends Renderer {}
+
 class CustomElement extends Renderer {}
 
 export { CustomElement, Basic, Interpolator, Renderer, Frameless };
+export {  // just for fun
+    Basic as Easy,
+    Interpolator as Normal,
+    Renderer as Heroic,
+    Sandbox as Legendary,
+};
 export type {
     RemoteElementDefinition,
     RemoteElementDefinitionOptions,

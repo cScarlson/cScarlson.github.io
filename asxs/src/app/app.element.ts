@@ -1,8 +1,11 @@
 
 import { CustomElement, customElement } from '@asxs/core';
+
 import { default as template } from './app.element.html?raw';
 import { default as styles } from './app.element.css?raw';
 import { default as hero } from './children/hero/hero.red.html?url';
+import '@asxs/core/router';
+import '@app/core/router';
 
 const { log } = console;
 
@@ -18,7 +21,7 @@ export @customElement(TAGNAME) class AppElement extends CustomElement {
     }
     
     connectedCallback( x = super.connectedCallback() ) {
-        log(`CONNECTED!...`);
+        log(`CONNECTED!...`, );
     }
     
     // createRenderRoot(): ShadowRoot | HTMLElement {

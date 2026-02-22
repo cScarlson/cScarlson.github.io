@@ -1,0 +1,14 @@
+
+as-icon {
+    --icon: var(--icon-placeholder);
+    --size: var(--size-24);
+    &.size {
+        &.xxs { --size: var(--size-16) }
+        &.xs  { --size: var(--size-20) }
+        &.s   { --size: var(--size-24) }
+        &.md  { --size: var(--size-32) }
+        &.lg  { --size: var(--size-36) }
+        &.xl  { --size: var(--size-48) }
+        &.xxl { --size: var(--size-64) }
+    }
+}

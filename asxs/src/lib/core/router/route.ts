@@ -1,80 +1,97 @@
 
 import type { ToDo } from '@asxs/core/types';
+import { customElement } from '@asxs/core/customelement';
 
-type Unknown = ToDo;
+type Observer = ObserverObject | ObserverFunction;
+type ObserverFunction = (this: RouteElement, state: ObserverFunction) => any;
+
+interface ObserverObject {
+    call(this: any, router: typeof RouteElement, state: State): any;
+}
+
+interface State {
+    route: RouteElement;
+    data: ToDo;
+    params: Record<string, string>;
+    routes: RouteElement[];
+}
 
 const { log, warn, error: err } = console;
 
-export class Route {
+export type { Observer, State };
+export const TAGNAME = 'as-route'; 
+export @customElement(TAGNAME) class RouteElement extends HTMLElement {
     static target: EventTarget = new EventTarget();
-    static observers: Set<ToDo> = new Set();
-    static state: ToDo = { route: {}, data: {}, params: {}, routes: [] };
-    static routes: Map<string, Route> = new Map();
+    static observers: Set<Observer> = new Set();
+    static state: State = { route: {} as RouteElement, data: {}, params: {}, routes: [] };
+    static routes: Map<string, RouteElement> = new Map();
     static initialized: boolean = false;
     abstracted: boolean = false;
     id: string = '';
     path: string = '';
     name: string = 'ANONYMOUS';
+    view: string = 'as-route-error';
     data: any = {};
-    target: Unknown;
-    parent: Route = this;
-    $children: Map<string, Route> = new Map();
-    get children(): Route[] { return [ ...this.$children.values() ] }
+    parent: RouteElement = this;
+    $descendants: Map<string, RouteElement> = new Map();
+    get descendants(): RouteElement[] { return [ ...this.$descendants.values() ] }
     
-    constructor(route: Partial<Route> = {}, parent: Route = this) {
-        const { path, name, data, target, children } = { children: [], ...(this as ToDo), ...route };
+    constructor(route: Partial<RouteElement> = {}, parent?: RouteElement) {
+        super();
+        const { path, name, view, data, descendants } = { descendants: [], ...(this as ToDo), ...route };
         const id = parent ? `${parent.id}/${path}` : '#';
-        const descendents = children.map(Route.compose);
+        const descendents = descendants.map(RouteElement.compose);
         const abstracted = /^\{\w+\}$/.test(path);
+        var ancestor = parent || this;
         
-        Route.routes.set(id, this);
+        RouteElement.routes.set(id, this);
         this.abstracted = abstracted;
         this.id = id;
         this.path = path;
         this.name = name;
+        this.view = view;
         this.data = data;
-        this.target = target;
-        this.parent = parent;
+        this.parent = ancestor;
         this.link(...descendents);
-        Route.target.addEventListener('navigation', this, true);
+        RouteElement.target.addEventListener('navigation', this, true);
         
         return this;
     }
     
-    static compose(child: Route): Route {  // composes paths with slashes/in/them into full route objects
+    static compose(child: RouteElement): RouteElement {  // composes paths with slashes/in/them into full route objects
         const { path } = child;
         const [ segment, ...segments ] = `${path}`.split('/');
         
         if (!segments.length) return child;
         return {
             path: segment,
-            children: [
+            descendants: [
                 { ...child, path: segments.join('/') }
-            ].map(Route.compose as ToDo) as Route[]
-        } as Route;
+            ].map(RouteElement.compose as ToDo) as RouteElement[]
+        } as RouteElement;
     }
     
-    static getPathnameParams(params: Record<string, string>, route: Route, segments: string[]): Record<string, string> {
+    static getPathnameParams(params: Record<string, string>, route: RouteElement, segments: string[]): Record<string, string> {
         if (!segments.length) return params;
         const { path, abstracted, parent } = route;
         const segment = segments.pop();
         const param = path.replace(/^\{(\w+)\}$/, '$1');
         
         if (path === '#') return params;
-        if (path === '**') return this.getPathnameParams({ ...params, '**': segment } as Record<string, string>, parent, segments);
-        if ( abstracted) return this.getPathnameParams({ ...params, [param]: segment } as Record<string, string>, parent, segments);
-        if (!abstracted) return this.getPathnameParams(params, parent, segments);
+        if (path === '**') return RouteElement.getPathnameParams({ ...params, '**': segment } as Record<string, string>, parent, segments);
+        if ( abstracted) return RouteElement.getPathnameParams({ ...params, [param]: segment } as Record<string, string>, parent, segments);
+        if (!abstracted) return RouteElement.getPathnameParams(params, parent, segments);
         return params;
     }
     
-    static getAncestors(routes: Route[], route: Route): Route[] {  // #TCO
+    static getAncestors(routes: RouteElement[], route: RouteElement): RouteElement[] {  // #TCO
         const { parent, id } = route;
         if (id === '#') return [ route, ...routes ];
-        return [ ...this.getAncestors(routes, parent), route ];
+        return [ ...RouteElement.getAncestors(routes, parent), route ];
     }
     
     static handleHashchange = (e: HashChangeEvent) => {
-        const { target } = this;
+        const { target } = RouteElement;
         const { type, oldURL, newURL } = e;
         const { hash: full } = new URL(newURL);
         const { pathname: uri, search: query } = new URL(`http://a.b.c${full.replace('#', '')}`);
@@ -93,56 +110,59 @@ export class Route {
         const { route, data } = details;
         const { path } = route;
         const { params, segments } = data;
-        const parameters = this.getPathnameParams(params, route, [ ...segments ]);
-        const routes = this.getAncestors([], route);
+        const parameters = RouteElement.getPathnameParams(params, route, [ ...segments ]);
+        const routes = RouteElement.getAncestors([], route);
         const state = { route, data, params: parameters, routes };
         
-        if (path === '#') warn( new Error(`Route Match Error: Only root route matched ("#"). Please consider adding a 404 route to handle "**" paths.`) );
-        this.state = state;
-        this.notify();
+        if (path === '#') warn( new Error(`RouteElement Match Error: Only root route matched ("#"). Please consider adding a 404 route to handle "**" paths.`) );
+        RouteElement.state = state;
+        RouteElement.notify();
     };
     
-    static init() {
-        const { target } = this;
+    static init(): typeof RouteElement {
+        const { target } = RouteElement;
         const { hash, href } = location;
         const event = new HashChangeEvent('initial', { oldURL: href, newURL: href });
         
-        this.initialized = true;
-        this.init = () => {};
-        target.addEventListener('match', this.handleMatch as ToDo, true);
-        window.addEventListener('hashchange', this.handleHashchange, true);
+        RouteElement.initialized = true;
+        RouteElement.init = () => RouteElement;
+        target.addEventListener('match', RouteElement.handleMatch as ToDo, true);
+        window.addEventListener('hashchange', RouteElement.handleHashchange, true);
         if (!hash) location.hash = '/';
-        else this.handleHashchange(event);
+        else RouteElement.handleHashchange(event);
+        
+        return RouteElement;
     }
     
-    static attach(observer, notify = true) {
-        const { observers, state } = this;
+    static attach(observer: Observer, notify: boolean = true): typeof RouteElement {
+        const { observers, state } = RouteElement;
         
         observers.add(observer);
-        if (notify) observer.call(this, state);
+        if (notify) observer.call(RouteElement, state);
         
-        return this;
+        return RouteElement;
     }
     
-    static detach(observer) {
-        const { observers } = this;
+    static detach(observer: Observer): typeof RouteElement {
+        const { observers } = RouteElement;
         observers.delete(observer);
-        return this;
+        return RouteElement;
     }
     
-    static notify(state = this.state) {
-        const { observers } = this as ToDo;
-        observers.forEach( observer => observer.call(this, state) );
-        return this;
+    static notify(state: State = RouteElement.state): typeof RouteElement {
+        const { observers } = RouteElement;
+        observers.forEach( observer => observer.call(RouteElement, state) );
+        return RouteElement;
     }
     
-    link(child?: Route, ...more: Route[]) {
-        if (!child) return;
-        const { $children } = this;
-        const route = new Route(child, this);
+    link(child?: RouteElement, ...more: RouteElement[]): RouteElement {
+        if (!child) return child as unknown as RouteElement;
+        const { $descendants } = this;
+        const route = new RouteElement(child, this);
         
-        $children.set(route.id, route);
+        $descendants.set(route.id, route);
         if (more.length) return this.link(...more);
+        return route;
     }
     
     handleEvent(e: MessageEvent) {
@@ -155,10 +175,10 @@ export class Route {
         
         if (!matches) return;
         e.stopImmediatePropagation();  // prevent other potential matches from executing
-        Route.target.dispatchEvent(message);
+        RouteElement.target.dispatchEvent(message);
     }
     
-    isMatch(segments: string[]) {
+    isMatch(segments: string[]): boolean {
         if (!segments.length) return false;
         const { abstracted, path, parent } = this;
         const segment = segments.pop();
@@ -170,4 +190,4 @@ export class Route {
         return false;
     }
     
-}
+};

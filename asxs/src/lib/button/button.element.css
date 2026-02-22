@@ -1,0 +1,21 @@
+
+[is="button"] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--size-2);
+    padding: var(--size-3);
+    &.color {
+        &.primary {}
+        &.secondary {}
+        &.success {}
+        &.info {}
+        &.warning {}
+        &.danger {}
+        &.light {}
+        &.dark {}
+    }
+    &.display {
+        &.block {}
+    }
+}

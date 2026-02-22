@@ -1,5 +1,5 @@
 
-import './reset.css';
+import './lib/styles/reset.css';
 import './app/app.element.ts';
 
 const { log } = console;

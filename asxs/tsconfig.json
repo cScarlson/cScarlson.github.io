@@ -29,7 +29,9 @@
     "baseUrl": "./",
     "paths": {
       "@asxs": [ "./src/lib" ],
-      "@asxs/*": [ "./src/lib/*" ]
+      "@asxs/*": [ "./src/lib/*" ],
+      "@app": [ "./src/app" ],
+      "@app/*": [ "./src/app/*" ]
     }
   },
   "include": ["src"]

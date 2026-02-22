@@ -15,15 +15,15 @@ class Deferred {
         this._reject = reject;
     };
     
-    resolve(value: any) {
+    resolve = (value: any) => {
         this._resolve(value);
         return this;
-    }
+    };
     
-    reject(reason: unknown) {
+    reject = (reason: unknown) => {
         this._reject(reason);
         return this;
-    }
+    };
     
 }
 

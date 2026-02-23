@@ -1,6 +1,5 @@
 
 import { CustomElement, customElement } from '@asxs/core';
-
 import { default as template } from './app.element.html?raw';
 import { default as styles } from './app.element.css?raw';
 import { default as hero } from './children/hero/hero.red.html?url';

@@ -1,0 +1,31 @@
+
+<div class="app catalog">
+    <footer class="catalog footer"></footer>
+    <div class="catalog body" data-active="#/catalog/section/icons">
+        <div class="body content">
+            <div class="content section wrapper">
+                <input id="#/catalog/section/icons" class="content section control" type="radio" name="tab" data-change="menu:item" checked />
+                <as-catagory class="content section article">
+                    <h2 slot="title">Icons</h2>
+                    <h3 slot="subtitle">...</h3>
+                    <div slot="content">...</div>
+                </as-catagory>
+            </div>
+            <div class="content section wrapper">
+                <input id="#/catalog/section/buttons" class="content section control" name="tab" type="radio" data-change="menu:item" />
+                <as-catagory class="content section article">
+                    <h2 slot="title">Buttons</h2>
+                    <h3 slot="subtitle">...</h3>
+                    <div slot="content">...</div>
+                </as-catagory>
+            </div>
+        </div>
+    </div>
+    <header class="catalog header">
+        <h1 class="header title">Catalog ("${id}")</h1>
+        <menu class="header menu">
+            <li class="menu item"><label class="item control" for="#/catalog/section/icons">Icons</label></li>
+            <li class="menu item"><label class="item control" for="#/catalog/section/buttons">Buttons</label></li>
+        </menu>
+    </header>
+</div>

@@ -22,6 +22,7 @@ class RouterElementError extends Error {
 
 export const TAGNAME = 'as-router';
 export @customElement(TAGNAME, { extends: 'main' }) class RouterElement extends HTMLElement {
+    current: State = {} as State;
     
     call(router: typeof Router, state: State) {
         if ( !(state.route instanceof Router) ) return;
@@ -32,7 +33,9 @@ export @customElement(TAGNAME, { extends: 'main' }) class RouterElement extends 
         const element = new Class(state);
         
         log(`@ROUTE-CHANGE`, state.route.name, state.route.path, state.route.view, element);
-        this.appendChild(element);
+        if (!this.current.route) this.appendChild(element);
+        else this.querySelector(this.current.route.view)?.replaceWith(element);
+        this.current = state;
     }
     
     connectedCallback() {

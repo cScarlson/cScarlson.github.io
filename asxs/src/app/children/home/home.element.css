@@ -1,8 +1,12 @@
 
 :host {
     .app.home {
-        .home.title {
-            color: firebrick;
+        .home.header {
+            .header.title {
+                color: firebrick;
+            }
         }
+        .home.body {}
+        .home.footer {}
     }
 }

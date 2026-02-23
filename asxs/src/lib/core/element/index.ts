@@ -21,14 +21,20 @@ interface RemoteElementDefinitionOptions {
     frame: HTMLIFrameElement;
 }
 
-const { log } = console;
+const { log, warn, error: err } = console;
 
 class Basic extends HTMLElement {
     static observedAttributes: string[] = [];
     protected root: ShadowRoot | HTMLElement = this.shadowRoot!;
     
-    createRenderRoot(): ShadowRoot | HTMLElement {
-        return this.attachShadow({ mode: 'open' });
+    handleEvent(e: Event) {
+        const { type, target } = e;
+        const { dataset } = target as HTMLElement;
+        const { [type]: handler } = dataset;
+        const { [`${type}:${handler}`]: handle } = this as ToDo;
+        
+        if (handle) handle.call(this, e);
+        else warn(`WARNING. Uncaught Event: "${type}" expected handler "${handler}".`);
     }
     
     connectedCallback() {
@@ -46,9 +52,38 @@ class Basic extends HTMLElement {
         if (`attr:${name}` in this) this[`attr:${name}`](val, old);
     }
     
+    createRenderRoot(): ShadowRoot | HTMLElement {
+        return this.attachShadow({ mode: 'open' });
+    }
+    
     update(content: string) {
         const { root } = this;
         root.innerHTML = content;
+    }
+    
+    addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void {
+        const { root } = this;
+        super.addEventListener.call(root, type, listener, options);
+    }
+    
+    removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void {
+        const { root } = this;
+        super.removeEventListener.call(root, type, listener, options);
+    }
+    
+    dispatchEvent(event: Event): boolean {
+        const { root } = this;
+        return super.dispatchEvent.call(root, event);
+    }
+    
+    querySelector(selector: string): Element | null {
+        if (this.root === this) return super.querySelector(selector);
+        return this.root.querySelector(selector);
+    }
+    
+    querySelectorAll(selector: string): NodeList {
+        if (this.root === this) return super.querySelectorAll(selector);
+        return this.root.querySelectorAll(selector);
     }
     
 }

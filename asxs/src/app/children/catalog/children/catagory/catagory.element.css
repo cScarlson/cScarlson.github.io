@@ -1,0 +1,23 @@
+
+:host {
+    display: block;
+    
+    .catagory.article {
+        padding: var(--size-px-2);
+        
+        .article.header {
+            
+            .header.title {
+                &::slotted([slot="title"]) {
+                    margin: 0;
+                }
+            }
+            
+        }
+        
+        .article.body {}
+        
+        .article.footer {}
+    }
+    
+}

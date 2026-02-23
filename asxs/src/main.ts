@@ -1,5 +1,8 @@
 
 import './lib/styles/reset.css';
+import './lib/styles/variables.css';
+import './lib/styles/spacing.css';
+import './lib/styles/theme.css';
 import './app/app.element.ts';
 
 const { log } = console;

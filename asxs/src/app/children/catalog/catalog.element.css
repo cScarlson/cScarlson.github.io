@@ -1,0 +1,77 @@
+
+:host {
+    border: solid 1px tomato;
+    display: block;
+    
+    .app.catalog {
+        border: solid 1px tomato;
+        display: flex;
+        flex-direction: column-reverse;
+        
+        .catalog.header {
+            border: solid 1px tomato;
+            position: sticky;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+            gap: var(--size-px-2);
+            background-color: var(--color-secondary);
+            
+            .header.title {
+                margin: 0;
+            }
+            
+            .header.menu {
+                /* border: solid 1px cyan; */
+                display: flex;
+                justify-content: flex-end;
+                gap: var(--size-px-2);
+                padding: 0;
+                list-style-type: none;
+                
+                .menu.item {
+                    /* border: solid 1px tomato; */
+                    
+                    .item.control {
+                        /* border: solid 1px tomato; */
+                        border-radius: var(--radius-2);
+                        padding: var(--size-px-2);
+                        background-color: var(--color-dark);
+                        color: var(--color-light);
+                        text-decoration: none;
+                        cursor: pointer;
+                    }
+                    
+                }
+                
+            }
+            
+        }
+        
+        .catalog.body {
+            border: solid 1px tomato;
+            
+            .body.content {
+                
+                .content.section.wrapper {}
+                
+                .content.section.control {
+                    display: none;
+                }
+                
+                .content.section.article {
+                    opacity: 0.25;
+                }
+                
+                .content.section.control:checked ~ .content.section {
+                    opacity: 1;
+                }
+                
+            }
+            
+        }
+        
+        .catalog.footer {}
+    }
+    
+}

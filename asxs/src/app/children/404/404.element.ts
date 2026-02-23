@@ -1,13 +1,13 @@
 
 import { customElement, CustomElement } from '@asxs/core';
 import { type State } from '@asxs/core/router';
-import { default as template } from './home.element.html?raw';
-import { default as styles } from './home.element.css?raw';
+import { default as template } from './404.element.html?raw';
+import { default as styles } from './404.element.css?raw';
 
 const { log, warn, error: err } = console;
 
-export const TAGNAME = 'at-home';
-export @customElement(TAGNAME) class HomeElement extends CustomElement {
+export const TAGNAME = 'at-404';
+export @customElement(TAGNAME) class Four04Element extends CustomElement {
     get __state__() {
         const { state } = this;
         const { route } = state;

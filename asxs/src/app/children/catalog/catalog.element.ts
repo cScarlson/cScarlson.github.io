@@ -24,8 +24,11 @@ export @customElement(TAGNAME) class CatalogElement extends CustomElement {
     
     ['change:menu:item'](e: MouseEvent) {
         const { target } = e;
-        const { id } = target as HTMLAnchorElement;
-        log(`@MENU-ITEM-CHANGE`, id);
+        const { id } = target as HTMLElement;
+        const element = this.querySelector(`.content.section.control[id="${id}"]`) as HTMLElement;
+        
+        log(`@MENU-ITEM-CHANGE`, id, element);
+        // element.scrollIntoView({ behavior: 'smooth' });
     }
     
     connectedCallback( x = super.connectedCallback() ): void {

@@ -60,10 +60,12 @@
                 }
                 
                 .content.section.article {
+                    display: none;
                     opacity: 0.25;
                 }
                 
                 .content.section.control:checked ~ .content.section {
+                    display: block;
                     opacity: 1;
                 }
                 

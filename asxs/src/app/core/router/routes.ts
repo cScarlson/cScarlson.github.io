@@ -1,5 +1,6 @@
 
 import { RouteElement as Route, Route as Router } from '@asxs/core/router';
+import '@app/children/home/home.element';
 
 const { log } = console;
 
@@ -12,7 +13,7 @@ export const routes: Route = new Route({
             path: '',
             name: 'home',
             data: {},
-            view: '',
+            view: 'at-home',
             descendants: [],
         }),
     ]

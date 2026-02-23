@@ -1,0 +1,8 @@
+
+:host {
+    .app.home {
+        .home.title {
+            color: firebrick;
+        }
+    }
+}

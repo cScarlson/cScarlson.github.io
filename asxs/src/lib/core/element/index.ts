@@ -90,6 +90,8 @@ class Frameless extends Interpolator {
 
 class Sandbox extends Renderer {}
 
+class PageElement extends Renderer {}
+
 class CustomElement extends Renderer {}
 
 export { CustomElement, Basic, Interpolator, Renderer, Frameless };

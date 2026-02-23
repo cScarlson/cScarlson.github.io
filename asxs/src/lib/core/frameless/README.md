@@ -301,8 +301,10 @@ The implications of this are significant. It means that, without even the need t
 
 
 ## Future Goals & Wishlist
-- Performant `script[is="as-typescript"]` element.
-- VSCode plugin for syntax highlighting of `.red.html` files.
-- Better way to compile REDs, preprocess them with TypeScript, and output their static outputs to bundled or public folders.
-- Strongly Slotted `Nodes` nested as `iframe[is="as-frameless"]` (like Weakly Slotted Content).
-- Replace entire `<as-red>` element with `<{tagName}>` instead of nesting it.
+1. Performant `script[is="as-typescript"]` element.
+1. VSCode plugin for syntax highlighting of `.red.html` files.
+1. Process TS @paths from scripts/links/sources in `.red.html` files (Plugin.resolveId?).
+1. Ability to pipe `.red.html` files through Vite/Rollup and compile component from it.
+1. Better way to compile REDs, preprocess them with TypeScript, and output their static outputs to bundled or public folders.
+1. Strongly Slotted `Nodes` nested as `iframe[is="as-frameless"]` (like Weakly Slotted Content).
+1. Replace entire `<as-red>` element with `<{tagName}>` instead of nesting it.

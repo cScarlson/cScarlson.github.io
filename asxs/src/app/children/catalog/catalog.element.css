@@ -1,15 +1,15 @@
 
 :host {
-    border: solid 1px tomato;
+    /* border: solid 1px tomato; */
     display: block;
     
     .app.catalog {
-        border: solid 1px tomato;
+        /* border: solid 1px tomato; */
         display: flex;
         flex-direction: column-reverse;
         
         .catalog.header {
-            border: solid 1px tomato;
+            /* border: solid 1px tomato; */
             position: sticky;
             top: 0;
             display: flex;
@@ -49,7 +49,7 @@
         }
         
         .catalog.body {
-            border: solid 1px tomato;
+            /* border: solid 1px tomato; */
             
             .body.content {
                 
@@ -62,6 +62,24 @@
                 .content.section.article {
                     display: none;
                     opacity: 0.25;
+                    
+                    .section.content {
+                        
+                        .content.menu {
+                            list-style-type: none;
+                            
+                            .menu.item {
+                                
+                                .item.control {
+                                    cursor: pointer;
+                                }
+                                
+                            }
+                            
+                        }
+                        
+                    }
+                    
                 }
                 
                 .content.section.control:checked ~ .content.section {

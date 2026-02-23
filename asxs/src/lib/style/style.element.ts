@@ -1,0 +1,24 @@
+
+import type { ToDo } from '@asxs/core/types';
+import { customElement } from '@asxs/core';
+import { default as buttons } from '@asxs/button/button.element.css?raw';
+
+const { log } = console;
+const targets = {
+    buttons,
+};
+
+export const TAGNAME = 'as-css-import';
+export @customElement(TAGNAME, { extends: 'style' }) class CSSImport extends HTMLStyleElement {
+    
+    constructor() {
+        super();
+        const { attributes } = this;
+        const { target: attr } = attributes as ToDo;
+        const { value: target } = attr;
+        const { [target]: stylesheet } = targets as ToDo;
+        
+        this.innerHTML = stylesheet;
+    }
+    
+};

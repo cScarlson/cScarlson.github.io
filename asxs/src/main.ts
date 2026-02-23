@@ -3,6 +3,8 @@ import './lib/styles/reset.css';
 import './lib/styles/variables.css';
 import './lib/styles/spacing.css';
 import './lib/styles/theme.css';
+import './lib/style/style.element';
+import './lib/stateful/stateful.element';
 import './app/app.element.ts';
 
 const { log } = console;

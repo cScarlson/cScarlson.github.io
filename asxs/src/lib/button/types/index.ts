@@ -1,0 +1,3 @@
+
+export { default as docs } from './docs.md?raw';
+export { default as example } from './example.html?raw';

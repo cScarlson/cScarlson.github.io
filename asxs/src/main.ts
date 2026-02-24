@@ -4,7 +4,7 @@ import './lib/styles/variables.css';
 import './lib/styles/spacing.css';
 import './lib/styles/theme.css';
 import './lib/style/style.element';
-import './lib/stateful/stateful.element';
+import './lib/button/stateful/stateful.element.ts';
 import './app/app.element.ts';
 
 const { log } = console;

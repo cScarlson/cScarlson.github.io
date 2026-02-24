@@ -22,33 +22,10 @@
                             <h4 slot="subtitle">...</h4>
                             <div slot="content">
                                 <style is="as-css-import" target="buttons"></style>
-                                <div style="margin-block: 4px">
-                                    <button is="as-button">Button</button>
-                                    <a is="as-button" href="javascript: 0">Anchor</a>
-                                    <label is="as-button">Label</label>
-                                </div>
-                                <div style="margin-block: 4px">
-                                    <button class="color primary" is="as-button">Primary</button>
-                                    <button class="color secondary" is="as-button">Secondary</button>
-                                    <button class="color success" is="as-button">Success</button>
-                                    <button class="color info" is="as-button">Info</button>
-                                    <button class="color warning" is="as-button">Warning</button>
-                                    <button class="color danger" is="as-button">Danger</button>
-                                    <button class="color light" is="as-button">Light</button>
-                                    <button class="color dark" is="as-button">Dark</button>
-                                </div>
-                                <div style="margin-block: 4px">
-                                    <button class="color secondary size xxs" is="as-button">XXS</button>
-                                    <button class="color secondary size xs"  is="as-button">XS</button>
-                                    <button class="color secondary size s"   is="as-button">S</button>
-                                    <button class="color secondary size md"  is="as-button">MD</button>
-                                    <button class="color secondary size l"   is="as-button">L</button>
-                                    <button class="color secondary size xl"  is="as-button">XL</button>
-                                    <button class="color secondary size xxl" is="as-button">XXL</button>
-                                </div>
-                                <div style="margin-block: 4px">
-                                    <button class="color secondary block" is="as-button">Block</button>
-                                </div>
+                                <div style="margin-block: 4px">${buttons.types}</div>
+                                <div style="margin-block: 4px">${buttons.basic}</div>
+                                <div style="margin-block: 4px">${buttons.sizes}</div>
+                                <div style="margin-block: 4px">${buttons.block}</div>
                             </div>
                         </as-catagory>
                         <as-catagory class="section subsection article">
@@ -58,37 +35,11 @@
                                 <p class="section description">
                                     Stateful Buttons provide native states like form elements while appearing like anything you want.
                                 </p>
-                                <div style="margin-block: 4px">
-                                    <as-stateful>
-                                        <input is="state" type="checkbox" />
-                                        <button class="color secondary" is="as-button">Checkbox</button>
-                                    </as-stateful>
-                                </div>
-                                <div style="margin-block: 4px">
-                                    <as-stateful>
-                                        <input is="state" type="radio" name="group" />
-                                        <button class="color secondary" is="as-button">Radio Group</button>
-                                    </as-stateful>
-                                    <as-stateful>
-                                        <input is="state" type="radio" name="group" />
-                                        <button class="color secondary" is="as-button">Radio Group</button>
-                                    </as-stateful>
-                                    <as-stateful>
-                                        <input is="state" type="radio" name="group" />
-                                        <button class="color secondary" is="as-button">Radio Group</button>
-                                    </as-stateful>
-                                </div>
-                                <div style="margin-block: 4px">
-                                    <as-stateful>
-                                        <input is="state" type="file" />
-                                        <button class="color secondary size xxl" is="as-button" style="border-style: dashed;">Upload</button>
-                                    </as-stateful>
-                                </div>
-                                <style>
-                                    as-stateful [is="state"]:checked ~ * {
-                                        background-color: var(--blue-3);
-                                    }
-                                </style>
+                                <div style="margin-block: 4px">${buttons.checkbox}</div>
+                                <div style="margin-block: 4px">${buttons.radio}</div>
+                                <div style="margin-block: 4px">${buttons.file}</div>
+                                <h5>Conrolling Display</h5>
+                                <div style="margin-block: 4px">${buttons.reflect}</div>
                             </div>
                         </as-catagory>
                     </div>

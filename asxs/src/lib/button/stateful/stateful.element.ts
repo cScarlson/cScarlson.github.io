@@ -1,4 +1,5 @@
 
+import type { ToDo } from '@asxs/core/types';
 import { customElement } from '@asxs/core';
 import { default as styles } from './stateful.element.css?raw';
 

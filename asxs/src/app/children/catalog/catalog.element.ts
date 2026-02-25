@@ -7,6 +7,7 @@ import { types, basic, sizes, block, checkbox, radio, file, reflect } from '@asx
 import { default as template } from './catalog.element.html?raw';
 import { default as styles } from './catalog.element.css?raw';
 import './children/catagory/catagory.element';
+import './children/example/example.element';
 
 const { log, warn, error: err } = console;
 const documentation = {

@@ -12,36 +12,54 @@
             /* border: solid 1px tomato; */
             position: sticky;
             top: 0;
-            display: flex;
-            justify-content: space-between;
-            gap: var(--size-px-2);
-            background-color: var(--color-secondary);
+            box-shadow: var(--shadow-3);
+            background-color: var(--color-primary);
             
-            .header.title {
-                margin: 0;
-            }
-            
-            .header.menu {
-                /* border: solid 1px cyan; */
+            .header.main {
                 display: flex;
-                justify-content: flex-end;
+                justify-content: space-between;
                 gap: var(--size-px-2);
-                padding: 0;
-                list-style-type: none;
+                padding-inline: var(--size-px-2);
                 
-                .menu.item {
-                    /* border: solid 1px tomato; */
+                .main.title {
+                    margin: 0;
+                }
+                
+                .main.menu {
+                    /* border: solid 1px cyan; */
+                    display: flex;
+                    justify-content: flex-end;
+                    gap: var(--size-px-2);
+                    padding: 0;
+                    list-style-type: none;
                     
-                    .item.control {
+                    .menu.item {
                         /* border: solid 1px tomato; */
-                        border-radius: var(--radius-2);
-                        padding: var(--size-px-2);
-                        background-color: var(--color-dark);
-                        color: var(--color-light);
-                        text-decoration: none;
-                        cursor: pointer;
+                        
+                        .item.control {
+                            /* border: solid 1px tomato; */
+                            border-radius: var(--radius-2);
+                            padding: var(--size-px-2);
+                            background-color: var(--color-dark);
+                            color: var(--color-light);
+                            text-decoration: none;
+                            cursor: pointer;
+                        }
+                        
                     }
                     
+                }
+                
+            }
+            
+            .header.alert {
+                margin-inline: var(--size-px-2);
+                background-color: var(--color-light);
+                
+                .alert.caption {
+                    padding: var(--size-px-2) var(--size-px-3);
+                    font-size: var(--font-size-0);
+                    font-style: italic;
                 }
                 
             }

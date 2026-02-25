@@ -21,11 +21,10 @@
                             <h3 slot="title">Basic</h3>
                             <h4 slot="subtitle">...</h4>
                             <div slot="content">
-                                <style is="as-css-import" target="buttons"></style>
-                                <div style="margin-block: 4px">${buttons.types}</div>
-                                <div style="margin-block: 4px">${buttons.basic}</div>
-                                <div style="margin-block: 4px">${buttons.sizes}</div>
-                                <div style="margin-block: 4px">${buttons.block}</div>
+                                <as-catalog-example>${buttons.types}</as-catalog-example>
+                                <as-catalog-example>${buttons.basic}</as-catalog-example>
+                                <as-catalog-example>${buttons.sizes}</as-catalog-example>
+                                <as-catalog-example>${buttons.block}</as-catalog-example>
                             </div>
                         </as-catagory>
                         <as-catagory class="section subsection article">
@@ -35,11 +34,11 @@
                                 <p class="section description">
                                     Stateful Buttons provide native states like form elements while appearing like anything you want.
                                 </p>
-                                <div style="margin-block: 4px">${buttons.checkbox}</div>
-                                <div style="margin-block: 4px">${buttons.radio}</div>
-                                <div style="margin-block: 4px">${buttons.file}</div>
-                                <h5>Conrolling Display</h5>
-                                <div style="margin-block: 4px">${buttons.reflect}</div>
+                                <as-catalog-example>${buttons.checkbox}</as-catalog-example>
+                                <as-catalog-example>${buttons.radio}</as-catalog-example>
+                                <as-catalog-example>${buttons.file}</as-catalog-example>
+                                <h5>Controlling Display</h5>
+                                <as-catalog-example>${buttons.reflect}</as-catalog-example>
                             </div>
                         </as-catagory>
                     </div>
@@ -129,14 +128,21 @@
         </div>
     </div>
     <header class="catalog header">
-        <h1 class="header title">Catalog</h1>
-        <menu class="header menu">
-            <li class="menu item"><label class="item control" for="#/catalog/section/icons">Icons</label></li>
-            <li class="menu item"><label class="item control" for="#/catalog/section/buttons">Buttons</label></li>
-            <li class="menu item"><label class="item control" for="#/catalog/section/tooltips">Tooltips</label></li>
-            <li class="menu item"><label class="item control" for="#/catalog/section/popovers">Popovers</label></li>
-            <li class="menu item"><label class="item control" for="#/catalog/section/dialogs/modals">Modals</label></li>
-            <li class="menu item"><label class="item control" for="#/catalog/section/more">More</label></li>
-        </menu>
+        <div class="header main">
+            <h1 class="main title">Catalog</h1>
+            <menu class="main menu">
+                <li class="menu item"><label class="item control" for="#/catalog/section/icons">Icons</label></li>
+                <li class="menu item"><label class="item control" for="#/catalog/section/buttons">Buttons</label></li>
+                <li class="menu item"><label class="item control" for="#/catalog/section/tooltips">Tooltips</label></li>
+                <li class="menu item"><label class="item control" for="#/catalog/section/popovers">Popovers</label></li>
+                <li class="menu item"><label class="item control" for="#/catalog/section/dialogs/modals">Modals</label></li>
+                <li class="menu item"><label class="item control" for="#/catalog/section/more">More</label></li>
+            </menu>
+        </div>
+        <div class="header alert">
+            <p class="alert caption">
+                All examples are "Breathing Documentation" so that any changes to the code example get reflected in the rendered output.
+            </p>
+        </div>
     </header>
 </div>

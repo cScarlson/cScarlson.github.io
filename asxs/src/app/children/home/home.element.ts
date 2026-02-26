@@ -8,7 +8,7 @@ const { log, warn, error: err } = console;
 
 export const TAGNAME = 'at-home';
 export @customElement(TAGNAME) class HomeElement extends CustomElement {
-    get __state__() {
+    get ['as:state']() {
         const { state } = this;
         const { route } = state;
         const { id } = route;

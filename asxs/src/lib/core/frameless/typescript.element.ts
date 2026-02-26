@@ -1,6 +1,6 @@
 
 import type { ToDo } from '@asxs/core/types';
-import { customElement } from '@asxs/core/customelement';
+import { customElement } from '@asxs/core';
 
 const { log, warn, error: err } = console;
 

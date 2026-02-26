@@ -1,7 +1,7 @@
 
 import type { ToDo } from '@asxs/core/types';
 import type { RemoteElementDefinitionOptions } from '@asxs/core/element';
-import { customElement } from '@asxs/core/customelement';
+import { customElement } from '@asxs/core';
 import { Frameless } from '@asxs/core/element';
 import { utilities } from '@asxs/core/utilities';
 

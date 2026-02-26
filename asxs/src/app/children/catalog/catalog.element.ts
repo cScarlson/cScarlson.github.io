@@ -1,11 +1,12 @@
 
 import type { ToDo } from '@asxs/core/types';
-import { customElement, CustomElement } from '@asxs/core';
+import { customElement, CustomElement, Loop } from '@asxs/core';
 import { type State } from '@asxs/core/router';
 import { markdown, utilities } from '@asxs/core/utilities';
 import { types, basic, sizes, block, checkbox, radio, file, reflect } from '@asxs/button';
 import { default as template } from './catalog.element.html?raw';
 import { default as styles } from './catalog.element.css?raw';
+import './children/magazine/magazine.element';
 import './children/catagory/catagory.element';
 import './children/example/example.element';
 
@@ -49,12 +50,18 @@ const documentation = {
 
 export const TAGNAME = 'at-catalog';
 export @customElement(TAGNAME) class CatalogElement extends CustomElement {
-    get __state__() {
+    get ['as:state']() {
         const { state } = this;
         const { route } = state;
         const { id } = route;
+        const items = new Loop([
+            { id: "test0-${this['as:index']}", title: 'Title 0 AND ${title}', data: { test: 'TEST' } },
+            { id: "test1-${this['as:index']}", title: 'Title 1', data: { test: 'TEST' } },
+            { id: "test2-${this['as:index']}", title: 'Title 2', data: { test: 'TEST' } },
+            { id: "test3-${this['as:index']}", title: 'Title 3', data: { test: 'TEST' } },
+        ]).with("<div>[${this['as:index']}](${id}) ${this.title} - (${this['as:state'].id}) - (${this['as:loop'][0].id})</div>").use(this);
         
-        return { id, ...documentation };
+        return { id, items, ...documentation };
     }
     
     constructor(private state: State) {

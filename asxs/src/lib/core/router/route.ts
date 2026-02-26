@@ -1,6 +1,6 @@
 
 import type { ToDo } from '@asxs/core/types';
-import { customElement } from '@asxs/core/customelement';
+import { customElement } from '@asxs/core';
 
 type Observer = ObserverObject | ObserverFunction;
 type ObserverFunction = (this: RouteElement, state: ObserverFunction) => any;

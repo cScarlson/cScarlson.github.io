@@ -238,7 +238,7 @@ import { default as hero } from './children/hero/hero.red.html?url';
 
 export const TAGNAME = 'my-element';
 export @customElement(TAGNAME) class MyElement extends CustomElement {
-    get __state__() {
+    get ['as:state']() {
         return { hero };
     }
     

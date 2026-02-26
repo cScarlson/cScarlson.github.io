@@ -1,7 +1,7 @@
 
 import type { ToDo } from '@asxs/core/types';
 import type { RemoteElementDefinition } from '@asxs/core/element';
-import { customElement } from '@asxs/core/customelement';
+import { customElement } from '@asxs/core';
 import { RemotelyDefinedElement } from './red.element';
 
 const { log, warn, error: err } = console;

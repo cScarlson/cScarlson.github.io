@@ -8,7 +8,7 @@ const { log, warn, error: err } = console;
 
 export const TAGNAME = 'at-404';
 export @customElement(TAGNAME) class Four04Element extends CustomElement {
-    get __state__() {
+    get ['as:state']() {
         const { state } = this;
         const { route } = state;
         const { id } = route;

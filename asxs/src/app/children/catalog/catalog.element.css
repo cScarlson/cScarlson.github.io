@@ -1,4 +1,6 @@
 
+* { box-sizing: border-box }
+
 :host {
     /* border: solid 1px tomato; */
     display: block;

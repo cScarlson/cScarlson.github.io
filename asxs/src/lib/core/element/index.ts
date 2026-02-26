@@ -1,5 +1,6 @@
 
 import type { ToDo } from '@asxs/core/types';
+import { KEY_STATE } from '@asxs/core/constants';
 import { utilities } from '@asxs/core/utilities';
 
 // TODO: export { Easy, Normal, Heroic, Legendary };
@@ -89,9 +90,9 @@ class Basic extends HTMLElement {
 }
 
 class Interpolator extends Basic {
-    get __state__(): any { return {} }
+    get [KEY_STATE](): any { return {} }
     
-    update(template: string, state: any = this.__state__): void {
+    update(template: string, state: any = this[KEY_STATE]): void {
         const content = utilities.interpolate(template)(state);
         super.update(content);
     }
@@ -129,6 +130,8 @@ class PageElement extends Renderer {}
 
 class CustomElement extends Renderer {}
 
+export { customElement } from './customelement';
+export { Loop } from './loop';
 export { CustomElement, Basic, Interpolator, Renderer, Frameless };
 export {  // just for fun
     Basic as Easy,

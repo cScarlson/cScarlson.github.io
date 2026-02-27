@@ -124,7 +124,31 @@ const documentation = new Loop([
                 ]).with(example),
             },
         ]).with(child),
-    }
+    },
+    {
+        id: 'tooltips',
+        title: 'Tooltips',
+        subtitle: '* > as-tooltip[position="(block | inline)-(start | end)"]',
+        tagline: 'Tooltip popovers',
+        description: 'Tooltips that appear for :hover actions.',
+        selected: true,
+        examples: [],
+        children: new Loop([
+            // {
+            //     title: 'Colors',
+            //     subtitle: '--color-{type}',
+            //     tagline: '',
+            //     description: '',
+            //     children: [],
+            //     examples: new Loop([
+            //         { document: markdown_types },
+            //         { document: markdown_basic },
+            //         { document: markdown_sizes },
+            //         { document: markdown_block },
+            //     ]).with(example),
+            // },
+        ]).with(child),
+    },
 ]).with(magazine);
 const _menuitems = documentation.map( ({ id, title, subtitle, tagline, description }) => ({ id, title, subtitle, tagline, description }) );
 

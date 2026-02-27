@@ -2,10 +2,12 @@
 import type { ToDo } from '@asxs/core/types';
 import { customElement } from '@asxs/core';
 import { default as buttons } from '@asxs/button/button.element.css?raw';
+import { default as tooltip } from '@asxs/tooltip/tooltip.element.css?raw';
 
 const { log } = console;
 const targets = {
     buttons,
+    tooltip,
 };
 
 export const TAGNAME = 'as-css-import';

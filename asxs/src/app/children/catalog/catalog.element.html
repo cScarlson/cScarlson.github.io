@@ -4,6 +4,44 @@
     <div class="catalog body" data-active="#/catalog/section/icons">
         <div class="body content">
             ${documentation}
+            <hr />
+            <style is="as-css-import" target="buttons"></style>
+            <style is="as-css-import" target="tooltip"></style>
+            <button is="as-button">
+                [position="block-start"]
+                <as-tooltip position="block-start">
+                    <h1>Some Tooltip</h1>
+                    <p>This is a really big tooltip.</p>
+                </as-tooltip>
+            </button>
+            <button is="as-button">
+                [position="block-end"]
+                <as-tooltip position="block-end">
+                    <h1>Some Tooltip</h1>
+                    <p>This is a really big tooltip.</p>
+                </as-tooltip>
+            </button>
+            <button is="as-button">
+                [position="inline-start"]
+                <as-tooltip position="inline-start">
+                    <h1>Some Tooltip</h1>
+                    <p>This is a really big tooltip.</p>
+                </as-tooltip>
+            </button>
+            <button is="as-button">
+                [position="inline-end"]
+                <as-tooltip position="inline-end">
+                    <h1>Some Tooltip</h1>
+                    <p>This is a really big tooltip.</p>
+                </as-tooltip>
+            </button>
+            <button is="as-button">
+                :not([position])
+                <as-tooltip>
+                    <h1>Some Tooltip</h1>
+                    <p>This is a really big tooltip.</p>
+                </as-tooltip>
+            </button>
         </div>
     </div>
     <header class="catalog header">

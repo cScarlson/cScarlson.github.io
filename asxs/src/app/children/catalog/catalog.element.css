@@ -2,16 +2,13 @@
 * { box-sizing: border-box }
 
 :host {
-    /* border: solid 1px tomato; */
     display: block;
     
     .app.catalog {
-        /* border: solid 1px tomato; */
         display: flex;
         flex-direction: column-reverse;
         
         .catalog.header {
-            /* border: solid 1px tomato; */
             position: sticky;
             top: 0;
             box-shadow: var(--shadow-3);
@@ -28,7 +25,6 @@
                 }
                 
                 .main.menu {
-                    /* border: solid 1px cyan; */
                     display: flex;
                     justify-content: flex-end;
                     gap: var(--size-px-2);
@@ -36,10 +32,8 @@
                     list-style-type: none;
                     
                     .menu.item {
-                        /* border: solid 1px tomato; */
                         
                         .item.control {
-                            /* border: solid 1px tomato; */
                             border-radius: var(--radius-2);
                             padding: var(--size-px-2);
                             background-color: var(--color-dark);
@@ -69,7 +63,6 @@
         }
         
         .catalog.body {
-            /* border: solid 1px tomato; */
             
             .body.content {
                 

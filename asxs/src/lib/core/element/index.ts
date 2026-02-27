@@ -31,7 +31,7 @@ class Basic extends HTMLElement {
     handleEvent(e: Event) {
         const { type, target } = e;
         const { dataset } = target as HTMLElement;
-        const { [type]: handler } = dataset;
+        const { [`(${type})`]: handler } = dataset;
         const { [`${type}:${handler}`]: handle } = this as ToDo;
         
         if (handle) handle.call(this, e);
@@ -59,7 +59,12 @@ class Basic extends HTMLElement {
     
     update(content: string) {
         const { root } = this;
+        const { ['as:crawler']: crawler, ['as:update:handler']: handle } = this as ToDo;
+        const { children } = root;
+        
         root.innerHTML = content;
+        if (crawler) crawler.execute(...children);
+        if (handle) handle.call(this, content); 
     }
     
     addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void {
@@ -132,6 +137,7 @@ class CustomElement extends Renderer {}
 
 export { customElement } from './customelement';
 export { Loop } from './loop';
+export { QUERY_HANDLER, ElementCrawler } from './elementcrawler';
 export { CustomElement, Basic, Interpolator, Renderer, Frameless };
 export {  // just for fun
     Basic as Easy,

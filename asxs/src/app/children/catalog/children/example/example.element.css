@@ -2,7 +2,6 @@
 * { box-sizing: border-box }
 
 :host {
-    /* border: solid 1px tomato; */
     display: block;
     margin-block: 4px;
     border: solid 1px var(--color-primary);
@@ -16,9 +15,7 @@
         .example.body {
             
             .body.content {
-                /* border: solid 1px tomato; */
                 &::slotted(pre) {
-                    /* border: solid 1px tomato; */
                     background-color: var(--gray-8);
                     color: var(--blue-3);
                     padding: var(--size-px-1) var(--size-px-3);

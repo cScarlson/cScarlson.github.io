@@ -1,67 +1,26 @@
 
 import type { ToDo } from '@asxs/core/types';
-import { customElement, CustomElement, Loop } from '@asxs/core';
+import { customElement, CustomElement, ElementCrawler } from '@asxs/core';
 import { type State } from '@asxs/core/router';
-import { markdown, utilities } from '@asxs/core/utilities';
-import { types, basic, sizes, block, checkbox, radio, file, reflect } from '@asxs/button';
+import { menuitems, documentation } from './core/content';
 import { default as template } from './catalog.element.html?raw';
 import { default as styles } from './catalog.element.css?raw';
-import './children/magazine/magazine.element';
 import './children/catagory/catagory.element';
 import './children/example/example.element';
 
 const { log, warn, error: err } = console;
-const documentation = {
-    buttons: {
-        types: utilities.interpolate( markdown.parse(types.docs) )({
-            element: types.example,
-            example: markdown.escapeHTML(types.example)
-        }),
-        basic: utilities.interpolate( markdown.parse(basic.docs) )({
-            element: basic.example,
-            example: markdown.escapeHTML(basic.example)
-        }),
-        sizes: utilities.interpolate( markdown.parse(sizes.docs) )({
-            element: sizes.example,
-            example: markdown.escapeHTML(sizes.example)
-        }),
-        block: utilities.interpolate( markdown.parse(block.docs) )({
-            element: block.example,
-            example: markdown.escapeHTML(block.example)
-        }),
-        checkbox: utilities.interpolate( markdown.parse(checkbox.docs) )({
-            element: checkbox.example,
-            example: markdown.escapeHTML(checkbox.example)
-        }),
-        radio: utilities.interpolate( markdown.parse(radio.docs) )({
-            element: radio.example,
-            example: markdown.escapeHTML(radio.example)
-        }),
-        file: utilities.interpolate( markdown.parse(file.docs) )({
-            element: file.example,
-            example: markdown.escapeHTML(file.example)
-        }),
-        reflect: utilities.interpolate( markdown.parse(reflect.docs) )({
-            element: reflect.example,
-            example: markdown.escapeHTML(reflect.example)
-        }),
-    },
-};
+const LANDING_TAB = 'as:query:tooltips';
 
 export const TAGNAME = 'at-catalog';
 export @customElement(TAGNAME) class CatalogElement extends CustomElement {
+    ['as:crawler']: ElementCrawler = new ElementCrawler(this);
+    [LANDING_TAB]: HTMLInputElement = document.createElement('input');
     get ['as:state']() {
         const { state } = this;
         const { route } = state;
         const { id } = route;
-        const items = new Loop([
-            { id: "test0-${this['as:index']}", title: 'Title 0 AND ${title}', data: { test: 'TEST' } },
-            { id: "test1-${this['as:index']}", title: 'Title 1', data: { test: 'TEST' } },
-            { id: "test2-${this['as:index']}", title: 'Title 2', data: { test: 'TEST' } },
-            { id: "test3-${this['as:index']}", title: 'Title 3', data: { test: 'TEST' } },
-        ]).with("<div>[${this['as:index']}](${id}) ${this.title} - (${this['as:state'].id}) - (${this['as:loop'][0].id})</div>").use(this);
         
-        return { id, items, ...documentation };
+        return { id, menuitems, documentation };
     }
     
     constructor(private state: State) {
@@ -77,8 +36,12 @@ export @customElement(TAGNAME) class CatalogElement extends CustomElement {
         // element.scrollIntoView({ behavior: 'smooth' });
     }
     
+    ['as:update:handler'](content: string) {
+        const { [LANDING_TAB]: control } = this;
+        control.checked = true;
+    }
+    
     connectedCallback( x = super.connectedCallback() ): void {
-        log(`@${TAGNAME}`);
         this.addEventListener('change', this as ToDo, true);
     }
     

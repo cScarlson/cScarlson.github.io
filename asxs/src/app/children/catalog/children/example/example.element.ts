@@ -13,10 +13,6 @@ export @customElement(TAGNAME) class CatalogExampleElement extends CustomElement
         return {};
     }
     
-    connectedCallback( x = super.connectedCallback() ): void {
-        log(`@${TAGNAME}`);
-    }
-    
     render(): string {
         return `
             <style>${styles}</style>

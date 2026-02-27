@@ -5,8 +5,7 @@ import { type State } from '@asxs/core/router';
 import { menuitems, documentation } from './core/content';
 import { default as template } from './catalog.element.html?raw';
 import { default as styles } from './catalog.element.css?raw';
-import './children/catagory/catagory.element';
-import './children/example/example.element';
+import './children/documentation/documentation.element';
 
 const { log, warn, error: err } = console;
 const LANDING_TAB = 'as:query:tooltips';

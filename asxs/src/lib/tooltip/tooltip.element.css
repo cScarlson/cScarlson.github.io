@@ -4,30 +4,40 @@
 *:has(> as-tooltip) {
     border: solid 1px tomato;
     position: relative;
-    z-index: 0;
-    &:hover, &:focus {
+    &:hover, &:focus, &:focus-within {
+        z-index: var(--layer-5);
         
         > as-tooltip {
             scale: 1;
+            transition: scale 250ms var(--delay) ease-in-out;
         }
         
     }
     
     > as-tooltip {
         --offset: var(--size-1);
+        --delay: 3000ms;
         border: solid 1px tomato;
         position: absolute;
         top: 50%;
         left: 50%;
         translate: -50% -50%;
         scale: 0;
+        aspect-ratio: 16 / 9;
         display: block;
         box-shadow: var(--shadow-3);
         border-radius: var(--radius-3);
-        transition: scale 250ms 0ms ease-in-out;
+        padding: var(--size-2);
+        transition: scale 150ms 0ms ease-in-out;
         transform-origin: center;
         background-color: var(--color-secondary);
-        z-index: 999;
+        cursor: initial;
+        text-align: initial;
+        filter: initial;
+        &:hover, &:focus {
+            background-color: var(--color-secondary);
+            filter: brightness(100%);
+        }
         &[position] {
             top: unset;
             left: unset;

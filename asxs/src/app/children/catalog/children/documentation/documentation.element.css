@@ -4,8 +4,6 @@
 :host {
     display: block;
     margin-block: 4px;
-    border: solid 1px var(--color-primary);
-    border-radius: var(--radius-3);
     padding: var(--size-px-2) var(--size-px-3);
     
     .catalog.example {

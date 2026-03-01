@@ -12,8 +12,8 @@ ${ escape(setup) }
 
 ### Positioning & Delay
 
-${tooltip}
+${example}
 
 ```html
-${ escape(tooltip) }
+${ escape(example) }
 ```

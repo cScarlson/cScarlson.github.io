@@ -8,7 +8,7 @@ import { default as styles } from './catalog.element.css?raw';
 import './children/documentation/documentation.element';
 
 const { log, warn, error: err } = console;
-const LANDING_TAB = 'as:query:popovers';
+const LANDING_TAB = 'as:query:variables';
 
 export const TAGNAME = 'at-catalog';
 export @customElement(TAGNAME) class CatalogElement extends CustomElement {

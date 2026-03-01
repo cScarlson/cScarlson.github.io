@@ -1,10 +1,10 @@
 
-import './lib/styles/reset.css';
-import './lib/styles/variables.css';
-import './lib/styles/spacing.css';
-import './lib/styles/theme.css';
-import './lib/style/style.element';
-import './lib/button/stateful/stateful.element';
+import '@asxs/styles/reset.css';
+import '@asxs/styles/variables.css';
+import '@asxs/styles/spacing.css';
+import '@asxs/styles/theme.css';
+import '@asxs/style/style.element';
+import '@asxs/button/stateful/stateful.element';
 import './app/app.element';
 
 const { log } = console;

@@ -7,6 +7,7 @@ import * as variables from '@asxs/variables/docs';
 import * as buttons from '@asxs/button/docs';
 import * as tooltip from '@asxs/tooltip/docs';
 import * as popover from '@asxs/popover/docs';
+import * as dialogs from '@asxs/dialog/docs';
 
 const ID_VARIABLES = 'variables';
 const ID_ICONS = 'icons';
@@ -21,6 +22,7 @@ const docs_variables = utilities.interpolate( markdown.parse(variables.docs) )( 
 const docs_buttons = utilities.interpolate( markdown.parse(buttons.docs) )( new Sandbox(buttons) );
 const docs_tooltip = utilities.interpolate( markdown.parse(tooltip.docs) )( new Sandbox(tooltip) );
 const docs_popover = utilities.interpolate( markdown.parse(popover.docs) )( new Sandbox(popover) );
+const docs_dialogs = utilities.interpolate( markdown.parse(dialogs.docs) )( new Sandbox(dialogs) );
 
 export const $docs = [
     {
@@ -50,22 +52,22 @@ export const $docs = [
     {
         id: ID_DIALOGS,
         selected: true,
-        docs: '',
+        docs: docs_dialogs,
     },
     {
         id: ID_TOASTS,
         selected: true,
-        docs: '',
+        docs: '...toasts...',
     },
     {
         id: ID_QUICKVIEWS,
         selected: true,
-        docs: '',
+        docs: '...quickviews...',
     },
     {
         id: ID_ANTITAMPER,
         selected: true,
-        docs: '',
+        docs: '...antitamper...',
     },
 ].reduce( ($, catagory) => $.set(catagory.id, catagory), new Map() );
 export const documentation = [ ...$docs.values() ];

@@ -1,0 +1,26 @@
+
+* { box-sizing: border-box }
+
+dialog[is="as-dialog"] {
+    border: none;
+    box-shadow: var(--shadow-3);
+    border-radius: var(--radius-2);
+    &::backdrop {
+        background-color: var(--color-dark);
+        opacity: 0.75;
+    }
+    &.backdrop {
+        &.clear {
+            &::backdrop { background-color: transparent }
+        }
+    }
+    &.size {
+        &.fullscreen {
+            width: 100vw;
+            height: 100vh;
+            &[popover] {
+                border-radius: unset;
+            }
+        }
+    }
+}

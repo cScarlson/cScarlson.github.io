@@ -1,14 +1,24 @@
 
 import type { ToDo } from '@asxs/core/types';
-import { customElement, CustomElement, ElementCrawler } from '@asxs/core';
+import { customElement, CustomElement, ElementCrawler, Loop } from '@asxs/core';
 import { type State } from '@asxs/core/router';
-import { menuitems, documentation } from './core/content';
+import { menuitems as menu, documentation } from './core/content';
+import { default as magazine } from './core/templates/magazine.template.html?raw';
+import { default as submenu } from './core/templates/submenu.template.html?raw';
 import { default as template } from './catalog.element.html?raw';
 import { default as styles } from './catalog.element.css?raw';
 import './children/documentation/documentation.element';
 
 const { log, warn, error: err } = console;
 const LANDING_TAB = 'as:query:variables';
+const menuitems = menu.slice(0, 4);
+const menumore = menu.slice(4);
+const titles = {
+    'dialogs': 'Queued Modal',
+    'toasts': 'Toasts',
+    'quickviews': 'Quickviews',
+    'antitamper': 'Antitamper',
+};
 
 export const TAGNAME = 'at-catalog';
 export @customElement(TAGNAME) class CatalogElement extends CustomElement {
@@ -19,7 +29,12 @@ export @customElement(TAGNAME) class CatalogElement extends CustomElement {
         const { route } = state;
         const { id } = route;
         
-        return { id, menuitems, documentation };
+        return {
+            id,
+            menu: new Loop(menuitems).with('<li class="menu item"><label class="item control" for="${this}" tabindex="0">${this}</label></li>'),
+            more: new Loop(menumore).with(submenu).use(titles, 'titles'),
+            documentation: new Loop(documentation).with(magazine),
+        };
     }
     
     constructor(private state: State) {

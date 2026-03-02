@@ -2,6 +2,8 @@
 import { KEY_STATE } from '@asxs/core/constants';
 import { utilities } from '@asxs/core/utilities';
 
+const { log } = console;
+
 export class Loop extends Array {
     template: string = '{MISSING CONTENT}';
     as: string = KEY_STATE;
@@ -25,8 +27,14 @@ export class Loop extends Array {
     
     toString(): string {
         const { template, context, as } = this;
-        const { [KEY_STATE]: state = {} } = context;
-        return this.reduce( (t, data, i) => utilities.interpolate(`${t}${template}`)({ ...data, [as]: state, ['as:loop']: this, ['as:index']: i }), '' );
+        const { [KEY_STATE]: state = context } = context;
+        const reduce = (t, data, i) => {
+            const scope = { [as]: state, ['as:loop']: this, ['as:index']: i };
+            const details = Object.assign(data, scope);
+            return utilities.interpolate(`${t}${template}`)(details);
+        };
+        
+        return this.reduce(reduce, '');
     }
     
 };

@@ -4,6 +4,37 @@ Loop
 Using a `Loop` to repeat templates.
 
 
+## Super Basic (Primitive Array)
+###### `**/*.element.ts`
+```typescript
+export const TAGNAME = 'some-element';
+export @customElement(TAGNAME) class SomeElement extends CustomElement {
+    get ['as:state']() {
+        const { id } = this;
+        const items = new Loop([ 'test0', 'test1', 'test2', 'test3' ])
+            .with("<li>${this}</li>")
+            ;
+        
+        return { id, items };
+    }
+};
+```
+
+###### `**/*.element.html`
+```html
+<ul>${items}</ul>
+```
+### Output
+```html
+<ul>
+    <li>test0</li>
+    <li>test1</li>
+    <li>test2</li>
+    <li>test3</li>
+</ul>
+```
+> _You can always reference an instance of the literal data using the "`$`" variable._
+
 ## Basic
 ###### `**/*.element.ts`
 ```typescript
@@ -22,7 +53,9 @@ export @customElement(TAGNAME) class SomeElement extends CustomElement {
     }
 };
 ```
-> _The template passed into `.with` is for example only. Always import the template (using `?raw`) unless it will always exist as a simple one-liner._
+> _The template passed into `.with` is for example only. Always import the template (using `?raw`) unless it will always 
+exist as a simple one-liner._
+
 ###### `**/*.element.html`
 ```html
 <ul>${items}</ul>
@@ -81,6 +114,34 @@ export @customElement(TAGNAME) class SomeElement extends CustomElement {
             { id: 'test2', title: 'Title 2', data: { test: 'TEST' } },
             { id: 'test3', title: 'Title 3', data: { test: 'TEST' } },
         ]).with("<li>(${id}) ${this.title} - parent ID: ${this['@parent'].id}</li>").use(this, '@parent');
+        
+        return { id, items };
+    }
+};
+```
+### Output
+```html
+<ul>
+    <li>(test0) Title 0 - parent ID: 1000</li>
+    <li>(test1) Title 1 - parent ID: 1000</li>
+    <li>(test2) Title 2 - parent ID: 1000</li>
+    <li>(test3) Title 3 - parent ID: 1000</li>
+</ul>
+```
+
+#### Changing The Parent Scope Itself
+```typescript
+export const TAGNAME = 'some-element';
+export @customElement(TAGNAME) class SomeElement extends CustomElement {
+    id: number = 100;
+    get ['as:state']() {
+        const { id } = this;
+        const items = new Loop([
+            { id: 'test0', title: 'Title 0', data: { test: 'TEST' } },
+            { id: 'test1', title: 'Title 1', data: { test: 'TEST' } },
+            { id: 'test2', title: 'Title 2', data: { test: 'TEST' } },
+            { id: 'test3', title: 'Title 3', data: { test: 'TEST' } },
+        ]).with("<li>(${id}) ${this.title} - parent ID: ${this.other.id}</li>").use({ id }, 'other');
         
         return { id, items };
     }

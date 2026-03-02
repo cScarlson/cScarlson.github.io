@@ -1,7 +1,7 @@
 
 * { box-sizing: border-box }
 
-as-popover:has([part="popover"]) {
+as-popover:has([part="envelope"]) {
     position: relative;
     display: inline-block;
     
@@ -18,7 +18,7 @@ as-popover:has([part="popover"]) {
         cursor: pointer;
     }
     
-    [part~="popover"] {
+    [part~="envelope"] {
         --offset: var(--size-px-3);
         position: absolute;
         top: 100%;
@@ -38,9 +38,9 @@ as-popover:has([part="popover"]) {
     
 }
 
-as-popover:has([part~="popover"]):focus-within {
+as-popover:has([part~="envelope"]):focus-within {
     
-    [part~="deactuator"], [part~="popover"] {
+    [part~="deactuator"], [part~="envelope"] {
         display: var(--display, block);
     }
     

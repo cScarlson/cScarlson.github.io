@@ -8,38 +8,66 @@ import * as buttons from '@asxs/button/docs';
 import * as tooltip from '@asxs/tooltip/docs';
 import * as popover from '@asxs/popover/docs';
 
+const ID_VARIABLES = 'variables';
+const ID_ICONS = 'icons';
+const ID_BUTTONS = 'buttons';
+const ID_TOOLTIP = 'tooltip';
+const ID_POPOVER = 'popover';
+const ID_DIALOGS = 'dialogs';
+const ID_TOASTS = 'toasts';
+const ID_QUICKVIEWS = 'quickviews';
+const ID_ANTITAMPER = 'antitamper';
 const docs_variables = utilities.interpolate( markdown.parse(variables.docs) )( new Sandbox(variables) );
 const docs_buttons = utilities.interpolate( markdown.parse(buttons.docs) )( new Sandbox(buttons) );
 const docs_tooltip = utilities.interpolate( markdown.parse(tooltip.docs) )( new Sandbox(tooltip) );
 const docs_popover = utilities.interpolate( markdown.parse(popover.docs) )( new Sandbox(popover) );
-const documentation = new Loop([  // TODO: move all content to .md files
+
+export const $docs = [
     {
-        id: 'variables',
+        id: ID_VARIABLES,
         selected: true,
         docs: docs_variables
     },
     // {
-    //     id: 'icons',
+    //     id: ID_ICONS,
     //     selected: true,
     // },
     {
-        id: 'buttons',
+        id: ID_BUTTONS,
         selected: true,
         docs: docs_buttons,
     },
     {
-        id: 'tooltips',
+        id: ID_TOOLTIP,
         selected: true,
         docs: docs_tooltip,
     },
     {
-        id: 'popovers',
+        id: ID_POPOVER,
         selected: true,
         docs: docs_popover,
     },
-]).with(magazine);
-const _menuitems = documentation.map( ({ id, title, subtitle, tagline, description }) => ({ id, title, subtitle, tagline, description }) );
-
-export const menuitems = new Loop(_menuitems).with("...");
-export {  documentation };
+    {
+        id: ID_DIALOGS,
+        selected: true,
+        docs: '',
+    },
+    {
+        id: ID_TOASTS,
+        selected: true,
+        docs: '',
+    },
+    {
+        id: ID_QUICKVIEWS,
+        selected: true,
+        docs: '',
+    },
+    {
+        id: ID_ANTITAMPER,
+        selected: true,
+        docs: '',
+    },
+].reduce( ($, catagory) => $.set(catagory.id, catagory), new Map() );
+export const documentation = [ ...$docs.values() ];
+export const menuitems = [ ...$docs.keys() ];
 

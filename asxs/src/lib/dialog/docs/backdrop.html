@@ -1,9 +1,16 @@
 
-<button is="as-button" command="show-modal" commandfor="normalDialogBackdropClear">dialog[is="as-dialog"][command]</button>
-<dialog id="normalDialogBackdropClear" class="backdrop clear" is="as-dialog">
-    <h1>Clear Backdrop Modal</h1>
+<button is="as-button" popovertarget="normalDialogBackdropClearPopover">dialog[is="as-dialog"][popovertarget]</button>
+<button is="as-button" command="show-modal" commandfor="normalDialogBackdropClearCommand">dialog[is="as-dialog"][command]</button>
+
+<dialog id="normalDialogBackdropClearPopover" class="backdrop clear" is="as-dialog" popover>
+    <h1>Fullscreen Popover Style</h1>
+    <p>Tantamount to <code>HTMLDialogElement.prototype.show()</code></p>
+</dialog>
+
+<dialog id="normalDialogBackdropClearCommand" class="backdrop clear" is="as-dialog">
+    <h1>Fullscreen Modal Style</h1>
     <p>Tantamount to <code>HTMLDialogElement.prototype.showModal()</code></p>
     <div>
-        <button is="as-button" command="close" commandfor="normalDialogBackdropClear">Close</button>
+        <button is="as-button" command="close" commandfor="normalDialogBackdropClearCommand">Close</button>
     </div>
 </dialog>

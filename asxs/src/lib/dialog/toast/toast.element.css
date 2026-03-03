@@ -1,0 +1,4 @@
+
+* { box-sizing: border-box }
+
+dialog[is="as-dialog-toast"] {}

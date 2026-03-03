@@ -11,7 +11,7 @@ import { default as styles } from './catalog.element.css?raw';
 import './children/documentation/documentation.element';
 
 const { log, warn, error: err } = console;
-const LANDING_TAB = 'as:query:dialogs';
+const LANDING_TAB = 'as:query:toasts';
 const menuitems = menu.slice(0, 4);
 const menumore = menu.slice(4);
 const titles = {
@@ -61,12 +61,9 @@ export @customElement(TAGNAME) class CatalogElement extends CustomElement {
     }
     
     #init(doc: ToDo) {
-        if (!doc.module) return;
-        if (!doc.module.init) return;
+        if (!doc?.module?.init) return;
         const { module } = doc;
-        const { init } = module;
-        
-        init(this);
+        module.init(this);
     }
     
     connectedCallback( x = super.connectedCallback() ): void {

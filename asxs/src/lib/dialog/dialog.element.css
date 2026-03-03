@@ -1,7 +1,11 @@
 
 * { box-sizing: border-box }
 
-dialog[is="as-dialog"], dialog[is="as-dialog-queue"] {
+dialog[is="as-dialog"],
+dialog[is="as-dialog-queue"],
+dialog[is="as-dialog-toast"],
+dialog[is="as-dialog-quickview"]
+{
     border: none;
     box-shadow: var(--shadow-3);
     border-radius: var(--radius-2);

@@ -12,8 +12,7 @@ function handleEvent(e, dialog) {
 
 function create(id) {
     const message = {
-        mode: 'showModal',
-        type: 'string',
+        type: 'string',  // can also be type 'node' where 'content' is a NodeList or any other iterable of Node[]
         content: [
             '<header>', '<h1>', 'Request', ' - ', id, '</h1>', '</header>',
             '<div>', 'Body for ', id, '</div>',

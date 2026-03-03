@@ -7,7 +7,7 @@
 <style is="as-css-import" target="dialogs"></style>
 
 ```html
-${ escape(setup) }
+${ escape(setuphtml) }
 ```
 
 
@@ -42,15 +42,16 @@ ${ escape(fullscreen) }
 
 
 ### Conventional
-`dialog[is="as-dialog"] > { .dialog.header & .dialog.body[method="dialog"]:is(form) & .dialog.footer }`
+`dialog[is="as-dialog"] > .dialog.body`
 
 ${conventional}
 
 ```html
 ${ escape(conventional) }
 ```
+> _Works with Popover style dialogs as well_.
 
-#### Patterns
+#### Conventions & Patterns
 Patterns generally follow the _Class Domain-Chaining_ (CDC) pattern (see more in "Styleguides").
 
 ##### `dialog[is="as-dialog"] > *`
@@ -72,14 +73,14 @@ All submission buttons tied to the dialog's form will automatically dismiss the 
 ### Queued Dialog
 `dialog[is="as-dialog-queue"]`
 
-Queued Dialogs leverage a `Queue` data-structure so that the first message to display always remains present until the dialog has been dismissed. Once dismissed, the Queued Dialog simply calls `dequeue` on the queue until to queue is empty, at which point it finally closes.
+Queued Dialogs leverage a `Queue` data-structure so that the first message to display always remains present until the dialog has been dismissed. Once dismissed, the Queued Dialog simply calls `dequeue` on the queue to show the next message until to queue is empty, at which point it finally closes.
 
 Queued Modals are excellent for implementing Singleton Modals, reducing the DOM footprint by encouraging usage of less dialog instances.
 
 #### Setup
 
 ```typescript
-${ escape(setup) }
+${ escape(setupts) }
 ```
 
 ${queued}
@@ -92,3 +93,9 @@ ${ escape(queued) }
 ```javascript
 ${ escape(script) }
 ```
+> _On click, generates 5 dialog requests (of type "`'as:dialog:request`") and dispatches each one on the dialog instance._
+
+> _NOTE, however, that instead of dispatching an event, in this instance we may as well have called `dialog.showModal(message)`._
+
+> _The Event-Driven dialog request is generally preferred as you may have descendent elements that also trigger a dialog request; in which case, Event Bubbling is a simpler approach to normalize against as it leverages weaker coupling. Also note, the `as-dialog-queue` element's class (`DialogElement`) can be extended to customize its behavior, such as leveraging an EventBus or a Mediator to send dialog requests to the instance._
+

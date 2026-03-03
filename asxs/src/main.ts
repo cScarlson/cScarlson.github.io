@@ -5,6 +5,7 @@ import '@asxs/styles/spacing.css';
 import '@asxs/styles/theme.css';
 import '@asxs/style/style.element';
 import '@asxs/button/stateful/stateful.element';
+import '@asxs/dialog/dialog.element';
 import './app/app.element';
 
 const { log } = console;

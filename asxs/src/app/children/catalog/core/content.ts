@@ -28,7 +28,8 @@ export const $docs = [
     {
         id: ID_VARIABLES,
         selected: true,
-        docs: docs_variables
+        docs: docs_variables,
+        module: variables,
     },
     // {
     //     id: ID_ICONS,
@@ -38,36 +39,43 @@ export const $docs = [
         id: ID_BUTTONS,
         selected: true,
         docs: docs_buttons,
+        module: variables,
     },
     {
         id: ID_TOOLTIP,
         selected: true,
         docs: docs_tooltip,
+        module: tooltip,
     },
     {
         id: ID_POPOVER,
         selected: true,
         docs: docs_popover,
+        module: popover,
     },
     {
         id: ID_DIALOGS,
         selected: true,
         docs: docs_dialogs,
+        module: dialogs,
     },
     {
         id: ID_TOASTS,
         selected: true,
         docs: '...toasts...',
+        module: variables,
     },
     {
         id: ID_QUICKVIEWS,
         selected: true,
         docs: '...quickviews...',
+        module: variables,
     },
     {
         id: ID_ANTITAMPER,
         selected: true,
         docs: '...antitamper...',
+        module: variables,
     },
 ].reduce( ($, catagory) => $.set(catagory.id, catagory), new Map() );
 export const documentation = [ ...$docs.values() ];

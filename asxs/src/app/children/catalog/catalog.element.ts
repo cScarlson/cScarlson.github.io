@@ -2,6 +2,7 @@
 import type { ToDo } from '@asxs/core/types';
 import { customElement, CustomElement, ElementCrawler, Loop } from '@asxs/core';
 import { type State } from '@asxs/core/router';
+import { Sandbox as DocumentSandbox } from './children/documentation/core/sandbox';
 import { menuitems as menu, documentation } from './core/content';
 import { default as magazine } from './core/templates/magazine.template.html?raw';
 import { default as submenu } from './core/templates/submenu.template.html?raw';
@@ -29,6 +30,7 @@ export @customElement(TAGNAME) class CatalogElement extends CustomElement {
         const { route } = state;
         const { id } = route;
         
+        log(`@@@@@@@@@@@@@`, documentation);
         return {
             id,
             menu: new Loop(menuitems).with('<li class="menu item"><label class="item control" for="${this}" tabindex="0">${this}</label></li>'),
@@ -55,7 +57,21 @@ export @customElement(TAGNAME) class CatalogElement extends CustomElement {
         control.checked = true;
     }
     
+    #initialize() {
+        for (const doc of documentation) this.#init(doc);
+    }
+    
+    #init(doc: ToDo) {
+        if (!doc.module) return;
+        if (!doc.module.init) return;
+        const { module } = doc;
+        const { init } = module;
+        
+        init(this);
+    }
+    
     connectedCallback( x = super.connectedCallback() ): void {
+        this.#initialize();
         this.addEventListener('change', this as ToDo, true);
     }
     
@@ -71,3 +87,16 @@ export @customElement(TAGNAME) class CatalogElement extends CustomElement {
     }
     
 };
+
+class ScriptSandbox extends String {
+    test = 'test........';
+    
+    constructor(protected script: String, protected catalog: CatalogElement) {
+        super(script);
+    }
+    
+    querySelector(selector: string) {
+        return this.catalog.querySelector(selector);
+    }
+    
+}

@@ -1,12 +1,12 @@
 
 <button is="as-button" command="show-modal" commandfor="normalDialogConventional">dialog[is="as-dialog"][command]</button>
 <dialog id="normalDialogConventional" class="backdrop clear" is="as-dialog">
-    <header class="modal header">
+    <header class="dialog header">
         <h1 class="header title">Header Title</h1>
         <h1 class="header subtitle">Header Subtitle</h1>
         <button class="header action close" type="submit" form="contentional" formaction="close">&times;</button>
     </header>
-    <form id="contentional" class="modal body" method="dialog">
+    <form id="contentional" class="dialog body" method="dialog">
         <p>Tantamount to <code>HTMLDialogElement.prototype.showModal()</code></p>
         <br />
         <br />
@@ -28,7 +28,7 @@
         <br />
         <br />
     </form>
-    <footer class="modal footer">
+    <footer class="dialog footer">
         <p>Modal footer text</p>
         <div class="footer actionbar">
             <button class="actionbar action" is="as-button" type="submit" form="contentional" formaction="ok">OK</button>

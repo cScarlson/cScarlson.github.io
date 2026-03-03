@@ -1,7 +1,7 @@
 
 * { box-sizing: border-box }
 
-dialog[is="as-dialog"] {
+dialog[is="as-dialog"], dialog[is="as-dialog-queue"] {
     border: none;
     box-shadow: var(--shadow-3);
     border-radius: var(--radius-2);
@@ -23,16 +23,16 @@ dialog[is="as-dialog"] {
             }
         }
     }
-    &:has(.modal.body) {
+    &:has(.dialog.body) {
         padding: 0;
         scrollbar-width: thin;
         
-        .modal.header, .modal.body, .modal.footer {
+        .dialog.header, .dialog.body, .dialog.footer {
             padding: var(--size-px-3);
             background-color: inherit;
         }
         
-        .modal.header {
+        .dialog.header {
             position: sticky;
             top: 0;
             box-shadow: var(--shadow-2);
@@ -53,9 +53,9 @@ dialog[is="as-dialog"] {
             
         }
         
-        .modal.body {}
+        .dialog.body {}
         
-        .modal.footer {
+        .dialog.footer {
             position: sticky;
             bottom: 0;
             border-top: solid 1px var(--gray-1);

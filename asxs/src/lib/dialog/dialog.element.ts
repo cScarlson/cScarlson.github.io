@@ -3,16 +3,12 @@ import type { ToDo } from '@asxs/core/types';
 import { customElement } from '@asxs/core';
 import { Queue } from '@asxs/core/utilities/patterns/ds/queue';
 
-type Mode = 'show' | 'showModal';
 type Type = '' | 'string' | 'node';
-type Content = string | Node;
+type Content = string | Node[];
 
 interface Queueable {
-    mode: Mode;
     type: Type;
-    header: Content;
     content: Content;
-    footer: Content;
 }
 
 const { log } = console;
@@ -22,55 +18,51 @@ export const TAGNAME = 'as-dialog-queue';
 export @customElement(TAGNAME, { extends: 'dialog' }) class DialogElement extends HTMLDialogElement {
     queue: Queue<Queueable> = new Queue();
     
-    #show(method: 'show' | 'showModal') {
+    #show() {
         const { queue } = this;
         const { front: request } = queue;
-        const { type, header, content, footer } = request;
+        const { type, content } = request;
         
-        log(`#show@FRONT`, request);
-        if (type === 'string') this.innerHTML = `${header}${content}${footer}`;
-        super[method]();
+        if (type === 'string') this.innerHTML = content as string;
+        else this.#replace(...content as Node[]);
+        super.showModal();
     }
     
-    show(message: Queueable = DEFAULT_MESSAGE) {
-        const { queue } = this;
-        if (message !== DEFAULT_MESSAGE) queue.enqueue(message);
-        this.#show('show');
+    #replace(...nodes: Node[]) {
+        this.innerHTML = '';
+        this.append(...nodes);
     }
     
     showModal(message: Queueable = DEFAULT_MESSAGE) {
         const { queue } = this;
         if (message !== DEFAULT_MESSAGE) queue.enqueue(message);
-        this.#show('showModal');
+        this.#show();
     }
     
     #handleCloseRequest(e: CloseEvent) {
         const { queue } = this;
+        
         queue.dequeue();
-        log(`@DIALOG.REQUEST.CLOSE`, this.queue.size, e.type);
         if (!queue.size) this.close();
-        else this.#show('showModal');
+        else this.#show();
     }
     
     #handleCancel(e: CloseEvent) {
         const { queue } = this;
+        
         queue.dequeue();
-        log(`@DIALOG.CANCEL`, this.queue.size, e.type);
         if (!queue.size) return;
         e.preventDefault();
-        this.#show('showModal');
+        this.#show();
     }
     
     #handleClose(e: CloseEvent) {
         this.queue.clear();
-        log(`@DIALOG.CLOSE`, this.queue.size, e.type);
     }
     
     #handleRequest(e: MessageEvent) {
         const { data: message } = e;
-        const { mode } = message;
-        log(`@REQUEST`, this.queue.size, e.data);
-        this[mode](message);
+        this.showModal(message);
     }
     
     handleEvent(e: Event | CloseEvent | MessageEvent) {

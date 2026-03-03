@@ -30,7 +30,6 @@ export @customElement(TAGNAME) class CatalogElement extends CustomElement {
         const { route } = state;
         const { id } = route;
         
-        log(`@@@@@@@@@@@@@`, documentation);
         return {
             id,
             menu: new Loop(menuitems).with('<li class="menu item"><label class="item control" for="${this}" tabindex="0">${this}</label></li>'),
@@ -87,16 +86,3 @@ export @customElement(TAGNAME) class CatalogElement extends CustomElement {
     }
     
 };
-
-class ScriptSandbox extends String {
-    test = 'test........';
-    
-    constructor(protected script: String, protected catalog: CatalogElement) {
-        super(script);
-    }
-    
-    querySelector(selector: string) {
-        return this.catalog.querySelector(selector);
-    }
-    
-}

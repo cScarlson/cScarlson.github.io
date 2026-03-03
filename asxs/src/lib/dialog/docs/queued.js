@@ -1,6 +1,4 @@
 
-const { log } = console;
-
 export function execute() {
     const actuator = this.querySelector('.queued.dialog.actuator');
     const dialog = this.querySelector('#queuedDialogCommand');
@@ -16,9 +14,9 @@ function create(id) {
     const message = {
         mode: 'showModal',
         type: 'string',
-        header: [  '<header>', '<h1>', 'Request', ' - ', id, '</1>', '</header>' ].join(''),
-        content: [ '<div>', id, '</div>' ].join(''),
-        footer: [
+        content: [
+            '<header>', '<h1>', 'Request', ' - ', id, '</h1>', '</header>',
+            '<div>', 'Body for ', id, '</div>',
             '<footer>',
                 '<h3>Footer</h3>',
                 '<button is="as-button" onclick="this.dispatchEvent( new MessageEvent(\'as:dialog:close\') )">Request Close</button>',

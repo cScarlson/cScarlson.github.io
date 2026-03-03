@@ -8,15 +8,25 @@ export function execute() {
 };
 
 function handleEvent(e, dialog) {
-    const timestamp = Date.now();
+    const requests = ['One', 'Two', 'Three', 'Four', 'Five'].map(create);
+    for (const event of requests) dialog.dispatchEvent(event);
+}
+
+function create(id) {
     const message = {
         mode: 'showModal',
         type: 'string',
-        header: [ 'Request', timestamp ].join(''),
-        content: [].join(''),
-        footer: [].join(''),
+        header: [  '<header>', '<h1>', 'Request', ' - ', id, '</1>', '</header>' ].join(''),
+        content: [ '<div>', id, '</div>' ].join(''),
+        footer: [
+            '<footer>',
+                '<h3>Footer</h3>',
+                '<button is="as-button" onclick="this.dispatchEvent( new MessageEvent(\'as:dialog:close\') )">Request Close</button>',
+                ' ',
+                '<button is="as-button" command="close" commandfor="queuedDialogCommand">Dismiss All</button>',
+            '</footer>'
+        ].join(''),
     };
-    const event = new MessageEvent('as:dialog:request', { data: message });
     
-    dialog.dispatchEvent(event);
+    return new MessageEvent('as:dialog:request', { data: message });
 }

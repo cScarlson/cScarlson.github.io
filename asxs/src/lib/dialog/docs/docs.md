@@ -90,5 +90,5 @@ ${ escape(queued) }
 
 ##### Sending Requests
 ```javascript
-${script}
+${ escape(script) }
 ```

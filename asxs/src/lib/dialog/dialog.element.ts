@@ -4,7 +4,7 @@ import { customElement } from '@asxs/core';
 import { Queue } from '@asxs/core/utilities/patterns/ds/queue';
 
 type Mode = 'show' | 'showModal';
-type Type = '' | 'html' | 'node';
+type Type = '' | 'string' | 'node';
 type Content = string | Node;
 
 interface Queueable {
@@ -24,7 +24,11 @@ export @customElement(TAGNAME, { extends: 'dialog' }) class DialogElement extend
     
     #show(method: 'show' | 'showModal') {
         const { queue } = this;
-        // const data = queue.dequeue();
+        const { front: request } = queue;
+        const { type, header, content, footer } = request;
+        
+        log(`#show@FRONT`, request);
+        if (type === 'string') this.innerHTML = `${header}${content}${footer}`;
         super[method]();
     }
     
@@ -41,25 +45,37 @@ export @customElement(TAGNAME, { extends: 'dialog' }) class DialogElement extend
     }
     
     #handleCloseRequest(e: CloseEvent) {
-        log(`@DIALOG.CANCEL`, e, this.queue.size);
+        const { queue } = this;
+        queue.dequeue();
+        log(`@DIALOG.REQUEST.CLOSE`, this.queue.size, e.type);
+        if (!queue.size) this.close();
+        else this.#show('showModal');
+    }
+    
+    #handleCancel(e: CloseEvent) {
+        const { queue } = this;
+        queue.dequeue();
+        log(`@DIALOG.CANCEL`, this.queue.size, e.type);
+        if (!queue.size) return;
         e.preventDefault();
+        this.#show('showModal');
     }
     
     #handleClose(e: CloseEvent) {
-        log(`@DIALOG.CLOSE`, e, this.queue.size);
-        e.preventDefault();
+        this.queue.clear();
+        log(`@DIALOG.CLOSE`, this.queue.size, e.type);
     }
     
     #handleRequest(e: MessageEvent) {
         const { data: message } = e;
         const { mode } = message;
-        log(`@REQUEST`, e.data);
+        log(`@REQUEST`, this.queue.size, e.data);
         this[mode](message);
     }
     
     handleEvent(e: Event | CloseEvent | MessageEvent) {
-        if (e.type === 'as:dialog:close') return this.#handleClose(e as CloseEvent);
-        if (e.type === 'cancel') return this.#handleCloseRequest(e as CloseEvent);
+        if (e.type === 'as:dialog:close') return this.#handleCloseRequest(e as CloseEvent);
+        if (e.type === 'cancel') return this.#handleCancel(e as CloseEvent);
         if (e.type === 'close') return this.#handleClose(e as CloseEvent);
         if (e.type === 'as:dialog:request') return this.#handleRequest(e as MessageEvent);
     }

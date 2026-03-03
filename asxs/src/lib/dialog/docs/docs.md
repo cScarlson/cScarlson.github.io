@@ -21,7 +21,7 @@ ${ escape(normal) }
 ```
 
 ### Backdrops
-`dialog[is="as:dialog"].backdrop clear`
+`dialog[is="as:dialog"].backdrop.clear`
 
 ${backdrop}
 
@@ -36,4 +36,13 @@ ${fullscreen}
 
 ```html
 ${ escape(fullscreen) }
+```
+
+### Conventional
+`dialog[is="as:dialog"] > { .modal.header & .modal.body[method="dialog"]:is(form) & .modal.footer }`
+
+${conventional}
+
+```html
+${ escape(conventional) }
 ```

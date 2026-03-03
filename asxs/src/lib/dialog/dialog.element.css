@@ -18,9 +18,60 @@ dialog[is="as-dialog"] {
         &.fullscreen {
             width: 100vw;
             height: 100vh;
-            &[popover] {
+            &:not(:modal) {
                 border-radius: unset;
             }
         }
     }
+    &:has(.modal.body) {
+        padding: 0;
+        scrollbar-width: thin;
+        
+        .modal.header, .modal.body, .modal.footer {
+            padding: var(--size-px-3);
+            background-color: inherit;
+        }
+        
+        .modal.header {
+            position: sticky;
+            top: 0;
+            box-shadow: var(--shadow-2);
+            
+            .header.action.close {
+                position: absolute;
+                top: 0;
+                right: 0;
+                margin: var(--size-px-1);
+                border: none;
+                border-radius: 0;
+                padding: var(--size-px-1) var(--size-px-2);
+                background-color: inherit;
+                font-size: var(--font-size-4);
+                font-weight: var(--font-weight-6);
+                cursor: pointer;
+            }
+            
+        }
+        
+        .modal.body {}
+        
+        .modal.footer {
+            position: sticky;
+            bottom: 0;
+            border-top: solid 1px var(--gray-1);
+            
+            .footer.actionbar {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                gap: var(--size-px-1);
+                
+                .actionbar.action {}
+                
+            }
+            
+        }
+        
+    }
+    
 }

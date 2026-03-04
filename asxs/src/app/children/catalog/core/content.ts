@@ -8,6 +8,7 @@ import * as popover from '@asxs/popover/docs';
 import * as dialogs from '@asxs/dialog/docs';
 import * as toast from '@asxs/dialog/toast/docs';
 import * as quickviews from '@asxs/dialog/quickview/docs';
+import * as antitamper from '@asxs/dialog/antitamper/docs';
 
 const { log } = console;
 const ID_VARIABLES = 'variables';
@@ -26,6 +27,7 @@ const docs_popover = utilities.interpolate( markdown.parse(popover.docs) )( new 
 const docs_dialogs = utilities.interpolate( markdown.parse(dialogs.docs) )( new Sandbox(dialogs) );
 const docs_toast = utilities.interpolate( markdown.parse(toast.docs) )( new Sandbox(toast) );
 const docs_quickviews = utilities.interpolate( markdown.parse(quickviews.docs) )( new Sandbox(quickviews) );
+const docs_antitamper = utilities.interpolate( markdown.parse(antitamper.docs) )( new Sandbox(antitamper) );
 
 export const $docs = [
     {
@@ -77,8 +79,8 @@ export const $docs = [
     {
         id: ID_ANTITAMPER,
         selected: true,
-        docs: '...antitamper...',
-        module: variables,
+        docs: docs_antitamper,
+        module: antitamper,
     },
 ].reduce( ($, catagory) => $.set(catagory.id, catagory), new Map() );
 export const documentation = [ ...$docs.values() ];

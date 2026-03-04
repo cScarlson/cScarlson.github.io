@@ -2,7 +2,6 @@
 import type { ToDo } from '@asxs/core/types';
 import { customElement, CustomElement, ElementCrawler, Loop } from '@asxs/core';
 import { type State } from '@asxs/core/router';
-import { Sandbox as DocumentSandbox } from './children/documentation/core/sandbox';
 import { menuitems as menu, documentation } from './core/content';
 import { default as magazine } from './core/templates/magazine.template.html?raw';
 import { default as submenu } from './core/templates/submenu.template.html?raw';
@@ -11,7 +10,7 @@ import { default as styles } from './catalog.element.css?raw';
 import './children/documentation/documentation.element';
 
 const { log, warn, error: err } = console;
-const LANDING_TAB = 'as:query:quickviews';
+const LANDING_TAB = 'as:query:antitamper';
 const menuitems = menu.slice(0, 4);
 const menumore = menu.slice(4);
 const titles = {

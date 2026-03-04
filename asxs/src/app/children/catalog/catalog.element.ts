@@ -11,7 +11,7 @@ import { default as styles } from './catalog.element.css?raw';
 import './children/documentation/documentation.element';
 
 const { log, warn, error: err } = console;
-const LANDING_TAB = 'as:query:toasts';
+const LANDING_TAB = 'as:query:quickviews';
 const menuitems = menu.slice(0, 4);
 const menumore = menu.slice(4);
 const titles = {

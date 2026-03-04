@@ -1,6 +1,6 @@
 
 ## Toast Dialogs
-`dialog[is="as-dialog-toast"]`
+`dialog[is="as-dialog"][modus="toast"]`
 
 AsXS Toasts (A.K.A. "Notífs") piggyback on AsXS Dialogs. Therefrom, you can leverage the same patterns to achieve what you need, including making them a Queued Dialog.
 
@@ -18,10 +18,14 @@ ${ escape(setupts) }
 ```
 
 ### Basic
+`dialog[is="as-dialog"][modus="toast"]`
 
 ${basic}
 
-#### Queued
 ```typescript
 ${ escape(basic) }
 ```
+
+#### Queued
+`dialog[is="as-dialog-queue"][modus="toast"]`
+

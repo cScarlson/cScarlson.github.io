@@ -7,6 +7,7 @@ import * as tooltip from '@asxs/tooltip/docs';
 import * as popover from '@asxs/popover/docs';
 import * as dialogs from '@asxs/dialog/docs';
 import * as toast from '@asxs/dialog/toast/docs';
+import * as quickviews from '@asxs/dialog/quickview/docs';
 
 const { log } = console;
 const ID_VARIABLES = 'variables';
@@ -24,6 +25,7 @@ const docs_tooltip = utilities.interpolate( markdown.parse(tooltip.docs) )( new 
 const docs_popover = utilities.interpolate( markdown.parse(popover.docs) )( new Sandbox(popover) );
 const docs_dialogs = utilities.interpolate( markdown.parse(dialogs.docs) )( new Sandbox(dialogs) );
 const docs_toast = utilities.interpolate( markdown.parse(toast.docs) )( new Sandbox(toast) );
+const docs_quickviews = utilities.interpolate( markdown.parse(quickviews.docs) )( new Sandbox(quickviews) );
 
 export const $docs = [
     {
@@ -69,8 +71,8 @@ export const $docs = [
     {
         id: ID_QUICKVIEWS,
         selected: true,
-        docs: '...quickviews...',
-        module: variables,
+        docs: docs_quickviews,
+        module: docs_quickviews,
     },
     {
         id: ID_ANTITAMPER,

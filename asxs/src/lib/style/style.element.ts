@@ -6,13 +6,14 @@ import { default as tooltip } from '@asxs/tooltip/tooltip.element.css?raw';
 import { default as popover } from '@asxs/popover/popover.element.css?raw';
 import { default as dialogs } from '@asxs/dialog/dialog.element.css?raw';
 import { default as toasts } from '@asxs/dialog/toast/toast.element.css?raw';
+import { default as quickviews } from '@asxs/dialog/quickview/quickview.element.css?raw';
 
 const { log } = console;
 const targets = {
     buttons,
     tooltip,
     popover,
-    dialogs: [ dialogs, toasts ].join('\n'),
+    dialogs: [ dialogs, toasts, quickviews ].join('\n'),
 };
 
 export const TAGNAME = 'as-css-import';

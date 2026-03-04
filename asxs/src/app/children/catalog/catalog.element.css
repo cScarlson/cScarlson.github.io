@@ -130,8 +130,11 @@
                     }
                     
                     .section.document {
-                        display: none;
                         opacity: 0.25;
+                        transition: opacity 250ms 0ms ease-in-out;
+                        &:hover, &:focus-within {
+                            opacity: 1;
+                        }
                         
                         .section.content {
                             
@@ -154,7 +157,6 @@
                     }
                     
                     .section.control:checked ~ .section.document {
-                        display: block;
                         opacity: 1;
                     }
                     

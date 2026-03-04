@@ -44,10 +44,9 @@ export @customElement(TAGNAME) class CatalogElement extends CustomElement {
     ['change:menu:item'](e: MouseEvent) {
         const { target } = e;
         const { id } = target as HTMLElement;
-        const element = this.querySelector(`.content.section.control[id="${id}"]`) as HTMLElement;
+        const element = this.querySelector(`.content.section .section.control[id="${id}"] + .section.document`) as HTMLElement;
         
-        log(`@MENU-ITEM-CHANGE`, id, element);
-        // element.scrollIntoView({ behavior: 'smooth' });
+        element.scrollIntoView({ behavior: 'smooth' });
     }
     
     ['as:update:handler'](content: string) {

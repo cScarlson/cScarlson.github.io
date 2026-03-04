@@ -5,10 +5,10 @@
 ### Setup
 
 ```html
-${setuphtml}
+${ escape(setuphtml) }
 ```
 
 #### Queued
-```js
-${setupts}
+```typescript
+${ escape(setupts) }
 ```

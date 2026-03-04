@@ -1,14 +1,14 @@
 
-import { Loop } from '@asxs/core';
 import { Sandbox } from '@app/children/catalog//children/documentation/core/sandbox';
 import { markdown, utilities } from '@asxs/core/utilities';
-import { default as magazine } from './templates/magazine.template.html?raw';
 import * as variables from '@asxs/variables/docs';
 import * as buttons from '@asxs/button/docs';
 import * as tooltip from '@asxs/tooltip/docs';
 import * as popover from '@asxs/popover/docs';
 import * as dialogs from '@asxs/dialog/docs';
+import * as toast from '@asxs/dialog/toast/docs';
 
+const { log } = console;
 const ID_VARIABLES = 'variables';
 const ID_ICONS = 'icons';
 const ID_BUTTONS = 'buttons';
@@ -23,6 +23,7 @@ const docs_buttons = utilities.interpolate( markdown.parse(buttons.docs) )( new 
 const docs_tooltip = utilities.interpolate( markdown.parse(tooltip.docs) )( new Sandbox(tooltip) );
 const docs_popover = utilities.interpolate( markdown.parse(popover.docs) )( new Sandbox(popover) );
 const docs_dialogs = utilities.interpolate( markdown.parse(dialogs.docs) )( new Sandbox(dialogs) );
+const docs_toast = utilities.interpolate( markdown.parse(toast.docs) )( new Sandbox(toast) );
 
 export const $docs = [
     {
@@ -62,8 +63,8 @@ export const $docs = [
     {
         id: ID_TOASTS,
         selected: true,
-        docs: '...toasts...',
-        module: variables,
+        docs: docs_toast,
+        module: toast,
     },
     {
         id: ID_QUICKVIEWS,

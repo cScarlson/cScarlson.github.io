@@ -1,0 +1,35 @@
+
+<button is="as-button" popovertarget="toastBasicPopover">Popover Notíf</button>
+<button is="as-button" command="show-modal" commandfor="toastBasicCommand">Command Notíf</button>
+
+<dialog id="toastBasicPopover" class="backdrop clear" is="as-dialog" modus="toast" popover>
+    <header class="dialog header">
+        <h1 class="header title">Popover Notíf</h1>
+        <h2 class="header subtitle">A small description to set the tone</h2>
+    </header>
+    <form id="toastBasicBodyPopover" class="dialog body" method="dialog">
+        <p>You qualify for a FREE subscription deal!</p>
+    </form>
+    <footer class="dialog footer">
+        <div class="footer actionbar">
+            <button class="size xxs" is="as-button" type="submit" form="toastBasicBodyPopover" formaction="/toast/info">More Info</button>
+            <button class="size xxs" is="as-button" type="submit" form="toastBasicBodyPopover" formaction="/toast/mute">Got It</button>
+        </div>
+    </footer>
+</dialog>
+
+<dialog id="toastBasicCommand" class="backdrop clear" is="as-dialog" modus="toast">
+    <header class="dialog header">
+        <h1 class="header title">Command Notíf</h1>
+        <h2 class="header subtitle">A small description to set the tone</h2>
+    </header>
+    <form id="toastBasicBodyCommand" class="dialog body" method="dialog">
+        <p>You qualify for a FREE subscription deal!</p>
+    </form>
+    <footer class="dialog footer">
+        <div class="footer actionbar">
+            <button class="size xxs" is="as-button" type="submit" form="toastBasicBodyCommand" formaction="/toast/info">More Info</button>
+            <button class="size xxs" is="as-button" type="submit" form="toastBasicBodyCommand" formaction="/toast/mute">Got It</button>
+        </div>
+    </footer>
+</dialog>

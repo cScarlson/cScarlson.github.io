@@ -1,7 +1,7 @@
 
 * { box-sizing: border-box }
 
-:host {
+:host, at-catalog {
     display: block;
     
     .app.catalog {
@@ -130,6 +130,7 @@
                     }
                     
                     .section.document {
+                        scroll-margin-block-start: var(--size-px-11);
                         opacity: 0.25;
                         transition: opacity 250ms 0ms ease-in-out;
                         &:hover, &:focus-within {

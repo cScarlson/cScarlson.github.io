@@ -36,10 +36,12 @@ export const $docs = [
         docs: docs_variables,
         module: variables,
     },
-    // {
-    //     id: ID_ICONS,
-    //     selected: true,
-    // },
+    {
+        id: ID_ICONS,
+        selected: true,
+        docs: 'ToDo',
+        module: {},
+    },
     {
         id: ID_BUTTONS,
         selected: true,

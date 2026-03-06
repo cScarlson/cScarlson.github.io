@@ -23,14 +23,95 @@ export @customElement(TAGNAME) class AppElement extends CustomElement {
         log(`CONNECTED!...`, );
     }
     
-    // createRenderRoot(): ShadowRoot | HTMLElement {
-    //     return this;
-    // }
+    createRenderRoot(): ShadowRoot | HTMLElement {
+        return this;
+    }
     
     render(): string {
         return `
             <style>${styles}</style>
             ${template}
+            <br />
+            <a href="#/home/some/route">Internal Bookmark</a>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <h1 id="#/home/some/route">Internal Bookmark</h1>
         `;
     }
     

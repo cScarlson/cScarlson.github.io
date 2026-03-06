@@ -1,8 +1,8 @@
 
 import { RouteElement as Route, Route as Router } from '@asxs/core/router';
+import { CatalogElement } from '@app/children/catalog/catalog.element';
 import '@app/children/404/404.element';
 import '@app/children/home/home.element';
-import '@app/children/catalog/catalog.element';
 
 const { log } = console;
 
@@ -11,27 +11,24 @@ export const routes: Route = new Route({
     name: 'root',
     data: {},
     descendants: [
-        new Route({
-            path: '',
-            name: 'home',
-            data: {},
-            view: 'at-home',
-            descendants: [],
-        }),
-        new Route({
+        // new Route({
+        //     path: '',
+        //     name: 'home',
+        //     data: {},
+        //     descendants: [],
+        // }),
+        new CatalogElement({
             path: 'catalog',
             name: 'catalog',
             data: {},
-            view: 'at-catalog',
             descendants: [],
         }),
-        new Route({
-            path: '**',
-            name: 'root:404',
-            data: {},
-            view: 'at-404',
-            descendants: [],
-        }),
+        // new Route({
+        //     path: '**',
+        //     name: 'root:404',
+        //     data: {},
+        //     descendants: [],
+        // }),
     ]
 });
 Router.init();

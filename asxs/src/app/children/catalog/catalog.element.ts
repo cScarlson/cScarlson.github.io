@@ -1,7 +1,7 @@
 
 import type { ToDo } from '@asxs/core/types';
-import { customElement, CustomElement, ElementCrawler, Loop } from '@asxs/core';
-import { type State } from '@asxs/core/router';
+import { customElement, ElementCrawler, Loop } from '@asxs/core';
+import { RouteElement } from '@asxs/core/router';
 import { menuitems as menu, documentation } from './core/content';
 import { default as magazine } from './core/templates/magazine.template.html?raw';
 import { default as submenu } from './core/templates/submenu.template.html?raw';
@@ -10,9 +10,9 @@ import { default as styles } from './catalog.element.css?raw';
 import './children/documentation/documentation.element';
 
 const { log, warn, error: err } = console;
-const LANDING_TAB = 'as:query:antitamper';
-const menuitems = menu.slice(0, 4);
-const menumore = menu.slice(4);
+const LANDING_TAB = 'as:query:variables';
+const menuitems = menu.slice(0, 5);
+const menumore = menu.slice(5);
 const titles = {
     'dialogs': 'Queued Modal',
     'toasts': 'Toasts',
@@ -21,13 +21,11 @@ const titles = {
 };
 
 export const TAGNAME = 'at-catalog';
-export @customElement(TAGNAME) class CatalogElement extends CustomElement {
+export @customElement(TAGNAME) class CatalogElement extends RouteElement {
     ['as:crawler']: ElementCrawler = new ElementCrawler(this);
     [LANDING_TAB]: HTMLInputElement = document.createElement('input');
     get ['as:state']() {
-        const { state } = this;
-        const { route } = state;
-        const { id } = route;
+        const { id } = this;
         
         return {
             id,
@@ -35,10 +33,6 @@ export @customElement(TAGNAME) class CatalogElement extends CustomElement {
             more: new Loop(menumore).with(submenu).use(titles, 'titles'),
             documentation: new Loop(documentation).with(magazine),
         };
-    }
-    
-    constructor(private state: State) {
-        super();
     }
     
     ['change:menu:item'](e: MouseEvent) {
@@ -64,7 +58,7 @@ export @customElement(TAGNAME) class CatalogElement extends CustomElement {
         module.init(this);
     }
     
-    connectedCallback( x = super.connectedCallback() ): void {
+    connectedCallback( x = super.connectedCallback()): void {
         this.#initialize();
         this.addEventListener('change', this as ToDo, true);
     }

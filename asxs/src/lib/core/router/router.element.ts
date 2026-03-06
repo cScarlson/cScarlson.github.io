@@ -1,7 +1,9 @@
 
 import type { ToDo } from '@asxs/core/types';
 import { customElement, CustomElement } from '@asxs/core';
-import { RouteElement as Router, type State } from './route';
+import { type ObserverObject, type State } from './route';
+import { Route, Route as Router } from './route';
+import { RouteElement } from './route.element';
 
 const { log, warn, error: err } = console;
 
@@ -12,8 +14,8 @@ class RouterElementError extends Error {
         
         function get() {
             const { route } = options;
-            const { id, path, name, view } = route;
-            return `RouterElementError Error: route failed to construct element "${view}" at route "${id}" ("${name}") at path "${path}".`;
+            const { id, path, name, tagName } = route;
+            return `RouterElementError Error: route failed to construct element "${tagName}" at route "${id}" ("${name}") at path "${path}".`;
         }
         
     }
@@ -21,26 +23,40 @@ class RouterElementError extends Error {
 }
 
 export const TAGNAME = 'as-router';
-export @customElement(TAGNAME, { extends: 'main' }) class RouterElement extends HTMLElement {
+export @customElement(TAGNAME, { extends: 'main' }) class RouterElement extends HTMLElement implements ObserverObject {
+    static CHANNEL_ROUTE_CONNECTED: 'as:route:connected' = 'as:route:connected';
     current: State = {} as State;
+    #root: Route = document.createElement('div') as unknown as Route;
     
     call(router: typeof Router, state: State) {
-        if ( !(state.route instanceof Router) ) return;
-        if ( !customElements.get(state.route.view) ) throw new RouterElementError(state);
+        if ( !(state.route instanceof Route) ) return;
         const { route } = state;
-        const { view: tagName } = route;
-        const Class = customElements.get(tagName) as ToDo;
-        const element = new Class(state);
         
-        log(`@ROUTE-CHANGE`, state.route.name, state.route.path, state.route.view, element);
-        if (!this.current.route) this.appendChild(element);
-        else this.querySelector(this.current.route.view)?.replaceWith(element);
+        this.#root.remove();
         this.current = state;
+        this.#root = this.#append(route);
+    }
+    
+    #append(leaf: Route) {
+        if (leaf.parent === leaf) return this.appendChild(leaf);
+        const { parent } = leaf;
+        
+        function handle(e: MessageEvent) {
+            if (e.target !== leaf) parent.appendChild(leaf);
+            parent.removeEventListener(RouterElement.CHANNEL_ROUTE_CONNECTED, handle as ToDo, true);
+        }
+        
+        parent.addEventListener(RouterElement.CHANNEL_ROUTE_CONNECTED, handle as ToDo, true);
+        
+        return this.#append(parent);
     }
     
     connectedCallback() {
-        log(`@${TAGNAME}`);
         Router.attach(this, true);
+    }
+    
+    disconnectedCallback() {
+        Router.detach(this);
     }
     
 };

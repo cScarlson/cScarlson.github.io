@@ -39,11 +39,13 @@ class Basic extends HTMLElement {
     }
     
     connectedCallback() {
-        const root = this.createRenderRoot();
-        this.root = root;
+        // log(`@connectedCallback`, this.tagName);
+        this.root = this.createRenderRoot();
     }
     
-    disconnectedCallback() {}
+    disconnectedCallback() {
+        // delete (this as ToDo).root;
+    }
     
     adoptedCallback() {}
     
@@ -54,6 +56,9 @@ class Basic extends HTMLElement {
     }
     
     createRenderRoot(): ShadowRoot | HTMLElement {
+        // log(`@createRenderRoot`, this.tagName);
+        if (this.root) return this.root;
+        if (this.shadowRoot) return this.shadowRoot;
         return this.attachShadow({ mode: 'open' });
     }
     
@@ -65,31 +70,6 @@ class Basic extends HTMLElement {
         root.innerHTML = content;
         if (crawler) crawler.execute(...children);
         if (handle) handle.call(this, content); 
-    }
-    
-    addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void {
-        const { root } = this;
-        super.addEventListener.call(root, type, listener, options);
-    }
-    
-    removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void {
-        const { root } = this;
-        super.removeEventListener.call(root, type, listener, options);
-    }
-    
-    dispatchEvent(event: Event): boolean {
-        const { root } = this;
-        return super.dispatchEvent.call(root, event);
-    }
-    
-    querySelector(selector: string): Element | null {
-        if (this.root === this) return super.querySelector(selector);
-        return this.root.querySelector(selector);
-    }
-    
-    querySelectorAll(selector: string): NodeList {
-        if (this.root === this) return super.querySelectorAll(selector);
-        return this.root.querySelectorAll(selector);
     }
     
 }
@@ -111,8 +91,12 @@ class Renderer extends Interpolator {
         this.update(template);
     }
     
+    disconnectedCallback(): void {
+        this.innerHTML = '';  // clear to prevent descendant custom elements from running again before next update/render
+    }
+    
     render(): string {
-        return ``;
+        return this.innerHTML;
     }
     
 }
@@ -131,14 +115,14 @@ class Frameless extends Interpolator {
 
 class Sandbox extends Renderer {}
 
-class PageElement extends Renderer {}
-
 class CustomElement extends Renderer {}
+
+class PageElement extends CustomElement {}
 
 export { customElement } from './customelement';
 export { Loop } from './loop';
 export { QUERY_HANDLER, ElementCrawler } from './elementcrawler';
-export { CustomElement, Basic, Interpolator, Renderer, Frameless };
+export { PageElement, CustomElement, Basic, Interpolator, Renderer, Frameless };
 export {  // just for fun
     Basic as Easy,
     Interpolator as Normal,

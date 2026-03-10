@@ -28,15 +28,6 @@ export @customElement(TAGNAME, { extends: 'main' }) class RouterElement extends 
     current: State = {} as State;
     #root: Route = document.createElement('div') as unknown as Route;
     
-    call(router: typeof Router, state: State) {
-        if ( !(state.route instanceof Route) ) return;
-        const { route } = state;
-        
-        this.#root.remove();
-        this.current = state;
-        this.#root = this.#append(route);
-    }
-    
     #append(leaf: Route) {
         if (leaf.parent === leaf) return this.appendChild(leaf);
         const { parent } = leaf;
@@ -49,6 +40,16 @@ export @customElement(TAGNAME, { extends: 'main' }) class RouterElement extends 
         parent.addEventListener(RouterElement.CHANNEL_ROUTE_CONNECTED, handle as ToDo, true);
         
         return this.#append(parent);
+    }
+    
+    call(router: typeof Router, state: State) {
+        if ( !(state.route instanceof Route) ) return;
+        if (state.route.bookmark) return;
+        const { route } = state;
+        
+        this.#root.remove();
+        this.current = state;
+        this.#root = this.#append(route);
     }
     
     connectedCallback() {

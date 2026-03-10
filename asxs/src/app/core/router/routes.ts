@@ -1,5 +1,5 @@
 
-import { RouteElement as Route, Route as Router } from '@asxs/core/router';
+import { Bookmark, Route, Route as Router } from '@asxs/core/router';
 import { CatalogElement } from '@app/children/catalog/catalog.element';
 import '@app/children/404/404.element';
 import '@app/children/home/home.element';
@@ -21,7 +21,13 @@ export const routes: Route = new Route({
             path: 'catalog',
             name: 'catalog',
             data: {},
-            descendants: [],
+            descendants: [
+                new Bookmark({
+                    path: 'test/book/mark',
+                    name: 'test',
+                    data: {},
+                }),
+            ],
         }),
         // new Route({
         //     path: '**',
@@ -31,5 +37,6 @@ export const routes: Route = new Route({
         // }),
     ]
 });
+
 Router.init();
 log(`@routes`, Router.routes);

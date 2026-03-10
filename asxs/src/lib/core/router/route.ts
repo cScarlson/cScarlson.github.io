@@ -1,6 +1,6 @@
 
 import type { ToDo } from '@asxs/core/types';
-import { PageElement } from '@asxs/core';
+import { customElement, PageElement } from '@asxs/core';
 
 type Observer = ObserverObject | ObserverFunction;
 type ObserverFunction = (this: Route, state: ObserverFunction) => any;
@@ -17,59 +17,85 @@ interface State {
 }
 
 const { log, warn, error: err } = console;
+const TAGNAME = 'as-route';
 
-
-export type { ObserverFunction, ObserverObject, Observer, State };
-export class Route extends PageElement {
+@customElement(TAGNAME) class Route extends PageElement {
     static target: EventTarget = new EventTarget();
     static observers: Set<Observer> = new Set();
     static state: State = { route: {} as Route, data: {}, params: {}, routes: [] };
     static routes: Map<string, Route> = new Map();
     static initialized: boolean = false;
+    bookmark: boolean = false;
     abstracted: boolean = false;
-    id: string = '';
+    id: string = '#';
     path: string = '';
     name: string = 'ANONYMOUS';
     data: any = {};
     parent: Route = this;
+    _descendants: Route[] = [];
     $descendants: Map<string, Route> = new Map();
     get descendants(): Route[] { return [ ...this.$descendants.values() ] }
     
-    constructor(route: Partial<Route> = {}, parent?: Route) {
+    // constructor(route: Partial<Route> = {}) {
+    //     super();
+    //     const { id, path, name, data } = { ...this, ...route };
+    //     const { descendants = [] } = route;
+    //     const { dataset } = this;
+    //     // const descendents = descendants.map(Route.compose);
+    //     const abstracted = /^\{\w+\}$/.test(path);
+        
+    //     dataset.path = path;
+    //     dataset.name = name;
+    //     this.abstracted = abstracted;
+    //     this.id = id;
+    //     this.path = path;
+    //     this.name = name;
+    //     this.data = data;
+    //     this._descendants = descendants;
+    //     // this.identify(...descendants);  // id after setting parent
+    //     // this.link(...descendents);  // link after setting id
+    //     // Route.routes.set(this.id, this);
+    //     Route.target.addEventListener('navigation', this, true);
+        
+    //     return this;
+    // }
+    
+    constructor(route: Partial<Route> = {}) {
         super();
-        const { path, name, data, descendants } = { descendants: [], ...(this as ToDo), ...route };
+        const { id, path, name, data } = { ...this, ...route };
+        const { descendants = [] } = route;
         const { dataset } = this;
-        const descendents = descendants.map(Route.compose);
+        // const descendents = descendants.map(Route.compose);
         const abstracted = /^\{\w+\}$/.test(path);
-        var ancestor = parent || this;
         
         dataset.path = path;
         dataset.name = name;
         this.abstracted = abstracted;
-        this.id = '#';
+        this.id = id;
         this.path = path;
         this.name = name;
         this.data = data;
-        this.parent = ancestor;
-        this.identify(...descendants);  // id after setting parent
-        this.link(...descendents);  // link after setting id
-        Route.routes.set(this.id, this);
+        this._descendants = descendants;
+        this.append(...descendants);
         Route.target.addEventListener('navigation', this, true);
+        this.init();
         
         return this;
     }
     
     static compose(child: Route): Route {  // composes paths with slashes/in/them into full route objects
         const { path } = child;
+        const { constructor: Class } = child as ToDo;
         const [ segment, ...segments ] = `${path}`.split('/');
         
         if (!segments.length) return child;
-        return {
+        return new Class({
+            ...child,
             path: segment,
             descendants: [
-                { ...child, path: segments.join('/') }
+                new Class({ ...child, path: segments.join('/') })
             ].map(Route.compose as ToDo) as Route[]
-        } as Route;
+        }) as Route;
     }
     
     static getPathnameParams(params: Record<string, string>, route: Route, segments: string[]): Record<string, string> {
@@ -120,20 +146,20 @@ export class Route extends PageElement {
         Route.notify();
     };
     
-    static init(options: Partial<ToDo> = {}): typeof Route {
+    static init = setTimeout.bind(window, (options: Partial<ToDo> = {}) => {
         const { target } = Route;
         const { hash, href } = location;
         const event = new HashChangeEvent('initial', { oldURL: href, newURL: href });
         
         Route.initialized = true;
-        Route.init = () => Route;
+        (Route as ToDo).init = () => Route;
         target.addEventListener('match', Route.handleMatch as ToDo, true);
         window.addEventListener('hashchange', Route.handleHashchange, true);
         if (!hash) location.hash = '/';
         else Route.handleHashchange(event);
         
         return Route;
-    }
+    }, 1_000 * 0.25);
     
     static attach(observer: Observer, notify: boolean = true): typeof Route {
         const { observers, state } = Route;
@@ -156,14 +182,35 @@ export class Route extends PageElement {
         return Route;
     }
     
-    identify(child?: Route, ...more: Route[]): Route {
-        if (!child) return child as unknown as Route;
-        const { path } = child;
-        const id = `${this.id}/${path}`;
+    init = setTimeout.bind(window, (options: ToDo = {}, parent: Route = this) => {
+        const { parentElement, path } = this;
+        const [ segment, ...segments ] = path.split('/');
+        const route = this.fractionate(segment, ...segments);
         
-        child.id = id;
-        if (more.length) return this.identify(...more);
-        return child;
+        if (parentElement && parentElement instanceof Route) setTimeout(x => parentElement.adopt(route), 0);
+        Route.routes.set(this.id, this);
+        setTimeout(x => this.innerHTML = '', 0);
+    }, 0);
+    
+    fractionate(segment: string, ...more: string[]): Route {
+        if (!more.length) return this;
+        const predecessor = new Route({ path: segment, descendants: [  ] });
+        
+        this.path = more.join('/');
+        this.replaceWith(predecessor);
+        predecessor.appendChild(this);
+        predecessor._descendants.push(this);
+        this.init();
+        
+        return predecessor;
+    }
+    
+    adopt(child: Route) {
+        if (this.parentElement) (this.parentElement as Route).adopt(this);
+        if (this.parentElement) this.id = `${this.parentElement.id}/${this.path}`;
+        child.id = `${this.id}/${child.path}`;
+        child.parent = this;
+        this.$descendants.set(child.id, child);
     }
     
     link(child?: Route, ...more: Route[]): Route {
@@ -222,4 +269,12 @@ export class Route extends PageElement {
         super.remove();
     }
     
-};
+}
+
+@customElement('as-internal-bookmark') class Bookmark extends Route {
+    bookmark: true = true;
+}
+
+
+export type { ObserverFunction, ObserverObject, Observer, State };
+export { Route, Bookmark };

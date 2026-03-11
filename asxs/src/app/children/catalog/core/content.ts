@@ -11,15 +11,15 @@ import * as quickviews from '@asxs/dialog/quickview/docs';
 import * as antitamper from '@asxs/dialog/antitamper/docs';
 
 const { log } = console;
-const ID_VARIABLES = 'variables';
-const ID_ICONS = 'icons';
-const ID_BUTTONS = 'buttons';
-const ID_TOOLTIP = 'tooltip';
-const ID_POPOVER = 'popover';
-const ID_DIALOGS = 'dialogs';
-const ID_TOASTS = 'toasts';
-const ID_QUICKVIEWS = 'quickviews';
-const ID_ANTITAMPER = 'antitamper';
+const ID_VARIABLES = '/catalog/variables';
+const ID_ICONS = '/catalog/icons';
+const ID_BUTTONS = '/catalog/buttons';
+const ID_TOOLTIP = '/catalog/tooltip';
+const ID_POPOVER = '/catalog/popover';
+const ID_DIALOGS = '/catalog/dialogs';
+const ID_TOASTS = '/catalog/toasts';
+const ID_QUICKVIEWS = '/catalog/quickviews';
+const ID_ANTITAMPER = '/catalog/antitamper';
 const docs_variables = utilities.interpolate( markdown.parse(variables.docs) )( new Sandbox(variables) );
 const docs_buttons = utilities.interpolate( markdown.parse(buttons.docs) )( new Sandbox(buttons) );
 const docs_tooltip = utilities.interpolate( markdown.parse(tooltip.docs) )( new Sandbox(tooltip) );
@@ -32,59 +32,59 @@ const docs_antitamper = utilities.interpolate( markdown.parse(antitamper.docs) )
 export const $docs = [
     {
         id: ID_VARIABLES,
-        selected: true,
+        title: `Variables`,
         docs: docs_variables,
         module: variables,
     },
     {
         id: ID_ICONS,
-        selected: true,
+        title: `Icons`,
         docs: 'ToDo',
         module: {},
     },
     {
         id: ID_BUTTONS,
-        selected: true,
+        title: `Buttons`,
         docs: docs_buttons,
         module: variables,
     },
     {
         id: ID_TOOLTIP,
-        selected: true,
+        title: `Tooltips`,
         docs: docs_tooltip,
         module: tooltip,
     },
     {
         id: ID_POPOVER,
-        selected: true,
+        title: `Popovers`,
         docs: docs_popover,
         module: popover,
     },
     {
         id: ID_DIALOGS,
-        selected: true,
+        title: `Dialogs`,
         docs: docs_dialogs,
         module: dialogs,
     },
     {
         id: ID_TOASTS,
-        selected: true,
+        title: `Toasts`,
         docs: docs_toast,
         module: toast,
     },
     {
         id: ID_QUICKVIEWS,
-        selected: true,
+        title: `Quickviews`,
         docs: docs_quickviews,
         module: docs_quickviews,
     },
     {
         id: ID_ANTITAMPER,
-        selected: true,
+        title: `Antitamper`,
         docs: docs_antitamper,
         module: antitamper,
     },
 ].reduce( ($, catagory) => $.set(catagory.id, catagory), new Map() );
 export const documentation = [ ...$docs.values() ];
-export const menuitems = [ ...$docs.keys() ];
+export const menuitems = [ ...$docs.values() ].map( ({ id, title }) => ({  id, title }) );
 

@@ -23,8 +23,48 @@ export const routes: Route = new Route({
             data: {},
             descendants: [
                 new Bookmark({
-                    path: 'test/book/mark',
-                    name: 'test',
+                    path: 'variables',
+                    name: 'catalog:variables',
+                    data: {},
+                }),
+                new Bookmark({
+                    path: 'icons',
+                    name: 'catalog:icons',
+                    data: {},
+                }),
+                new Bookmark({
+                    path: 'buttons',
+                    name: 'catalog:buttons',
+                    data: {},
+                }),
+                new Bookmark({
+                    path: 'tooltip',
+                    name: 'catalog:tooltip',
+                    data: {},
+                }),
+                new Bookmark({
+                    path: 'popover',
+                    name: 'catalog:popover',
+                    data: {},
+                }),
+                new Bookmark({
+                    path: 'dialogs',
+                    name: 'catalog:dialogs',
+                    data: {},
+                }),
+                new Bookmark({
+                    path: 'toasts',
+                    name: 'catalog:toasts',
+                    data: {},
+                }),
+                new Bookmark({
+                    path: 'quickviews',
+                    name: 'catalog:quickviews',
+                    data: {},
+                }),
+                new Bookmark({
+                    path: 'antitamper',
+                    name: 'catalog:antitamper',
                     data: {},
                 }),
             ],

@@ -2,6 +2,7 @@
 * { box-sizing: border-box }
 
 dialog[is="as-dialog"][modus="quickview"], dialog[is="as-dialog-queue"][modus="quickview"] {
+    --min-size: 320px;
     inset: unset;
     top: 0;
     right: 0;
@@ -49,12 +50,16 @@ dialog[is="as-dialog"][modus="quickview"], dialog[is="as-dialog-queue"][modus="q
             height: 90dvh;
         }
     }
+    &[position="inline-start"], &[position="inline-end"] {
+        min-width: var(--min-size);
+    }
+    &[position="block-start"], &[position="block-end"] {
+        min-height: var(--min-size);
+    }
     &:has(.dialog.body) {
         scrollbar-width: none;
         
-        .dialog.header, .dialog.body, .dialog.footer {
-            /* padding: var(--size-px-3); */
-        }
+        .dialog.header, .dialog.body, .dialog.footer {}
         
         .dialog.header {
             

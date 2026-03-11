@@ -42,14 +42,20 @@ export @customElement(TAGNAME, { extends: 'main' }) class RouterElement extends 
         return this.#append(parent);
     }
     
-    call(router: typeof Router, state: State) {
-        if ( !(state.route instanceof Route) ) return;
-        if (state.route.bookmark) return;
-        const { route } = state;
-        
+    #render(state: State, route: Route) {
+        if (route === this.#root) return;
         this.#root.remove();
         this.current = state;
         this.#root = this.#append(route);
+    }
+    
+    call(router: typeof Router, state: State) {
+        if ( !(state.route instanceof Route) ) return;
+        const { route } = state;
+        const { parent } = route;
+        
+        if (route.bookmark) this.#render(state, parent);
+        else this.#render(state, route);
     }
     
     connectedCallback() {

@@ -17,9 +17,10 @@ interface State {
 }
 
 const { log, warn, error: err } = console;
-const TAGNAME = 'as-route';
 
-@customElement(TAGNAME) class Route extends PageElement {
+export type { ObserverFunction, ObserverObject, Observer, State };
+export const TAGNAME = 'as-route';
+export @customElement(TAGNAME) class Route extends PageElement {
     static target: EventTarget = new EventTarget();
     static observers: Set<Observer> = new Set();
     static state: State = { route: {} as Route, data: {}, params: {}, routes: [] };
@@ -36,36 +37,11 @@ const TAGNAME = 'as-route';
     $descendants: Map<string, Route> = new Map();
     get descendants(): Route[] { return [ ...this.$descendants.values() ] }
     
-    // constructor(route: Partial<Route> = {}) {
-    //     super();
-    //     const { id, path, name, data } = { ...this, ...route };
-    //     const { descendants = [] } = route;
-    //     const { dataset } = this;
-    //     // const descendents = descendants.map(Route.compose);
-    //     const abstracted = /^\{\w+\}$/.test(path);
-        
-    //     dataset.path = path;
-    //     dataset.name = name;
-    //     this.abstracted = abstracted;
-    //     this.id = id;
-    //     this.path = path;
-    //     this.name = name;
-    //     this.data = data;
-    //     this._descendants = descendants;
-    //     // this.identify(...descendants);  // id after setting parent
-    //     // this.link(...descendents);  // link after setting id
-    //     // Route.routes.set(this.id, this);
-    //     Route.target.addEventListener('navigation', this, true);
-        
-    //     return this;
-    // }
-    
     constructor(route: Partial<Route> = {}) {
         super();
         const { id, path, name, data } = { ...this, ...route };
         const { descendants = [] } = route;
         const { dataset } = this;
-        // const descendents = descendants.map(Route.compose);
         const abstracted = /^\{\w+\}$/.test(path);
         
         dataset.path = path;
@@ -81,21 +57,6 @@ const TAGNAME = 'as-route';
         this.init();
         
         return this;
-    }
-    
-    static compose(child: Route): Route {  // composes paths with slashes/in/them into full route objects
-        const { path } = child;
-        const { constructor: Class } = child as ToDo;
-        const [ segment, ...segments ] = `${path}`.split('/');
-        
-        if (!segments.length) return child;
-        return new Class({
-            ...child,
-            path: segment,
-            descendants: [
-                new Class({ ...child, path: segments.join('/') })
-            ].map(Route.compose as ToDo) as Route[]
-        }) as Route;
     }
     
     static getPathnameParams(params: Record<string, string>, route: Route, segments: string[]): Record<string, string> {
@@ -141,7 +102,6 @@ const TAGNAME = 'as-route';
         const routes = Route.getAncestors([], route);
         const state = { route, data, params: parameters, routes };
         
-        // if (path === '#') warn( new Error(`Route Match Error: Only root route matched ("#"). Please consider adding a 404 route to handle "**" paths.`) );
         Route.state = state;
         Route.notify();
     };
@@ -187,6 +147,7 @@ const TAGNAME = 'as-route';
         const [ segment, ...segments ] = path.split('/');
         const route = this.fractionate(segment, ...segments);
         
+        this.setAttribute('slot', 'as:routelet');
         if (parentElement && parentElement instanceof Route) setTimeout(x => parentElement.adopt(route), 0);
         Route.routes.set(this.id, this);
         setTimeout(x => this.innerHTML = '', 0);
@@ -208,9 +169,12 @@ const TAGNAME = 'as-route';
     adopt(child: Route) {
         if (this.parentElement) (this.parentElement as Route).adopt(this);
         if (this.parentElement) this.id = `${this.parentElement.id}/${this.path}`;
-        child.id = `${this.id}/${child.path}`;
+        const { id, $descendants } = this;
+        const { id: idenfifier, path, } = child;
+        
+        child.id = `${id}/${path}`;
         child.parent = this;
-        this.$descendants.set(child.id, child);
+        $descendants.set(idenfifier, child);
     }
     
     link(child?: Route, ...more: Route[]): Route {
@@ -269,12 +233,4 @@ const TAGNAME = 'as-route';
         super.remove();
     }
     
-}
-
-@customElement('as-internal-bookmark') class Bookmark extends Route {
-    bookmark: true = true;
-}
-
-
-export type { ObserverFunction, ObserverObject, Observer, State };
-export { Route, Bookmark };
+};

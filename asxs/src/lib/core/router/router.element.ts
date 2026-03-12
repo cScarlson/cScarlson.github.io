@@ -3,24 +3,8 @@ import type { ToDo } from '@asxs/core/types';
 import { customElement, CustomElement } from '@asxs/core';
 import { type ObserverObject, type State } from './route';
 import { Route, Route as Router } from './route';
-import { RouteElement } from './route.element';
 
 const { log, warn, error: err } = console;
-
-class RouterElementError extends Error {
-    
-    constructor(public options: State = {} as State) {
-        super( get() );
-        
-        function get() {
-            const { route } = options;
-            const { id, path, name, tagName } = route;
-            return `RouterElementError Error: route failed to construct element "${tagName}" at route "${id}" ("${name}") at path "${path}".`;
-        }
-        
-    }
-    
-}
 
 export const TAGNAME = 'as-router';
 export @customElement(TAGNAME, { extends: 'main' }) class RouterElement extends HTMLElement implements ObserverObject {

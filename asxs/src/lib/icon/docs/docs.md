@@ -61,4 +61,4 @@ These examples use `strategy="bootstrap-icons"`. However, any icon set can be us
 ```
 > _Using `strategy="ascii"` can leverage ASCII codes as a `::before` or `::after` pseudo-element's `content`, even using CSS `attr(type)` to render the desired icon._
 
-> _NOTE: each icon strategy must be supported through Pull Requests that implement such support -- OR -- literally through your own definitions for any specific website or webapp. This, as always, allows AsXS to provide opt-in and opt-out functionality, where the implementer can jailbreak any `strategy`, with or without significant overhead._
+> _NOTE: each icon strategy must be supported through Pull Requests that implement such support -- OR -- literally through your own definitions for any specific website or webapp. This, as always, allows AsXS to provide opt-in and opt-out functionality, where the implementer can jailbreak any `strategy`, without significant overhead._

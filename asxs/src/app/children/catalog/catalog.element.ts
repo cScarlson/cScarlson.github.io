@@ -1,7 +1,7 @@
 
 import type { ToDo } from '@asxs/core/types';
 import { customElement, ElementCrawler, Loop } from '@asxs/core';
-import { RouteElement } from '@asxs/core/router';
+import { Route } from '@asxs/core/router';
 import { menuitems as menu, documentation } from './core/content';
 import { default as magazine } from './core/templates/magazine.template.html?raw';
 import { default as submenu } from './core/templates/submenu.template.html?raw';
@@ -21,7 +21,7 @@ const titles = {
 };
 
 export const TAGNAME = 'at-catalog';
-export @customElement(TAGNAME) class CatalogElement extends RouteElement {
+export @customElement(TAGNAME) class CatalogElement extends Route {
     ['as:crawler']: ElementCrawler = new ElementCrawler(this);
     [LANDING_TAB]: HTMLInputElement = document.createElement('input');
     get ['as:state']() {

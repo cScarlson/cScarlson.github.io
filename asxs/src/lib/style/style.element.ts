@@ -1,6 +1,8 @@
 
 import type { ToDo } from '@asxs/core/types';
 import { customElement } from '@asxs/core';
+import { default as icons } from '@asxs/icon/icon.element.css?raw';
+import { default as icon_strategy_bootstrap } from '@asxs/icon/strategies/bootstrap-icons/variables.css?raw';
 import { default as buttons } from '@asxs/button/button.element.css?raw';
 import { default as tooltip } from '@asxs/tooltip/tooltip.element.css?raw';
 import { default as popover } from '@asxs/popover/popover.element.css?raw';
@@ -10,6 +12,8 @@ import { default as quickviews } from '@asxs/dialog/quickview/quickview.element.
 
 const { log } = console;
 const targets = {
+    'bootstrap-icons': icon_strategy_bootstrap,
+    icons,
     buttons,
     tooltip,
     popover,

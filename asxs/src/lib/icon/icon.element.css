@@ -1,14 +1,29 @@
 
 as-icon {
-    --icon: var(--icon-placeholder);
-    --size: var(--size-24);
+    --icon: var(--icon-type-placeholder);
+    --size: var(--size-px-5);
+    --color: black;
+    display: inline-block;
+    width: var(--size);
+    height: var(--size);
+    mask-image: var(--icon);
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: cover;
+    background-color: var(--color);
     &.size {
-        &.xxs { --size: var(--size-16) }
-        &.xs  { --size: var(--size-20) }
-        &.s   { --size: var(--size-24) }
-        &.md  { --size: var(--size-32) }
-        &.lg  { --size: var(--size-36) }
-        &.xl  { --size: var(--size-48) }
-        &.xxl { --size: var(--size-64) }
+        &.xxs { --size: var(--size-px-3)  }
+        &.xs  { --size: var(--size-px-4)  }
+        &.s   { --size: var(--size-px-5)  }
+        &.md  { --size: var(--size-px-7)  }
+        &.lg  { --size: var(--size-px-8)  }
+        &.xl  { --size: var(--size-px-9)  }
+        &.xxl { --size: var(--size-px-11) }
+    }
+}
+
+as-icon {
+    &:is([type="list"], &[type="menu"], &[type="bars3h"], &[type="hamburger"]) {
+        --icon: var(--icon-type-list, var(--icon-type-menu, var(--icon-type-bars3h, var(--icon-type-hamburger))));
     }
 }

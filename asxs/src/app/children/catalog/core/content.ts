@@ -2,6 +2,7 @@
 import { Sandbox } from '@app/children/catalog//children/documentation/core/sandbox';
 import { markdown, utilities } from '@asxs/core/utilities';
 import * as variables from '@asxs/variables/docs';
+import * as icons from '@asxs/icon/docs';
 import * as buttons from '@asxs/button/docs';
 import * as tooltip from '@asxs/tooltip/docs';
 import * as popover from '@asxs/popover/docs';
@@ -21,6 +22,7 @@ const ID_TOASTS = '/catalog/toasts';
 const ID_QUICKVIEWS = '/catalog/quickviews';
 const ID_ANTITAMPER = '/catalog/antitamper';
 const docs_variables = utilities.interpolate( markdown.parse(variables.docs) )( new Sandbox(variables) );
+const docs_icons = utilities.interpolate( markdown.parse(icons.docs) )( new Sandbox(icons) );
 const docs_buttons = utilities.interpolate( markdown.parse(buttons.docs) )( new Sandbox(buttons) );
 const docs_tooltip = utilities.interpolate( markdown.parse(tooltip.docs) )( new Sandbox(tooltip) );
 const docs_popover = utilities.interpolate( markdown.parse(popover.docs) )( new Sandbox(popover) );
@@ -39,7 +41,7 @@ export const $docs = [
     {
         id: ID_ICONS,
         title: `Icons`,
-        docs: 'ToDo',
+        docs: docs_icons,
         module: {},
     },
     {

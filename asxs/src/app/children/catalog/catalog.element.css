@@ -10,7 +10,7 @@
         
         .catalog.header {
             position: sticky;
-            top: 0;
+            top: var(--header-height);
             box-shadow: var(--shadow-3);
             background-color: var(--color-primary);
             

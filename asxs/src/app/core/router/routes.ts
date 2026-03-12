@@ -1,8 +1,8 @@
 
 import { Bookmark, Route, Route as Router } from '@asxs/core/router';
+import { HomeElement } from '@app/children/home/home.element';
 import { CatalogElement } from '@app/children/catalog/catalog.element';
 import '@app/children/404/404.element';
-import '@app/children/home/home.element';
 
 const { log } = console;
 
@@ -11,12 +11,12 @@ export const routes: Route = new Route({
     name: 'root',
     data: {},
     descendants: [
-        // new Route({
-        //     path: '',
-        //     name: 'home',
-        //     data: {},
-        //     descendants: [],
-        // }),
+        new HomeElement({
+            path: '',
+            name: 'home',
+            data: {},
+            descendants: [],
+        }),
         new CatalogElement({
             path: 'catalog',
             name: 'catalog',

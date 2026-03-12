@@ -1,4 +1,67 @@
 
-:host {
-    /* font-weight: bolder; */
+:root {
+    --header-height: var(--size-px-9);
+}
+
+.asxs.app {
+    
+    .app.header {
+        position: sticky;
+        top: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--size-px-2);
+        min-height: var(--header-height);
+        box-shadow: var(--shadow-3);
+        padding-inline: var(--size-px-3);
+        z-index: var(--layer-3);
+        background-color: var(--indigo-12);
+        color: var(--gray-0);
+        
+        .header.branding {
+            
+            .branding.title {
+                color: var(--gray-0);
+                text-decoration: none;
+                text-transform: capitalize;
+                font-size: var(--size-5);
+                font-weight: var(--font-weight-8);
+            }
+            
+        }
+        
+        .header.menu {
+            display: flex;
+            justify-content: space-evenly;
+            gap: var(--size-px-3);
+            padding: 0;
+            list-style: none;
+            
+            .menu.item {
+                
+                .item.action {
+                    color: var(--gray-0);
+                    text-decoration: none;
+                    text-transform: uppercase;
+                    font-weight: var(--font-weight-6);
+                }
+                
+            }
+            
+        }
+        
+    }
+    
+    .app.body {
+        padding-block: var(--size-px-3);
+    }
+    
+    .app.footer {
+        min-height: 50dvh;
+        box-shadow: inset 0px 0px 16px -6px black;
+        border-top: solid 1px var(--gray-7);
+        background-color: var(--color-primary);
+    }
+    
 }

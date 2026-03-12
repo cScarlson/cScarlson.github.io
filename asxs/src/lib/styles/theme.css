@@ -14,6 +14,17 @@
     --scroll-smooth: smooth;
 }
 
+:root {
+    --offset-xxs: 0dvw;
+    --offset-xs:  2dvw;
+    --offset-sm:  2dvw;
+    --offset-md:  8dvw;
+    --offset-lg:  8dvw;
+    --offset-xl:  6dvw;
+    --offset-xxl: 8dvw;
+    --offset-fs:  0dvw;  /* fullscreen */
+}
+
 html {
     --text-1: var(--gray-9);
     --text-2: var(--gray-7);
@@ -25,4 +36,11 @@ html {
         --text-2: var(--gray-2);
     }
     
+}
+
+body {}
+
+main {
+    min-height: 100dvh;
+    padding-inline: var(--offset-md);
 }

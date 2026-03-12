@@ -1,23 +1,15 @@
 
 import { customElement, CustomElement } from '@asxs/core';
-import { type State } from '@asxs/core/router';
+import { Route, type State } from '@asxs/core/router';
 import { default as template } from './home.element.html?raw';
 import { default as styles } from './home.element.css?raw';
 
 const { log, warn, error: err } = console;
 
 export const TAGNAME = 'at-home';
-export @customElement(TAGNAME) class HomeElement extends CustomElement {
+export @customElement(TAGNAME) class HomeElement extends Route {
     get ['as:state']() {
-        const { state } = this;
-        const { route } = state;
-        const { id } = route;
-        
-        return { id };
-    }
-    
-    constructor(private state: State) {
-        super();
+        return {};
     }
     
     connectedCallback( x = super.connectedCallback() ) {

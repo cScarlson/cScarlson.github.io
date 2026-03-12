@@ -1,12 +1,16 @@
 
 <div class="asxs app">
-    <main is="as-router">
-        <h1>AsXS</h1>
-        <ul>
-            <li><a href="#/">Home</a></li>
-            <li><a href="#/catalog">Catalog</a></li>
-        </ul>
-    </main>
+    <header class="app header">
+        <div class="header branding">
+            <a class="branding title" href="./">AsXS</a>
+        </div>
+        <menu class="header menu">
+            <li class="menu item"><a class="item action" href="#/">Home</a></li>
+            <li class="menu item"><a class="item action" href="#/catalog">Catalog</a></li>
+        </menu>
+    </header>
+    <main class="app body" is="as-router"></main>
+    <footer class="app footer"></footer>
 </div>
 <!-- <p>The ${speed} brown fox jumped over the lazy ${animal}.</p> -->
 <!-- <iframe src="./v0.0.1/static.red.html" is="as-frameless"></iframe> -->

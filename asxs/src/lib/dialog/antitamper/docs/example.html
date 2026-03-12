@@ -1,11 +1,15 @@
 
-<dialog is="as-dialog-antitamper" open>
+<dialog is="as-dialog-antitamper" open style="position: relative">
     <form class="dialog body" method="dialog">
-        <ul>
-            <li>Open Webkit Devtools Element Inspector</li>
-            <li>Right-Click on this dialog</li>
-            <li>Select "Delete Element"</li>
-        </ul>
-        <p>Observe that the dialog is persistent and resists tampering.</p>
+        <h3>Reproduction</h3>
+        <ol>
+            <li>Open Webkit Devtools Element Inspector.</li>
+            <li>Right-Click on this dialog in the Element Inspector's DOM Tree.</li>
+            <li>Select "Delete Element".</li>
+        </ol>
+        <h3>Expectation</h3>
+        <p>The dialog is persistent and resists tampering by deleting it from the DOM.</p>
+        <h3>Observation</h3>
+        <p>The dialog is persistent and resists tampering by deleting it from the DOM &check;</p>
     </form>
 </dialog>

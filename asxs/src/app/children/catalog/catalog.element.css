@@ -12,6 +12,9 @@
             position: sticky;
             top: var(--header-height);
             box-shadow: var(--shadow-3);
+            margin-block: var(--size-px-5);
+            padding-block: var(--size-px-3);
+            padding-inline: var(--offset);
             background-color: var(--color-primary);
             
             .header.main {
@@ -19,7 +22,6 @@
                 justify-content: space-between;
                 align-items: center;
                 gap: var(--size-px-2);
-                padding: var(--size-px-2);
                 
                 .main.title {
                     margin: 0;
@@ -104,7 +106,6 @@
             }
             
             .header.alert {
-                margin-inline: var(--size-px-2);
                 background-color: var(--color-light);
                 
                 .alert.caption {
@@ -136,7 +137,6 @@
                                 list-style-type: none;
                                 
                                 .menu.item {
-                                    border: solid 1px tomato;
                                     
                                     .item.control {
                                         cursor: pointer;

@@ -1,0 +1,29 @@
+
+<body>
+    <meta name="partial" />
+    <template>
+        <style is="as-css-import" target="buttons"></style>
+        <div class="home hero">
+            <h1 class="hero title">Hero</h1>
+            <button is="as-button">Action</button>
+        </div>
+    </template>
+    <style>
+        .home.hero {
+            
+            .hero.title {
+                text-transform: uppercase;
+            }
+            
+        }
+    </style>
+    <script type="module">
+        document.addEventListener('red:loaded', function init({ data: { host } }) {
+            const { log } = console;
+            const title = host.querySelector('.hero.title');
+            
+            log(`@PARTIAL:LOADED -- INITIALIZED`, host, title);
+            document.removeEventListener('red:loaded', init);
+        });
+    </script>
+</body>

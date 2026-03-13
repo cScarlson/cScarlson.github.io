@@ -23,6 +23,7 @@
     --offset-xl:  6dvw;
     --offset-xxl: 8dvw;
     --offset-fs:  0dvw;  /* fullscreen */
+    --offset: var(--offset-md);  /* default */
 }
 
 html {
@@ -42,5 +43,4 @@ body {}
 
 main {
     min-height: 100dvh;
-    padding-inline: var(--offset-md);
 }

@@ -10,6 +10,17 @@ This document describes the Frameless framework, its intention, behavior, and us
 ```
 > _Fetches and loads a Remote Element Definition._
 
+> _By default, Remote Element Definitions are loaded into a the container's LightDOM. Both the publisher and consumer can signal to Frameless to load the RED into a ShadowRoot._
+
+```html
+<iframe src="somewhere/public/some.red.html" is="as-frameless" data-content="shadow"></iframe>
+```
+```html
+<body>
+    <meta name="{tagName}" content="shadow" />
+    ...
+</body>
+```
 
 ## Usage
 
@@ -116,12 +127,11 @@ class SomeElement extends HTMLElement {
     #document
 </iframe>
 <as-red>
-    #shadow-root (open)
-        <my-element>
-            #shadow-root (open)
-                <style>:host { ... }</style>
-                <h1>Title</h2>
-        </my-element>
+    <my-element>
+        #shadow-root (open)
+            <style>:host { ... }</style>
+            <h1>Title</h2>
+    </my-element>
 </as-red>
 ```
 > _The original `iframe` remains in DOM as the RED could still be executing operations tied to the child frame's Browsing Context._
@@ -158,14 +168,11 @@ Static REDs can be defined by using the `partial` keyword on the `meta` element.
             "content": "Disclaimer"
         }
     </script>
-    <script>
-        const { log } = console;
-        const template = document.querySelector('#template');
-        const article = template.content.querySelector('.static.partial');
-        const h1 = article.querySelector('h1');
-        
-        h1.innerHTML += '!';
-        log(`@STATIC/PARTIAL`, template, article);
+    <script type="module">
+        document.addEventListener('red:loaded', function init({ data: { host } }) {
+            const title = host.querySelector('.hero.title');
+            document.removeEventListener('red:loaded', init);
+        });
     </script>
 </body>
 ```
@@ -173,25 +180,21 @@ Static REDs can be defined by using the `partial` keyword on the `meta` element.
 #### Output
 ```html
 <as-red>
-    #shadow-root (open)
-        <my-element>
-            #shadow-root (open)
-                <style>
-                    .static.partial {
-                        color: darkcyan;
-                        cursor: not-allowed;
-                        &::after {
-                            content: "Disclaimer";
-                        }
-                    }
-                </style>
-                <article class="static partial">
-                    <h1>Static RED Partial!</h1>
-                    <h2>Terms And Conditions</h2>
-                    <p>Signer, Avery Juan, agrees to give up their First Child.</p>
-                    ::after ("Disclaimer")
-                </article>
-        </my-element>
+    <style>
+        .static.partial {
+            color: darkcyan;
+            cursor: not-allowed;
+            &::after {
+                content: "Disclaimer";
+            }
+        }
+    </style>
+    <article class="static partial">
+        <h1>Static RED Partial!</h1>
+        <h2>Terms And Conditions</h2>
+        <p>Signer, Avery Juan, agrees to give up their First Child.</p>
+        ::after ("Disclaimer")
+    </article>
 </as-red>
 ```
 
@@ -301,6 +304,8 @@ The implications of this are significant. It means that, without even the need t
 
 
 ## Future Goals & Wishlist
+1. Allow REDs to signal to host whether or not to use a ShadowDOM (call `this.attachShadow`).
+    - This would allow for 
 1. Performant `script[is="as-typescript"]` element.
 1. VSCode plugin for syntax highlighting of `.red.html` files.
 1. Process TS @paths from scripts/links/sources in `.red.html` files (Plugin.resolveId?).

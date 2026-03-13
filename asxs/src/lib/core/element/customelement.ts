@@ -1,8 +1,6 @@
 
-import type { ToDo } from './types';
+import type { ToDo } from '@asxs/core/types';
 
-const { parent } = window;
-// const { customElements } = parent as any;
 const { log } = console;
 
 export function customElement(tagName: string, options?: ElementDefinitionOptions | undefined) {

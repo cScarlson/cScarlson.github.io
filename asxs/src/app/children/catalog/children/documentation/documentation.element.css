@@ -3,8 +3,7 @@
 
 :host {
     display: block;
-    margin-block: 4px;
-    padding: var(--size-px-2) var(--size-px-3);
+    padding-inline: var(--offset);
     
     .catalog.example {
         

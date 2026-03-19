@@ -2,7 +2,7 @@
 <body>
     <meta name="partial" />
     <template>
-        <div class="hook article">
+        <div class="section article hook">
             <header class="article header">
                 <h1>As Simple As It Gets</h1>
                 <h2>Button is as button does... literally.</h2>
@@ -12,19 +12,25 @@
             </div>
             <footer class="article footer"></footer>
         </div>
+        <footer class="section footer">
+            <p class="footer content">
+                You can use AsXS as just a pure CSS SDK with your own stylistic overrides or you can define a Custom Element 
+                for it to bootstrap your own behavior. Have a look at the 
+                <a class="content link more" href="#/catalog">Component Catalog</a> to learn more.
+            </p>
+        </footer>
     </template>
     <style>
-        .mfe.home.hook {
+        .body.section.hook {
             display: block;
-            box-shadow: var(--body-section-shadow);
-            padding-block: var(--size-px-5);
-            padding-inline: var(--offset);
-            background-color: var(--gray-1);
-            color: var(--blue-7);
-            
-            .hook.article {
                 
-                .article.header {}
+            .section.header {}
+            
+            .section.article.hook {
+                box-shadow: var(--body-section-shadow);
+                padding-block: var(--size-px-5);
+                background-color: var(--gray-1);
+                color: var(--blue-7);
                 
                 .article.body {
                     
@@ -42,9 +48,9 @@
                     
                 }
                 
-                .article.footer {}
-                
             }
+            
+            .section.footer {}
             
         }
     </style>
@@ -60,8 +66,8 @@
             const { log } = console;
             const { classList } = host;
             
-            classList.add('mfe');
-            classList.add('home');
+            classList.add('body');
+            classList.add('section');
             classList.add('hook');
             log(`@BUTTON EXAMPLE`, host);
             contentDocument.removeEventListener('red:loaded', execute);

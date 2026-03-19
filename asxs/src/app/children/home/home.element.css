@@ -1,7 +1,7 @@
 
-.app.home {
+.app.page.home {
     
-    .home.header {
+    .page.header {
         padding-inline: var(--offset);
         
         .header.title {
@@ -10,19 +10,11 @@
         
     }
     
-    .home.body {
+    .page.body {
         
         .body.section {
             --body-section-shadow: inset 0 0 16px -6px black;
             min-height: 400px;
-            
-            .section.header, .section.footer {
-                /* margin-block-end: var(--size-px-8); */
-                /* padding-block: var(--size-px-3); */
-                .header.content, .footer.content {
-                    padding-inline: var(--offset);
-                }
-            }
             
             .section.header {
                 background-color: white;
@@ -33,11 +25,15 @@
                 margin-block: var(--size-px-8);
             }
             
+            .section.header, .section.article, .section.footer {
+                padding-inline: var(--offset);
+            }
+            
         }
         
     }
     
-    .home.footer {
+    .page.footer {
         min-height: 200px;
         padding-inline: var(--offset);
     }

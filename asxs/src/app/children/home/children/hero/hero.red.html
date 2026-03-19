@@ -43,12 +43,12 @@
                     <h3 class="subheader content mfe">As MICROFRONTENDS</h3>
                 </header>
                 <div class="hero body">
-                    <p class="body desciption x css">Use as just a CSS SDK.</p>
-                    <p class="body desciption x js">Bootstrap behavior onto CSS components with Custom Elements.</p>
-                    <p class="body desciption x ts">Compatible with TypeScript.</p>
-                    <p class="body desciption xx xs">A lot in tiny packages.</p>
-                    <p class="body desciption xs ext">Opt-In or Opt-Out of anything.</p>
-                    <p class="body desciption xs excess">A full SDK for Frontend Development.</p>
+                    <p class="body description x css">Use as just a CSS SDK.</p>
+                    <p class="body description x js">Bootstrap behavior onto CSS components with Custom Elements.</p>
+                    <p class="body description x ts">Compatible with TypeScript.</p>
+                    <p class="body description xs extra">A lot in tiny packages.</p>
+                    <p class="body description xs ext">Opt-In or Opt-Out of anything.</p>
+                    <p class="body description xs excess">A full SDK for Frontend Development.</p>
                 </div>
                 <footer class="hero footer">
                     <button is="as-button">Action</button>
@@ -57,164 +57,197 @@
         </div>
     </template>
     <style>
-        as-red[data-type="hero"] {
-            background-color: inherit;
-        }
-        .home.hero {
-            border: solid 1px tomato;
-            display: flex;
-            flex-direction: column-reverse;
-            color: var(--gray-0);
+        .mfe.home {
             background-color: inherit;
             
-            .hero.wrapper {
-                display: grid;
-                grid-template: 
-                    "aaaaaaaa bbbbbbbb" var(--size-px-12)
-                    "cccccccc cccccccc" 1fr 
-                    "cccccccc cccccccc" 1fr 
-                    ". dddddddd" 0.5fr 
-                    / 1fr 1fr
-                ;
-                gap: var(--size-px-2) var(--size-px-5);
-                background-color: inherit;
-                > * { border: solid 1px tomato; }
-            }
-            
-            .hero.target {
-                /* display: none; */
-                &.content:checked {
-                    &:is(.x) {
-                        & ~ .hero.wrapper .hero.subheader .subheader.content.x {
-                            translate: 0 0;
-                        }
-                        &:is(.detail.start) {
-                            & ~ .hero.wrapper .hero.subheader .subheader.content.x .detail.wrapper .content.detail.start {
+            .home.hero {
+                /* border: solid 1px tomato; */
+                display: flex;
+                flex-direction: column-reverse;
+                color: var(--gray-0);
+                /* background-color: inherit; */
+                
+                .hero.wrapper {
+                    display: grid;
+                    grid-template: 
+                        "aaaaaaaa bbbbbbbb" var(--size-px-12)
+                        "cccccccc cccccccc" 1fr 
+                        "cccccccc cccccccc" 1fr 
+                        ". dddddddd" 0.5fr 
+                        / 1fr 1fr
+                    ;
+                    gap: var(--size-px-2) var(--size-px-5);
+                    /* background-color: inherit; */
+                    /* > * { border: solid 1px tomato; } */
+                }
+                
+                .hero.target {
+                    display: none;
+                    &.content:checked {
+                        &:is(.x) {
+                            & ~ .hero.wrapper .hero.subheader .subheader.content.x {
                                 translate: 0 0;
+                                z-index: var(--layer-2);
+                            }
+                            &:is(.detail.start) {
+                                & ~ .hero.wrapper .hero.subheader .subheader.content.x .detail.wrapper .content.detail.start {
+                                    translate: 0 0;
+                                    z-index: var(--layer-2);
+                                }
+                            }
+                            &:is(.detail.css) {
+                                & ~ .hero.wrapper .hero.subheader .subheader.content.x .detail.wrapper .content.detail.css {
+                                    translate: 0 0;
+                                    z-index: var(--layer-2);
+                                }
+                                & ~ .hero.wrapper .hero.body .body.description.x.css {
+                                    opacity: 1;
+                                }
+                            }
+                            &:is(.detail.js) {
+                                & ~ .hero.wrapper .hero.subheader .subheader.content.x .detail.wrapper .content.detail.js {
+                                    translate: 0 0;
+                                    z-index: var(--layer-2);
+                                }
+                                & ~ .hero.wrapper .hero.body .body.description.x.js {
+                                    opacity: 1;
+                                }
+                            }
+                            &:is(.detail.ts) {
+                                & ~ .hero.wrapper .hero.subheader .subheader.content.x .detail.wrapper .content.detail.ts {
+                                    translate: 0 0;
+                                    z-index: var(--layer-2);
+                                }
+                                & ~ .hero.wrapper .hero.body .body.description.x.ts {
+                                    opacity: 1;
+                                }
                             }
                         }
-                        &:is(.detail.css) {
-                            & ~ .hero.wrapper .hero.subheader .subheader.content.x .detail.wrapper .content.detail.css {
+                        &:is(.xs) {
+                            & ~ .hero.wrapper .hero.subheader .subheader.content.xs {
                                 translate: 0 0;
+                                z-index: var(--layer-2);
+                            }
+                            &:is(.detail.start) {
+                                & ~ .hero.wrapper .hero.subheader .subheader.content.xs .detail.wrapper .content.detail.start {
+                                    translate: 0 0;
+                                    z-index: var(--layer-2);
+                                }
+                            }
+                            &:is(.detail.extra) {
+                                & ~ .hero.wrapper .hero.subheader .subheader.content.xs .detail.wrapper .content.detail.extra {
+                                    translate: 0 0;
+                                    z-index: var(--layer-2);
+                                }
+                                & ~ .hero.wrapper .hero.body .body.description.xs.extra {
+                                    opacity: 1;
+                                }
+                            }
+                            &:is(.detail.ext) {
+                                & ~ .hero.wrapper .hero.subheader .subheader.content.xs .detail.wrapper .content.detail.ext {
+                                    translate: 0 0;
+                                    z-index: var(--layer-2);
+                                }
+                                & ~ .hero.wrapper .hero.body .body.description.xs.ext {
+                                    opacity: 1;
+                                }
+                            }
+                            &:is(.detail.excess) {
+                                & ~ .hero.wrapper .hero.subheader .subheader.content.xs .detail.wrapper .content.detail.excess {
+                                    translate: 0 0;
+                                    z-index: var(--layer-2);
+                                }
+                                & ~ .hero.wrapper .hero.body .body.description.xs.excess {
+                                    opacity: 1;
+                                }
                             }
                         }
-                        &:is(.detail.js) {
-                            & ~ .hero.wrapper .hero.subheader .subheader.content.x .detail.wrapper .content.detail.js {
+                        &:is(.mfe) {
+                            & ~ .hero.wrapper .hero.subheader .subheader.content.mfe {
                                 translate: 0 0;
+                                z-index: var(--layer-2);
                             }
-                        }
-                        &:is(.detail.ts) {
-                            & ~ .hero.wrapper .hero.subheader .subheader.content.x .detail.wrapper .content.detail.ts {
-                                translate: 0 0;
-                            }
-                        }
-                    }
-                    &:is(.xs) {
-                        & ~ .hero.wrapper .hero.subheader .subheader.content.xs {
-                            translate: 0 0;
-                        }
-                        &:is(.detail.start) {
-                            & ~ .hero.wrapper .hero.subheader .subheader.content.xs .detail.wrapper .content.detail.start {
-                                translate: 0 0;
-                            }
-                        }
-                        &:is(.detail.extra) {
-                            & ~ .hero.wrapper .hero.subheader .subheader.content.xs .detail.wrapper .content.detail.extra {
-                                translate: 0 0;
-                            }
-                        }
-                        &:is(.detail.ext) {
-                            & ~ .hero.wrapper .hero.subheader .subheader.content.xs .detail.wrapper .content.detail.ext {
-                                translate: 0 0;
-                            }
-                        }
-                        &:is(.detail.excess) {
-                            & ~ .hero.wrapper .hero.subheader .subheader.content.xs .detail.wrapper .content.detail.excess {
-                                translate: 0 0;
-                            }
-                        }
-                    }
-                    &:is(.mfe) {
-                        & ~ .hero.wrapper .hero.subheader .subheader.content.mfe {
-                            translate: 0 0;
                         }
                     }
                 }
-            }
-            
-            .hero.header {
-                grid-area: aaaaaaaa;
                 
-                .header.title {
-                    font-family: var(--font-geometric-humanist);
-                }
-                
-                .header.subtitle {}
-                
-            }
-            
-            .hero.subheader {
-                grid-area: bbbbbbbb;
-                position: relative;
-                overflow: hidden;
-                background-color: inherit;
-                overflow: hidden;
-                
-                .subheader.content {
-                    /* border: solid 10px white; */
-                    position: absolute;
-                    inset: 0;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    gap: var(--size-px-1);
-                    margin: 0;
-                    width: 100%;
-                    height: 100%;
-                    translate: 100% 0;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    background-color: inherit;
-                    transition: translate 1000ms 0ms ease-in-out;
+                .hero.header {
+                    grid-area: aaaaaaaa;
                     
-                    .detail.wrapper {
-                        /* border: solid 1px tomato; */
-                        position: relative;
-                        display: inline-flex;
+                    .header.title {
+                        font-family: var(--font-geometric-humanist);
+                    }
+                    
+                    .header.subtitle {}
+                    
+                }
+                
+                .hero.subheader {
+                    grid-area: bbbbbbbb;
+                    position: relative;
+                    /* background-color: inherit; */
+                    /* overflow: hidden; */
+                    
+                    .subheader.content {
+                        /* border: solid 10px white; */
+                        position: absolute;
+                        inset: 0;
+                        display: flex;
                         justify-content: center;
                         align-items: center;
-                        height: inherit;
-                        &.x {
-                            width: var(--size-px-5);
+                        gap: var(--size-px-1);
+                        margin: 0;
+                        width: 100%;
+                        height: 100%;
+                        translate: 100% 0;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        /* background-color: inherit; */
+                        transition: translate 1000ms 0ms ease-in-out;
+                        
+                        .detail.wrapper {
+                            /* border: solid 1px tomato; */
+                            position: relative;
+                            display: inline-flex;
+                            justify-content: center;
+                            align-items: center;
+                            height: inherit;
+                            &.x {
+                                width: var(--size-px-5);
+                            }
+                            &.xs {
+                                width: var(--size-px-12);
+                            }
                         }
-                        &.xs {
-                            width: var(--size-px-12);
+                        
+                        .content.detail {
+                            position: absolute;
+                            translate: 0 -500%;
+                            transition: translate 250ms 0ms var(--ease-in-out-3);
+                            text-transform: uppercase;
                         }
-                    }
-                    
-                    .content.detail {
-                        position: absolute;
-                        translate: 0 -500%;
-                        transition: translate 250ms 0ms var(--ease-in-out-3);
-                        text-transform: uppercase;
+                        
                     }
                     
                 }
                 
-            }
-            
-            .hero.body {
-                grid-area: cccccccc;
+                .hero.body {
+                    grid-area: cccccccc;
+                    /* padding: var(--size-px-5); */
+                    
+                    .body.description {
+                        opacity: 0.5;
+                    }
+                    
+                }
                 
-                .body.description {}
+                .hero.footer {
+                    grid-area: dddddddd;
+                    display: flex;
+                    justify-content: end;
+                    align-items: center;
+                }
                 
-            }
-            
-            .hero.footer {
-                grid-area: dddddddd;
-                display: flex;
-                justify-content: end;
-                align-items: center;
             }
             
         }
@@ -222,8 +255,10 @@
     <script type="module">
         document.addEventListener('red:loaded', (new class {
             DELAY = (1000 * 1);
+            host = document.createElement('error');
             
             #cycle = setTimeout.bind(window, (targets, target, ...more) => {
+                if (this.host.matches(':hover')) return this.#cycle(targets, target, ...more);
                 if (!target) return this.#cycle(targets, ...targets);
                 const { log } = console;
                 
@@ -234,10 +269,13 @@
             
             init = ({ data: { host } }) => {
                 const { log } = console;
+                const { classList } = host;
                 const title = host.querySelector('.hero.title');
                 const targets = host.querySelectorAll('.home.hero .hero.target.content');
                 
-                host.dataset.type = 'hero';
+                this.host = host;
+                classList.add('mfe');
+                classList.add('home');
                 log(`@PARTIAL:LOADED -- INITIALIZED`, host);
                 this.#cycle(targets, ...targets);
                 document.removeEventListener('red:loaded', this.init);

@@ -13,10 +13,16 @@
     .home.body {
         
         .body.section {
+            --body-section-shadow: inset 0 0 16px -6px black;
             min-height: 400px;
-            box-shadow: inset 0 0 16px -6px black;
-            padding-inline: var(--offset);
-            background-color: var(--blue-8);
+            
+            .section.header, .section.footer {
+                /* margin-block-end: var(--size-px-8); */
+                /* padding-block: var(--size-px-3); */
+                .header.content, .footer.content {
+                    padding-inline: var(--offset);
+                }
+            }
             
             .section.header {
                 background-color: white;
@@ -24,6 +30,7 @@
             
             .section.footer {
                 background-color: white;
+                margin-block: var(--size-px-8);
             }
             
         }

@@ -40,7 +40,7 @@
                             <span class="content detail excess">Excess</span>
                         </span>
                     </h3>
-                    <h3 class="subheader content mfe">As MICROFRONTENDS</h3>
+                    <h3 class="subheader content mfe">As MICRO FRONTENDS</h3>
                 </header>
                 <div class="hero body">
                     <p class="body description x css">Use as just a CSS SDK.</p>
@@ -57,8 +57,25 @@
         </div>
     </template>
     <style>
-        .mfe.home {
-            background-color: inherit;
+        .mfe.home.hero {
+            position: relative;
+            display: block;
+            box-shadow: var(--body-section-shadow);
+            padding-inline: var(--offset);
+            background-color: var(--blue-8);
+            overflow: hidden;
+            cursor: help;
+            &:hover::after {
+                content: "Paused";
+                position: absolute;
+                top: var(--size-px-2);
+                right: var(--size-px-2);
+                border-radius: var(--radius-2);
+                padding: var(--size-px-1) var(--size-px-2);
+                background-color: var(--gray-12);
+                color: var(--gray-0);
+                z-index: var(--layer-2);
+            }
             
             .home.hero {
                 /* border: solid 1px tomato; */
@@ -216,6 +233,7 @@
                                 width: var(--size-px-5);
                             }
                             &.xs {
+                                justify-content: start;
                                 width: var(--size-px-12);
                             }
                         }
@@ -253,7 +271,9 @@
         }
     </style>
     <script type="module">
-        document.addEventListener('red:loaded', (new class {
+        const { document: contentDocument } = window;
+        
+        contentDocument.addEventListener('red:loaded', (new class {
             DELAY = (1000 * 1);
             host = document.createElement('error');
             
@@ -263,22 +283,22 @@
                 const { log } = console;
                 
                 target.checked = true;
-                log(`#cycle`, target);
+                // log(`#cycle`, target);
                 this.#cycle(targets, ...more);
             }, this.DELAY);
             
             init = ({ data: { host } }) => {
                 const { log } = console;
                 const { classList } = host;
-                const title = host.querySelector('.hero.title');
                 const targets = host.querySelectorAll('.home.hero .hero.target.content');
                 
                 this.host = host;
                 classList.add('mfe');
                 classList.add('home');
+                classList.add('hero');
                 log(`@PARTIAL:LOADED -- INITIALIZED`, host);
                 this.#cycle(targets, ...targets);
-                document.removeEventListener('red:loaded', this.init);
+                contentDocument.removeEventListener('red:loaded', this.init);
             };
             
         }).init);

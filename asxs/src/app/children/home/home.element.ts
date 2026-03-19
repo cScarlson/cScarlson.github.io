@@ -1,7 +1,8 @@
 
-import { customElement, CustomElement } from '@asxs/core';
-import { Route, type State } from '@asxs/core/router';
+import { customElement } from '@asxs/core';
+import { Route } from '@asxs/core/router';
 import { default as hero } from './children/hero/hero.red.html?url';
+import { default as hook } from './children/example/button.red.html?url';
 import { default as template } from './home.element.html?raw';
 import { default as styles } from './home.element.css?raw';
 
@@ -10,7 +11,7 @@ const { log, warn, error: err } = console;
 export const TAGNAME = 'at-home';
 export @customElement(TAGNAME) class HomeElement extends Route {
     get ['as:state']() {
-        return { hero };
+        return { hero, hook };
     }
     
     connectedCallback( x = super.connectedCallback() ) {

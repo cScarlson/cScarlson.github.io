@@ -31,6 +31,7 @@ html {
     --text-2: var(--gray-7);
     font-family: system-ui;
     scroll-behavior: var(--scroll-smooth);
+    scrollbar-width: thin;
 
     @media (--OSdark) {
         --text-1: var(--gray-1);

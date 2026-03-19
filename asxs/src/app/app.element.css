@@ -54,7 +54,7 @@
     }
     
     .app.body {
-        padding-block: var(--size-px-3);
+        /* padding-block: var(--size-px-3); */
     }
     
     .app.footer {

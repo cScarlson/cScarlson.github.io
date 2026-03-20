@@ -2,48 +2,36 @@
 <body>
     <meta name="partial" />
     <template>
-        <div class="section article frameless">
+        <div class="section article javascript">
             <header class="article header">
-                <h1>As A Micro Frontend</h1>
-                <p>Frameless iframes for your Serverless servers.</p>
+                <h1>As a JavaScript Framework</h1>
+                <p>Did we say this thing is super extensible yet?</p>
             </header>
             <div class="article body">
-                <pre class="body example"><code class="example code">${usage}</code></pre>
+                <p>Simply register Custom Element definitions for existing CSS components to bootstrap new behavior.</p>
             </div>
             <footer class="article footer"></footer>
         </div>
         <footer class="section footer">
             <div class="footer content">
                 <p>
-                    REDs (Remote Element Definitions) use <code>.red.html</code> files that follow the same structure as any 
-                    other RPF (Rapid Prototyping Framework) syntax, such as in Svelte or Vue, and they use a minimal protocol 
-                    that allows any component to be consumed by any producer over The Web using CORS. Components can be produced 
-                    as Custom Element Web Components that auto-bootstrap, simple partials for static content, or anything in 
-                    between.
-                </p>
-            </div>
-            <div class="footer content">
-                <h2 class="content title">Kind of a Big Deal</h2>
-                <p>
-                    This means any site or app can consume any component on The Web. It is like having a "Federated Wiki", but 
-                    for components as opposed to just content. In fact, each section in this page uses Frameless<sup>&trade;</sup>, 
-                    AsXS's faculty for consuming Micro Frontends. Open Chrome Devtools and see for yourself.
+                    Just want the CSS framework? That's OK too.
                 </p>
             </div>
         </footer>
     </template>
     <style>
-        .body.section.frameless {
+        .body.section.javascript {
             display: block;
             margin-block: var(--size-px-10);
                 
             .section.header {}
             
-            .section.article.frameless {
+            .section.article.javascript {
                 box-shadow: var(--body-section-shadow);
                 padding-block: var(--size-px-5);
                 background-color: var(--gray-1);
-                color: var(--purple-6);
+                color: var(--blue-8);
                 
                 .article.body {
                     
@@ -66,7 +54,7 @@
             .section.footer {
                 .footer.content {
                     .content.title {
-                        color: var(--purple-6);
+                        color: var(--blue-8);
                     }
                 }
             }
@@ -75,7 +63,7 @@
     </style>
     <script type="application/json">
         {
-            "usage": "&lt;iframe src=\"./mfes/v1/my.red.html\" is=\"as-frameless\"&gt;&lt;/iframe&gt;"
+            "usage": "&lt;iframe src=\"./mfes/v1/my.red.html\" is=\"as-javascript\"&gt;&lt;/iframe&gt;"
         }
     </script>
     <script>
@@ -87,7 +75,7 @@
             
             classList.add('body');
             classList.add('section');
-            classList.add('frameless');
+            classList.add('javascript');
             log(`@BUTTON EXAMPLE`, host);
             contentDocument.removeEventListener('red:loaded', execute);
         });

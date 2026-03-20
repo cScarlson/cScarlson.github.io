@@ -1,0 +1,98 @@
+
+<body>
+    <meta name="partial" />
+    <template>
+        <div class="section article extrasmall">
+            <header class="article header">
+                <h1>XS - Extra Small</h1>
+                <p>Every package built to consume at minimal cost to your bundle size.</p>
+            </header>
+            <div class="article body">
+                Most utilities are less than 50 lines of code without sacrificing capability. These include packages like
+                <ul>
+                    <li>Custom Elements</li>
+                    <li>Frameless<sup>&trade;</sup></li>
+                    <li>Reactive Store</li>
+                    <li>Internationalization / Localization</li>
+                    <li>Mutation Observer Hooks</li>
+                    <li>Intersection Observer Hooks</li>
+                    <li>Hash Router</li>
+                    <li>Utilities</li>
+                    <li>Gang Of Four Classical Design Patterns</li>
+                    <li>Classical Algorithms & Data-Structures</li>
+                    <li>Much more</li>
+                </ul>
+            </div>
+            <footer class="article footer"></footer>
+        </div>
+        <footer class="section footer">
+            <div class="footer content">
+                <p>
+                    If you don't need it, it doesn't way you down. AsXS uses a CSS-First Approach and let's you decide what you need. 
+                    Everything is overridable and has an escape hatch so you can jailbreak it completely if you need more custom 
+                    behavior.
+                </p>
+            </div>
+        </footer>
+    </template>
+    <style>
+        .body.section.extrasmall {
+            display: block;
+            margin-block: var(--size-px-10);
+                
+            .section.header {}
+            
+            .section.article.extrasmall {
+                box-shadow: var(--body-section-shadow);
+                padding-block: var(--size-px-5);
+                background-color: var(--gray-1);
+                color: var(--blue-7);
+                
+                .article.body {
+                    
+                    .body.example {
+                        /* border: solid 1px tomato; */
+                        padding: var(--size-px-3) var(--size-px-4);
+                        background-color: var(--gray-8);
+                        color: var(--gray-1);
+                        
+                        .example.code {
+                            /* border: solid 1px tomato; */
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+            
+            .section.footer {
+                .footer.content {
+                    .content.title {
+                        color: var(--purple-6);
+                    }
+                }
+            }
+            
+        }
+    </style>
+    <script type="application/json">
+        {
+            "usage": "&lt;iframe src=\"./mfes/v1/my.red.html\" is=\"as-extrasmall\"&gt;&lt;/iframe&gt;"
+        }
+    </script>
+    <script>
+        const { document: contentDocument } = window;
+        
+        contentDocument.addEventListener('red:loaded', function execute({ data: { host } }) {
+            const { log } = console;
+            const { classList } = host;
+            
+            classList.add('body');
+            classList.add('section');
+            classList.add('extrasmall');
+            log(`@BUTTON EXAMPLE`, host);
+            contentDocument.removeEventListener('red:loaded', execute);
+        });
+    </script>
+</body>

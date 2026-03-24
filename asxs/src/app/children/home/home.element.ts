@@ -39,6 +39,7 @@ export @customElement(TAGNAME) class HomeElement extends Route {
     
     render(): string {
         return `
+            ${ super.render() }
             <style>${styles}</style>
             ${template}
         `;

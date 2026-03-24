@@ -1,8 +1,8 @@
 
+import type { ToDo } from '@asxs/core/types';
 import { CustomElement, customElement } from '@asxs/core';
 import { default as template } from './app.element.html?raw';
 import { default as styles } from './app.element.css?raw';
-import '@asxs/core/router';
 import '@app/core/router';
 
 const { log } = console;

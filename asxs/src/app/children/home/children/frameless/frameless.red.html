@@ -2,7 +2,7 @@
 <body>
     <meta name="partial" />
     <template>
-        <div class="section article frameless">
+        <at-route id="/frameless" class="section article frameless">
             <header class="article header">
                 <h1>As A Micro Frontend Framework</h1>
                 <p>Frameless<sup>&trade;</sup> iframes for your Serverless servers.</p>
@@ -11,7 +11,7 @@
                 <pre class="body example"><code class="example code">${usage}</code></pre>
             </div>
             <footer class="article footer"></footer>
-        </div>
+        </at-route>
         <footer class="section footer">
             <div class="footer content">
                 <p>
@@ -95,7 +95,6 @@
             classList.add('body');
             classList.add('section');
             classList.add('frameless');
-            log(`@BUTTON EXAMPLE`, host);
             contentDocument.removeEventListener('red:loaded', execute);
         });
     </script>

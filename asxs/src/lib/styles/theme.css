@@ -12,6 +12,7 @@
 
 :root {
     --scroll-smooth: smooth;
+    --scroll-margin-block: var(--header-height);
 }
 
 :root {
@@ -44,4 +45,8 @@ body {}
 
 main {
     min-height: 100dvh;
+}
+
+:target {
+    scroll-margin-block: var(--scroll-margin-block);
 }

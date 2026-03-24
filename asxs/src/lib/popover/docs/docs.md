@@ -11,7 +11,7 @@ ${ escape(setup) }
 ```
 
 <style>
-    .example.action {
+    .catalog.example.action {
         --size: var(--size-px-9);
         --display: flex;
         display: var(--display);
@@ -23,7 +23,7 @@ ${ escape(setup) }
         background-color: var(--color-primary);
         font-size: var(--font-size-5);
     }
-    .example.popover {
+    .catalog.example.popover {
         min-width: 320px;
     }
 </style>

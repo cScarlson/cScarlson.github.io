@@ -2,7 +2,7 @@
 <body>
     <meta name="partial" />
     <template>
-        <div class="section article hook">
+        <at-route id="/example" class="section article hook">
             <header class="article header">
                 <h1>As Simple As It Gets</h1>
                 <h2>Button is as button does... literally.</h2>
@@ -11,7 +11,7 @@
                 <pre class="body example"><code class="example code">${button}</code></pre>
             </div>
             <footer class="article footer"></footer>
-        </div>
+        </at-route>
         <footer class="section footer">
             <p class="footer content">
                 You can use AsXS as just a pure CSS SDK with your own stylistic overrides or you can define a Custom Element 
@@ -69,7 +69,6 @@
             classList.add('body');
             classList.add('section');
             classList.add('hook');
-            log(`@BUTTON EXAMPLE`, host);
             contentDocument.removeEventListener('red:loaded', execute);
         });
     </script>

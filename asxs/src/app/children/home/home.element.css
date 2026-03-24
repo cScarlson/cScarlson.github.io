@@ -21,6 +21,7 @@
             }
             
             .section.footer {
+                min-height: 50vh;
                 background-color: white;
                 margin-block: var(--size-px-8);
             }

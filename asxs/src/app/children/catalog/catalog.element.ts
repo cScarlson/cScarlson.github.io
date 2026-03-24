@@ -69,6 +69,7 @@ export @customElement(TAGNAME) class CatalogElement extends Route {
     
     render(): string {
         return `
+            ${ super.render() }
             <style>${styles}</style>
             ${template}
         `;

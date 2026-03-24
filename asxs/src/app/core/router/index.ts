@@ -1,2 +1,2 @@
 
-export { routes } from './routes';
+import './routes';

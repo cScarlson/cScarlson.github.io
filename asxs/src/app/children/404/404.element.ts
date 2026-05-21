@@ -1,6 +1,6 @@
 
+import type { ToDo } from '@asxs/core/types';
 import { customElement, CustomElement } from '@asxs/core';
-import { type State } from '@asxs/core/router';
 import { default as template } from './404.element.html?raw';
 import { default as styles } from './404.element.css?raw';
 
@@ -16,7 +16,7 @@ export @customElement(TAGNAME) class Four04Element extends CustomElement {
         return { id };
     }
     
-    constructor(private state: State) {
+    constructor(private state: ToDo) {
         super();
     }
     

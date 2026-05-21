@@ -1,9 +1,11 @@
 
+import { type ToDo } from '@asxs/core/types';
+
 const { log } = console;
 
 export class SharedWorker {
-    worker = null;
-    medium = new EventTarget();
+    worker: ToDo = null;
+    medium: ToDo = new EventTarget();
     
     constructor({ worker }) {
         const { port } = worker;

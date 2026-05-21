@@ -1,10 +1,12 @@
 
+import type { ToDo } from '@asxs/core/types';
+
 const { log } = console
 const SOURCE = 'cscarlson.github.io';
 
 class BroadcastSingular {
-    medium = new EventTarget();
-    channel = null;
+    medium: ToDo = new EventTarget();
+    channel: ToDo = null;
     
     constructor(options) {
         const { name } = { name: 'singular', ...options };
@@ -84,9 +86,9 @@ class BroadcastMultiple {
 }
 
 class Broadcast {
-    medium = null;
+    medium: ToDo = null;
     
-    constructor({ name } = {}) {
+    constructor({ name } = {} as ToDo) {
         const medium = name ? new BroadcastSingular({ name }) : new BroadcastMultiple();
         this.medium = medium;
     }

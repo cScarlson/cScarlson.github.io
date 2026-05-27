@@ -52,9 +52,9 @@
                 </div>
                 <footer class="body footer">
                     <a class="footer action example" is="as-button" href="#/example">At a glance</a>
-                    <a class="footer action frameless" is="as-button" href="#/frameless">Frameless<sup>&trade;</sup></a>
                     <a class="footer action extensible" is="as-button" href="#/extensible">Extensibility</a>
-                    <a class="footer action css" is="as-button" href="#/css">Simplicity</a>
+                    <a class="footer action frameless" is="as-button" href="#/frameless">Frameless<sup>&trade;</sup></a>
+                    <!-- <a class="footer action css" is="as-button" href="#/css">Simplicity</a> -->
                     <!-- <a class="footer action BOOKMARK" is="as-button" href="#/BOOKMARK">BOOKMARK</a> -->
                 </footer>
             </div>
@@ -121,6 +121,10 @@
                                     opacity: 1;
                                 }
                             }
+                            & ~ .article.body .body.footer .footer.action.example {
+                                display: block;
+                                animation: fadein 1s 0s linear;
+                            }
                         }
                         &:is(.xs) {
                             & ~ .article.body .body.subheader .subheader.content.xs {
@@ -160,11 +164,19 @@
                                     opacity: 1;
                                 }
                             }
+                            & ~ .article.body .body.footer .footer.action.extensible {
+                                display: block;
+                                animation: fadein 1s 0s linear;
+                            }
                         }
                         &:is(.mfe) {
                             & ~ .article.body .body.subheader .subheader.content.mfe {
                                 translate: 0 0;
                                 z-index: var(--layer-2);
+                            }
+                            & ~ .article.body .body.footer .footer.action.frameless {
+                                display: block;
+                                animation: fadein 1s 0s linear;
                             }
                         }
                     }
@@ -272,6 +284,11 @@
                         display: flex;
                         justify-content: end;
                         align-items: center;
+                        
+                        .footer.action {
+                            display: none;
+                        }
+                        
                     }
                     
                 }
@@ -284,6 +301,11 @@
                 
             }
             
+        }
+        
+        @keyframes fadein {
+            0% { opacity: 0 }
+            100% { opacity: 1 }
         }
     </style>
     <script type="module">

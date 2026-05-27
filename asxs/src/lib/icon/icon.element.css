@@ -14,7 +14,7 @@ as-icon {
     &.size {
         &.xxs { --size: var(--size-px-3)  }
         &.xs  { --size: var(--size-px-4)  }
-        &.s   { --size: var(--size-px-5)  }
+        &.sm  { --size: var(--size-px-5)  }
         &.md  { --size: var(--size-px-7)  }
         &.lg  { --size: var(--size-px-8)  }
         &.xl  { --size: var(--size-px-9)  }

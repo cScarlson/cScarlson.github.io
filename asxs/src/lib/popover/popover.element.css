@@ -40,7 +40,10 @@ as-popover:has([part="envelope"]) {
 
 as-popover:has([part~="envelope"]):focus-within {
     
-    [part~="deactuator"], [part~="envelope"] {
+    [part~="deactuator"][part~="deactuator"][part~="deactuator"][part~="deactuator"], 
+    [part~="envelope"][part~="envelope"][part~="envelope"][part~="envelope"] 
+    /* FORCE DISPLAY WITH EXTREME SPECIFICITY */
+    {
         display: var(--display, block);
     }
     

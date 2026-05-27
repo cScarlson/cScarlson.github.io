@@ -29,7 +29,7 @@ ${ escape(basic) }
 ```
 
 ### Sizes
-`*[is="as-button"].size.{xxs | xs | s | md | l | xl | xxl}`
+`*[is="as-button"].size.{xxs | xs | sm | md | lg | xl | xxl}`
 
 ${sizes}
 

@@ -11,20 +11,25 @@ ${ escape(setup) }
 ```
 
 <style>
-    .catalog.example.action {
-        --size: var(--size-px-9);
-        --display: flex;
-        display: var(--display);
-        justify-content: center;
-        align-items: center;
-        width: var(--size);
-        height: var(--size);
-        border-radius: var(--radius-2);
-        background-color: var(--color-primary);
-        font-size: var(--font-size-5);
-    }
-    .catalog.example.popover {
-        min-width: 320px;
+    .catalog.popover {
+        .popover.example.action {
+            --size: var(--size-px-9);
+            --display: flex;
+            display: var(--display);
+            justify-content: center;
+            align-items: center;
+            width: var(--size);
+            height: var(--size);
+            border-radius: var(--radius-2);
+            background-color: var(--color-primary);
+            font-size: var(--font-size-5);
+            &[part~="deactuator"] {
+                display: none;
+            }
+        }
+        .popover.example.envelope {
+            min-width: 320px;
+        }
     }
 </style>
 

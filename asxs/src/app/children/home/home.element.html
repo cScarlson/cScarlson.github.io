@@ -1,8 +1,6 @@
 
 <div class="app page home">
     <header class="page header"></header>
-    <iframe src="./public/v0.0.1/test.raw.html"></iframe>
-    <as-raw></as-raw>
     <div class="page body">
         <iframe src="${hero}" is="as-frameless"></iframe>
         <iframe src="${hook}" is="as-frameless"></iframe>
@@ -15,5 +13,10 @@
         <iframe src="${js}" is="as-frameless"></iframe>
         <iframe src="${ts}" is="as-frameless"></iframe>
     </div>
-    <footer class="page footer"></footer>
+    <!-- <footer class="page footer" is="home-footer"> -->
+        <!-- <iframe src="${footer}"></iframe> -->
+    <!-- </footer> -->
+    <home-footer>
+        <iframe src="${footer}"></iframe>
+    </home-footer>
 </div>

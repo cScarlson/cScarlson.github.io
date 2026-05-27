@@ -11,6 +11,7 @@ import { default as accessibility } from './children/accessible/accessible.red.h
 import { default as css } from './children/css/css.red.html?url';
 import { default as js } from './children/js/js.red.html?url';
 import { default as ts } from './children/ts/ts.red.html?url';
+import { default as footer } from './children/footer/footer.rcd.html?url';
 import { default as template } from './home.element.html?raw';
 import { default as styles } from './home.element.css?raw';
 
@@ -30,6 +31,7 @@ export @customElement(TAGNAME) class HomeElement extends Route {
             css,
             js,
             ts,
+            footer,
         };
     }
     

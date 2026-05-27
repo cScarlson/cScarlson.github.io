@@ -75,7 +75,7 @@
             --padding: var(--size-2) var(--size-px-3);
             --font-size: var(--font-size-1);
         }
-        &.s   {
+        &.sm   {
             --padding: var(--size-3) var(--size-px-4);
             --font-size: var(--font-size-2);
         }
@@ -83,7 +83,7 @@
             --padding: var(--size-4) var(--size-px-5);
             --font-size: var(--font-size-3);
         }
-        &.l   {
+        &.lg   {
             --padding: var(--size-5) var(--size-px-6);
             --font-size: var(--font-size-4);
         }

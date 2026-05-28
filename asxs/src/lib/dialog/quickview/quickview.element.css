@@ -1,0 +1,82 @@
+
+* { box-sizing: border-box }
+
+dialog[is="as-dialog"][modus="quickview"], dialog[is="as-dialog-queue"][modus="quickview"] {
+    --min-size: 320px;
+    inset: unset;
+    top: 0;
+    right: 0;
+    width: 25dvw;
+    min-height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+    transition: translate 250ms 0ms ease-in-out, width 250ms 0ms ease-in-out, height 250ms 0ms ease-in-out;
+    overflow: auto;
+    &:hover {
+        width: 90dvw;
+    }
+    &:modal {
+        &::backdrop {
+            pointer-events: none;
+        }
+    }
+    &[position="inline-end"] {}
+    &[position="inline-start"] {
+        right: unset;
+        left: 0;
+    }
+    &[position="block-end"] {
+        top: unset;
+        left: unset;
+        right: unset;
+        bottom: 0;
+        width: 100dvw;
+        height: 25dvh;
+        min-height: unset;
+        max-height: unset;
+        &:hover {
+            height: 90dvh;
+        }
+    }
+    &[position="block-start"] {
+        top: unset;
+        left: unset;
+        right: unset;
+        width: 100svw;
+        height: 25dvh;
+        min-height: unset;
+        max-height: unset;
+        &:hover {
+            height: 90dvh;
+        }
+    }
+    &[position="inline-start"], &[position="inline-end"] {
+        min-width: var(--min-size);
+    }
+    &[position="block-start"], &[position="block-end"] {
+        min-height: var(--min-size);
+    }
+    &:has(.dialog.body) {
+        scrollbar-width: none;
+        
+        .dialog.header, .dialog.body, .dialog.footer {}
+        
+        .dialog.header {
+            
+            .header.title, .header.subtitle {
+                margin-block: var(--size-px-1);
+            }
+            
+            .header.title {
+                font-size: var(--font-size-3);
+            }
+            
+            .header.subtitle {
+                font-size: var(--font-size-0);
+                filter: brightness(25%);
+            }
+            
+        }
+        
+    }
+}

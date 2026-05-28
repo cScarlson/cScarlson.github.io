@@ -1,0 +1,14 @@
+
+:host {
+    .app.four04 {
+        .four04.header {
+            .header.title {
+                color: firebrick;
+            }
+        }
+        .four04.body {
+            .body.description {}
+        }
+        .four04.footer {}
+    }
+}

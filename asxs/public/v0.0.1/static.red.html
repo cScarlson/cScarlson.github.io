@@ -1,0 +1,36 @@
+
+<body>
+    <meta name="partial" />
+    <template id="template">
+        <article class="static partial">
+            <h1>Static RED Partial</h1>
+            <h2>Terms And Conditions</h2>
+            <p>Signer, ${name}, agrees to have their ass handed to them no matter what. Because we have ${nouns}.</p>
+        </article>
+    </template>
+    <style>
+        .static.partial {
+            color: darkcyan;
+            cursor: not-allowed;
+            &::after {
+                content: "${content}";
+            }
+        }
+    </style>
+    <script type="application/json">
+        {
+            "name": "Avery Juan",
+            "nouns": "lawyers",
+            "content": "Disclaimer"
+        }
+    </script>
+    <script>
+        const { log } = console;
+        const template = document.querySelector('#template');
+        const article = template.content.querySelector('.static.partial');
+        const h1 = article.querySelector('h1');
+        
+        h1.innerHTML += '!';
+        log(`@STATIC/PARTIAL`, template, article);
+    </script>
+</body>

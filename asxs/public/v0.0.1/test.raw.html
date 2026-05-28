@@ -1,0 +1,40 @@
+
+<body>
+    <template id="template">
+        <h1>Raw Remote Element</h1>
+    </template>
+    <style id="style">
+        :host {
+            color: firebrick;
+        }
+    </style>
+    <script>
+        const { parent, frameElement } = window;
+        const { customElements, HTMLElement } = parent;  // ensure is from parent frame
+        const { log } = console;
+        
+        log(`@test.raw.html`);
+        if ( !customElements.get('as-raw') ) customElements.define('as-raw', class RawRemote extends HTMLElement {
+            
+            constructor(options) {
+                super();
+                this.attachShadow({ mode: 'open' });
+                this.#setup(options);
+            }
+            
+            #setup(options) {
+                const template = document.querySelector('template#template');
+                const style = document.querySelector('style#style');
+                
+                this.shadowRoot.appendChild(style);
+                this.shadowRoot.appendChild(template.content);
+                frameElement.remove();
+            }
+            
+            connectedCallback() {
+                log(`@RAW.HTML -> connected`);
+            }
+            
+        });
+    </script>
+</body>

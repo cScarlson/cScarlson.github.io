@@ -1,0 +1,16 @@
+
+<button is="as-button" popovertarget="normalDialogPopover">dialog[is="as-dialog"][popovertarget]</button>
+<button is="as-button" command="show-modal" commandfor="normalDialogCommand">dialog[is="as-dialog"][command]</button>
+
+<dialog id="normalDialogPopover" is="as-dialog" popover>
+    <h1>Normal Dialog</h1>
+    <p>Tantamount to <code>HTMLDialogElement.prototype.show()</code></p>
+</dialog>
+
+<dialog id="normalDialogCommand" is="as-dialog">
+    <h1>Normal Dialog</h1>
+    <p>Tantamount to <code>HTMLDialogElement.prototype.showModal()</code></p>
+    <div>
+        <button is="as-button" command="close" commandfor="normalDialogCommand">Close</button>
+    </div>
+</dialog>

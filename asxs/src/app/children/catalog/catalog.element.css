@@ -1,0 +1,157 @@
+
+* { box-sizing: border-box }
+
+.app.catalog {
+    display: flex;
+    flex-direction: column-reverse;
+    
+    .catalog.header {
+        position: sticky;
+        top: var(--header-height);
+        box-shadow: var(--shadow-3);
+        margin-block: var(--size-px-5);
+        padding-block: var(--size-px-3);
+        padding-inline: var(--offset);
+        background-color: var(--color-primary);
+        
+        .header.main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--size-px-2);
+            
+            .main.title {
+                margin: 0;
+            }
+            
+            .main.menu {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                gap: var(--size-px-2);
+                margin: 0;
+                padding: 0;
+                list-style-type: none;
+                
+                .menu.item {
+                    &.more {
+                        padding: 0;
+                    }
+                    
+                    .item.control {
+                        display: block;
+                        border-radius: var(--radius-2);
+                        padding: var(--size-px-2);
+                        background-color: var(--color-dark);
+                        color: var(--color-primary);
+                        text-decoration: none;
+                        text-transform: capitalize;
+                        font-weight: var(--font-weight-6);
+                        cursor: pointer;
+                        &:hover, &:focus {
+                            filter: brightness(92.5%);
+                        }
+                    }
+                                
+                    .item.popover {
+                        
+                        .popover.control {
+                            --size: var(--size-px-7);
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            min-width: var(--size);
+                            border-radius: var(--radius-2);
+                            padding: var(--size-px-2);
+                            background-color: var(--color-dark);
+                            font-weight: var(--font-weight-6);
+                            color: var(--color-primary);
+                        }
+                        
+                        .popover.submenu {
+                            min-width: 320px;
+                            border-radius: var(--radius-2);
+                            padding: var(--size-px-1);
+                            list-style-type: none;
+                            background-color: var(--color-dark);
+                            
+                            .submenu.option {
+                                margin-block: var(--size-px-1);
+                                padding: var(--size-px-1);
+                                &:hover, &:focus {
+                                    filter: brightness(92.5%);
+                                }
+                                
+                                .option.control {
+                                    color: var(--color-primary);
+                                    text-transform: capitalize;
+                                    text-decoration: none;
+                                    font-weight: var(--font-weight-6);
+                                    cursor: pointer;
+                                }
+                                
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+            
+        }
+        
+        .header.alert {
+            background-color: var(--color-light);
+            
+            .alert.caption {
+                padding: var(--size-px-2) var(--size-px-3);
+                font-size: var(--font-size-0);
+                font-style: italic;
+            }
+            
+        }
+        
+    }
+    
+    .catalog.body {
+        
+        .body.content {
+            
+            .content.section {
+                
+                .section.control {
+                    display: none;
+                }
+                
+                .section.document {
+                    scroll-margin-block-start: var(--size-px-11);
+                    
+                    .section.content {
+                        
+                        .content.menu {
+                            list-style-type: none;
+                            
+                            .menu.item {
+                                
+                                .item.control {
+                                    cursor: pointer;
+                                }
+                                
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+            
+        }
+        
+    }
+    
+    .catalog.footer {}
+}

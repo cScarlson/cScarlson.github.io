@@ -1,0 +1,67 @@
+
+* { box-sizing: border-box }
+
+*:has(> as-tooltip) {
+    border: solid 1px tomato;
+    position: relative;
+    &:hover, &:focus, &:focus-within {
+        z-index: var(--layer-5);
+        
+        > as-tooltip {
+            scale: 1;
+            transition: scale 250ms var(--delay) ease-in-out;
+        }
+        
+    }
+    
+    > as-tooltip {
+        --offset: var(--size-1);
+        --delay: 3000ms;
+        border: solid 1px tomato;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+        scale: 0;
+        aspect-ratio: 16 / 9;
+        display: block;
+        box-shadow: var(--shadow-3);
+        border-radius: var(--radius-3);
+        padding: var(--size-2);
+        transition: scale 150ms 0ms ease-in-out;
+        transform-origin: center;
+        background-color: var(--color-secondary);
+        cursor: initial;
+        text-align: initial;
+        filter: initial;
+        &:hover, &:focus {
+            background-color: var(--color-secondary);
+            filter: brightness(100%);
+        }
+        &[position] {
+            top: unset;
+            left: unset;
+        }
+        &[position="block-start"] {
+            top: 100%;
+            left: 50%;
+            translate: -50% var(--offset);
+        }
+        &[position="block-end"] {
+            bottom: 100%;
+            left: 50%;
+            translate: -50% calc(var(--offset) * -1);
+        }
+        &[position="inline-start"] {
+            top: 50%;
+            right: 100%;
+            translate: calc(var(--offset) * -1) -50%;
+        }
+        &[position="inline-end"] {
+            top: 50%;
+            left: 100%;
+            translate:  var(--offset) -50%;
+        }
+    }
+    
+}

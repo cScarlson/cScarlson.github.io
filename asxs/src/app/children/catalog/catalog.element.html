@@ -1,0 +1,30 @@
+
+<div class="app catalog">
+    <footer class="catalog footer"></footer>
+    <div class="catalog body" data-active="#/catalog/section/icons">
+        <div class="body content">
+            ${documentation}
+        </div>
+    </div>
+    <header class="catalog header">
+        <div class="header main">
+            <h1 class="main title">Catalog</h1>
+            <menu class="main menu">
+                ${menu}
+                <li class="menu item more">
+                    <as-popover class="item popover">
+                        <span class="popover control" for="more" part="actuator" tabindex="0">&vellip;</span>
+                        <ul class="popover submenu" part="envelope" position="bottom left">
+                            ${more}
+                        </ul>
+                    </as-popover>
+                </li>
+            </menu>
+        </div>
+        <div class="header alert">
+            <p class="alert caption">
+                All examples are "Breathing Documentation" so that any changes to the code example get reflected in the rendered output.
+            </p>
+        </div>
+    </header>
+</div>

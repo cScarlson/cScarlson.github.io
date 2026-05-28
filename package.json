@@ -26,5 +26,8 @@
   "bugs": {
     "url": "https://github.com/cScarlson/cScarlson.github.io/issues"
   },
-  "homepage": "https://cScarlson.github.io"
+  "homepage": "https://cScarlson.github.io",
+  "dependencies": {
+    "marked": "^17.0.3"
+  }
 }

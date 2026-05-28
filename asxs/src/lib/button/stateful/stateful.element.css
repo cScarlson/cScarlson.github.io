@@ -1,0 +1,16 @@
+
+as-stateful {
+    /* border: solid 1px tomato; */
+    position: relative;
+    display: inline-block;
+    
+    [is="state"] {
+        /* border: solid 1px tomato; */
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+        z-index: 1;
+    }
+    
+}

@@ -1,0 +1,98 @@
+
+<body>
+    <meta name="partial" />
+    <template>
+        <div class="section article extensible">
+            <header class="article header">
+                <h1>XS - Extensible</h1>
+                <p>As native as it gets while still having a framework.</p>
+            </header>
+            <div class="article body">
+                <p class="body content">
+                    It's not too good to be true, it's just native. AsXS takes a carefully simple approach to everything: never do 
+                    more than you need for the job and never assume. Here's how AsXS accomplishes this
+                </p>
+                <ul>
+                    <li>Target any selector to extend it.</li>
+                    <li>Jailbreak any selector you wish.</li>
+                    <li>Define your own value for a <code>*[strategy]</code> to resolve your own needs.</li>
+                    <li>Mix & match different icon sets if you want, simply by changing their strategy.</li>
+                    <li>Override CSS Custom Properties any time you wish.</li>
+                    <li>Simply define a Custom Element to enhance it with JavaScript.</li>
+                    <li>Easily-Extendable base-classes for everything.</li>
+                    <li>Effective Hooks for everything with minimal code.</li>
+                    <li>Everything is native, which is naturally fully extensible.</li>
+                    <li>Publish & Consume components across The Web.</li>
+                    <li>AsXS is a Plugin Architecture.</li>
+                    <li>Frameless<sup>&trade;</sup> turns The Web into a Plugin Architecture.</li>
+                    <li>If you don't like the default behavior, you can create your own.</li>
+                    <li>You can write & host Extensions to AsXS from your GitHub Pages.</li>
+                </ul>
+            </div>
+            <footer class="article footer"></footer>
+        </div>
+        <footer class="section footer">
+            <div class="footer content">
+                <p>
+                    With Frameless<sup>&trade;</sup>, AsXS becomes a <b>Plugin Architecture</b>. In fact, with Frameless, the 
+                    entire Web becomes a Plugin Architecture. If you want to opt-out of core defaults, you can use someone else's 
+                    hosted version.
+                </p>
+            </div>
+        </footer>
+    </template>
+    <style>
+        .body.section.extensible {
+            display: block;
+            margin-block: var(--size-px-10);
+                
+            .section.header {}
+            
+            .section.article.extensible {
+                box-shadow: var(--body-section-shadow);
+                padding-block: var(--size-px-5);
+                background-color: var(--gray-1);
+                color: var(--orange-7);
+                
+                .article.body {
+                    
+                    .body.example {
+                        /* border: solid 1px tomato; */
+                        padding: var(--size-px-3) var(--size-px-4);
+                        background-color: var(--gray-8);
+                        color: var(--gray-1);
+                        
+                        .example.code {
+                            /* border: solid 1px tomato; */
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+            
+            .section.footer {
+                .footer.content {
+                    .content.title {
+                        color: var(--blue-7);
+                    }
+                }
+            }
+            
+        }
+    </style>
+    <script>
+        const { document: contentDocument } = window;
+        
+        contentDocument.addEventListener('red:loaded', function execute({ data: { host } }) {
+            const { log } = console;
+            const { classList } = host;
+            
+            classList.add('body');
+            classList.add('section');
+            classList.add('extensible');
+            contentDocument.removeEventListener('red:loaded', execute);
+        });
+    </script>
+</body>

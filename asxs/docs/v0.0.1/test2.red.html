@@ -1,0 +1,54 @@
+
+<body>
+    <meta name="as-test-two" />
+    <template>
+        <h1>(2) As-Test</h1>
+        <h2>Maybe ${animals} are ${adjective}.</h2>
+        <slot></slot>
+        <slot name="named"></slot>
+    </template>
+    <style>
+        :host {
+            color: firebrick;
+            cursor: ${cursor};
+        }
+    </style>
+    <script>
+        const { parent } = window;
+        const { customElements, HTMLElement } = parent;  // ensure is from parent frame
+        const { log } = console;
+        const utilities = new (class Utilities {
+            interpolate = (template) => (data) => (new Function(`with (this) return \`${template}\`;`) ).call(data);
+        })();
+        
+        log(`@test.red.html`);
+        if ( !customElements.get('as-test-two') ) customElements.define('as-test-two', class Test extends HTMLElement {
+            get __state__() {
+                return { animals: 'squirrels', adjective: 'cute', cursor: 'pointer' };
+            }
+            
+            constructor(options) {
+                super();
+                this.attachShadow({ mode: 'open' });
+                this.#setup(options);
+            }
+            
+            #setup(options) {
+                const { __state__: state } = this;
+                const { meta, template, styles, script } = options;
+                const { innerHTML: html } = template;
+                const { innerHTML: css } = styles;
+                
+                styles.innerHTML = utilities.interpolate(css)(state);
+                template.innerHTML = utilities.interpolate(html)(state);
+                this.shadowRoot.appendChild(styles);
+                this.shadowRoot.appendChild(template.content);
+            }
+            
+            connectedCallback() {
+                log(`@TEST.RED.HTML -> connected`);
+            }
+            
+        });
+    </script>
+</body>

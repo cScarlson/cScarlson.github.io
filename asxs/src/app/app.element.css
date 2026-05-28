@@ -61,7 +61,11 @@
         min-height: 50dvh;
         box-shadow: inset 0px 0px 16px -6px black;
         border-top: solid 1px var(--gray-7);
+        padding: var(--size-px-3);
         background-color: var(--color-primary);
+        
+        .content.copyright {}
+        
     }
     
 }

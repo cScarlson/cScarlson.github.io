@@ -1,0 +1,15 @@
+
+<body>
+    <p class="content copyright">
+        AsXS (and the owner of this website) reserves all rights to <i>"AsXS"</i>, <i>"Frameless"</i>, 
+        <i>"The Micro Frontend Pattern"</i>, <i>"RED" & "Remote Element Definition"</i>, 
+        <i>"RCD" & "Remote Component Definition"</i>, <i>"RMD" & "Remote Module Definition"</i> and associated trademarks. 
+        Profitable use of these trademarks & patterns without consent of or code comment attribution to AsXS or website 
+        author is strictly prohibited.
+    </p>
+    <script>
+        const { frameElement } = window;
+        const element = document.querySelector('.content.copyright');
+        frameElement.replaceWith(element);
+    </script>
+</body>

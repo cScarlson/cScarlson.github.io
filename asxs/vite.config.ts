@@ -34,7 +34,7 @@ export default defineConfig({
         //     enforce: 'post',
         // }
     ],
-    base: './',
+    base: '/asxs/docs',
     build: {
         outDir: 'docs',
         emptyOutDir: true,  // optional: Empty the output directory before building

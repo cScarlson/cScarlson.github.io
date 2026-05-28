@@ -29,7 +29,7 @@ export @customElement(TAGNAME) class CatalogElement extends Route {
         
         return {
             id,
-            menu: new Loop(menuitems).with('<li class="menu item"><a class="item control" href="#${id}">${title}</a></li>'),
+            menu: new Loop(menuitems).with('<li class="menu item"><a class="item control" href="./asxs/docs/#${id}">${title}</a></li>'),
             more: new Loop(menumore).with(submenu).use(titles, 'titles'),
             documentation: new Loop(documentation).with(magazine),
         };

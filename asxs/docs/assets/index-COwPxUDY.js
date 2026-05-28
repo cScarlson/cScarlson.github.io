@@ -546,8 +546,8 @@ ${t}`;this.innerHTML=r}};De=yn([x(wn)],De);class $n{constructor(e=[]){this.data=
             <a class="branding title" href="./">AsXS</a>\r
         </div>\r
         <menu class="header menu">\r
-            <li class="menu item"><a class="item action" href="#/">Home</a></li>\r
-            <li class="menu item"><a class="item action" href="#/catalog">Catalog</a></li>\r
+            <li class="menu item"><a class="item action" href="./asxs/docs/#/">Home</a></li>\r
+            <li class="menu item"><a class="item action" href="./asxs/docs/#/catalog">Catalog</a></li>\r
         </menu>\r
     </header>\r
     <main class="app body">\r
@@ -661,7 +661,7 @@ ${t}`;this.innerHTML=r}};De=yn([x(wn)],De);class $n{constructor(e=[]){this.data=
                 }
             </style>
             ${Vn(this,pe)}
-        `}};pe=new WeakMap;W=Un([x(es)],W);const ts="/asxs/docs/assets/hero.red-C1_5eBWM.html",rs="/asxs/docs/assets/button.red-BEoK94kK.html",ns="/asxs/docs/assets/frameless.red-BxCv4gKg.html",ss="/asxs/docs/assets/xs.red-Ctwnx5wo.html",os="/asxs/docs/assets/extensible.red-Czq0Umn1.html",as="/asxs/docs/assets/excess.red-BtxTB1gd.html",is="/asxs/docs/assets/accessible.red-BYSBQAjx.html",ls="/asxs/docs/assets/css.red-CtK-onvh.html",cs="/asxs/docs/assets/js.red-CD7ALLNg.html",ps="/asxs/docs/assets/ts.red-B8udLaFi.html",ds="/asxs/docs/assets/footer.rcd-DR3b-oXk.html",us=`\r
+        `}};pe=new WeakMap;W=Un([x(es)],W);const ts="/asxs/docs/assets/hero.red-RPEL82D_.html",rs="/asxs/docs/assets/button.red-BEoK94kK.html",ns="/asxs/docs/assets/frameless.red-BxCv4gKg.html",ss="/asxs/docs/assets/xs.red-Ctwnx5wo.html",os="/asxs/docs/assets/extensible.red-Czq0Umn1.html",as="/asxs/docs/assets/excess.red-BtxTB1gd.html",is="/asxs/docs/assets/accessible.red-BYSBQAjx.html",ls="/asxs/docs/assets/css.red-CtK-onvh.html",cs="/asxs/docs/assets/js.red-CD7ALLNg.html",ps="/asxs/docs/assets/ts.red-B8udLaFi.html",ds="/asxs/docs/assets/footer.rcd-DR3b-oXk.html",us=`\r
 <div class="app page home">\r
     <header class="page header"></header>\r
     <div class="page body">\r
@@ -1687,7 +1687,7 @@ import '@asxs/dialog/antitamper/antitamper.element';\r
 </div>\r
 `,Co=`\r
 <li class="submenu option">\r
-    <a class="option control" href="#\${id}">\${title}</a>\r
+    <a class="option control" href="./asxs/docs/#\${id}">\${title}</a>\r
 </li>\r
 `,Ao=`\r
 <div class="app catalog">\r
@@ -1920,7 +1920,7 @@ import '@asxs/dialog/antitamper/antitamper.element';\r
 `;var qo=Object.getOwnPropertyDescriptor,Mo=(t,e,r,s)=>{for(var n=s>1?void 0:s?qo(e,r):e,o=t.length-1,a;o>=0;o--)(a=t[o])&&(n=a(n)||n);return n};const Lo="as-catalog-docs";let Be=class extends we{get"as:state"(){return{}}render(){return`
             <style>${Do}</style>
             ${Ro}
-        `}};Be=Mo([x(Lo)],Be);var Oo=Object.defineProperty,Bo=Object.getOwnPropertyDescriptor,Bt=t=>{throw TypeError(t)},Io=(t,e,r)=>e in t?Oo(t,e,{enumerable:!0,configurable:!0,writable:!0,value:r}):t[e]=r,No=(t,e,r,s)=>{for(var n=s>1?void 0:s?Bo(e,r):e,o=t.length-1,a;o>=0;o--)(a=t[o])&&(n=a(n)||n);return n},Ie=(t,e,r)=>Io(t,typeof e!="symbol"?e+"":e,r),Ho=(t,e,r)=>e.has(t)||Bt("Cannot "+r),Xo=(t,e,r)=>e.has(t)?Bt("Cannot add the same private member more than once"):e instanceof WeakSet?e.add(t):e.set(t,r),It=(t,e,r)=>(Ho(t,e,"access private method"),r),Ne,He,Z,Nt,Ht;const Xe="as:query:variables",jo=Ot.slice(0,5),Fo=Ot.slice(5),Qo={dialogs:"Queued Modal",toasts:"Toasts",quickviews:"Quickviews",antitamper:"Antitamper"},Go="at-catalog";let je=class extends(He=W,Ne=Xe,He){constructor(){super(...arguments),Xo(this,Z),Ie(this,"as:crawler",new Lr(this)),Ie(this,Ne,document.createElement("input"))}get"as:state"(){const{id:t}=this;return{id:t,menu:new J(jo).with('<li class="menu item"><a class="item control" href="#${id}">${title}</a></li>'),more:new J(Fo).with(Co).use(Qo,"titles"),documentation:new J(Lt).with(Eo)}}"change:menu:item"(t){const{target:e}=t,{id:r}=e;this.querySelector(`.content.section .section.control[id="${r}"] + .section.document`).scrollIntoView({behavior:"smooth"})}"as:update:handler"(t){const{[Xe]:e}=this;e.checked=!0}connectedCallback(t=super.connectedCallback()){It(this,Z,Nt).call(this),this.addEventListener("change",this,!0)}disconnectedCallback(t=super.disconnectedCallback()){this.removeEventListener("change",this,!0)}render(){return`
+        `}};Be=Mo([x(Lo)],Be);var Oo=Object.defineProperty,Bo=Object.getOwnPropertyDescriptor,Bt=t=>{throw TypeError(t)},Io=(t,e,r)=>e in t?Oo(t,e,{enumerable:!0,configurable:!0,writable:!0,value:r}):t[e]=r,No=(t,e,r,s)=>{for(var n=s>1?void 0:s?Bo(e,r):e,o=t.length-1,a;o>=0;o--)(a=t[o])&&(n=a(n)||n);return n},Ie=(t,e,r)=>Io(t,typeof e!="symbol"?e+"":e,r),Ho=(t,e,r)=>e.has(t)||Bt("Cannot "+r),Xo=(t,e,r)=>e.has(t)?Bt("Cannot add the same private member more than once"):e instanceof WeakSet?e.add(t):e.set(t,r),It=(t,e,r)=>(Ho(t,e,"access private method"),r),Ne,He,Z,Nt,Ht;const Xe="as:query:variables",jo=Ot.slice(0,5),Fo=Ot.slice(5),Qo={dialogs:"Queued Modal",toasts:"Toasts",quickviews:"Quickviews",antitamper:"Antitamper"},Go="at-catalog";let je=class extends(He=W,Ne=Xe,He){constructor(){super(...arguments),Xo(this,Z),Ie(this,"as:crawler",new Lr(this)),Ie(this,Ne,document.createElement("input"))}get"as:state"(){const{id:t}=this;return{id:t,menu:new J(jo).with('<li class="menu item"><a class="item control" href="./asxs/docs/#${id}">${title}</a></li>'),more:new J(Fo).with(Co).use(Qo,"titles"),documentation:new J(Lt).with(Eo)}}"change:menu:item"(t){const{target:e}=t,{id:r}=e;this.querySelector(`.content.section .section.control[id="${r}"] + .section.document`).scrollIntoView({behavior:"smooth"})}"as:update:handler"(t){const{[Xe]:e}=this;e.checked=!0}connectedCallback(t=super.connectedCallback()){It(this,Z,Nt).call(this),this.addEventListener("change",this,!0)}disconnectedCallback(t=super.disconnectedCallback()){this.removeEventListener("change",this,!0)}render(){return`
             ${super.render()}
             <style>${Po}</style>
             ${Ao}

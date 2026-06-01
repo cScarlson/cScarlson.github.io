@@ -9,8 +9,12 @@ class Nativeish extends HTMLElement {
     static observedAttributes = [];
     root = this;
     
-    connectedCallback() {
+    stabilize() {
         frameElement.remove();
+    }
+    
+    connectedCallback() {
+        this.stabilize();
     }
     
     disconnectedCallback() {
@@ -84,7 +88,16 @@ class Autorender extends Basic {
     
 }
 
-class Sandbox extends Autorender {}
+class Sandbox extends Autorender {
+    #assets = [ ...document.querySelectorAll('link.global.asset') ];  // force to <link />s; <script>s can be dangerous.
+    
+    update() {
+        const links = this.#assets.filter(el => el.tagName === 'LINK');
+        links.forEach( link => parent.document.head.appendChild(link) );
+        super.update();
+    }
+    
+}
 
 class CustomElement extends Sandbox {}
 

@@ -1,0 +1,52 @@
+
+:root {
+    --color-primary: var(--blue-3);
+    --color-secondary: var(--gray-0);
+    --color-success: var(--green-3);
+    --color-info: var(--purple-3);
+    --color-warning: var(--orange-3);
+    --color-danger: var(--red-3);
+    --color-light: var(--gray-3);
+    --color-dark: var(--gray-8);
+}
+
+:root {
+    --scroll-smooth: smooth;
+    --scroll-margin-block: var(--header-height);
+}
+
+:root {
+    --offset-xxs: 0dvw;
+    --offset-xs:  2dvw;
+    --offset-sm:  2dvw;
+    --offset-md:  8dvw;
+    --offset-lg:  8dvw;
+    --offset-xl:  6dvw;
+    --offset-xxl: 8dvw;
+    --offset-fs:  0dvw;  /* fullscreen */
+    --offset: var(--offset-md);  /* default */
+}
+
+html {
+    --text-1: var(--gray-9);
+    --text-2: var(--gray-7);
+    font-family: system-ui;
+    scroll-behavior: var(--scroll-smooth);
+    scrollbar-width: thin;
+
+    @media (--OSdark) {
+        --text-1: var(--gray-1);
+        --text-2: var(--gray-2);
+    }
+    
+}
+
+body {}
+
+main {
+    min-height: 100dvh;
+}
+
+:target {
+    scroll-margin-block: var(--scroll-margin-block);
+}

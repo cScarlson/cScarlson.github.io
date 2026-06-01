@@ -1,0 +1,20 @@
+
+<body>
+    <template>
+        <h1>AsXS</h1>
+    </template>
+    <style>
+        :host {
+            color: firebrick;
+        }
+    </style>
+    <script type="module">
+        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
+        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
+        
+        const { log } = console;
+        
+        customElement('as-app')
+        (class AsXSAppElement extends CustomElement {});
+    </script>
+</body>

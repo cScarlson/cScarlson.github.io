@@ -324,7 +324,7 @@
             DELAY = (1000 * 1);
             wrapper = document.createElement('error');
             
-            #cycle = timeout.bind(root, (targets, target, ...more) => {
+            #cycle = setTimeout.bind(root, (targets, target, ...more) => {
                 if (this.wrapper.matches(':hover')) return this.#cycle(targets, target, ...more);
                 if (!target) return this.#cycle(targets, ...targets);
                 const { log } = console;
@@ -335,9 +335,8 @@
             }, this.DELAY);
             
             init() {
-                const { log } = console;
                 const { root } = this;
-                const wrapper = root.querySelector('.section.article .article.hero');
+                const wrapper = root.querySelector('.section.article .article.body.hero');
                 const targets = root.querySelectorAll('.section.article .article.target.content');
                 
                 this.wrapper = wrapper;
@@ -348,7 +347,9 @@
                 return this;
             }
             
-            stabilize() {}  // retain iframe's window scope. todo: eliminate this need!
+            stabilize() {
+                this.disguise();
+            }  // retain iframe's window scope. todo: eliminate this need!
             
             connectedCallback( x = super.connectedCallback() ) {
                 this.init();

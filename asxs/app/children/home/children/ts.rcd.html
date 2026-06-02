@@ -2,34 +2,40 @@
 <body>
     <meta name="partial" />
     <template>
-        <div class="section article typescript">
-            <header class="article header">
-                <h1>As a TypeScript Framework</h1>
-                <p>Yes, that too.</p>
-            </header>
-            <div class="article body">
-                <p>
-                    TypeScript support is not fully supported out of the box for Remote Element Definitions yet. But you can still 
-                    use TypeScript by leveraging <a href="https://github.com/pjdeveloper896/TSNova" target="_blank">TSNova</a>. Hey,
-                    maybe you will write a frontend TS compiler that looks like this!...
-                </p>
-                <pre class="body example"><code class="example code">${prompt}</code></pre>
+        <at-home-typescript id="/typescript">
+            <div class="section article typescript">
+                <header class="article header">
+                    <h1>As a TypeScript Framework</h1>
+                    <p>Yes, that too.</p>
+                </header>
+                <div class="article body">
+                    <p>
+                        TypeScript support is not fully supported out of the box for Remote Element Definitions yet. But you can still 
+                        use TypeScript by leveraging <a href="https://github.com/pjdeveloper896/TSNova" target="_blank">TSNova</a>. Hey,
+                        maybe you will write a frontend TS compiler that looks like this!...
+                    </p>
+                    <pre class="body example"><code class="example code">${prompt}</code></pre>
+                </div>
+                <footer class="article footer"></footer>
             </div>
-            <footer class="article footer"></footer>
-        </div>
-        <footer class="section footer">
-            <div class="footer content">
-                <p>
-                    AsXS is working on this but has not come out with a stable, performant version for a frontend compiler (yet). 
-                    We hope you beat us to it!
-                </p>
-            </div>
-        </footer>
+            <footer class="section footer">
+                <div class="footer content">
+                    <p>
+                        AsXS is working on this but has not come out with a stable, performant version for a frontend compiler (yet). 
+                        We hope you beat us to it!
+                    </p>
+                </div>
+            </footer>
+        </at-home-typescript>
     </template>
     <style>
-        .body.section.typescript {
+        at-home-typescript {
             display: block;
             margin-block: var(--size-px-10);
+            
+            .section.header, .section.article, .section.footer {
+                padding-inline: var(--offset);
+            }
                 
             .section.header {}
             
@@ -72,17 +78,17 @@
             "prompt": "&lt;script type=\"text/typescript\" is=\"as-typescript\"&gt;&lt;/script&gt;"
         }
     </script>
-    <script>
-        const { document: contentDocument } = window;
+    <script type="module">
+        import { utilities } from '/asxs/v2.0.0/core/utilities/utilities.js';
         
-        contentDocument.addEventListener('red:loaded', function execute({ data: { host } }) {
-            const { log } = console;
-            const { classList } = host;
-            
-            classList.add('body');
-            classList.add('section');
-            classList.add('typescript');
-            contentDocument.removeEventListener('red:loaded', execute);
-        });
+        const { frameElement } = window;
+        const template = document.querySelector('template');
+        const style = document.querySelector('style');
+        const scope = document.querySelector('script[type="application/json"]');
+        const data = JSON.parse(scope.innerHTML);
+        
+        template.innerHTML = utilities.interpolate(template.innerHTML)(data);
+        template.content.firstElementChild.appendChild(style);
+        frameElement.replaceWith(template.content);
     </script>
 </body>

@@ -8,17 +8,18 @@ const { log } = console;
 
 frameElement.width = 0;
 frameElement.height = 0;
-frameElement.setAttribute('width', '0');
-frameElement.setAttribute('height', '0');
-frameElement.style = 'width: 0; height: 0; border: none; display: none';
+frameElement.style.setProperty('display', 'none', 'important');
 
 class Nativeish extends HTMLElement {
     static observedAttributes = [];
     root = this;
     
     stabilize() {
-        // frameElement.onload = e => frameElement.remove();
         frameElement.remove();
+    }
+    
+    disguise() {
+        this.moveBefore(frameElement, null);
     }
     
     connectedCallback() {}
@@ -42,7 +43,7 @@ class Basic extends Nativeish {
     template = document.querySelector('template');
     style = document.querySelector('style');
     
-    handleEvent(e) {
+    handleEvent(e) {  // e.g: <input data-(focus)="handleFocus" /> & { 'focus:handleFocus': (e) => e }
         const { type, target } = e;
         const { dataset } = target;
         const { [`(${type})`]: handler } = dataset;
@@ -66,7 +67,7 @@ class Basic extends Nativeish {
         root.appendChild(content);
         if (crawler) crawler.execute(...children);
         if (handle) handle.call(this, content);
-        this.stabilize();  // needs to occur after nodes have new ownerDocument
+        this.stabilize();  // must occur after nodes have new ownerDocument
     }
     
 }

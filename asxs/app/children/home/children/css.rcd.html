@@ -2,28 +2,34 @@
 <body>
     <meta name="partial" />
     <template>
-        <div class="section article cascading">
-            <header class="article header">
-                <h1>As a Pure CSS Framework</h1>
-                <p>A CSS-First Approach.</p>
-            </header>
-            <div class="article body">
-                <p>A fully capable, highly-flexible and extensible pure CSS framework for any website or webapp.</p>
+        <at-home-css id="/css">
+            <div class="section article cascading">
+                <header class="article header">
+                    <h1>As a Pure CSS Framework</h1>
+                    <p>A CSS-First Approach.</p>
+                </header>
+                <div class="article body">
+                    <p>A fully capable, highly-flexible and extensible pure CSS framework for any website or webapp.</p>
+                </div>
+                <footer class="article footer"></footer>
             </div>
-            <footer class="article footer"></footer>
-        </div>
-        <footer class="section footer">
-            <div class="footer content">
-                <p>
-                    When you begin to scale, you can simply define the elements for the behavior you want.
-                </p>
-            </div>
-        </footer>
+            <footer class="section footer">
+                <div class="footer content">
+                    <p>
+                        When you begin to scale, you can simply define the elements for the behavior you want.
+                    </p>
+                </div>
+            </footer>
+        </at-home-css>
     </template>
     <style>
-        .body.section.cascading {
+        at-home-css {
             display: block;
             margin-block: var(--size-px-10);
+            
+            .section.header, .section.article, .section.footer {
+                padding-inline: var(--offset);
+            }
                 
             .section.header {}
             
@@ -61,22 +67,12 @@
             
         }
     </style>
-    <script type="application/json">
-        {
-            "usage": "&lt;iframe src=\"./mfes/v1/my.red.html\" is=\"as-cascading\"&gt;&lt;/iframe&gt;"
-        }
-    </script>
-    <script>
-        const { document: contentDocument } = window;
+    <script type="module">
+        const { frameElement } = window;
+        const template = document.querySelector('template');
+        const style = document.querySelector('style');
         
-        contentDocument.addEventListener('red:loaded', function execute({ data: { host } }) {
-            const { log } = console;
-            const { classList } = host;
-            
-            classList.add('body');
-            classList.add('section');
-            classList.add('cascading');
-            contentDocument.removeEventListener('red:loaded', execute);
-        });
+        template.content.firstElementChild.appendChild(style);
+        frameElement.replaceWith(template.content);
     </script>
 </body>

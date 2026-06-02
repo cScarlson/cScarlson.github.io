@@ -2,31 +2,37 @@
 <body>
     <meta name="partial" />
     <template>
-        <div class="section article excess">
-            <header class="article header">
-                <h1>XS - Excess</h1>
-                <p>As if excess had to be a lot.</p>
-            </header>
-            <div class="article body">
-                <p>
-                    Everything you need to start building and keep building, while minimizing native boilerplate and without any 
-                    unnecessary bloat.
-                </p>
+        <at-home-excess id="/excess">
+            <div class="section article excess">
+                <header class="article header">
+                    <h1>XS - Excess</h1>
+                    <p>As if excess had to be a lot.</p>
+                </header>
+                <div class="article body">
+                    <p>
+                        Everything you need to start building and keep building, while minimizing native boilerplate and without any 
+                        unnecessary bloat.
+                    </p>
+                </div>
+                <footer class="article footer"></footer>
             </div>
-            <footer class="article footer"></footer>
-        </div>
-        <footer class="section footer">
-            <div class="footer content">
-                <p>
-                    AsXS aims at the goal of accomplishing Single Responsibilities in 25 lines or less.
-                </p>
-            </div>
-        </footer>
+            <footer class="section footer">
+                <div class="footer content">
+                    <p>
+                        AsXS aims at the goal of accomplishing Single Responsibilities in 25 lines or less.
+                    </p>
+                </div>
+            </footer>
+        </at-home-excess>
     </template>
     <style>
-        .body.section.excess {
+        at-home-excess {
             display: block;
             margin-block: var(--size-px-10);
+            
+            .section.header, .section.article, .section.footer {
+                padding-inline: var(--offset);
+            }
                 
             .section.header {}
             
@@ -64,22 +70,12 @@
             
         }
     </style>
-    <script type="application/json">
-        {
-            "usage": "&lt;iframe src=\"./mfes/v1/my.red.html\" is=\"as-excess\"&gt;&lt;/iframe&gt;"
-        }
-    </script>
-    <script>
-        const { document: contentDocument } = window;
+    <script type="module">
+        const { frameElement } = window;
+        const template = document.querySelector('template');
+        const style = document.querySelector('style');
         
-        contentDocument.addEventListener('red:loaded', function execute({ data: { host } }) {
-            const { log } = console;
-            const { classList } = host;
-            
-            classList.add('body');
-            classList.add('section');
-            classList.add('excess');
-            contentDocument.removeEventListener('red:loaded', execute);
-        });
+        template.content.firstElementChild.appendChild(style);
+        frameElement.replaceWith(template.content);
     </script>
 </body>

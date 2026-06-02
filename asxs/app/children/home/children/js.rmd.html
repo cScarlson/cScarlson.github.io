@@ -1,43 +1,29 @@
 
 <body>
+    <meta name="partial" />
     <template>
-        <at-home-xs id="/xs">
-            <div class="section article extrasmall">
+        <at-home-javascript id="/javascript">
+            <div class="section article javascript">
                 <header class="article header">
-                    <h1>XS - Extra Small</h1>
-                    <p>Every module built to consume at minimal cost to your bundle size.</p>
+                    <h1>As a JavaScript Framework</h1>
+                    <p>Did we say this thing is super extensible yet?</p>
                 </header>
                 <div class="article body">
-                    Most utilities are less than 50 lines of code without sacrificing capability. These include modules like
-                    <ul>
-                        <li>Custom Elements</li>
-                        <li>Frameless<sup>&trade;</sup></li>
-                        <li>Reactive Store</li>
-                        <li>Internationalization / Localization</li>
-                        <li>Mutation Observer Hooks</li>
-                        <li>Intersection Observer Hooks</li>
-                        <li>Hash Router</li>
-                        <li>Utilities</li>
-                        <li>Gang Of Four Classical Design Patterns</li>
-                        <li>Classical Algorithms & Data-Structures</li>
-                        <li>Much more</li>
-                    </ul>
+                    <p>Simply register Custom Element definitions for existing CSS components to bootstrap new behavior.</p>
                 </div>
                 <footer class="article footer"></footer>
             </div>
             <footer class="section footer">
                 <div class="footer content">
                     <p>
-                        If you don't need it, it doesn't weigh you down. AsXS uses a CSS-First Approach and let's you decide what you need. 
-                        Everything is overridable and has an escape hatch so you can jailbreak it completely if you need more custom 
-                        behavior.
+                        Just want the CSS framework? That's OK too.
                     </p>
                 </div>
             </footer>
-        </at-home-xs>
+        </at-home-javascript>
     </template>
     <style>
-        at-home-xs {
+        at-home-javascript {
             display: block;
             margin-block: var(--size-px-10);
             
@@ -47,11 +33,11 @@
                 
             .section.header {}
             
-            .section.article.extrasmall {
+            .section.article.javascript {
                 box-shadow: var(--body-section-shadow);
                 padding-block: var(--size-px-5);
                 background-color: var(--gray-1);
-                color: var(--blue-7);
+                color: var(--blue-8);
                 
                 .article.body {
                     
@@ -72,9 +58,10 @@
             }
             
             .section.footer {
+                min-height: 50dvh;
                 .footer.content {
                     .content.title {
-                        color: var(--blue-7);
+                        color: var(--blue-8);
                     }
                 }
             }

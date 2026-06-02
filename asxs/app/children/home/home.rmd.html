@@ -1,0 +1,45 @@
+
+<body>
+    <template>
+        <div class="app page home">
+            <header class="page header"></header>
+            <div class="page body">
+                <at-home-hero>
+                    <iframe src="./app/children/home/children/hero.rmd.html"></iframe>
+                </at-home-hero>
+                <iframe src="./app/children/home/children/button.rmd.html"></iframe>
+                <iframe src="./app/children/home/children/frameless.rmd.html"></iframe>
+                <iframe src="./app/children/home/children/extensible.rmd.html"></iframe>
+                <iframe src="./app/children/home/children/xs.rmd.html"></iframe>
+                <iframe src="./app/children/home/children/excess.rmd.html"></iframe>
+                <iframe src="./app/children/home/children/accessible.rmd.html"></iframe>
+                <iframe src="./app/children/home/children/css.rmd.html"></iframe>
+                <iframe src="./app/children/home/children/js.rmd.html"></iframe>
+                <iframe src="./app/children/home/children/ts.rmd.html"></iframe>
+            </div>
+            <footer>
+                <!-- <iframe src="XXXXXXXX"></iframe> -->
+            </footer>
+        </div>
+    </template>
+    <style>
+        at-home {
+            --body-section-shadow: inset 0 0 16px -6px black;
+        }
+    </style>
+    <script type="module">
+        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
+        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
+        
+        const { log } = console;
+        
+        customElement('at-home')
+        (class AsXSAppElement extends CustomElement {
+            
+            createRenderRoot() {
+                return this;
+            }
+            
+        });
+    </script>
+</body>

@@ -2,28 +2,28 @@
 <body>
     <meta name="partial" />
     <template>
-        <at-home-javascript id="/javascript">
-            <div class="section article javascript">
+        <at-home-css id="/css">
+            <div class="section article cascading">
                 <header class="article header">
-                    <h1>As a JavaScript Framework</h1>
-                    <p>Did we say this thing is super extensible yet?</p>
+                    <h1>As a Pure CSS Framework</h1>
+                    <p>A CSS-First Approach.</p>
                 </header>
                 <div class="article body">
-                    <p>Simply register Custom Element definitions for existing CSS components to bootstrap new behavior.</p>
+                    <p>A fully capable, highly-flexible and extensible pure CSS framework for any website or webapp.</p>
                 </div>
                 <footer class="article footer"></footer>
             </div>
             <footer class="section footer">
                 <div class="footer content">
                     <p>
-                        Just want the CSS framework? That's OK too.
+                        When you begin to scale, you can simply define the elements for the behavior you want.
                     </p>
                 </div>
             </footer>
-        </at-home-javascript>
+        </at-home-css>
     </template>
     <style>
-        at-home-javascript {
+        at-home-css {
             display: block;
             margin-block: var(--size-px-10);
             
@@ -33,7 +33,7 @@
                 
             .section.header {}
             
-            .section.article.javascript {
+            .section.article.cascading {
                 box-shadow: var(--body-section-shadow);
                 padding-block: var(--size-px-5);
                 background-color: var(--gray-1);
@@ -58,6 +58,7 @@
             }
             
             .section.footer {
+                min-height: 50dvh;
                 .footer.content {
                     .content.title {
                         color: var(--blue-8);

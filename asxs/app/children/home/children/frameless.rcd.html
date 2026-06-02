@@ -1,0 +1,109 @@
+
+<body>
+    <meta name="partial" />
+    <template>
+        <div id="/frameless" class="section article frameless">
+            <header class="article header">
+                <h1>As A Micro Frontend Framework</h1>
+                <p>Frameless<sup>&trade;</sup> iframes for your Serverless servers.</p>
+            </header>
+            <div class="article body">
+                <pre class="body example"><code class="example code">${usage}</code></pre>
+            </div>
+            <footer class="article footer"></footer>
+        </div>
+        <footer class="section footer">
+            <div class="footer content">
+                <p>
+                    REDs (Remote Element Definitions) use <code>.red.html</code> files that follow the same structure as any 
+                    other RPF (Rapid Prototyping Framework) syntax, such as in Svelte or Vue, and they use a minimal protocol 
+                    that allows any component to be consumed by any producer over The Web using CORS. Components can be produced 
+                    as Custom Element Web Components that auto-bootstrap, produced as simple partials for static content, or 
+                    anything in between.
+                </p>
+            </div>
+            <div class="footer content">
+                <h2 class="content title">Kind of a Big Deal</h2>
+                <p>
+                    This means any site or app can consume any component on The Web. It is like having a "Federated Wiki", but 
+                    for components as opposed to just content. In fact, each section in this page uses Frameless<sup>&trade;</sup>, 
+                    AsXS's faculty for consuming Micro Frontends. Open Chrome Devtools and see for yourself.
+                </p>
+                <p>
+                    We could have consumed these Microfrontends from anywhere on The Web. Frameless<sup>&trade;</sup> <b>turns 
+                    The Web, itself, into a <i>Plugin Architecture</i></b>. Frameless<sup>&trade;</sup> owns the Property Rights 
+                    to the "<i>Remote Element Definition</i> Protocol", but you can write your own element that follows it if you 
+                    don't like any of our baked-in components. All you need is a <code>&lt;body&gt;</code> with <code>meta[name]</code>, 
+                    <code>&lt;template&gt;</code>, <code>&lt;style&gt;</code>, and <code>&lt;script&gt;</code> elements inside it.
+                </p>
+                <iframe src="./asxs/docs/v0.0.1/copy.partial.html"></iframe>
+            </div>
+        </footer>
+    </template>
+    <style>
+        .body.section.frameless {
+            display: block;
+            margin-block: var(--size-px-10);
+                
+            .section.header {}
+            
+            .section.article.frameless {
+                box-shadow: var(--body-section-shadow);
+                padding-block: var(--size-px-5);
+                background-color: var(--gray-1);
+                color: var(--purple-6);
+                
+                .article.body {
+                    
+                    .body.example {
+                        /* border: solid 1px tomato; */
+                        padding: var(--size-px-3) var(--size-px-4);
+                        background-color: var(--gray-8);
+                        color: var(--gray-1);
+                        
+                        .example.code {
+                            /* border: solid 1px tomato; */
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+            
+            .section.footer {
+                .footer.content {
+                    
+                    .content.title {
+                        color: var(--purple-6);
+                    }
+                    
+                    .content.copyright {
+                        font-size: var(--font-size-00);
+                        font-weight: var(--font-weight-6);
+                    }
+                    
+                }
+            }
+            
+        }
+    </style>
+    <script type="application/json">
+        {
+            "usage": "&lt;iframe src=\"./mfes/v1.0.0/my.red.html\" is=\"as-frameless\"&gt;&lt;/iframe&gt;"
+        }
+    </script>
+    <script>
+        const { document: contentDocument } = window;
+        
+        contentDocument.addEventListener('red:loaded', function execute({ data: { host } }) {
+            const { log } = console;
+            const { classList } = host;
+            
+            classList.add('body');
+            classList.add('section');
+            classList.add('frameless');
+            contentDocument.removeEventListener('red:loaded', execute);
+        });
+    </script>
+</body>

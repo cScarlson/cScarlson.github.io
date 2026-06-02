@@ -1,0 +1,95 @@
+
+<body>
+    <meta name="partial" />
+    <template>
+        <div class="section article accessibility">
+            <header class="article header">
+                <h1>Accessibility</h1>
+                <p>Natively Accessible, without the opinions.</p>
+            </header>
+            <div class="article body">
+                <p class="body content">
+                    AsXS naturally encourages extension of native elements and attributes. There is no more opinion here than what 
+                    you'd find with writing Custom Elements from scratch.
+                </p>
+                <p class="body content">
+                    AsXS leverages CSS <a class="content link" href="https://open-props.style" target="_blank">OpenProps</a> 
+                    in its core, so you get all of the Accessibility benefits of that library, too, such as elegant, high-contrast 
+                    color palettes as well.
+                </p>
+            </div>
+            <footer class="article footer"></footer>
+        </div>
+        <footer class="section footer">
+            <div class="footer content">
+                <p class="content paragraph">
+                    Everything is driven off of native concepts. There are no special syntaxes, practices, or customs. Even event 
+                    handlers simply leverage a <code>data-({event-type})="{method-name}"</code> attribute hook. DOM queries work 
+                    by merely setting <code>this['as:crawler'] = new ElementCrawler(this)</code> and setting 
+                    the target's <code>data-[query]="{property}"</code>. The <code>ElementCrawler</code> can also be extended.
+                </p>
+            </div>
+        </footer>
+    </template>
+    <style>
+        .body.section.accessibility {
+            display: block;
+            margin-block: var(--size-px-10);
+                
+            .section.header {}
+            
+            .section.article.accessibility {
+                box-shadow: var(--body-section-shadow);
+                padding-block: var(--size-px-5);
+                background-color: var(--gray-1);
+                color: var(--cyan-6);
+                
+                .article.body {
+                    
+                    .body.content {
+                        .content.link {
+                            --color: var(--orange-7);
+                            text-decoration-line: underline;
+                            text-decoration-thickness: 2px;
+                            text-decoration-style: solid;
+                            text-decoration-color: var(--color);
+                            color: var(--color);
+                            &:hover, &:focus {
+                                text-decoration-style: double;
+                            }
+                        }
+                    }
+                    
+                }
+                
+            }
+            
+            .section.footer {
+                .footer.content {
+                    .content.title {
+                        color: var(--cyan-6);
+                    }
+                }
+            }
+            
+        }
+    </style>
+    <script type="application/json">
+        {
+            "usage": "&lt;iframe src=\"./mfes/v1/my.red.html\" is=\"as-accessibility\"&gt;&lt;/iframe&gt;"
+        }
+    </script>
+    <script>
+        const { document: contentDocument } = window;
+        
+        contentDocument.addEventListener('red:loaded', function execute({ data: { host } }) {
+            const { log } = console;
+            const { classList } = host;
+            
+            classList.add('body');
+            classList.add('section');
+            classList.add('accessibility');
+            contentDocument.removeEventListener('red:loaded', execute);
+        });
+    </script>
+</body>

@@ -1,21 +1,27 @@
 
 import { utilities } from '/asxs/v2.0.0/core/utilities/utilities.js';
+import { root } from './window.js';
 
-const { parent, frameElement } = window;
-const { HTMLElement, console } = parent;
+const { frameElement } = window;
+const { HTMLElement, console } = root;
 const { log } = console;
+
+frameElement.width = 0;
+frameElement.height = 0;
+frameElement.setAttribute('width', '0');
+frameElement.setAttribute('height', '0');
+frameElement.style = 'width: 0; height: 0; border: none; display: none';
 
 class Nativeish extends HTMLElement {
     static observedAttributes = [];
     root = this;
     
     stabilize() {
+        // frameElement.onload = e => frameElement.remove();
         frameElement.remove();
     }
     
-    connectedCallback() {
-        this.stabilize();
-    }
+    connectedCallback() {}
     
     disconnectedCallback() {
         delete this.root;
@@ -59,7 +65,8 @@ class Basic extends Nativeish {
         root.appendChild(style);
         root.appendChild(content);
         if (crawler) crawler.execute(...children);
-        if (handle) handle.call(this, content); 
+        if (handle) handle.call(this, content);
+        this.stabilize();  // needs to occur after nodes have new ownerDocument
     }
     
 }

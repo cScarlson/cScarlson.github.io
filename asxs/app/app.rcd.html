@@ -12,11 +12,13 @@
                 </menu>
             </header>
             <main class="app body">
-                <at-home id="/"></at-home>
+                <at-home id="/">
+                    <iframe src="./asxs/app/children/home/home.rcd.html"></iframe>
+                </at-home>
                 <at-catalog id="/catalog"></at-catalog>
             </main>
             <footer class="app footer">
-                <iframe src="./asxs/docs/v0.0.1/copy.partial.html"></iframe>
+                <iframe src="./asxs/app/children/copyright.partial.html"></iframe>
             </footer>
         </div>
     </template>
@@ -26,7 +28,7 @@
         }
         
         :host {
-            color: firebrick;
+            /* color: firebrick; */
             
             .asxs.app {
                 

@@ -1,7 +1,9 @@
 
-const { parent } = window;
-const { customElements } = parent;
+import { root } from './window.js';
 
+const { customElements } = root;
+
+export { customElements };
 export function customElement(tagName, options = {}) {
     
     return function decorate(Class) {

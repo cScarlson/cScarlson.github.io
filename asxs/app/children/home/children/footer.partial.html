@@ -1,0 +1,24 @@
+
+<body>
+    <template id="template">
+        <h1>Getting Started</h1>
+        <p>This framework is not yet published as a package. Stay tuned.</p>
+    </template>
+    <style id="style">
+        * { box-sizing: border-box }
+        :host {
+            display: block;
+            min-height: 200px;
+            padding: var(--size-px-5) var(--offset);
+            background-color: var(--gray-1);
+            color: var(--orange-7);
+        }
+    </style>
+    <script type="module">
+        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
+        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
+        
+        customElement('')
+        (class HomeFooterElement extends HTMLElement {});
+    </script>
+</body>

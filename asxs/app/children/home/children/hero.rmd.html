@@ -1,7 +1,7 @@
 
 <body>
     <template>
-        <style is="as-css-import" target="buttons"></style>
+        <iframe src="./v2.0.0/button/button.rmd.html"></iframe>
         <div class="section article home">
             <input class="article target content x"     type="radio" name="content" />
                 <input class="article target content x  detail start"    type="radio" name="content" />
@@ -50,9 +50,9 @@
                     <p class="content description xs excess">A full SDK for Frontend Development.</p>
                 </div>
                 <footer class="body footer">
-                    <a class="footer action example" is="as-button" href="./asxs/docs/#/example">At a glance</a>
-                    <a class="footer action extensible" is="as-button" href="./asxs/docs/#/extensible">Extensibility</a>
-                    <a class="footer action frameless" is="as-button" href="./asxs/docs/#/frameless">Frameless<sup>&trade;</sup></a>
+                    <a class="footer action example" is="as-button" href="#/example">At a glance</a>
+                    <a class="footer action extensible" is="as-button" href="#/extensibility">Extensibility</a>
+                    <a class="footer action frameless" is="as-button" href="#/frameless">Frameless<sup>&trade;</sup></a>
                 </footer>
             </div>
         </div>
@@ -331,7 +331,7 @@
                 const { log } = console;
                 
                 target.checked = true;
-                log(`#cycle`, target);
+                log(`#cycle`, target.className);
                 this.#cycle(targets, ...more);
             }, this.DELAY);
             
@@ -349,7 +349,7 @@
             }
             
             stabilize() {
-                this.disguise();
+                this.idle();
             }  // retain iframe's window scope. todo: eliminate this need!
             
             connectedCallback( x = super.connectedCallback() ) {
@@ -357,5 +357,15 @@
             }
             
         });
+    </script>
+    <script id="en" class="locale translation" type="application/json">
+        {
+            "SOME:TRANSLATION:KEY": "english"
+        }
+    </script>
+    <script id="eS" class="locale translation" type="application/json">
+        {
+            "SOME:TRANSLATION:KEY": "ingles"
+        }
     </script>
 </body>

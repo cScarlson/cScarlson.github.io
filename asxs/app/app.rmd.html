@@ -11,24 +11,27 @@
                     <li class="menu item"><a class="item action" href="#/catalog">Catalog</a></li>
                 </menu>
             </header>
-            <main class="app body">
-                <at-home id="/">
-                    <iframe src="./app/children/home/home.rmd.html"></iframe>
+            <main class="app body css router">
+                <at-catalog id="/catalog" class="router route catalog">
+                    <iframe src="./app/children/catalog/catalog.rmd.html" is="as-frameless"></iframe>
+                </at-catalog>
+                <at-home id="/" class="router route home default">
+                    <iframe src="./app/children/home/home.rmd.html" is="as-frameless"></iframe>
                 </at-home>
-                <at-catalog id="/catalog"></at-catalog>
             </main>
             <footer class="app footer">
-                <iframe src="./app/children/copyright.rmd.html"></iframe>
+                <iframe src="./app/children/copyright.rmd.html" is="as-frameless"></iframe>
             </footer>
         </div>
     </template>
     <style>
+        @import url('/asxs/v2.0.0/core/router.css');
+        
         :root {
             --header-height: var(--size-px-9);
         }
         
-        :host {
-            /* color: firebrick; */
+        as-app {
             
             .asxs.app {
                 
@@ -109,18 +112,9 @@
         customElement('as-app')
         (class AsXSAppElement extends CustomElement {
             
-            // constructor() {
-            //     super();
-            //     // const { document } = parent;
-            //     const style = document.createElement('link');
-            //     style.rel = 'stylesheet';
-            //     style.href = 'https://unpkg.com/open-props';
-            //     this.shadowRoot.appendChild(style);
-            // }
-            
-            // createRenderRoot() {
-            //     return this;
-            // }
+            createRenderRoot() {
+                return this;
+            }
             
         });
     </script>

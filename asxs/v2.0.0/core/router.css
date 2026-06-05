@@ -1,0 +1,24 @@
+
+.css.router {
+    &:not(:has(.router.route:target)) {
+        
+        .router.route.default {
+            display: block;
+        }
+        
+    }
+    
+    .router.route {
+        display: none;
+        display: block;
+    }
+    
+    .router.route:target {
+        display: block;
+    }
+    
+    .router.route:has(.router.route:target) {
+        display: block;
+    }
+    
+}

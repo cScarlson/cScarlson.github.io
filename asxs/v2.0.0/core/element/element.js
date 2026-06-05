@@ -6,9 +6,11 @@ const { frameElement } = window;
 const { HTMLElement, console } = root;
 const { log } = console;
 
-frameElement.width = 0;
-frameElement.height = 0;
-frameElement.style.setProperty('display', 'none', 'important');
+frameElement.style.setProperty('box-sizing', 'border-box', 'important');
+frameElement.style.setProperty('margin', '0', 'important');
+frameElement.style.setProperty('border', 'none', 'important');
+frameElement.style.setProperty('width', '100%', 'important');
+frameElement.style.setProperty('height', '100dvh', 'important');
 
 class Nativeish extends HTMLElement {
     static observedAttributes = [];
@@ -18,7 +20,7 @@ class Nativeish extends HTMLElement {
         frameElement.remove();
     }
     
-    disguise() {
+    idle() {
         this.moveBefore(frameElement, null);
     }
     

@@ -1,6 +1,9 @@
 
+import { markdown } from './markdown.js';
+
 export const utilities = new (class Utilities {
-    
+    markdown = markdown;
+	
 	delay = (delay = 0) => new Promise( r => setTimeout(r, delay) );
 	escapeHTML = html => markdown.escapeHTML(html);
     

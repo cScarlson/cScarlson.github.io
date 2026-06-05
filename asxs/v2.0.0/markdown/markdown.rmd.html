@@ -1,0 +1,32 @@
+
+<body>
+    <template></template>
+    <style></style>
+    <script type="module">
+        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
+        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
+        import { markdown } from '/asxs/v2.0.0/core/utilities/markdown.js';
+        
+        customElement('as-markdown')
+        (class MarkdownElement extends CustomElement {
+            
+            stabilize() {}  // prefer to remove manually
+            
+            handleEvent(e) {
+                const { detail: text } = e;
+                const markup = markdown.parse(text);
+                const event = new CustomEvent('as:markdown:loaded', { detail: markup, bubbles: true });
+                
+                this.root.innerHTML = markup;
+                this.dispatchEvent(event);
+                this.removeEventListener('load', this, true);
+                frameElement.remove();  // remove manually
+            }
+            
+            connectedCallback( x = super.connectedCallback() ) {
+                this.addEventListener('as:text:loaded', this, true);
+            }
+            
+        });
+    </script>
+</body>

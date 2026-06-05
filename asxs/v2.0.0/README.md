@@ -1,9 +1,12 @@
 
 AsXS
 ================
+<p style="font-size: var(--font-size-0); font-weight: var(--font-weight-7)">
+    <iframe src="./app/children/copyright.rmd.html" is="as-frameless"></iframe>
+</p>
 
-# Frameless &trade;
-Frameless is a Micro Frontend Architecture framework that largeley leverages _The Micro Frontend Pattern &trade;_. It uses _Remote Module Definitions &trade_ to compose Web Components with standard RPF (Rapid Prototyping Framework) syntax, as seen in Svelte and Vue (Single File Components).
+# Frameless&trade;
+Frameless is a Micro Frontend Architecture framework that largeley leverages _The Micro Frontend Pattern&trade;_. It uses _Remote Module Definitions&trade;_ to compose Web Components with standard RPF (Rapid Prototyping Framework) syntax, as seen in Svelte and Vue (Single File Components).
 
 
 ## Usage

@@ -1,0 +1,26 @@
+
+<body>
+    <iframe></iframe>
+    <style></style>
+    <script>
+        const { dataset } = frameElement;
+        const { src } = dataset;
+        const iframe = document.querySelector('iframe');
+        
+        function handleFrameLoad(e) {
+            const { target } = e;
+            const { contentDocument } = target;
+            const { body } = contentDocument;
+            const { firstElementChild: pre } = body;
+            const { innerText: text, innerHTML: html } = pre;
+            const event = new CustomEvent('as:text:loaded', { detail: text, bubbles: true });
+            
+            iframe.removeEventListener('load', handleFrameLoad, true);
+            frameElement.dispatchEvent(event);
+            frameElement.outerHTML = frameElement.innerHTML = html;  // provides the content/hook for RMDs, such as as-markdown.
+        }
+        
+        iframe.addEventListener('load', handleFrameLoad, true);
+        iframe.src = src;
+    </script>
+</body>

@@ -13,7 +13,8 @@
             const { body } = contentDocument;
             const { firstElementChild: pre } = body;
             const { innerText: text, innerHTML: html } = pre;
-            const event = new CustomEvent('as:text:loaded', { detail: text, bubbles: true });
+            const detail = { text, html };
+            const event = new CustomEvent('as:text:loaded', { detail, bubbles: true });
             
             iframe.removeEventListener('load', handleFrameLoad, true);
             frameElement.dispatchEvent(event);

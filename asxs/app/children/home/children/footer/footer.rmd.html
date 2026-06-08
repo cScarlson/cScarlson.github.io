@@ -15,7 +15,9 @@
                     </p>
                 </header>
                 <div class="article body">
-                    <pre class="body example"><code class="example code">${example}</code></pre>
+                    <pre class="body example"><code class="example code">${definition}</code></pre>
+                    <p>And here's how an RMD gets used...</p>
+                    <pre class="body example"><code class="example code">${usage}</code></pre>
                 </div>
                 <footer class="article footer"></footer>
             </div>
@@ -27,10 +29,7 @@
                 </p>
                 <details class="footer details readme" open tabindex="0">
                     <summary>README</summary>
-                    <as-markdown>
-                        <iframe src="./v2.0.0/markdown/markdown.rmd.html" is="as-frameless"></iframe>
-                        <iframe src="./v2.0.0/text/text.rmd.html" is="as-frameless" data-src="/asxs/v2.0.0/README.md"></iframe>
-                    </as-markdown>
+                    <iframe src="./v2.0.0/markdown/markdown.rmd.html" is="as-frameless" data-src="/asxs/v2.0.0/README.md"></iframe>
                 </details>
             </footer>
         </at-home-footer>
@@ -110,14 +109,21 @@
         const template = document.querySelector('template');
         const style = document.querySelector('style');
         
-        async function interpolate(text) {
-            const example = utilities.markdown.parse(text);
-            template.innerHTML = utilities.interpolate(template.innerHTML)({ example });
+        async function combine() {
+            const def = await fetch('./footer.def.example.md').then( res => res.text() );
+            const use = await fetch('./footer.use.example.md').then( res => res.text() );
+            return { def, use };
+        }
+        
+        async function interpolate({ def, use }) {
+            const definition = utilities.markdown.parse(def);
+            const usage = utilities.markdown.parse(use);
+            
+            template.innerHTML = utilities.interpolate(template.innerHTML)({ definition, usage });
             template.content.firstElementChild.appendChild(style);
         }
         
-        fetch('./footer.example.md')
-            .then( response => response.text() )
+        combine()
             .then(interpolate)
             .then( x => frameElement.replaceWith(template.content) )
             ;

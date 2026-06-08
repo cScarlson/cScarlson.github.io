@@ -11,8 +11,8 @@ Frameless is a Micro Frontend Architecture framework that largeley leverages _Th
 
 ## Usage
 
-## Standard
-#### RCD Definition (Remote Component Definition)
+### Standard
+#### RMD Definition (Remote Module Definition)
 ```html
 <body>
     <template>
@@ -25,8 +25,8 @@ Frameless is a Micro Frontend Architecture framework that largeley leverages _Th
         import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
         import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
         
-        customElement('as-app')
-        (class AsXSAppElement extends CustomElement {});
+        customElement('my-app')
+        (class AppElement extends CustomElement {});
     </script>
 </body>
 ```
@@ -37,9 +37,9 @@ Frameless is a Micro Frontend Architecture framework that largeley leverages _Th
 <html lang="en">
 <head>...</head>
 <body>
-	<as-app>
-		<iframe src="/asxs/app/app.rcd.html"></iframe>
-	</as-app>
+    <my-app>
+        <iframe src="./app/app.rmd.html"></iframe>
+    </my-app>
 </body>
 </html>
 ```
@@ -50,13 +50,13 @@ Frameless is a Micro Frontend Architecture framework that largeley leverages _Th
 <html lang="en">
 <head>...</head>
 <body>
-	<as-app>
-		#shadow-root (open)
+    <my-app>
+        #shadow-root (open)
             <style>
                 :host {}
             </style>
             <h1>Frameless!</h1>
-	</as-app>
+    </my-app>
 </body>
 </html>
 ```
@@ -75,14 +75,14 @@ Use the `createRenderRoot` override method and return `this` to convert the comp
     </template>
     <style>
         @import url('/some/where/else.css');
-        as-app {}
+        my-app {}
     </style>
     <script type="module">
         import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
         import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
         
-        customElement('as-app')
-        (class AsXSAppElement extends CustomElement {
+        customElement('my-app')
+        (class AppElement extends CustomElement {
             
             createRenderRoot() {
                 return this;
@@ -99,13 +99,13 @@ Use the `createRenderRoot` override method and return `this` to convert the comp
 <html lang="en">
 <head>...</head>
 <body>
-	<as-app>
+    <my-app>
         <style>
             @import url('/some/where/else.css');
-            as-app {}
+            my-app {}
         </style>
         <h1>Frameless!</h1>
-	</as-app>
+    </my-app>
 </body>
 </html>
 ```
@@ -129,8 +129,8 @@ Used `head > link.global.asset`.
         import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
         import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
         
-        customElement('as-app')
-        (class AsXSAppElement extends CustomElement {});
+        customElement('my-app')
+        (class AppElement extends CustomElement {});
     </script>
 </body>
 ```
@@ -143,12 +143,13 @@ Used `head > link.global.asset`.
     <link class="global asset" href="/asxs/v2.0.0/styles/variables.css" rel="stylesheet" />
 </head>
 <body>
-	<as-app>
-        <style>
-            :host {}
-        </style>
-        <h1>Frameless!</h1>
-	</as-app>
+    <my-app>
+        #shadow-root (open)
+            <style>
+                :host {}
+            </style>
+            <h1>CSS props are global and can pierce the ShadowDOM</h1>
+    </my-app>
 </body>
 </html>
 ```

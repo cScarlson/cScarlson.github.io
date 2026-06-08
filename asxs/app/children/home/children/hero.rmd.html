@@ -331,7 +331,6 @@
                 const { log } = console;
                 
                 target.checked = true;
-                log(`#cycle`, target.className);
                 this.#cycle(targets, ...more);
             }, this.DELAY);
             

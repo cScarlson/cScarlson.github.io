@@ -7,7 +7,7 @@
 ${setup}
 
 ```html
-${ escape(setup) }
+${setup}
 ```
 
 ### Types
@@ -16,7 +16,7 @@ ${ escape(setup) }
 ${types}
 
 ```html
-${ escape(types) }
+${types}
 ```
 
 ### Basic
@@ -25,7 +25,7 @@ ${ escape(types) }
 ${basic}
 
 ```html
-${ escape(basic) }
+${basic}
 ```
 
 ### Sizes
@@ -34,7 +34,7 @@ ${ escape(basic) }
 ${sizes}
 
 ```html
-${ escape(sizes) }
+${sizes}
 ```
 
 ### Block
@@ -43,47 +43,5 @@ ${ escape(sizes) }
 ${block}
 
 ```html
-${ escape(block) }
-```
-
-## Stateful
-`as-stateful > [is="state"][type="{type}"]:is(*)`
-
-### Setup
-None
-
-### Checkbox
-`as-stateful > input[is="state"][type="checkbox"]`
-
-${stateful.checkbox}
-
-```html
-${ escape(stateful.checkbox) }
-```
-
-### Radio
-`as-stateful > input[is="state"][type="radio"][name="{name}"]`
-
-${stateful.radio}
-
-```html
-${ escape(stateful.radio) }
-```
-
-### File Upload
-`as-stateful > input[is="state"][type="file"]`
-
-${stateful.files}
-
-```html
-${ escape(stateful.files) }
-```
-
-### Reflecting State
-`*[is="as-button"].color.{style}.size.{x}`
-
-${stateful.reflections}
-
-```html
-${ escape(stateful.reflections) }
+${block}
 ```

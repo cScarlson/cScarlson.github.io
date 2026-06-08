@@ -1,46 +1,70 @@
 
 <body>
     <template>
-        <div class="app catalog">
-            <footer class="catalog footer"></footer>
-            <div class="catalog body" data-active="#/catalog/section/icons">
-                <div class="body content">
-                    ${documentation}
-                </div>
-            </div>
-            <header class="catalog header">
-                <div class="header main">
-                    <h1 class="main title">Catalog</h1>
-                    <menu class="main menu">
-                        ${menu}
-                        <li class="menu item more">
-                            <as-popover class="item popover">
-                                <span class="popover control" for="more" part="actuator" tabindex="0">&vellip;</span>
-                                <ul class="popover submenu" part="envelope" position="bottom left">
-                                    ${more}
-                                </ul>
-                            </as-popover>
-                        </li>
-                    </menu>
-                </div>
-                <div class="header alert">
-                    <p class="alert caption">
-                        All examples are "Breathing Documentation" so that any changes to the code example get reflected in the rendered output.
-                    </p>
-                </div>
-            </header>
+        <header class="catalog header">
+            <h2 class="header branding">
+                <span class="branding title">Catalog</span>
+                <!-- <span class="branding subtitle">{}</span> -->
+            </h2>
+        </header>
+        <div class="catalog body">
+            <iframe src="/asxs/v2.0.0/variables/docs/docs.rmd.html" is="as-frameless"></iframe>
+            <iframe src="/asxs/v2.0.0/button/docs/docs.rmd.html" is="as-frameless"></iframe>
+            <iframe src="/asxs/v2.0.0/button/stateful/docs/docs.rmd.html" is="as-frameless"></iframe>
         </div>
+        <footer class="catalog footer"></footer>
     </template>
-    <style></style>
+    <style>
+        at-catalog {
+            display: block;
+            
+            .catalog.header {
+                position: sticky;
+                top: var(--header-height);
+                display: flex;
+                align-items: center;
+                height: var(--header-height);
+                box-shadow: var(--shadow-1);
+                padding-inline: var(--offset);
+                background-color: var(--gray-8);
+                color: var(--gray-1);
+                z-index: 9;
+            }
+            
+            .catalog.body {
+                
+                .catalog.docs {
+                    display: block;
+                    padding-inline: var(--offset);
+                    
+                    pre {
+                        display: block;
+                        padding: var(--size-3);
+                        overflow: auto;
+                        background-color: var(--gray-8);
+                        color: var(--color-primary);
+                        code {}
+                    }
+                    
+                }
+                
+            }
+            
+            .catalog.footer {}
+            
+        }
+    </style>
     <script type="module">
         import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
         import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
+        import { default as data } from './content.json' with { type: 'json' };
+        
+        const $data = data.reduce( ($, o) => $.set(o.id, o), new Map() );
+        console.log(`@CATALOG`, $data);
         
         customElement('at-catalog')
         (class CatalogElement extends CustomElement {
-            documentation = 'todo: documentation';
-            menu = 'todo: menu';
-            more = 'todo: more';
+            data = data;
             
             createRenderRoot() {
                 return this;

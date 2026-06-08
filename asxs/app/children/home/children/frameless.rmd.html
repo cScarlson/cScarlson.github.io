@@ -4,7 +4,7 @@
         <at-home-frameless id="/frameless">
             <div class="section article frameless">
                 <header class="article header">
-                    <h1>As A Micro Frontend Framework</h1>
+                    <h1>As a Micro Frontend Framework</h1>
                     <p>Frameless<sup>&trade;</sup> iframes for your Serverless servers.</p>
                 </header>
                 <div class="article body">
@@ -15,11 +15,11 @@
             <footer class="section footer">
                 <div class="footer content">
                     <p>
-                        RMDs (Remote Module Definitions) use <code>.red.html</code> files that follow the same structure as any 
+                        RMDs (Remote Module Definitions) use <code>.rmd.html</code> files that follow the same structure as any 
                         other RPF (Rapid Prototyping Framework) syntax, such as in Svelte or Vue (Single File Components), and they 
                         use a minimal protocol that allows any component to be consumed by any producer over The Web using CORS. 
                         Components can be produced as Custom Element Web Components that auto-bootstrap, produced as simple partials 
-                        for static content, or anything in between.
+                        for static content, or anything in between and can be combined with SSR (Server Side Rendering) if desired.
                     </p>
                 </div>
                 <div class="footer content">
@@ -33,8 +33,7 @@
                         We could have consumed these Microfrontends from anywhere on The Web. Frameless<sup>&trade;</sup> <b>turns 
                         The Web, itself, into a <i>Plugin Architecture</i></b>. Frameless<sup>&trade;</sup> owns the Property Rights 
                         to the "<i>Remote Module Definition</i> Protocol", but you can write your own element that follows it if you 
-                        don't like any of our baked-in components. All you need is a <code>&lt;body&gt;</code> with <code>meta[name]</code>, 
-                        <code>&lt;template&gt;</code>, <code>&lt;style&gt;</code>, and <code>&lt;script&gt;</code> elements inside it.
+                        prefer your own over one of our baked-in components.
                     </p>
                     <iframe src="./app/children/copyright.rmd.html"></iframe>
                 </div>
@@ -96,7 +95,7 @@
     </style>
     <script type="application/json">
         {
-            "usage": "&lt;iframe src=\"./mfes/v1.0.0/my.red.html\" is=\"as-frameless\"&gt;&lt;/iframe&gt;"
+            "usage": "&lt;iframe src=\"./mfes/v1.0.0/my.rmd.html\" is=\"as-frameless\"&gt;&lt;/iframe&gt;"
         }
     </script>
     <script type="module">

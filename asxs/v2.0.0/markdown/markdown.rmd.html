@@ -1,19 +1,29 @@
 
 <body>
-    <template></template>
+    <template>
+        <iframe src="./v2.0.0/text/text.rmd.html" is="as-frameless" data-src="${src}"></iframe>
+    </template>
     <style></style>
     <script type="module">
         import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
         import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
         import { markdown } from '/asxs/v2.0.0/core/utilities/markdown.js';
         
+        const { dataset } = frameElement;
+        const { src } = dataset;
+        
         customElement('as-markdown')
         (class MarkdownElement extends CustomElement {
+            src = src;
             
             stabilize() {}  // prefer to remove manually
             
+            createRenderRoot() {
+                return this;
+            }
+            
             handleEvent(e) {
-                const { detail: text } = e;
+                const { detail: { text } } = e;
                 const markup = markdown.parse(text);
                 const event = new CustomEvent('as:markdown:loaded', { detail: markup, bubbles: true });
                 
@@ -28,5 +38,13 @@
             }
             
         });
+    </script>
+    <script type="module">
+        import { customElements } from '/asxs/v2.0.0/core/element/custom.js';
+        
+        const Component = customElements.get('as-markdown');
+        const instance = new Component();
+        
+        frameElement.after(instance);
     </script>
 </body>

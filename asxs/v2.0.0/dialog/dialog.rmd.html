@@ -90,7 +90,7 @@
         
         const { frameElement } = window;
         const { HTMLDialogElement, document } = root;
-        const { documentElement } = document;
+        const { head } = document;
         const DEFAULT_MESSAGE = { type: '' };
         
         customElement('as-dialog-queue', { extends: 'dialog' })
@@ -98,7 +98,7 @@
             queue = new Queue();
             
             static init() {
-                documentElement.moveBefore(frameElement, null);
+                head.moveBefore(frameElement, null);
                 return this;
             }
             

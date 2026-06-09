@@ -6,15 +6,10 @@ AsXS Quickviews (A.K.A. "Offcanvas Views") piggyback on AsXS Dialogs. Therefrom,
 
 ### Setup
 
-${setuphtml}
+${setup}
 
 ```html
-${ escape(setuphtml) }
-```
-
-#### Queued
-```typescript
-${ escape(setupts) }
+${setup}
 ```
 
 ### Basic
@@ -23,7 +18,7 @@ ${ escape(setupts) }
 ${basic}
 
 ```typescript
-${ escape(basic) }
+${basic}
 ```
 > _These examples use `.backdrop.clear` as a preference._
 
@@ -31,4 +26,6 @@ ${ escape(basic) }
 
 #### Queued
 `dialog[is="as-dialog-queue"][modus="quickview"]`
+
+You can make a quickview queued using a queued dialog.
 

@@ -1,0 +1,21 @@
+
+<body>
+    <template>
+        <p class="catalog note documentation">
+            NOTE: This Component Catalog was put together with <i>Live Documentation</i>. That is, the code reflected in the 
+            examples is the code used to provide the UI element.
+        </p>
+    </template>
+    <style>
+        .catalog.note.documentation {
+            padding-inline: var(--offset);
+        }
+    </style>
+    <script>
+        const template = document.querySelector('template');
+        const style = document.querySelector('style');
+        
+        template.content.prepend(style);
+        frameElement.replaceWith(template.content);
+    </script>
+</body>

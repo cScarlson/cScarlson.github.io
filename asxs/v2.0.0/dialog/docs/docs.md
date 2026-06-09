@@ -73,17 +73,15 @@ All submission buttons tied to the dialog's form will automatically dismiss the 
 ### Queued Dialog
 `dialog[is="as-dialog-queue"]`
 
-Queued Dialogs leverage a `Queue` data-structure so that the first message to display always remains present until the dialog has been dismissed. Once dismissed, the Queued Dialog simply calls `dequeue` on the queue to show the next message until to queue is empty, at which point it finally closes.
-
-Queued Modals are excellent for implementing Singleton Modals, reducing the DOM footprint by encouraging usage of less dialog instances.
-
-#### Setup
-
 ${queued}
 
 ```html
 ${queued}
 ```
+
+Queued Dialogs leverage a `Queue` data-structure so that the first message to display always remains present until the dialog has been dismissed. Once dismissed, the Queued Dialog simply calls `dequeue` on the queue to show the next message until to queue is empty, at which point it finally closes.
+
+Queued Modals are excellent for implementing Singleton Modals, reducing the DOM footprint by encouraging usage of less dialog instances.
 
 ##### Sending Requests
 

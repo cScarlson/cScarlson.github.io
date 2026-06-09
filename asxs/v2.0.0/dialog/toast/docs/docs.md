@@ -6,16 +6,13 @@ AsXS Toasts (A.K.A. "Notífs") piggyback on AsXS Dialogs. Therefrom, you can lev
 
 ### Setup
 
-${setuphtml}
+${setup}
 
 ```html
-${ escape(setuphtml) }
+${setup}
 ```
 
 #### Queued
-```typescript
-${ escape(setupts) }
-```
 
 ### Basic
 `dialog[is="as-dialog"][modus="toast"]`
@@ -23,9 +20,11 @@ ${ escape(setupts) }
 ${basic}
 
 ```typescript
-${ escape(basic) }
+${basic}
 ```
 
 #### Queued
 `dialog[is="as-dialog-queue"][modus="toast"]`
+
+You can make a toast queued using a queued dialog.
 

@@ -1,9 +1,7 @@
 
-function execute() {
-    const actuator = document.querySelector('.queued.dialog.actuator');
-    const dialog = document.querySelector('#queuedDialogCommand');
-    actuator.addEventListener('click', e => handleEvent(e, dialog), true);
-};
+const actuator = document.querySelector('.queued.dialog.actuator');
+const dialog = document.querySelector('#queuedDialogCommand');
+actuator.addEventListener('click', e => handleEvent(e, dialog), true);
 
 function handleEvent(e, dialog) {
     const requests = ['One', 'Two', 'Three', 'Four', 'Five'].map(create);
@@ -27,5 +25,3 @@ function create(id) {
     
     return new MessageEvent('as:dialog:request', { data: message });
 }
-
-execute();

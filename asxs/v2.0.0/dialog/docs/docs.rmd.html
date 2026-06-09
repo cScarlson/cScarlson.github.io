@@ -1,0 +1,45 @@
+
+<body>
+    <template></template>
+    <style></style>
+    <script type="module">
+        import { utilities } from '/asxs/v2.0.0/core/utilities/utilities.js';
+        import { root } from '/asxs/v2.0.0/core/element/window.js';
+        
+        const { markdown } = utilities;
+        const assets = [
+            { id: 'docs', url: './docs.md' },
+            { id: 'setup', url: './setup.html' },
+            { id: 'normal', url: './normal.html' },
+            { id: 'backdrop', url: './backdrop.html' },
+            { id: 'fullscreen', url: './fullscreen.html' },
+            { id: 'conventional', url: './conventional.html' },
+            { id: 'queued', url: './queued.html' },
+            { id: 'script', url: './queued.js' },
+        ].reduce( get, Promise.resolve({ }) );
+        
+        async function get(sequence, { id, url }) {
+            const resolved = await sequence;
+            const response = await fetch(url);
+            const text = await response.text();
+            
+            if (id === 'docs') return { ...resolved, [id]: text.replaceAll(/`/img, '\\`') };
+            return { ...resolved, [id]: text.trim() };
+        }
+        
+        (async function execute(promise) {
+            const { docs, setup, normal, backdrop, fullscreen, conventional, queued, script } = await promise;
+            const interpolated = utilities.interpolate(docs)({ setup, normal, backdrop, fullscreen, conventional, queued, script });
+            const markup = markdown.parse(interpolated);
+            const template = document.querySelector('template');
+            const html = `<at-catalog-dialogs id="/catalog/dialogs" class="catalog docs dialogs">${markup}</at-catalog-dialogs>`;
+            const container = document.createElement('script');
+            
+            template.innerHTML = html;
+            container.innerHTML = script;
+            template.content.appendChild(container);
+            frameElement.replaceWith(template.content);
+        })(assets);
+        
+    </script>
+</body>

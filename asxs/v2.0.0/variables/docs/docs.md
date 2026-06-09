@@ -3,8 +3,9 @@
 AsXS leverages <a href="https://open-props.style" target="_blank">OpenProps</a>, so you get what we get. Additionally, AsXS provides a few shortcuts that you may likely find useful. Moreover, these shortcuts can also be overridden as you would with any other global CSS variables on `:root`/`html`.
 
 ### Setup
+In your index.html file, simply declare a link tag.
 
-```typescript
+```html
 ${setup}
 ```
 

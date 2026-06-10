@@ -1,0 +1,44 @@
+
+<body>
+    <template>
+        <div class="app page home">
+            <header class="page header"></header>
+            <div class="page body">
+                <at-home-hero>
+                    <iframe src="./app/children/home/children/hero.rmd.html" is="as-frameless"></iframe>
+                </at-home-hero>
+                <iframe src="./app/children/home/children/button.rmd.html" is="as-frameless"></iframe>
+                <iframe src="./app/children/home/children/frameless.rmd.html" is="as-frameless"></iframe>
+                <iframe src="./app/children/home/children/extensible.rmd.html" is="as-frameless"></iframe>
+                <iframe src="./app/children/home/children/xs.rmd.html" is="as-frameless"></iframe>
+                <iframe src="./app/children/home/children/excess.rmd.html" is="as-frameless"></iframe>
+                <iframe src="./app/children/home/children/accessible.rmd.html" is="as-frameless"></iframe>
+                <iframe src="./app/children/home/children/css.rmd.html" is="as-frameless"></iframe>
+                <iframe src="./app/children/home/children/js.rmd.html" is="as-frameless"></iframe>
+                <iframe src="./app/children/home/children/ts.rmd.html" is="as-frameless"></iframe>
+            </div>
+            <iframe src="./app/children/home/children/footer/footer.rmd.html" is="as-frameless"></iframe>
+        </div>
+    </template>
+    <style>
+        at-home {
+            --body-section-shadow: inset 0 0 16px -6px black;
+            display: block;
+        }
+    </style>
+    <script type="module">
+        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
+        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
+        
+        const { log } = console;
+        
+        customElement('at-home')
+        (class AsXSAppElement extends CustomElement {
+            
+            createRenderRoot() {
+                return this;
+            }
+            
+        });
+    </script>
+</body>

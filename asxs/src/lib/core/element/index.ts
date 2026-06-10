@@ -39,7 +39,6 @@ class Basic extends HTMLElement {
     }
     
     connectedCallback() {
-        // log(`@connectedCallback`, this.tagName);
         this.root = this.createRenderRoot();
     }
     
@@ -56,7 +55,6 @@ class Basic extends HTMLElement {
     }
     
     createRenderRoot(): ShadowRoot | HTMLElement {
-        // log(`@createRenderRoot`, this.tagName);
         if (this.root) return this.root;
         if (this.shadowRoot) return this.shadowRoot;
         return this.attachShadow({ mode: 'open' });

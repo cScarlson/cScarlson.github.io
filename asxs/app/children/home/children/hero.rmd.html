@@ -1,0 +1,370 @@
+
+<body>
+    <template>
+        <iframe src="./v2.0.0/button/button.rmd.html"></iframe>
+        <div class="section article home">
+            <input class="article target content x"     type="radio" name="content" />
+                <input class="article target content x  detail start"    type="radio" name="content" />
+                <input class="article target content x  detail css"      type="radio" name="content" />
+                <input class="article target content x  detail js"       type="radio" name="content" />
+                <input class="article target content x  detail ts"       type="radio" name="content" />
+            <input class="article target content xs"    type="radio" name="content" />
+                <input class="article target content xs detail start"    type="radio" name="content" />
+                <input class="article target content xs detail extra"    type="radio" name="content" />
+                <input class="article target content xs detail ext"      type="radio" name="content" />
+                <input class="article target content xs detail excess"   type="radio" name="content" />
+            <input class="article target content mfe"   type="radio" name="content" />
+            <div class="article body hero">
+                <header class="body header">
+                    <h1 class="header title">As{X}S</h1>
+                    <h2 class="header subtitle">The Most Extensible Framework</h2>
+                </header>
+                <header class="body subheader">
+                    <h3 class="subheader content x">
+                        As 
+                        <span class="detail wrapper x">
+                            <span class="content detail start">{X}</span>
+                            <span class="content detail css">CS</span>
+                            <span class="content detail js">J</span>
+                            <span class="content detail ts">T</span>
+                        </span>
+                        S
+                    </h3>
+                    <h3 class="subheader content xs">
+                        As
+                        <span class="detail wrapper xs">
+                            <span class="content detail start">XS</span>
+                            <span class="content detail extra">Extra Small</span>
+                            <span class="content detail ext">Extensible</span>
+                            <span class="content detail excess">Excess For Less</span>
+                        </span>
+                    </h3>
+                    <h3 class="subheader content mfe">As Remote Element Definition MFEs.</h3>
+                </header>
+                <div class="body content">
+                    <p class="content description x css">Use as just a CSS SDK.</p>
+                    <p class="content description x js">Bootstrap behavior onto CSS components with Custom Elements.</p>
+                    <p class="content description x ts">Compatible with TypeScript.</p>
+                    <p class="content description xs extra">A lot in tiny packages.</p>
+                    <p class="content description xs ext">Opt-In or Opt-Out of anything.</p>
+                    <p class="content description xs excess">A full SDK for Frontend Development.</p>
+                </div>
+                <footer class="body footer">
+                    <a class="footer action example" is="as-button" href="#/example">At a glance</a>
+                    <a class="footer action extensible" is="as-button" href="#/extensibility">Extensibility</a>
+                    <a class="footer action frameless" is="as-button" href="#/frameless">Frameless<sup>&trade;</sup></a>
+                </footer>
+            </div>
+        </div>
+        <footer class="section footer">
+            <p class="footer content">
+                As we each already know, native Web Components are well-underway to replace traditional magic frameworks. AsXS takes lessons 
+                learned from other Web Component frameworks and makes it more native. In fact, your new Microfrontend Framework uses iframes.
+            </p>
+        </footer>
+    </template>
+    <style>
+        at-home-hero {
+            position: relative;
+            display: block;
+            overflow: hidden;
+            
+            .section.header, .section.article, .section.footer {
+                padding-inline: var(--offset);
+            }
+            
+            .section.article.home {
+                /* border: solid 1px tomato; */
+                display: flex;
+                flex-direction: column-reverse;
+                box-shadow: var(--body-section-shadow);
+                background-color: var(--blue-8);
+                color: var(--gray-0);
+                
+                .article.target {
+                    display: none;
+                    &.content:checked {
+                        &:is(.x) {
+                            & ~ .article.body .body.subheader .subheader.content.x {
+                                translate: 0 0;
+                                z-index: var(--layer-2);
+                            }
+                            &:is(.detail.start) {
+                                & ~ .article.body .body.subheader .subheader.content.x .detail.wrapper .content.detail.start {
+                                    translate: 0 0;
+                                    z-index: var(--layer-2);
+                                }
+                            }
+                            &:is(.detail.css) {
+                                & ~ .article.body .body.subheader .subheader.content.x .detail.wrapper .content.detail.css {
+                                    translate: 0 0;
+                                    z-index: var(--layer-2);
+                                }
+                                & ~ .article.body .body.content .content.description.x.css {
+                                    opacity: 1;
+                                }
+                            }
+                            &:is(.detail.js) {
+                                & ~ .article.body .body.subheader .subheader.content.x .detail.wrapper .content.detail.js {
+                                    translate: 0 0;
+                                    z-index: var(--layer-2);
+                                }
+                                & ~ .article.body .body.content .content.description.x.js {
+                                    opacity: 1;
+                                }
+                            }
+                            &:is(.detail.ts) {
+                                & ~ .article.body .body.subheader .subheader.content.x .detail.wrapper .content.detail.ts {
+                                    translate: 0 0;
+                                    z-index: var(--layer-2);
+                                }
+                                & ~ .article.body .body.content .content.description.x.ts {
+                                    opacity: 1;
+                                }
+                            }
+                            & ~ .article.body .body.footer .footer.action.example {
+                                display: block;
+                                animation: fadein 1s 0s linear;
+                            }
+                        }
+                        &:is(.xs) {
+                            & ~ .article.body .body.subheader .subheader.content.xs {
+                                translate: 0 0;
+                                z-index: var(--layer-2);
+                            }
+                            &:is(.detail.start) {
+                                & ~ .article.body .body.subheader .subheader.content.xs .detail.wrapper .content.detail.start {
+                                    translate: 0 0;
+                                    z-index: var(--layer-2);
+                                }
+                            }
+                            &:is(.detail.extra) {
+                                & ~ .article.body .body.subheader .subheader.content.xs .detail.wrapper .content.detail.extra {
+                                    translate: 0 0;
+                                    z-index: var(--layer-2);
+                                }
+                                & ~ .article.body .body.content .content.description.xs.extra {
+                                    opacity: 1;
+                                }
+                            }
+                            &:is(.detail.ext) {
+                                & ~ .article.body .body.subheader .subheader.content.xs .detail.wrapper .content.detail.ext {
+                                    translate: 0 0;
+                                    z-index: var(--layer-2);
+                                }
+                                & ~ .article.body .body.content .content.description.xs.ext {
+                                    opacity: 1;
+                                }
+                            }
+                            &:is(.detail.excess) {
+                                & ~ .article.body .body.subheader .subheader.content.xs .detail.wrapper .content.detail.excess {
+                                    translate: 0 0;
+                                    z-index: var(--layer-2);
+                                }
+                                & ~ .article.body .body.content .content.description.xs.excess {
+                                    opacity: 1;
+                                }
+                            }
+                            & ~ .article.body .body.footer .footer.action.extensible {
+                                display: block;
+                                animation: fadein 1s 0s linear;
+                            }
+                        }
+                        &:is(.mfe) {
+                            & ~ .article.body .body.subheader .subheader.content.mfe {
+                                translate: 0 0;
+                                z-index: var(--layer-2);
+                            }
+                            & ~ .article.body .body.footer .footer.action.frameless {
+                                display: block;
+                                animation: fadein 1s 0s linear;
+                            }
+                        }
+                    }
+                }
+                
+                .article.body {
+                    display: grid;
+                    grid-template: 
+                        "aaaaaaaa bbbbbbbb" var(--size-px-12)
+                        "cccccccc cccccccc" 1fr 
+                        "cccccccc cccccccc" 1fr 
+                        ". dddddddd" 0.5fr 
+                        / 1fr 1fr
+                    ;
+                    gap: var(--size-px-2) var(--size-px-5);
+                    cursor: help;
+                    &:hover::after {
+                        content: "Paused";
+                        position: absolute;
+                        top: var(--size-px-2);
+                        right: var(--size-px-2);
+                        border-radius: var(--radius-2);
+                        padding: var(--size-px-1) var(--size-px-2);
+                        background-color: var(--gray-12);
+                        color: var(--gray-0);
+                        z-index: var(--layer-2);
+                    }
+                    /* background-color: inherit; */
+                    /* > * { border: solid 1px tomato; } */
+                    
+                    .body.header {
+                        grid-area: aaaaaaaa;
+                        
+                        .header.title {
+                            font-family: var(--font-geometric-humanist);
+                        }
+                        
+                        .header.subtitle {}
+                        
+                    }
+                    
+                    .body.subheader {
+                        grid-area: bbbbbbbb;
+                        position: relative;
+                        /* background-color: inherit; */
+                        /* overflow: hidden; */
+                        
+                        .subheader.content {
+                            /* border: solid 10px white; */
+                            position: absolute;
+                            inset: 0;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            gap: var(--size-px-1);
+                            margin: 0;
+                            width: 100%;
+                            height: 100%;
+                            translate: 200% 0;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            transition: translate 1000ms 0ms ease-in-out;
+                            
+                            .detail.wrapper {
+                                /* border: solid 1px tomato; */
+                                position: relative;
+                                display: inline-flex;
+                                justify-content: center;
+                                align-items: center;
+                                height: inherit;
+                                &.x {
+                                    width: var(--size-px-5);
+                                }
+                                &.xs {
+                                    justify-content: start;
+                                    width: var(--size-px-12);
+                                }
+                            }
+                            
+                            .content.detail {
+                                position: absolute;
+                                translate: 0 -500%;
+                                transition: translate 250ms 0ms var(--ease-in-out-3);
+                                text-transform: uppercase;
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                    .body.content {
+                        grid-area: cccccccc;
+                        /* padding: var(--size-px-5); */
+                        
+                        .content.description {
+                            opacity: 0.5;
+                            transition: opacity 250ms 250ms var(--ease-in-out-3);
+                            font-weight: var(--font-weight-9);
+                        }
+                        
+                    }
+                    
+                    .body.footer {
+                        grid-area: dddddddd;
+                        display: flex;
+                        justify-content: end;
+                        align-items: center;
+                        
+                        .footer.action {
+                            display: none;
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+            
+            .section.footer {
+                min-height: 50dvh;
+                
+                .footer.content {}
+                
+            }
+            
+        }
+        
+        @keyframes fadein {
+            0% { opacity: 0 }
+            100% { opacity: 1 }
+        }
+    </style>
+    <script type="module">
+        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
+        import { customElement, customElements } from '/asxs/v2.0.0/core/element/custom.js';
+        import { root } from '/asxs/v2.0.0/core/element/window.js';
+        
+        const { frameElement } = window;
+        const { setTimeout, console } = root;
+        const { log } = console;
+        const timeout = setTimeout.bind(root);
+        
+        customElement('at-home-hero')
+        (class HomeHeroElement extends CustomElement {
+            DELAY = (1000 * 1);
+            wrapper = document.createElement('error');
+            
+            #cycle = setTimeout.bind(root, (targets, target, ...more) => {
+                if (this.wrapper.matches(':hover')) return this.#cycle(targets, target, ...more);
+                if (!target) return this.#cycle(targets, ...targets);
+                const { log } = console;
+                
+                target.checked = true;
+                this.#cycle(targets, ...more);
+            }, this.DELAY);
+            
+            init() {
+                const { root } = this;
+                const wrapper = root.querySelector('.section.article .article.body.hero');
+                const targets = root.querySelectorAll('.section.article .article.target.content');
+                
+                this.wrapper = wrapper;
+                this.#cycle(targets, ...targets);
+            };
+            
+            createRenderRoot() {
+                return this;
+            }
+            
+            stabilize() {
+                this.idle();
+            }  // retain iframe's window scope. todo: eliminate this need!
+            
+            connectedCallback( x = super.connectedCallback() ) {
+                this.init();
+            }
+            
+        });
+    </script>
+    <script id="en" class="locale translation" type="application/json">
+        {
+            "SOME:TRANSLATION:KEY": "english"
+        }
+    </script>
+    <script id="eS" class="locale translation" type="application/json">
+        {
+            "SOME:TRANSLATION:KEY": "ingles"
+        }
+    </script>
+</body>

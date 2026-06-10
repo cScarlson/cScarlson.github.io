@@ -1,0 +1,84 @@
+
+<body>
+    <template>
+        <at-home-example id="/example">
+            <div class="section article hook">
+                <header class="article header">
+                    <h1>As Simple As It Gets</h1>
+                    <h2>Button is as button does... literally.</h2>
+                </header>
+                <div class="article body">
+                    <pre class="body example"><code class="example code">${button}</code></pre>
+                </div>
+                <footer class="article footer"></footer>
+            </div>
+            <footer class="section footer">
+                <p class="footer content">
+                    You can use AsXS as just a pure CSS SDK with your own stylistic overrides or you can define a Custom Element 
+                    for it to bootstrap your own behavior. Have a look at the 
+                    <a class="content link more" href="#/catalog">Component Catalog</a> to learn more.
+                </p>
+            </footer>
+        </at-home-example>
+    </template>
+    <style>
+        at-home-example {
+            display: block;
+            
+            .section.header, .section.article, .section.footer {
+                padding-inline: var(--offset);
+            }
+                
+            .section.header {}
+            
+            .section.article.hook {
+                box-shadow: var(--body-section-shadow);
+                padding-block: var(--size-px-5);
+                background-color: var(--gray-1);
+                color: var(--blue-7);
+                
+                .article.body {
+                    
+                    .body.example {
+                        /* border: solid 1px tomato; */
+                        padding: var(--size-px-3) var(--size-px-4);
+                        background-color: var(--gray-8);
+                        color: var(--gray-1);
+                        overflow: auto;
+                        scrollbar-width: none;
+                        
+                        .example.code {
+                            /* border: solid 1px tomato; */
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+            
+            .section.footer {
+                min-height: 50dvh;
+            }
+            
+        }
+    </style>
+    <script type="application/json">
+        {
+            "button": "&lt;button is=\"as-button\"&gt;Does&lt;/button&gt;"
+        }
+    </script>
+    <script type="module">
+        import { utilities } from '/asxs/v2.0.0/core/utilities/utilities.js';
+        
+        const { frameElement } = window;
+        const template = document.querySelector('template');
+        const style = document.querySelector('style');
+        const scope = document.querySelector('script[type="application/json"]');
+        const data = JSON.parse(scope.innerHTML);
+        
+        template.innerHTML = utilities.interpolate(template.innerHTML)(data);
+        template.content.firstElementChild.appendChild(style);
+        frameElement.replaceWith(template.content);
+    </script>
+</body>

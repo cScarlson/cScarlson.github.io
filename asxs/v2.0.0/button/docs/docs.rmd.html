@@ -1,0 +1,39 @@
+
+<body>
+    <template></template>
+    <style></style>
+    <script type="module">
+        import { utilities } from '/asxs/v2.0.0/core/utilities/utilities.js';
+        
+        const { markdown } = utilities;
+        const assets = [
+            { id: 'docs', url: './docs.md' },
+            { id: 'setup', url: './setup.html' },
+            { id: 'types', url: './types.html' },
+            { id: 'basic', url: './basic.html' },
+            { id: 'sizes', url: './sizes.html' },
+            { id: 'block', url: './block.html' },
+        ].reduce( get, Promise.resolve({ }) );
+        
+        async function get(sequence, { id, url }) {
+            const resolved = await sequence;
+            const response = await fetch(url);
+            const text = await response.text();
+            
+            if (id === 'docs') return { ...resolved, [id]: text.replaceAll(/`/img, '\\`') };
+            return { ...resolved, [id]: text.trim() };
+        }
+        
+        (async function execute(promise) {
+            const { docs, setup, types, basic, sizes, block } = await promise;
+            const interpolated = utilities.interpolate(docs)({ setup, types, basic, sizes, block });
+            const markup = markdown.parse(interpolated);
+            const template = document.querySelector('template');
+            const html = `<at-catalog-buttons id="/catalog/buttons" class="catalog docs buttons router route">${markup}</at-catalog-buttons>`;
+            
+            template.innerHTML = html;
+            frameElement.replaceWith(template.content);
+        })(assets);
+        
+    </script>
+</body>

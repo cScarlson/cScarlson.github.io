@@ -1,0 +1,37 @@
+
+<body>
+    <template></template>
+    <style></style>
+    <script type="module">
+        import { utilities } from '/asxs/v2.0.0/core/utilities/utilities.js';
+        
+        const { markdown } = utilities;
+        const assets = [
+            { id: 'docs', url: './docs.md' },
+            { id: 'setup', url: './setup.html' },
+            { id: 'autodismiss', url: './autodismiss.html' },
+            { id: 'toggleable', url: './toggleable.html' },
+        ].reduce( get, Promise.resolve({ }) );
+        
+        async function get(sequence, { id, url }) {
+            const resolved = await sequence;
+            const response = await fetch(url);
+            const text = await response.text();
+            
+            if (id === 'docs') return { ...resolved, [id]: text.replaceAll(/`/img, '\\`') };
+            return { ...resolved, [id]: text.trim() };
+        }
+        
+        (async function execute(promise) {
+            const { docs, setup, autodismiss, toggleable } = await promise;
+            const interpolated = utilities.interpolate(docs)({ setup, autodismiss, toggleable });
+            const markup = markdown.parse(interpolated);
+            const template = document.querySelector('template');
+            const html = `<at-catalog-popovers id="/catalog/popovers" class="catalog docs popovers router route">${markup}</at-catalog-popovers>`;
+            
+            template.innerHTML = html;
+            frameElement.replaceWith(template.content);
+        })(assets);
+        
+    </script>
+</body>

@@ -1,0 +1,111 @@
+
+<body>
+    <template></template>
+    <style>
+        [is="as-button"] {
+            --color-border: var(--color-bg);
+            --color-bg: var(--color-light);
+            --color-text: var(--color-dark);
+            --padding: var(--size-2) var(--size-3);
+            --font-size: var(--font-size-1);
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: var(--size-2);
+            margin: var(--size-px-1);
+            box-shadow: var(--shadow-2);
+            border: solid 1px var(--color-border);
+            border-radius: var(--radius-2);
+            padding: var(--padding);
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            text-decoration: none;
+            font-size: var(--font-size);
+            font-weight: var(--font-weight-6);
+            line-height: var(--font-lineheight-1);
+            cursor: pointer;
+            &:hover, &:focus {
+                filter: brightness(92.5%);
+            }
+            &.color {
+                &.primary {
+                    --color-border: var(--color-bg);
+                    --color-bg: var(--color-primary);
+                    --color-text: var(--color-dark);
+                }
+                &.secondary {
+                    --color-border: var(--color-bg);
+                    --color-bg: var(--color-secondary);
+                    --color-text: var(--color-dark);
+                }
+                &.success {
+                    --color-border: var(--color-bg);
+                    --color-bg: var(--color-success);
+                    --color-text: var(--color-dark);
+                }
+                &.info {
+                    --color-border: var(--color-bg);
+                    --color-bg: var(--color-info);
+                    --color-text: var(--color-dark);
+                }
+                &.warning {
+                    --color-border: var(--color-bg);
+                    --color-bg: var(--color-warning);
+                    --color-text: var(--color-dark);
+                }
+                &.danger {
+                    --color-border: var(--color-bg);
+                    --color-bg: var(--color-danger);
+                    --color-text: var(--color-dark);
+                }
+                &.light {
+                    --color-border: var(--color-bg);
+                    --color-bg: var(--color-light);
+                    --color-text: var(--color-dark);
+                }
+                &.dark {
+                    --color-border: var(--color-bg);
+                    --color-bg: var(--color-dark);
+                    --color-text: var(--color-light);
+                }
+            }
+            &.size {
+                &.xxs {
+                    --padding: var(--size-1) var(--size-px-2);
+                    --font-size: var(--font-size-0);
+                }
+                &.xs  {
+                    --padding: var(--size-2) var(--size-px-3);
+                    --font-size: var(--font-size-1);
+                }
+                &.sm   {
+                    --padding: var(--size-3) var(--size-px-4);
+                    --font-size: var(--font-size-2);
+                }
+                &.md  {
+                    --padding: var(--size-4) var(--size-px-5);
+                    --font-size: var(--font-size-3);
+                }
+                &.lg   {
+                    --padding: var(--size-5) var(--size-px-6);
+                    --font-size: var(--font-size-4);
+                }
+                &.xl  {
+                    --padding: var(--size-6) var(--size-px-7);
+                    --font-size: var(--font-size-5);
+                }
+                &.xxl {
+                    --padding: var(--size-7) var(--size-px-8);
+                    --font-size: var(--font-size-6);
+                }
+            }
+            &.block {
+                display: flex;
+            }
+        }
+    </style>
+    <script>
+        const style = document.querySelector('style');
+        frameElement.replaceWith(style);
+    </script>
+</body>

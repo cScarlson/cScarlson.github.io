@@ -1,0 +1,37 @@
+
+<button is="as-button">
+    inline-end
+    <as-tooltip position="inline-end" style="min-width: 320px; --delay: 0ms">
+        <h1>Tooltip</h1>
+        <p>Tooltips can also display any other elements you want, like a Call To Action.</p>
+    </as-tooltip>
+</button>
+<button is="as-button">
+    block-start
+    <as-tooltip position="block-start" style="min-width: 320px; --delay: 500ms">
+        <h1>Tooltip</h1>
+        <p>Tooltips can also display any other elements you want, like a Call To Action.</p>
+    </as-tooltip>
+</button>
+<button is="as-button">
+    block-end
+    <as-tooltip position="block-end" style="min-width: 320px; --delay: 1000ms">
+        <h1>Tooltip</h1>
+        <p>Tooltips can also display any other elements you want, like a Call To Action.</p>
+    </as-tooltip>
+</button>
+<button is="as-button">
+    inline-start
+    <as-tooltip position="inline-start" style="min-width: 320px">
+        <h1>Tooltip</h1>
+        <p>Tooltips can also display any other elements you want, like a Call To Action.</p>
+    </as-tooltip>
+</button>
+<button is="as-button">
+    :not([position])
+    <as-tooltip style="min-width: 320px">
+        <h1>Tooltip</h1>
+        <p>Tooltips can also display any other elements you want, like a Call To Action.</p>
+        <a is="as-button" class="color primary" href="javascript: 0" tabindex="-1">OK</a>
+    </as-tooltip>
+</button>

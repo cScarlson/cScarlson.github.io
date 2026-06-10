@@ -1,0 +1,24 @@
+
+.css.router {
+    &:not(:has(.router.route:target)) {
+        
+        .router.route.default {
+            display: block;
+        }
+        
+    }
+    
+    .router.route {
+        display: none;
+    }
+    
+    .router.route:target {
+        display: block !important;
+    }
+    
+    .router.route:has(.router.route:target) {
+        --scroll-margin-block: calc(var(--header-height) * 2);
+        display: block;
+    }
+    
+}

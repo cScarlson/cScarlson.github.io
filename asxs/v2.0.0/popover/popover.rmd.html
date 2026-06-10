@@ -1,0 +1,59 @@
+
+<body>
+    <template></template>
+    <style>
+        * { box-sizing: border-box }
+
+        as-popover:has([part="envelope"]) {
+            position: relative;
+            display: inline-block;
+            
+            [part~="actuator"] {}
+            
+            [part~="deactuator"] {
+                position: absolute;
+                top: 0;
+                left: 0;
+                display: none;
+            }
+            
+            [part~="actuator"], [part~="deactuator"] {
+                cursor: pointer;
+            }
+            
+            [part~="envelope"] {
+                --offset: var(--size-px-3);
+                position: absolute;
+                top: 100%;
+                translate: 0 var(--offset);
+                display: none;
+                box-shadow: var(--shadow-3);
+                background-color: var(--color-secondary);
+                &[position="bottom left"] {
+                    right: 0;
+                }
+                &[position="bottom center"] {
+                    left: 50%;
+                    translate: -50% var(--offset);
+                }
+                &[position="bottom right"] {}
+            }
+            
+        }
+
+        as-popover:has([part~="envelope"]):focus-within {
+            
+            [part~="deactuator"][part~="deactuator"][part~="deactuator"][part~="deactuator"], 
+            [part~="envelope"][part~="envelope"][part~="envelope"][part~="envelope"] 
+            /* FORCE DISPLAY WITH EXTREME SPECIFICITY */
+            {
+                display: var(--display, block);
+            }
+            
+        }
+    </style>
+    <script>
+        const style = document.querySelector('style');
+        frameElement.replaceWith(style);
+    </script>
+</body>

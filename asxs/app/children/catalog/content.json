@@ -1,0 +1,12 @@
+[
+    { "id": "/catalog/variables", "title": "Variables" },
+    { "id": "/catalog/buttons", "title": "Buttons" },
+    { "id": "/catalog/buttons/stateful", "title": "Stateful Buttons" },
+    { "id": "/catalog/icons", "title": "Icons" },
+    { "id": "/catalog/popovers", "title": "Popovers" },
+    { "id": "/catalog/tooltips", "title": "Tooltips" },
+    { "id": "/catalog/dialogs", "title": "Dialogs" },
+    { "id": "/catalog/dialogs/toasts", "title": "Toast Dialogs" },
+    { "id": "/catalog/dialogs/quickviews", "title": "Quickview Dialogs" },
+    { "id": "/catalog/dialogs/antitamper", "title": "Antitamper Dialogs" }
+]

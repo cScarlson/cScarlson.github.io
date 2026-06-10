@@ -1,0 +1,179 @@
+
+<body>
+    <template>
+        <iframe src="/asxs/v2.0.0/icon/icon.rmd.html" is="as-frameless"></iframe>
+        <iframe src="/asxs/v2.0.0/popover/popover.rmd.html" is="as-frameless"></iframe>
+        <iframe src="/asxs/v2.0.0/button/button.rmd.html" is="as-frameless"></iframe>
+        <header class="catalog header">
+            <h2 class="header branding">
+                <span class="branding title">Catalog</span>
+                <span class="branding subtitle" is="at-catalog-title">404</span>
+            </h2>
+            <as-popover class="header menu">
+                <as-icon class="menu icon" type="menu" strategy="bootstrap-icons" part="actuator" tabindex="0"></as-icon>
+                <menu class="menu list" part="envelope" position="bottom left" tabindex="0">
+                    <li class="list item" +for="let it of data">
+                        <a class="item action size xxs block" is="as-button" href="#${it.id}">${it.title}</a>
+                    </li>
+                </menu>
+            </as-popover>
+        </header>
+        <div class="catalog body">
+            <iframe src="./app/children/catalog/children/note.rmd.html" is="as-frameless"></iframe>
+            <iframe src="/asxs/v2.0.0/variables/docs/docs.rmd.html" is="as-frameless"></iframe>
+            <iframe src="/asxs/v2.0.0/button/docs/docs.rmd.html" is="as-frameless"></iframe>
+            <iframe src="/asxs/v2.0.0/button/stateful/docs/docs.rmd.html" is="as-frameless"></iframe>
+            <iframe src="/asxs/v2.0.0/icon/docs/docs.rmd.html" is="as-frameless"></iframe>
+            <iframe src="/asxs/v2.0.0/popover/docs/docs.rmd.html" is="as-frameless"></iframe>
+            <iframe src="/asxs/v2.0.0/tooltip/docs/docs.rmd.html" is="as-frameless"></iframe>
+            <iframe src="/asxs/v2.0.0/dialog/docs/docs.rmd.html" is="as-frameless"></iframe>
+            <iframe src="/asxs/v2.0.0/dialog/toast/docs/docs.rmd.html" is="as-frameless"></iframe>
+            <iframe src="/asxs/v2.0.0/dialog/quickview/docs/docs.rmd.html" is="as-frameless"></iframe>
+            <iframe src="/asxs/v2.0.0/dialog/antitamper/docs/docs.rmd.html" is="as-frameless"></iframe>
+        </div>
+        <footer class="catalog footer"></footer>
+    </template>
+    <style>
+        at-catalog {
+            --color-txt: var(--indigo-3);
+            display: block;
+            
+            .catalog.header {
+                position: sticky;
+                top: var(--header-height);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                height: var(--header-height);
+                box-shadow: var(--shadow-4);
+                padding-inline: var(--offset);
+                background-color: var(--gray-8);
+                color: var(--color-txt);
+                z-index: 9;
+                
+                .header.branding {
+                    margin: 0;
+                    
+                    .branding.title {}
+                    
+                    .branding.subtitle {
+                        font-size: var(--font-size-1);
+                        font-weight: var(--font-weight-3);
+                    }
+                    
+                }
+                
+                .header.menu {
+                    display: flex;
+                    margin: 0;
+                    
+                    .menu.icon {
+                        --color: var(--color-txt);
+                    }
+                    
+                    .menu.list {
+                        min-width: var(--size-px-13);
+                        margin: 0;
+                        border-radius: var(--radius-2);
+                        padding: var(--size-2);
+                        
+                        .list.item {
+                            list-style-type: none;
+                            
+                            .item.action {
+                                text-decoration: none;
+                            }
+                            
+                        }
+                    }
+                    
+                }
+                
+            }
+            
+            .catalog.body {
+                padding-block: var(--size-5);
+                
+                .catalog.docs {
+                    display: block;
+                    padding-inline: var(--offset);
+                    
+                    pre, code {
+                        display: block;
+                        overflow: auto;
+                        scrollbar-width: none;
+                    }
+                    
+                    pre {
+                        padding: var(--size-3);
+                        background-color: var(--gray-8);
+                        color: var(--color-primary);
+                        code {}
+                    }
+                    
+                    blockquote {
+                        margin-inline: 2vw;
+                    }
+                    
+                }
+                
+            }
+            
+            .catalog.footer {}
+            
+        }
+    </style>
+    <script type="module">
+        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
+        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
+        import { TemplateCrawler } from '/asxs/v2.0.0/core/element/template.crawler.js';
+        import { default as data } from './content.json' with { type: 'json' };
+        
+        customElement('at-catalog')
+        (class CatalogElement extends CustomElement {
+            data = data;
+            ['crawler:template'] = new TemplateCrawler(this);
+            
+            stabilize() {
+                this.idle();
+            }
+            
+            createRenderRoot() {
+                return this;
+            }
+            
+        });
+    </script>
+    <script type="module">
+        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
+        import { root } from '/asxs/v2.0.0/core/element/window.js';
+        import { default as data } from './content.json' with { type: 'json' };
+        
+        const { HTMLSpanElement } = root;
+        const $data = data.reduce( ($, o) => $.set(o.id, o), new Map() )
+            .set('/catalog', { id: '/catalog', title: 'Variables' })
+            ;
+        
+        customElement('at-catalog-title', { extends: 'span' })
+        (class CatalogTitleElement extends HTMLSpanElement {
+            
+            handleEvent(e) {
+                const { newURL } = e;
+                const { hash } = new URL(newURL);
+                const entry = ( (path) => $data.get(path) )( hash.replace('#', '') );
+                const get = ({ title } = { title: 404 }) => title;
+                
+                this.innerHTML = get(entry);
+            }
+            
+            connectedCallback() {
+                root.addEventListener('hashchange', this, true);
+            }
+            
+            disconnectedCallback() {
+                root.removeEventListener('hashchange', this, true);
+            }
+            
+        });
+    </script>
+</body>

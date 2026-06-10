@@ -1,0 +1,43 @@
+
+<body>
+    <template></template>
+    <style></style>
+    <script type="module">
+        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
+        import { root } from '/asxs/v2.0.0/core/element/window.js';
+        
+        const { setTimeout, console } = window;
+        const { HTMLDialogElement, document } = root;
+        const { head } = document;
+        
+        customElement('as-dialog-antitamper', { extends: 'dialog' })
+        (class AntitamperDialogElement extends HTMLDialogElement {
+            #parent = null;
+            accepted = false;
+            
+            accept() {
+                this.accepted = true;
+            }
+            
+            handleEvent(e) {
+                if (e.target.className !== 'body action accept') return;
+                this.accepted = true;
+                this.close();
+            }
+            
+            connectedCallback() {
+                const { parentElement } = this;
+                
+                this.#parent = parentElement;
+                this.addEventListener('click', this, true);
+                head.moveBefore(frameElement, null);
+            }
+            
+            disconnectedCallback() {
+                if (!this.accepted) this.#parent.appendChild(this);  // simply reattach it to its parentElement if not accepted
+                this.removeEventListener('click', this, true);
+            }
+            
+        });
+    </script>
+</body>

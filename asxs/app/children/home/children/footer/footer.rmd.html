@@ -1,0 +1,138 @@
+
+<body>
+    <template id="template">
+        <at-home-footer id="/footer">
+            <div class="section article hook">
+                <header class="article header">
+                    <h1>Getting Started</h1>
+                    <h2>This framework is not yet published as a package.</h2>
+                    <p>
+                        But that's the beauty of this framework — you can still use it! Simply import it from this site, where it 
+                        was built & poineered. 
+                    </p>
+                    <p>
+                        Here's how a Frameless Remote Module Definition is written...
+                    </p>
+                </header>
+                <div class="article body">
+                    <pre class="body example"><code class="example code">${definition}</code></pre>
+                    <p>And here's how an RMD gets used...</p>
+                    <pre class="body example"><code class="example code">${usage}</code></pre>
+                </div>
+                <footer class="article footer"></footer>
+            </div>
+            <footer class="section footer">
+                <p class="footer content">
+                    You can use AsXS as just a pure CSS SDK with your own stylistic overrides or you can define a Custom Element 
+                    for it to bootstrap your own behavior. Have a look at the 
+                    <a class="content link more" href="#/catalog">Component Catalog</a> to learn more.
+                </p>
+                <details class="footer details readme" open tabindex="0">
+                    <summary>README</summary>
+                    <iframe src="./v2.0.0/markdown/markdown.rmd.html" is="as-frameless" data-src="/asxs/v2.0.0/README.md"></iframe>
+                </details>
+            </footer>
+        </at-home-footer>
+    </template>
+    <style>
+        at-home-footer {
+            display: block;
+            
+            .section.header, .section.article, .section.footer {
+                padding-inline: var(--offset);
+            }
+                
+            .section.header {}
+            
+            .section.article.hook {
+                box-shadow: var(--body-section-shadow);
+                padding-block: var(--size-px-5);
+                background-color: var(--gray-1);
+                color: var(--violet-7);
+                
+                .article.body {
+                    
+                    .body.example {
+                        /* border: solid 1px tomato; */
+                        max-height: 360px;
+                        padding: var(--size-px-3) var(--size-px-4);
+                        background-color: var(--gray-8);
+                        color: var(--gray-1);
+                        overflow: auto;
+                        scrollbar-width: none;
+                        
+                        .example.code {
+                            /* border: solid 1px tomato; */
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+            
+            .section.footer {
+                min-height: 50dvh;
+                
+                .footer.details.readme {
+                    position: relative;
+                    max-height: 360px;
+                    overflow: hidden;
+                    &:focus-within {
+                        max-height: unset;
+                    }
+                    &:not(:focus-within):after {
+                        content: "";
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        display: block;
+                        height: 120px;
+                        background-image: linear-gradient(to top, white, transparent);
+                    }
+                    
+                    summary {
+                        cursor: pointer;
+                    }
+                    
+                    as-markdown {
+                        pre, code {
+                            overflow: auto;
+                            scrollbar-width: none;
+                        }
+                    }
+                    
+                }
+                
+            }
+            
+        }
+    </style>
+    <script type="module">
+        import { utilities } from '/asxs/v2.0.0/core/utilities/utilities.js';
+        
+        const { frameElement } = window;
+        const template = document.querySelector('template');
+        const style = document.querySelector('style');
+        
+        async function combine() {
+            const def = await fetch('./footer.def.example.md').then( res => res.text() );
+            const use = await fetch('./footer.use.example.md').then( res => res.text() );
+            return { def, use };
+        }
+        
+        async function interpolate({ def, use }) {
+            const definition = utilities.markdown.parse(def);
+            const usage = utilities.markdown.parse(use);
+            
+            template.innerHTML = utilities.interpolate(template.innerHTML)({ definition, usage });
+            template.content.firstElementChild.appendChild(style);
+        }
+        
+        combine()
+            .then(interpolate)
+            .then( x => frameElement.replaceWith(template.content) )
+            ;
+    </script>
+</body>

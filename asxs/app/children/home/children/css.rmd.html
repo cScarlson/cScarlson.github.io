@@ -1,0 +1,81 @@
+
+<body>
+    <meta name="partial" />
+    <template>
+        <at-home-css id="/css">
+            <div class="section article cascading">
+                <header class="article header">
+                    <h1>As a Pure CSS Framework</h1>
+                    <p>A CSS-First Approach.</p>
+                </header>
+                <div class="article body">
+                    <p>A fully capable, highly-flexible and extensible pure CSS framework for any website or webapp.</p>
+                </div>
+                <footer class="article footer"></footer>
+            </div>
+            <footer class="section footer">
+                <div class="footer content">
+                    <p>
+                        When you begin to scale, you can simply define the elements for the behavior you want.
+                    </p>
+                </div>
+            </footer>
+        </at-home-css>
+    </template>
+    <style>
+        at-home-css {
+            display: block;
+            margin-block: var(--size-px-10);
+            
+            .section.header, .section.article, .section.footer {
+                padding-inline: var(--offset);
+            }
+                
+            .section.header {}
+            
+            .section.article.cascading {
+                box-shadow: var(--body-section-shadow);
+                padding-block: var(--size-px-5);
+                background-color: var(--gray-1);
+                color: var(--blue-8);
+                
+                .article.body {
+                    
+                    .body.example {
+                        /* border: solid 1px tomato; */
+                        padding: var(--size-px-3) var(--size-px-4);
+                        background-color: var(--gray-8);
+                        color: var(--gray-1);
+                        overflow: auto;
+                        scrollbar-width: none;
+                        
+                        .example.code {
+                            /* border: solid 1px tomato; */
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+            
+            .section.footer {
+                min-height: 50dvh;
+                .footer.content {
+                    .content.title {
+                        color: var(--blue-8);
+                    }
+                }
+            }
+            
+        }
+    </style>
+    <script type="module">
+        const { frameElement } = window;
+        const template = document.querySelector('template');
+        const style = document.querySelector('style');
+        
+        template.content.firstElementChild.appendChild(style);
+        frameElement.replaceWith(template.content);
+    </script>
+</body>

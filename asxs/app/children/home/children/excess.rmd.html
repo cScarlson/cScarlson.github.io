@@ -1,0 +1,84 @@
+
+<body>
+    <meta name="partial" />
+    <template>
+        <at-home-excess id="/excess">
+            <div class="section article excess">
+                <header class="article header">
+                    <h1>XS - Excess</h1>
+                    <p>As if excess had to be a lot.</p>
+                </header>
+                <div class="article body">
+                    <p>
+                        Everything you need to start building and keep building, while minimizing native boilerplate and without any 
+                        unnecessary bloat.
+                    </p>
+                </div>
+                <footer class="article footer"></footer>
+            </div>
+            <footer class="section footer">
+                <div class="footer content">
+                    <p>
+                        AsXS aims at the goal of accomplishing Single Responsibilities in 25 lines or less.
+                    </p>
+                </div>
+            </footer>
+        </at-home-excess>
+    </template>
+    <style>
+        at-home-excess {
+            display: block;
+            margin-block: var(--size-px-10);
+            
+            .section.header, .section.article, .section.footer {
+                padding-inline: var(--offset);
+            }
+                
+            .section.header {}
+            
+            .section.article.excess {
+                box-shadow: var(--body-section-shadow);
+                padding-block: var(--size-px-5);
+                background-color: var(--gray-1);
+                color: var(--green-6);
+                
+                .article.body {
+                    
+                    .body.example {
+                        /* border: solid 1px tomato; */
+                        padding: var(--size-px-3) var(--size-px-4);
+                        background-color: var(--gray-8);
+                        color: var(--gray-1);
+                        overflow: auto;
+                        scrollbar-width: none;
+                        
+                        .example.code {
+                            /* border: solid 1px tomato; */
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+            
+            .section.footer {
+                min-height: 50dvh;
+                .footer.content {
+                    .content.title {
+                        color: var(--green-6);
+                    }
+                }
+            }
+            
+        }
+    </style>
+    <script type="module">
+        const { frameElement } = window;
+        const template = document.querySelector('template');
+        const style = document.querySelector('style');
+        
+        template.content.firstElementChild.appendChild(style);
+        frameElement.replaceWith(template.content);
+    </script>
+</body>

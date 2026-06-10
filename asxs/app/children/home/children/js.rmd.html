@@ -1,0 +1,81 @@
+
+<body>
+    <meta name="partial" />
+    <template>
+        <at-home-javascript id="/javascript">
+            <div class="section article javascript">
+                <header class="article header">
+                    <h1>As a JavaScript Framework</h1>
+                    <p>Did we say this thing is super extensible yet?</p>
+                </header>
+                <div class="article body">
+                    <p>Simply register Custom Element definitions for existing CSS components to bootstrap new behavior.</p>
+                </div>
+                <footer class="article footer"></footer>
+            </div>
+            <footer class="section footer">
+                <div class="footer content">
+                    <p>
+                        Just want the CSS framework? That's OK too.
+                    </p>
+                </div>
+            </footer>
+        </at-home-javascript>
+    </template>
+    <style>
+        at-home-javascript {
+            display: block;
+            margin-block: var(--size-px-10);
+            
+            .section.header, .section.article, .section.footer {
+                padding-inline: var(--offset);
+            }
+                
+            .section.header {}
+            
+            .section.article.javascript {
+                box-shadow: var(--body-section-shadow);
+                padding-block: var(--size-px-5);
+                background-color: var(--gray-1);
+                color: var(--blue-8);
+                
+                .article.body {
+                    
+                    .body.example {
+                        /* border: solid 1px tomato; */
+                        padding: var(--size-px-3) var(--size-px-4);
+                        background-color: var(--gray-8);
+                        color: var(--gray-1);
+                        overflow: auto;
+                        scrollbar-width: none;
+                        
+                        .example.code {
+                            /* border: solid 1px tomato; */
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+            
+            .section.footer {
+                min-height: 50dvh;
+                .footer.content {
+                    .content.title {
+                        color: var(--blue-8);
+                    }
+                }
+            }
+            
+        }
+    </style>
+    <script type="module">
+        const { frameElement } = window;
+        const template = document.querySelector('template');
+        const style = document.querySelector('style');
+        
+        template.content.firstElementChild.appendChild(style);
+        frameElement.replaceWith(template.content);
+    </script>
+</body>

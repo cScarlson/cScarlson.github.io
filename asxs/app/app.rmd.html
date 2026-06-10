@@ -1,0 +1,131 @@
+
+<body>
+    <template>
+        <div class="asxs app">
+            <header class="app header">
+                <div class="header branding">
+                    <a class="branding title" href="./">AsXS</a>
+                </div>
+                <menu class="header menu">
+                    <li class="menu item"><a class="item action" href="#/">Home</a></li>
+                    <li class="menu item"><a class="item action" href="#/catalog">Catalog</a></li>
+                </menu>
+            </header>
+            <main class="app body css router">
+                <at-home id="/" class="router route home default">
+                    <iframe src="./app/children/home/home.rmd.html" is="as-frameless"></iframe>
+                </at-home>
+                <at-catalog id="/catalog" class="router route catalog">
+                    <iframe src="./app/children/catalog/catalog.rmd.html" is="as-frameless"></iframe>
+                </at-catalog>
+            </main>
+            <footer class="app footer">
+                <iframe src="./app/children/copyright/copyright.rmd.html" is="as-frameless"></iframe>
+            </footer>
+        </div>
+    </template>
+    <style>
+        @import url('/asxs/v2.0.0/core/router.css');
+        
+        :root {
+            --header-height: var(--size-px-9);
+        }
+        
+        as-app {
+            
+            .asxs.app {
+                
+                .app.header {
+                    position: sticky;
+                    top: 0;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: var(--size-px-2);
+                    min-height: var(--header-height);
+                    box-shadow: var(--shadow-3);
+                    padding-inline: var(--size-px-3);
+                    z-index: var(--layer-3);
+                    background-color: var(--indigo-12);
+                    color: var(--gray-0);
+                    
+                    .header.branding {
+                        
+                        .branding.title {
+                            color: var(--gray-0);
+                            text-decoration: none;
+                            text-transform: capitalize;
+                            font-size: var(--size-5);
+                            font-weight: var(--font-weight-8);
+                        }
+                        
+                    }
+                    
+                    .header.menu {
+                        display: flex;
+                        justify-content: space-evenly;
+                        gap: var(--size-px-3);
+                        padding: 0;
+                        list-style: none;
+                        
+                        .menu.item {
+                            
+                            .item.action {
+                                color: var(--gray-0);
+                                text-decoration: none;
+                                text-transform: uppercase;
+                                font-weight: var(--font-weight-6);
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                }
+                
+                .app.body {
+                    /* padding-block: var(--size-px-3); */
+                }
+                
+                .app.footer {
+                    min-height: 50dvh;
+                    box-shadow: inset 0px 0px 16px -6px black;
+                    border-top: solid 1px var(--gray-7);
+                    padding: var(--size-px-3);
+                    background-color: var(--color-primary);
+                    
+                    .content.copyright {}
+                    
+                }
+                
+            }
+            
+        }
+        
+    </style>
+    <script type="module">
+        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
+        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
+        import { root } from '/asxs/v2.0.0/core/element/window.js';
+        
+        const { log } = console;
+        const { document: { head }, location, setTimeout } = root;
+        
+        customElement('as-app')
+        (class AsXSAppElement extends CustomElement {
+            
+            stabilize() {
+                this.idle();
+            }
+            
+            createRenderRoot() {
+                return this;
+            }
+            
+            connectedCallback( x = super.connectedCallback() ) {
+                setTimeout(x => location.hash = '/', 1_000 * 1);
+            }
+            
+        });
+    </script>
+</body>

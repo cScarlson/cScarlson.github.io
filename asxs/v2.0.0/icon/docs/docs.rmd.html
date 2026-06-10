@@ -1,0 +1,38 @@
+
+<body>
+    <template></template>
+    <style></style>
+    <script type="module">
+        import { utilities } from '/asxs/v2.0.0/core/utilities/utilities.js';
+        
+        const { markdown } = utilities;
+        const assets = [
+            { id: 'docs', url: './docs.md' },
+            { id: 'setupstrategy', url: './setup.strategy.html' },
+            { id: 'setupimport', url: './setup.import.html' },
+            { id: 'example', url: './example.html' },
+            { id: 'colors', url: './colors.html' },
+        ].reduce( get, Promise.resolve({ }) );
+        
+        async function get(sequence, { id, url }) {
+            const resolved = await sequence;
+            const response = await fetch(url);
+            const text = await response.text();
+            
+            if (id === 'docs') return { ...resolved, [id]: text.replaceAll(/`/img, '\\`') };
+            return { ...resolved, [id]: text.trim() };
+        }
+        
+        (async function execute(promise) {
+            const { docs, setupstrategy, setupimport, example, colors } = await promise;
+            const interpolated = utilities.interpolate(docs)({ setupstrategy, setupimport, example, colors });
+            const markup = markdown.parse(interpolated);
+            const template = document.querySelector('template');
+            const html = `<at-catalog-icons id="/catalog/icons" class="catalog docs icons router route">${markup}</at-catalog-icons>`;
+            
+            template.innerHTML = html;
+            frameElement.replaceWith(template.content);
+        })(assets);
+        
+    </script>
+</body>

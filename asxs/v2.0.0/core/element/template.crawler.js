@@ -6,8 +6,7 @@ export class TemplateCrawler {
     receiver = null;
     
     constructor(receiver) {
-        this.receiver = receiver
-        console.log(`@TemplateCrawler`, this.template);
+        this.receiver = receiver;
     }
     
     #crawl(element, ...more) {
@@ -39,7 +38,6 @@ export class TemplateCrawler {
         const key = name.substring(1);
         
         ownerElement[key] = datum;
-        console.log(`@ttr`, name, value, ownerElement[key], ownerElement);
     }
     
     ['handle(+)'](attr) {
@@ -54,7 +52,6 @@ export class TemplateCrawler {
         const [ token, key, _, iterable ] = expression.split(' ');
         const { [iterable]: collection } = receiver;
         const results = collection.map( (data, i) => this.clone(attr, ownerElement, key, data, i, collection) );
-        const fragment = document.createElement('div');
         const joined = results.join('');
         const innerHTML = joined.replaceAll('+for', '-for');
         

@@ -1,16 +1,22 @@
 
 <body>
     <template>
+        <iframe src="/asxs/v2.0.0/icon/icon.rmd.html" is="as-frameless"></iframe>
+        <iframe src="/asxs/v2.0.0/popover/popover.rmd.html" is="as-frameless"></iframe>
+        <iframe src="/asxs/v2.0.0/button/button.rmd.html" is="as-frameless"></iframe>
         <header class="catalog header">
             <h2 class="header branding">
                 <span class="branding title">Catalog</span>
                 <span class="branding subtitle" is="at-catalog-title">404</span>
             </h2>
-            <menu class="header menu" .data="data">
-                <li class="menu item" +for="let it of data">
-                    <a class="item link" href="#${it.id}">${it.title}</a>
-                </li>
-            </menu>
+            <as-popover class="header menu">
+                <as-icon class="menu icon" type="menu" strategy="bootstrap-icons" part="actuator" tabindex="0"></as-icon>
+                <menu class="menu list" part="envelope" position="bottom left" tabindex="0">
+                    <li class="list item" +for="let it of data">
+                        <a class="item action size xxs block" is="as-button" href="#${it.id}">${it.title}</a>
+                    </li>
+                </menu>
+            </as-popover>
         </header>
         <div class="catalog body">
             <iframe src="./app/children/catalog/children/note.rmd.html" is="as-frameless"></iframe>
@@ -29,6 +35,7 @@
     </template>
     <style>
         at-catalog {
+            --color-txt: var(--indigo-3);
             display: block;
             
             .catalog.header {
@@ -38,10 +45,10 @@
                 align-items: center;
                 justify-content: space-between;
                 height: var(--header-height);
-                box-shadow: var(--shadow-1);
+                box-shadow: var(--shadow-4);
                 padding-inline: var(--offset);
                 background-color: var(--gray-8);
-                color: var(--gray-1);
+                color: var(--color-txt);
                 z-index: 9;
                 
                 .header.branding {
@@ -60,15 +67,24 @@
                     display: flex;
                     margin: 0;
                     
-                    .menu.item {
-                        list-style-type: none;
-                        color: var(--gray-0);
+                    .menu.icon {
+                        --color: var(--color-txt);
+                    }
+                    
+                    .menu.list {
+                        min-width: var(--size-px-13);
+                        margin: 0;
+                        border-radius: var(--radius-2);
+                        padding: var(--size-2);
                         
-                        .item.link {
-                            color: var(--gray-0);
-                            text-decoration: none;
+                        .list.item {
+                            list-style-type: none;
+                            
+                            .item.action {
+                                text-decoration: none;
+                            }
+                            
                         }
-                        
                     }
                     
                 }

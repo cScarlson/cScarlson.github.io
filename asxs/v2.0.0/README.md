@@ -2,7 +2,7 @@
 AsXS
 ================
 <p style="font-size: var(--font-size-0); font-weight: var(--font-weight-7)">
-    <iframe src="./app/children/copyright.rmd.html" is="as-frameless"></iframe>
+    <iframe src="./app/children/copyright/copyright.rmd.html" is="as-frameless"></iframe>
 </p>
 
 # Frameless&trade;

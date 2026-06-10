@@ -20,7 +20,7 @@
                 </at-catalog>
             </main>
             <footer class="app footer">
-                <iframe src="./app/children/copyright.rmd.html" is="as-frameless"></iframe>
+                <iframe src="./app/children/copyright/copyright.rmd.html" is="as-frameless"></iframe>
             </footer>
         </div>
     </template>
@@ -109,7 +109,7 @@
         import { root } from '/asxs/v2.0.0/core/element/window.js';
         
         const { log } = console;
-        const { document: { head }, location } = root;
+        const { document: { head }, location, setTimeout } = root;
         
         customElement('as-app')
         (class AsXSAppElement extends CustomElement {
@@ -123,7 +123,7 @@
             }
             
             connectedCallback( x = super.connectedCallback() ) {
-                location.hash = '/';
+                setTimeout(x => location.hash = '/', 1_000 * 1);
             }
             
         });

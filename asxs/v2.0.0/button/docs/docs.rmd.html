@@ -29,7 +29,7 @@
             const interpolated = utilities.interpolate(docs)({ setup, types, basic, sizes, block });
             const markup = markdown.parse(interpolated);
             const template = document.querySelector('template');
-            const html = `<at-catalog-buttons id="/catalog/buttons" class="catalog docs buttons">${markup}</at-catalog-buttons>`;
+            const html = `<at-catalog-buttons id="/catalog/buttons" class="catalog docs buttons router route">${markup}</at-catalog-buttons>`;
             
             template.innerHTML = html;
             frameElement.replaceWith(template.content);

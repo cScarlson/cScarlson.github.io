@@ -13,10 +13,11 @@
     }
     
     .router.route:target {
-        display: block;
+        display: block !important;
     }
     
     .router.route:has(.router.route:target) {
+        --scroll-margin-block: calc(var(--header-height) * 2);
         display: block;
     }
     

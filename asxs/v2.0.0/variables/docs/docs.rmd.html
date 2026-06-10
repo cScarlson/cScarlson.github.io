@@ -26,7 +26,7 @@
             const interpolated = utilities.interpolate(docs)({ setup, example });
             const markup = markdown.parse(interpolated);
             const template = document.querySelector('template');
-            const html = `<at-catalog-variables id="/catalog/variables" class="catalog docs variables">${markup}</at-catalog-variables>`;
+            const html = `<at-catalog-variables id="/catalog/variables" class="catalog docs variables router route">${markup}</at-catalog-variables>`;
             
             template.innerHTML = html;
             frameElement.replaceWith(template.content);

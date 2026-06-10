@@ -29,7 +29,7 @@
             const interpolated = utilities.interpolate(docs)({ setup, checkbox, radio, files, reflections });
             const markup = markdown.parse(interpolated);
             const template = document.querySelector('template');
-            const html = `<at-catalog-buttons-stateful id="/catalog/buttons/stateful" class="catalog docs buttons stateful">${markup}</at-catalog-buttons-stateful>`;
+            const html = `<at-catalog-buttons-stateful id="/catalog/buttons/stateful" class="catalog docs buttons stateful router route">${markup}</at-catalog-buttons-stateful>`;
             
             template.innerHTML = html;
             frameElement.replaceWith(template.content);

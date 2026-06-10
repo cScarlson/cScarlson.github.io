@@ -7,7 +7,9 @@
                 <span class="branding subtitle" is="at-catalog-title">404</span>
             </h2>
             <menu class="header menu" .data="data">
-                <li +for="let it of data">Test ${$index} ${it.title}</li>
+                <li class="menu item" +for="let it of data">
+                    <a class="item link" href="#${it.id}">${it.title}</a>
+                </li>
             </menu>
         </header>
         <div class="catalog body">
@@ -55,9 +57,20 @@
                 }
                 
                 .header.menu {
-                    border: solid 1pc tomato;
                     display: flex;
                     margin: 0;
+                    
+                    .menu.item {
+                        list-style-type: none;
+                        color: var(--gray-0);
+                        
+                        .item.link {
+                            color: var(--gray-0);
+                            text-decoration: none;
+                        }
+                        
+                    }
+                    
                 }
                 
             }
@@ -127,7 +140,6 @@
                 const get = ({ title } = { title: 404 }) => title;
                 
                 this.innerHTML = get(entry);
-                root.console.log(`@TITLE-CHANGE`, e.type, e);
             }
             
             connectedCallback() {

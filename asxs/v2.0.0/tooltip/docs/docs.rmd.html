@@ -26,7 +26,7 @@
             const interpolated = utilities.interpolate(docs)({ setup, example });
             const markup = markdown.parse(interpolated);
             const template = document.querySelector('template');
-            const html = `<at-catalog-tooltips id="/catalog/tooltips" class="catalog docs tooltips">${markup}</at-catalog-tooltips>`;
+            const html = `<at-catalog-tooltips id="/catalog/tooltips" class="catalog docs tooltips router route">${markup}</at-catalog-tooltips>`;
             
             template.innerHTML = html;
             frameElement.replaceWith(template.content);

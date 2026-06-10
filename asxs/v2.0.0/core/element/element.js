@@ -67,8 +67,6 @@ class Basic extends Nativeish {
         const { root, template, style } = this;
         const { content } = template;
         
-        // if ('crawler:template' in this) this['crawler:template'].execute();
-        console.log(`@BASIC...`);
         root.appendChild(style);
         root.appendChild(content);
         this.stabilize();  // must occur after nodes have new ownerDocument

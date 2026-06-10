@@ -26,7 +26,7 @@
             const interpolated = utilities.interpolate(docs)({ setup, basic });
             const markup = markdown.parse(interpolated);
             const template = document.querySelector('template');
-            const html = `<at-catalog-quickviews id="/catalog/quickviews" class="catalog docs quickviews">${markup}</at-catalog-quickviews>`;
+            const html = `<at-catalog-quickviews id="/catalog/dialogs/quickviews" class="catalog docs quickviews router route">${markup}</at-catalog-quickviews>`;
             
             template.innerHTML = html;
             frameElement.replaceWith(template.content);

@@ -28,7 +28,7 @@
             const interpolated = utilities.interpolate(docs)({ setupstrategy, setupimport, example, colors });
             const markup = markdown.parse(interpolated);
             const template = document.querySelector('template');
-            const html = `<at-catalog-icons id="/catalog/icons" class="catalog docs icons">${markup}</at-catalog-icons>`;
+            const html = `<at-catalog-icons id="/catalog/icons" class="catalog docs icons router route">${markup}</at-catalog-icons>`;
             
             template.innerHTML = html;
             frameElement.replaceWith(template.content);

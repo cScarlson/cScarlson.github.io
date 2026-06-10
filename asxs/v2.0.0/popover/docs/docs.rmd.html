@@ -27,7 +27,7 @@
             const interpolated = utilities.interpolate(docs)({ setup, autodismiss, toggleable });
             const markup = markdown.parse(interpolated);
             const template = document.querySelector('template');
-            const html = `<at-catalog-popovers id="/catalog/popovers" class="catalog docs popovers">${markup}</at-catalog-popovers>`;
+            const html = `<at-catalog-popovers id="/catalog/popovers" class="catalog docs popovers router route">${markup}</at-catalog-popovers>`;
             
             template.innerHTML = html;
             frameElement.replaceWith(template.content);

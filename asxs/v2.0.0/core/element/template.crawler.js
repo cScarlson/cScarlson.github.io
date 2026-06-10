@@ -50,8 +50,7 @@ export class TemplateCrawler {
     
     ['handle(+for)'](attr) {
         const { receiver } = this;
-        const { name, value: expression, ownerElement } = attr;
-        const { parentElement } = ownerElement;
+        const { value: expression, ownerElement } = attr;
         const [ token, key, _, iterable ] = expression.split(' ');
         const { [iterable]: collection } = receiver;
         const results = collection.map( (data, i) => this.clone(attr, ownerElement, key, data, i, collection) );
@@ -59,11 +58,7 @@ export class TemplateCrawler {
         const joined = results.join('');
         const innerHTML = joined.replaceAll('+for', '-for');
         
-        fragment.innerHTML = innerHTML;
-        for (const child of fragment.children) console.log(child);
-        for (const child of fragment.children) ownerElement.after(child);
-        ownerElement.remove();
-        console.log(`################`, parentElement, ownerElement, fragment, fragment.innerHTML);
+        ownerElement.outerHTML = innerHTML;
     }
     
     clone = (attr, owner, key, data, i, collection) => {

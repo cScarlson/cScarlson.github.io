@@ -32,7 +32,7 @@
             const interpolated = utilities.interpolate(docs)({ setup, normal, backdrop, fullscreen, conventional, queued, script });
             const markup = markdown.parse(interpolated);
             const template = document.querySelector('template');
-            const html = `<at-catalog-dialogs id="/catalog/dialogs" class="catalog docs dialogs">${markup}</at-catalog-dialogs>`;
+            const html = `<at-catalog-dialogs id="/catalog/dialogs" class="catalog docs dialogs router route">${markup}</at-catalog-dialogs>`;
             const container = document.createElement('script');
             
             template.innerHTML = html;

@@ -27,7 +27,7 @@
             const interpolated = utilities.interpolate(docs)({ setup, code, example });
             const markup = markdown.parse(interpolated);
             const template = document.querySelector('template');
-            const html = `<at-catalog-antitamper id="/catalog/antitamper" class="catalog docs antitamper">${markup}</at-catalog-antitamper>`;
+            const html = `<at-catalog-antitamper id="/catalog/dialogs/antitamper" class="catalog docs antitamper router route">${markup}</at-catalog-antitamper>`;
             
             template.innerHTML = html;
             frameElement.replaceWith(template.content);

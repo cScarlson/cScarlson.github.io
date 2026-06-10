@@ -6,8 +6,7 @@
     { "id": "/catalog/popovers", "title": "Popovers" },
     { "id": "/catalog/tooltips", "title": "Tooltips" },
     { "id": "/catalog/dialogs", "title": "Dialogs" },
-    { "id": "/catalog/dialogs/queued", "title": "Queued Dialogs" },
-    { "id": "/catalog/dialogs/toasts", "title": "Toast Dialogs" },
-    { "id": "/catalog/dialogs/quickview", "title": "Quickview Dialogs" },
-    { "id": "/catalog/dialogs/antitamper", "title": "Antitamper Dialogs" }
+    { "id": "/catalog/dialogs/toasts", "title": "Toasts" },
+    { "id": "/catalog/dialogs/quickviews", "title": "Quickviews" },
+    { "id": "/catalog/dialogs/antitamper", "title": "Antitamper" }
 ]

@@ -106,14 +106,24 @@
     <script type="module">
         import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
         import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
+        import { root } from '/asxs/v2.0.0/core/element/window.js';
         
         const { log } = console;
+        const { document: { head }, location } = root;
         
         customElement('as-app')
         (class AsXSAppElement extends CustomElement {
             
+            stabilize() {
+                this.idle();
+            }
+            
             createRenderRoot() {
                 return this;
+            }
+            
+            connectedCallback( x = super.connectedCallback() ) {
+                location.hash = '/';
             }
             
         });

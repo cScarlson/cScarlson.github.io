@@ -3,7 +3,7 @@ import { utilities } from '/asxs/v2.0.0/core/utilities/utilities.js';
 import { root } from './window.js';
 
 const { frameElement } = window;
-const { HTMLElement, console } = root;
+const { HTMLElement, console, document: { head } } = root;
 const { log } = console;
 
 frameElement.style.setProperty('box-sizing', 'border-box', 'important');
@@ -21,7 +21,7 @@ class Nativeish extends HTMLElement {
     }
     
     idle() {
-        this.moveBefore(frameElement, null);
+        head.moveBefore(frameElement, null);
     }
     
     connectedCallback() {}
@@ -59,23 +59,25 @@ class Basic extends Nativeish {
         return this.attachShadow({ mode: 'open' });
     }
     
+    connectedCallback( x = super.connectedCallback() ) {
+        if ('crawler:template' in this) this['crawler:template'].execute();
+    }
+    
     update() {
         const { root, template, style } = this;
-        const { ['as:crawler']: crawler, ['as:update:handler']: handle } = this;
-        const { children } = root;
         const { content } = template;
         
+        // if ('crawler:template' in this) this['crawler:template'].execute();
+        console.log(`@BASIC...`);
         root.appendChild(style);
         root.appendChild(content);
-        if (crawler) crawler.execute(...children);
-        if (handle) handle.call(this, content);
         this.stabilize();  // must occur after nodes have new ownerDocument
     }
     
 }
 
 class Autorender extends Basic {
-    #template = this.template.innerHTML;
+    #template = this.template;
     
     connectedCallback( x = super.connectedCallback() ) {
         this.update();
@@ -93,7 +95,7 @@ class Autorender extends Basic {
     }
     
     render() {
-        return this.#template;
+        return this.#template.innerHTML;
     }
     
 }

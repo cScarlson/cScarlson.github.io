@@ -10,7 +10,6 @@
     
     .router.route {
         display: none;
-        /* display: block; */
     }
     
     .router.route:target {

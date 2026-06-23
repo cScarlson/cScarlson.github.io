@@ -153,3 +153,146 @@ Used `head > link.global.asset`.
 </body>
 </html>
 ```
+
+
+### Template Hooks
+- Event-Handlers
+- Template Directives
+
+#### Event Handlers
+RMDs inherit the ability to declaratively define Event-Handler hooks, making your code more readable. In your template, all you need is to point to the handler in your RMD class. Then, simply subscribe to the event with an _Event-Handler-Object_.
+
+##### Abstract
+- `{type}`: the string reflected by `Event.prototype.type`; e.g. `click`.
+- `{referent}`: the unique identy of that which the handler is for; e.g. `some:subdomain:target`.
+
+```html
+<body>
+    <template>
+        <input data-({type})="{referent}" />
+    </template>
+    <style></style>
+    <script type="module">
+        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
+        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
+        
+        customElement('my-app')
+        (class AppElement extends CustomElement {
+            
+            ['handle:{referent}:{type}'](e) {}
+            
+            connectedCallback( x = super.connectedCallback() ) {
+                this.root.addEventListener('{type}', this, true);
+            }
+            
+        });
+    <script>
+</body>
+```
+
+##### Concrete
+
+```html
+<body>
+    <template>
+        <input data-(change)="my:input" />
+    </template>
+    <style></style>
+    <script type="module">
+        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
+        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
+        
+        customElement('my-app')
+        (class AppElement extends CustomElement {
+            
+            ['handle:my:input:change'](e) {}
+            
+            connectedCallback( x = super.connectedCallback() ) {
+                this.root.addEventListener('change', this, true);
+            }
+            
+        });
+    <script>
+</body>
+```
+
+
+#### `TemplateCrawler`
+RMDs can employ a Template Crawler simply by adding an instance to your RMD's encapsulation.
+
+```html
+<body>
+    <template>...</template>
+    <style></style>
+    <script type="module">
+        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
+        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
+        import { TemplateCrawler } from '/asxs/v2.0.0/core/element/template.crawler.js';
+        
+        customElement('my-app')
+        (class AppElement extends CustomElement {
+            ['crawler:template'] = new TemplateCrawler(this);
+        });
+    <script>
+</body>
+```
+
+If a generic hook method exists, it will be called for every `Element` in the template.
+```html
+<body>
+    <template>...</template>
+    <style></style>
+    <script type="module">
+        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
+        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
+        import { TemplateCrawler } from '/asxs/v2.0.0/core/element/template.crawler.js';
+        
+        customElement('my-app')
+        (class AppElement extends CustomElement {
+            ['crawler:template'] = new TemplateCrawler(this);
+            
+            ['crawler:template:handler'](element) {}
+            
+        });
+    <script>
+</body>
+```
+
+##### Template Directives
+`TemplateCrawler` automatically looks for specific _Template Directives_.
+
+- `.`: indicates a _property_ should be set on the Element Node based on the RMD's scope.
+- `?`: indicates a _Boolean Attribute_ should be set on the Element Node based on the RMD's scope.
+- `+`: reserved for generative actions.
+  - `+for`: used for template looping based on the RMD's scope.
+
+```html
+<body>
+    <template>
+        <ul class="some list">
+            <li class="list item" +for="let n of data" .innerHTML="${n}"></li>
+        </ul>
+    </template>
+    <style></style>
+    <script type="module">
+        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
+        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
+        import { TemplateCrawler } from '/asxs/v2.0.0/core/element/template.crawler.js';
+        
+        customElement('my-app')
+        (class AppElement extends CustomElement {
+            ['crawler:template'] = new TemplateCrawler(this);
+            items = [ 1,2,3 ];
+        });
+    <script>
+</body>
+```
+
+###### Output
+```html
+<ul class="some list">
+    <li class="list item" -for="let n of data" .innerHTML="${1}">1</li>
+    <li class="list item" -for="let n of data" .innerHTML="${2}">2</li>
+    <li class="list item" -for="let n of data" .innerHTML="${3}">3</li>
+</ul>
+```

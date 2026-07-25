@@ -1,0 +1,7 @@
+{
+    "name": "magazinejs",
+    "type": "module",
+    "scripts": {
+        "dev": "npx vite --port 8000"
+    }
+}

@@ -6,7 +6,9 @@
             --icon: var(--icon-type-placeholder);
             --size: var(--size-px-5);
             --color: black;
-            display: inline-block;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
             width: var(--size);
             height: var(--size);
             mask-image: var(--icon);
@@ -31,6 +33,9 @@
             }
             &:is([type="close-lg"], &[type="times-lg"], &[type="x-lg"]) {
                 --icon: var(--icon-type-close, var(--icon-type-times, var(--icon-type-x)));
+            }
+            &:is([type="three-dots-vertical"], &[type="ellipsis-vertical"], &[type="overflow-menu"], &[type="...v"]) {
+                --icon: var(--icon-type-three-dots-vertical, var(--icon-type-ellipsis-vertical, var(--icon-type-overflow-menu)));
             }
         }
     </style>

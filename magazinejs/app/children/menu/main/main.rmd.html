@@ -9,6 +9,40 @@
                 gap: var(--size-px-3);
                 padding: 0;
                 list-style-type: none;
+                @media screen and (max-width: 640px) {
+                    display: none;
+                }
+            }
+            
+            .header.menu.action {
+                display: none;
+                box-shadow: none;
+                border: none;
+                padding: 0;
+                background-color: transparent;
+                @media screen and (max-width: 640px) {
+                    display: flex;
+                }
+            }
+            
+            .mobile.dialog.menu {
+                width: var(--min-size);
+                &:hover {
+                    width: var(--min-size) !important;
+                }
+                
+                .dialog.body {
+                    
+                    .body.menu {
+                        list-style-type: none;
+                        padding: 0;
+                        
+                        .menu.item {}
+                        
+                    }
+                    
+                }
+                
             }
         </style>
         <menu class="header menu main">
@@ -17,6 +51,28 @@
             <iframe src="./app/children/menu/action.rmd.html" is="as-frameless" url="./join">Become A Publisher</iframe>
             <iframe src="./app/children/menu/action.rmd.html" is="as-frameless" url="./about">About</iframe>
         </menu>
+        <button class="header menu action" is="as-button" popovertarget="mainmenu">
+            <as-icon type="...v" strategy="bootstrap-icons"></as-icon>
+        </button>
+        <dialog id="mainmenu" class="mobile dialog menu backdrop clear" is="as-dialog" modus="quickview" position="inline-end" popover>
+            <header class="dialog header">
+                <h1 class="header title">Main Menu</h1>
+                <h2 class="header subtitle">Browse articles, publishers, come a publisher, learn more about /magazinejs</h2>
+            </header>
+            <form id="menumainbody" class="dialog body dialog" method="dialog">
+                <menu class="body menu main">
+                    <iframe src="./app/children/menu/action.rmd.html" is="as-frameless" url="./articles">Articles</iframe>
+                    <iframe src="./app/children/menu/action.rmd.html" is="as-frameless" url="./publishers">Publishers</iframe>
+                    <iframe src="./app/children/menu/action.rmd.html" is="as-frameless" url="./join">Become A Publisher</iframe>
+                    <iframe src="./app/children/menu/action.rmd.html" is="as-frameless" url="./about">About</iframe>
+                </menu>
+            </form>
+            <footer class="dialog footer">
+                <button is="as-button" popovertargetaction="hide" popovertarget="mainmenu">
+                    <as-icon type="close-lg" strategy="bootstrap-icons"></as-icon>
+                </button>
+            </footer>
+        </dialog>
     </template>
     <script>
         const { content } = document.querySelector('template');

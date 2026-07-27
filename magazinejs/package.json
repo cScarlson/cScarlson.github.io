@@ -2,6 +2,9 @@
     "name": "magazinejs",
     "type": "module",
     "scripts": {
-        "dev": "npx vite --port 8000"
+        "dev": "vite --port 8000"
+    },
+    "devDependencies": {
+        "vite": "^8.1.5"
     }
 }

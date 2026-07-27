@@ -1,0 +1,37 @@
+{
+    "publisher": "MagazineJS",
+    "origin": "http://localhost:3000",
+    "articles": [
+        {
+            "date": "2026-07-26T21:20:00.000Z",
+            "title": "The Microfrontend Pattern",
+            "subtitle": "Turning The Web Into A Plugin Architecture",
+            "rmd": "http://localhost:8000/magazinejs/articles/the-mfe-pattern.rmd.html",
+            "authors": [ "Cody Carlson" ],
+            "tags": [
+                "The MFE Pattern",
+                "Plugin Architecture",
+                "Patterns",
+                "Architecture",
+                "The Web",
+                "Frontend Development",
+                "Microfrontend"
+            ]
+        },
+        {
+            "date": "2026-07-26T21:20:00.000Z",
+            "title": "The Other Article",
+            "subtitle": "...",
+            "rmd": "http://localhost:8000/magazinejs/articles/the-other-article.rmd.html",
+            "authors": [ "Cody Carlson" ],
+            "tags": [
+                "Plugin Architecture",
+                "Patterns",
+                "Architecture",
+                "The Web",
+                "Frontend Development",
+                "Microfrontend"
+            ]
+        }
+    ]
+}

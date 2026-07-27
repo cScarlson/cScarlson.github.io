@@ -1,0 +1,117 @@
+
+<body>
+    <template>
+        <div class="magazinejs app">
+            <iframe src="/asxs/v2.0.0/button/button.rmd.html" is="as-frameless"></iframe>
+            <iframe src="/asxs/v2.0.0/icon/icon.rmd.html" is="as-frameless"></iframe>
+            <mag-menu-sidebar>
+                <iframe src="./app/children/menu/sidebar/sidebar.rmd.html" is="as-frameless"></iframe>
+            </mag-menu-sidebar>
+            <header class="app header">
+                <span class="header branding">
+                    <button class="branding action menu open" is="as-button" popovertarget="sidebar">
+                        <as-icon type="menu" strategy="bootstrap-icons"></as-icon>
+                    </button>
+                    <a class="branding title" href="/magazinejs">/magazinejs</a>
+                </span>
+                <iframe src="./app/children/menu/main/main.rmd.html" is="as-frameless"></iframe>
+            </header>
+            <main class="app body">Body</main>
+            <footer class="app footer">Footer</footer>
+        </div>
+    </template>
+    <style>
+        :root {
+            --header-height: var(--size-px-8);
+        }
+        :root {
+            --color-primary: var(--yellow-8);
+        }
+        
+        mag-app {
+            /* border: solid 1px tomato; */
+            display: block;
+            
+            .magazinejs.app {
+                /* border: solid 1px tomato; */
+                
+                .app.header {
+                    /* border: solid 1px tomato; */
+                    position: sticky;
+                    top: 0;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    box-shadow: var(--shadow-2);
+                    height: var(--header-height);
+                    padding-block: 0;
+                    padding-inline: var(--offset);
+                    background-color: var(--stone-0);
+                    
+                    .header.branding {
+                        /* border: solid 1px tomato; */
+                        display: flex;
+                        align-items: center;
+                        
+                        .branding.action {
+                            margin-inline-start: 0;
+                        }
+                        
+                        .branding.title {
+                            /* border: solid 1px tomato; */
+                            margin: 0;
+                            color: var(--color-primary);
+                            font-size: var(--font-size-2);
+                            text-decoration: none;
+                        }
+                        
+                    }
+                    
+                }
+                
+                .app.body {
+                    /* border: solid 1px tomato; */
+                    padding-block: var(--font-size-4);
+                    padding-inline: var(--offset);
+                }
+                
+                .app.footer {
+                    /* border: solid 1px tomato; */
+                    box-shadow: var(--inner-shadow-2);
+                    min-height: 25dvh;
+                    background-color: var(--stone-0);
+                }
+                
+            }
+            
+        }
+    </style>
+    <script type="module">
+        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
+        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
+        import { TemplateCrawler } from '/asxs/v2.0.0/core/element/template.crawler.js';
+        import { publishers, articles, published, tags } from './core/data/data.js';
+        
+        const { parent, frameElement } = window;
+        const { customElements, HTMLElement } = parent;
+        const TAGNAME = 'mag-app';
+        
+        customElement(TAGNAME)
+        (class MagazineJSAppElement extends CustomElement {
+            publishers = publishers;
+            
+            stabilize() {
+                this.idle();
+            }
+            
+            createRenderRoot() {
+                return this;
+            }
+            
+            connectedCallback( x = super.connectedCallback() ) {
+                console.log(`MagazineJS has ${publishers.length} publisher(s)`, publishers, articles, published, tags);
+            }
+            
+        });
+    </script>
+</body>

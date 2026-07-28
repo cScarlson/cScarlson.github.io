@@ -50,7 +50,7 @@ export class TemplateCrawler {
         const { receiver } = this;
         const { value: expression, ownerElement } = attr;
         const [ token, key, _, iterable ] = expression.split(' ');
-        const { [iterable]: collection } = receiver;
+        const collection = ( new Function('r', `return r.${iterable}`) )(receiver);
         const results = collection.map( (data, i) => this.clone(attr, ownerElement, key, data, i, collection) );
         const joined = results.join('');
         const innerHTML = joined.replaceAll('+for', '-for');

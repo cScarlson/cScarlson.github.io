@@ -6,7 +6,7 @@
             "date": "2026-07-26T21:20:00.000Z",
             "title": "The Microfrontend Pattern",
             "subtitle": "Turning The Web Into A Plugin Architecture",
-            "rmd": "http://localhost:8000/magazinejs/articles/the-mfe-pattern.rmd.html",
+            "rmd": "http://localhost:3000/magazinejs/content/patterns/the-mfe-pattern.rmd.html",
             "authors": [ "Cody Carlson" ],
             "tags": [
                 "The MFE Pattern",
@@ -20,9 +20,9 @@
         },
         {
             "date": "2026-07-26T21:20:00.000Z",
-            "title": "The Other Article",
-            "subtitle": "...",
-            "rmd": "http://localhost:8000/magazinejs/articles/the-other-article.rmd.html",
+            "title": "Import Attr vs Fetch",
+            "subtitle": "Does The Import Attr Type JSON Replace Fetch GET?",
+            "rmd": "http://localhost:3000/magazinejs/content/patterns/import-attr-json-vs-fetch-get.html",
             "authors": [ "Cody Carlson" ],
             "tags": [
                 "Plugin Architecture",

@@ -76,9 +76,9 @@
         customElement(TAGNAME)
         (class SidebarMenuElement extends CustomElement {
             ['crawler:template'] = new TemplateCrawler(this);
-            publishers = publishers.map( ({ publisher }) => publisher );
-            tags = [ ...tags.keys() ];
-            authors = [ ...authors.keys() ];
+            publishers = publishers;
+            tags = tags;
+            authors = authors;
             
             stabilize() {
                 this.idle();

@@ -1,8 +1,8 @@
 
 import { Article } from './article.model.js';
-import { publishers } from './publishers.js';
+import { schemata } from './schemata.js';
 
-const articles = [ ...publishers.reduce( reduce, new Map() ).values() ];
+const articles = [ ...schemata.reduce( reduce, new Map() ).values() ];
 
 function reduce($, entity) {
     const { articles } = entity;
@@ -12,10 +12,8 @@ function reduce($, entity) {
 
 function refine($, article) {
     const { publisher, origin } = this;
-    const { rmd } = article;
     const model = new Article({ ...article, publisher, origin });
-    
-    return $.set(rmd, model);  // prevent duplicate entries of the same article
+    return $.set(model.id, model);
 }
 
 export { articles };

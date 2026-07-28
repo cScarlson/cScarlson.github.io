@@ -21,7 +21,7 @@
                     <iframe src="./app/core/router/router.rmd.html" is="as-frameless"></iframe>
                     <template>
                         <iframe path="/magazinejs/" src="./app/children/home/home.rmd.html" is="as-frameless"></iframe>
-                        <iframe path="/magazinejs/articles/" src="./app/children/article/article.rmd.html" is="as-frameless"></iframe>
+                        <iframe path="/magazinejs/articles/" src="./app/children/article/collection.rmd.html" is="as-frameless"></iframe>
                         <iframe path="**/404" src="./app/children/404/404.rmd.html" is="as-frameless"></iframe>
                     </template>
                 </mag-router>
@@ -104,7 +104,6 @@
         import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
         import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
         import { TemplateCrawler } from '/asxs/v2.0.0/core/element/template.crawler.js';
-        import { publishers, articles, published, tags } from './core/data/data.js';
         
         const { parent, frameElement } = window;
         const { customElements, HTMLElement } = parent;
@@ -112,7 +111,6 @@
         
         customElement(TAGNAME)
         (class MagazineJSAppElement extends CustomElement {
-            publishers = publishers;
             
             stabilize() {
                 this.idle();
@@ -122,9 +120,7 @@
                 return this;
             }
             
-            connectedCallback( x = super.connectedCallback() ) {
-                console.log(`MagazineJS has ${publishers.length} publisher(s)`, publishers, articles, published, tags);
-            }
+            connectedCallback( x = super.connectedCallback() ) {}
             
         });
     </script>

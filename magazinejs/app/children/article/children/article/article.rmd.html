@@ -1,0 +1,15 @@
+
+<body>
+    <template>
+        <h1>Article</h1>
+    </template>
+    <style></style>
+    <script>
+        const { attributes } = frameElement;
+        const { type: { value: type }, query: { value: query } } = attributes;
+        const { content } = document.querySelector('template');
+        
+        console.log(`@ARTICLE`, type, query);
+        frameElement.replaceWith(content);
+    </script>
+</body>

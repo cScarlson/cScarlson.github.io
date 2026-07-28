@@ -16,7 +16,16 @@
                 </span>
                 <iframe src="./app/children/menu/main/main.rmd.html" is="as-frameless"></iframe>
             </header>
-            <main class="app body">Body</main>
+            <main class="app body">
+                <mag-router>
+                    <iframe src="./app/core/router/router.rmd.html" is="as-frameless"></iframe>
+                    <template>
+                        <iframe path="/magazinejs/" src="./app/children/home/home.rmd.html" is="as-frameless"></iframe>
+                        <iframe path="/magazinejs/articles/" src="./app/children/article/article.rmd.html" is="as-frameless"></iframe>
+                        <iframe path="**/404" src="./app/children/404/404.rmd.html" is="as-frameless"></iframe>
+                    </template>
+                </mag-router>
+            </main>
             <footer class="app footer">Footer</footer>
         </div>
     </template>

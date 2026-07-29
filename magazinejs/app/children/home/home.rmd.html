@@ -1,0 +1,36 @@
+
+<body>
+    <template>
+        <h1>Home</h1>
+    </template>
+    <template class="result">
+        <mag-page-home></mag-page-home>
+    </template>
+    <style></style>
+    <script type="module">
+        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
+        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
+        import { publishers, articles, published, tags } from '/magazinejs/app/core/data/data.js';
+        
+        const { content } = document.querySelector('template.result');
+        
+        customElement('mag-page-home')
+        (class MagazineJSRouterElement extends CustomElement {
+            
+            stabilize() {
+                this.idle();
+            }
+            
+            createRenderRoot() {
+                return this;
+            }
+            
+            connectedCallback( x = super.connectedCallback() ) {
+                
+            }
+            
+        });
+        
+        frameElement.after(content);
+    </script>
+</body>

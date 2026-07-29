@@ -1,0 +1,97 @@
+
+<body>
+    <template>
+        <iframe src="/asxs/v2.0.0/dialog/dialog.rmd.html" is="as-frameless"></iframe>
+        <iframe src="/asxs/v2.0.0/dialog/quickview/quickview.rmd.html" is="as-frameless"></iframe>
+        <dialog id="sidebar" class="header menu sidebar backdrop clear" is="as-dialog" modus="quickview" position="inline-start" popover>
+            <header class="dialog header">
+                <h1 class="header title">Browse Articles By</h1>
+                <h2 class="header subtitle">Publisher, Author, and Tag</h2>
+            </header>
+            <form id="sidebarbody" class="menu body dialog" method="dialog">
+                <menu class="body menu">
+                    <li class="menu item heading">Publishers</li>
+                    <iframe src="./app/children/menu/action.rmd.html" is="as-frameless" +for="let publisher of publishers" url="./articles?type=publisher&q=${publisher}">${publisher}</iframe>
+                    <li class="menu item heading">Authors</li>
+                    <iframe src="./app/children/menu/action.rmd.html" is="as-frameless" +for="let author of authors" url="./articles?type=author&q=${author}">${author}</iframe>
+                    <li class="menu item heading">Tags</li>
+                    <iframe src="./app/children/menu/action.rmd.html" is="as-frameless" +for="let tag of tags" url="./articles?type=tag&q=${tag}">${tag}</iframe>
+                </menu>
+            </form>
+            <footer class="dialog footer">
+                <button is="as-button" popovertargetaction="hide" popovertarget="sidebar">
+                    <as-icon type="close-lg" strategy="bootstrap-icons"></as-icon>
+                </button>
+            </footer>
+        </dialog>
+    </template>
+    <style>
+        mag-menu-sidebar {
+            
+            .header.menu.sidebar {
+                width: var(--min-size);
+                &:hover {
+                    width: var(--min-size) !important;
+                }
+                
+                .menu.header {}
+                
+                .menu.body {
+                    /* border: solid 1px tomato; */
+                    box-shadow: var(--inset-shadow-3);
+                    
+                    .body.menu {
+                        /* border: solid 1px tomato; */
+                        padding: 0;
+                        list-style-type: none;
+                        
+                        .menu.item {
+                            &.heading {
+                                padding-block: var(--size-px-3) var(--size-px-0, 0);
+                                text-transform: uppercase;
+                                font-weight: var(--font-weight-8);
+                            }
+                        }
+                        
+                    }
+                    
+                }
+                
+                .menu.footer {}
+                
+            }
+            
+        }
+    </style>
+    <script type="module">
+        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
+        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
+        import { TemplateCrawler } from '/asxs/v2.0.0/core/element/template.crawler.js';
+        import { publishers, tags, authors } from '/magazinejs/app/core/data/data.js';
+        
+        const { parent, frameElement } = window;
+        const { customElements, HTMLElement } = parent;
+        const TAGNAME = 'mag-menu-sidebar';
+        
+        customElement(TAGNAME)
+        (class SidebarMenuElement extends CustomElement {
+            ['crawler:template'] = new TemplateCrawler(this);
+            publishers = publishers;
+            tags = tags;
+            authors = authors;
+            
+            stabilize() {
+                this.idle();
+            }
+            
+            createRenderRoot() {
+                return this;
+            }
+            
+            connectedCallback( x = super.connectedCallback() ) {
+                console.log(`SidebarMenuElement`, this.tags, this.authors);
+            }
+            
+        });
+    </script>
+</body>

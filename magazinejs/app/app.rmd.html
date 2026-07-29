@@ -1,0 +1,130 @@
+
+<body>
+    <template>
+        <div class="magazinejs app">
+            <iframe src="/asxs/v2.0.0/button/button.rmd.html" is="as-frameless"></iframe>
+            <iframe src="/asxs/v2.0.0/icon/icon.rmd.html" is="as-frameless"></iframe>
+            <mag-menu-sidebar>
+                <iframe src="./app/children/menu/sidebar/sidebar.rmd.html" is="as-frameless"></iframe>
+            </mag-menu-sidebar>
+            <header class="app header">
+                <span class="header branding">
+                    <button class="branding action menu open" is="as-button" popovertarget="sidebar">
+                        <as-icon type="menu" strategy="bootstrap-icons"></as-icon>
+                    </button>
+                    <a class="branding title" href="/magazinejs">/magazinejs</a>
+                </span>
+                <iframe src="./app/children/menu/main/main.rmd.html" is="as-frameless"></iframe>
+            </header>
+            <main class="app body">
+                <mag-router>
+                    <iframe src="./app/core/router/router.rmd.html" is="as-frameless"></iframe>
+                    <template>
+                        <iframe path="/magazinejs/" src="./app/children/home/home.rmd.html" is="as-frameless"></iframe>
+                        <iframe path="/magazinejs/articles/" src="./app/children/article/collection.rmd.html" is="as-frameless"></iframe>
+                        <iframe path="/magazinejs/article/" src="./app/children/article/article.rmd.html" is="as-frameless"></iframe>
+                        <iframe path="/magazinejs/about/" src="./app/children/about/about.rmd.html" is="as-frameless"></iframe>
+                        <iframe path="/magazinejs/404" src="./app/children/404/404.rmd.html" is="as-frameless"></iframe>
+                        <iframe path="**/404" src="./app/children/404/404.rmd.html" is="as-frameless"></iframe>
+                    </template>
+                </mag-router>
+            </main>
+            <footer class="app footer">Footer</footer>
+        </div>
+    </template>
+    <style>
+        :root {
+            --header-height: var(--size-px-8);
+        }
+        :root {
+            --color-primary: var(--yellow-8);
+        }
+        
+        mag-app {
+            /* border: solid 1px tomato; */
+            display: block;
+            
+            .magazinejs.app {
+                /* border: solid 1px tomato; */
+                
+                .app.header {
+                    /* border: solid 1px tomato; */
+                    position: sticky;
+                    top: 0;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    box-shadow: var(--shadow-2);
+                    height: var(--header-height);
+                    padding-block: 0;
+                    padding-inline: var(--offset);
+                    background-color: var(--stone-0);
+                    
+                    .header.branding {
+                        /* border: solid 1px tomato; */
+                        display: flex;
+                        align-items: center;
+                        
+                        .branding.action {
+                            margin-inline-start: 0;
+                            box-shadow: none;
+                            border: none;
+                            padding: 0;
+                            background-color: transparent;
+                        }
+                        
+                        .branding.title {
+                            /* border: solid 1px tomato; */
+                            margin: 0;
+                            color: var(--color-primary);
+                            font-size: var(--font-size-2);
+                            text-decoration: none;
+                        }
+                        
+                    }
+                    
+                }
+                
+                .app.body {
+                    /* border: solid 1px tomato; */
+                    padding-block: var(--font-size-4);
+                    padding-inline: var(--offset);
+                }
+                
+                .app.footer {
+                    /* border: solid 1px tomato; */
+                    box-shadow: var(--inner-shadow-2);
+                    min-height: 25dvh;
+                    padding-inline: var(--offset);
+                    background-color: var(--stone-0);
+                }
+                
+            }
+            
+        }
+    </style>
+    <script type="module">
+        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
+        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
+        import { TemplateCrawler } from '/asxs/v2.0.0/core/element/template.crawler.js';
+        
+        const { parent, frameElement } = window;
+        const { customElements, HTMLElement } = parent;
+        const TAGNAME = 'mag-app';
+        
+        customElement(TAGNAME)
+        (class MagazineJSAppElement extends CustomElement {
+            
+            stabilize() {
+                this.idle();
+            }
+            
+            createRenderRoot() {
+                return this;
+            }
+            
+            connectedCallback( x = super.connectedCallback() ) {}
+            
+        });
+    </script>
+</body>

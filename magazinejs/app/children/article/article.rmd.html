@@ -1,0 +1,137 @@
+
+<body>
+    <template>
+        <div class="magazinejs view article">
+            <h1 class="view publisher">
+                Publisher: 
+                <a class="publisher action" href="/magazinejs/articles?type=publisher&q=${article.publisher}">${article.publisher}</a>
+            </h1>
+            <ul class="view author list">
+                <li class="author item heading">Authors</li>
+                <li class="author item data" +for="let author of article.authors">
+                    <a class="item action" href="/magazinejs/articles?type=author&q=${author}">${author}</a>
+                </li>
+            </ul>
+            <ul class="view tag list">
+                <li class="tag item heading">Tags</li>
+                <li class="tag item data" +for="let tag of article.tags">
+                    <a class="item action" href="/magazinejs/articles?type=tag&q=${tag}">${tag}</a>
+                </li>
+            </ul>
+            <iframe src="${article.rmd}" is="as-frameless"></iframe>
+        </div>
+    </template>
+    <style>
+        mag-article {
+            --link-color: var(--yellow-6);
+            --link-color-hover: var(--yellow-9);
+            
+            .magazinejs.view.article {
+                
+                .view.publisher {
+                    font-size: var(--font-size-3);
+                    
+                    .publisher.action {
+                        color: var(--link-color);
+                        &:hover {
+                            color: var(--link-color-hover);
+                        }
+                    }
+                    
+                }
+                
+                .view.author.list {
+                    display: block;
+                    gap: var(--size-px-2);
+                    padding: 0;
+                    list-style-type: none;
+                    overflow-x: auto;
+                    scrollbar-width: none;
+                    
+                    .author.item {
+                        &.heading {
+                            font-weight: var(--font-weight-6);
+                        }
+                        &.data {
+                            display: inline-flex;
+                            align-items: center;
+                            margin-inline: var(--size-px-2);
+                        }
+                        
+                        .item.action {
+                            color: var(--link-color);
+                            &:hover {
+                                color: var(--link-color-hover);
+                            }
+                        }
+                        
+                    }
+                    
+                }
+                
+                .view.tag.list {
+                    display: block;
+                    gap: var(--size-px-2);
+                    padding: 0;
+                    list-style-type: none;
+                    overflow-x: auto;
+                    scrollbar-width: none;
+                    
+                    .tag.item {
+                        &.heading {
+                            font-weight: var(--font-weight-6);
+                        }
+                        &.data {
+                            display: inline-flex;
+                            align-items: center;
+                            margin-inline: var(--size-px-2);
+                        }
+                        
+                        .item.action {
+                            color: var(--link-color);
+                            min-width: fit-content;
+                            &:hover {
+                                color: var(--link-color-hover);
+                            }
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+            
+        }
+    </style>
+    <template class="result">
+        <mag-article></mag-article>
+    </template>
+    <script type="module">
+        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
+        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
+        import { TemplateCrawler } from '/asxs/v2.0.0/core/element/template.crawler.js';
+        import { $published } from '/magazinejs/app/core/data/data.js';
+        
+        const { parent } = window;
+        const { location } = parent;
+        const { searchParams } = new URL(location);
+        const { content } = document.querySelector('template.result');
+        const id = searchParams.get('id');
+        const article = $published.get(id);
+        
+        customElement('mag-article')
+        (class MagazineJSArticleElement extends CustomElement {
+            ['crawler:template'] = new TemplateCrawler(this);
+            article = article;
+            
+            createRenderRoot() {
+                return this;
+            }
+            
+        });
+        
+        console.log(`@ARTICLE.SINGULAR`, id, article);
+        if (!article) location.assign('/magazinejs/404');
+        else frameElement.after(content);
+    </script>
+</body>

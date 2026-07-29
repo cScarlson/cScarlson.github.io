@@ -1,0 +1,60 @@
+
+<body>
+    <template>
+        <h1>Articles by <span>"${type}"</span>: ${query}</h1>
+        <ul>
+            <li +for="let article of articles">
+                <a href="/magazinejs/article?id=${article.id}">${article.title}: ${article.subtitle}</a>
+            </li>
+        </ul>
+    </template>
+    <template class="result">
+        <mag-article-collection></mag-article-collection>
+    </template>
+    <style></style>
+    <script type="module">
+        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
+        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
+        import { TemplateCrawler } from '/asxs/v2.0.0/core/element/template.crawler.js';
+        import { published, $publishers, $authors, $tags } from '/magazinejs/app/core/data/data.js';
+        
+        const { parent } = window;
+        const { location } = parent;
+        const { searchParams } = new URL(location);
+        const { content } = document.querySelector('template.result');
+        const type = searchParams.get('type');
+        const query = searchParams.get('q');
+        const { [type]: articles } = {
+            '': published,
+            'undefined': published,
+            'null': published,
+            'all': published,
+            'publisher': $publishers.get(query),
+            'author': $authors.get(query),
+            'tag': $tags.get(query),
+        };
+        
+        customElement('mag-article-collection')
+        (class MagazineJSRouterElement extends CustomElement {
+            ['crawler:template'] = new TemplateCrawler(this);
+            type = type;
+            query = query;
+            articles = articles;
+            
+            stabilize() {
+                this.idle();
+            }
+            
+            createRenderRoot() {
+                return this;
+            }
+            
+            connectedCallback( x = super.connectedCallback() ) {}
+            
+        });
+        
+        console.log('ARTICLE.COLLECTION', type, query, articles);
+        if (!articles) location.assign('/magazinejs/404');
+        else frameElement.after(content);
+    </script>
+</body>

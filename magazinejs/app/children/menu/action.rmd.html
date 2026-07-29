@@ -1,0 +1,42 @@
+
+<body>
+    <template>
+        <style>         
+            .menu.item {
+                /* border: solid 1px tomato; */
+                border-radius: var(--radius-2);
+                margin-block: var(--size-0);
+                &:hover {
+                    .item.action {
+                        color: var(--yellow-9);
+                    }
+                }
+                
+                .item.action {
+                    /* border: solid 1px tomato; */
+                    display: block;
+                    color: var(--yellow-6);
+                    transition: color 250ms ease-in-out;
+                }
+                
+            }
+        </style>
+        <li class="menu item">
+            <a class="item action" href="${url}">${title}</a>
+        </li>
+    </template>
+    <script type="module">
+        import { utilities } from '/asxs/v2.0.0/core/utilities/utilities.js';
+        
+        const { frameElement } = window;
+        const { attributes, innerText: title } = frameElement;
+        const { url: { value: url } } = attributes;
+        const template = document.querySelector('template');
+        const interpolated = utilities.interpolate(template.innerHTML)({ url, title });
+        
+        template.innerHTML = interpolated;
+        // if (!type) throw new Error(`@MagazineJS Menu Action Error: could not find "type" from frame-element.`);
+        // if (!value) throw new Error(`@MagazineJS Menu Action Error: could not find "value" from frame-element.`);
+        frameElement.replaceWith(template.content);
+    </script>
+</body>

@@ -1,6 +1,0 @@
-
-${element}
-
-```html
-${example}
-```

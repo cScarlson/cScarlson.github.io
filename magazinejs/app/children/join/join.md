@@ -47,16 +47,18 @@ Please see below for more information & examples on each violation level.
 
 ### Examples of Stikeouts
 - 3 Level 1 Violations === `3x1` === `3`
-- 2 Level 2 Violations === `2x2` === `> 3`
+- 2 Level 2 Violations === `2x2` > `3`
 - 1 Level 3 Violations === `1x3` === `3`
-- 2 Level 1 Violations + any other === `>= 3`
+- 2 Level 1 Violations + any other >= `3`
 
 ### Summary
 Don't be evil or you'll be banned as soon as it is caught.
 
 ### Reporting Mishaps, Misuses & Abuses
-Contact [Cody S. Carlson at LinkedIn](https://www.linkedin.com/in/cody-s-carlson-1b837259)
-###### https://www.linkedin.com/in/cody-s-carlson-1b837259/
+Contact <a href="https://www.linkedin.com/in/cody-s-carlson-1b837259" target="_blank">Cody S. Carlson at LinkedIn</a>
+
+<a href="https://www.linkedin.com/in/cody-s-carlson-1b837259" target="_blank">**https://www.linkedin.com/in/cody-s-carlson-1b837259**</a>
+
 
 ## Guidance
 Send me a friendly message with your website `origin` for an existing `index.json` schema. I'll simply add it to the registry.
@@ -74,7 +76,7 @@ Send me a friendly message with your website `origin` for an existing `index.jso
     - Requirements: the following must be confirmed in the LinkedIn message.
       - URL Origin, "`origin`" (`location.origin`)
       - Existing `{origin}/magazinejs/index.json` file.
-      - sent to: [Cody S. Carlson at LinkedIn](https://www.linkedin.com/in/cody-s-carlson-1b837259)
+      - sent to: <a href="https://www.linkedin.com/in/cody-s-carlson-1b837259" target="_blank">Cody S. Carlson at LinkedIn</a>
 - environment consideration
 - tooling for you: at this time, there is no tooling available. In the future, we plan to have
   - Default article Markdown templates
@@ -85,7 +87,7 @@ Send me a friendly message with your website `origin` for an existing `index.jso
 Where you host your articles is completely up to you. It can be as simple as your GitHub Pages site, an AWS S3 Bucket, or anything else. You own your onw content, we just publish it.
 
 ### The Native MFE Pattern
-Articles must be published in RMD format, which is **easy**. Learn how to [implement The Microfrontend Pattern here](https://todo.com/magazinejs/book/public/040.00.2.thenativemfepattern.md). This Gang of Four style specification shows how you can create your own microfrontend component **very easily**. In short, `window.frameElement` and `window.parent.customElements`. With that, you can easily create
+Articles must be published in RMD format, which is **easy**. Learn how to <a href="https://cscarlson.github.io/magazinejs/book/demystified/public/040.00.2.thenativemfepattern" target="_blank">implement The Microfrontend Pattern here</a>. This Gang of Four style specification shows how you can create your own microfrontend component **very easily**. In short, `window.frameElement` and `window.parent.customElements`. With that, you can easily create
 
 - Web Components
 - Partials/Includes
@@ -138,6 +140,8 @@ Used for article cards on /magazinejs UI. **Use `320px X 320px` dimensions**.
 ### Registration
 You must register your `index.json` file by providing your website's `origin`. All that takes is sending me (Cody Carlson, /magazinejs) a friendly message requesting to be added to the registry. Here's a reasonable format/example.
 
+<a href="https://www.linkedin.com/in/cody-s-carlson-1b837259" target="_blank">Cody S. Carlson @LinkedIn</a>
+
 ```
 Dear /magazinejs,
 
@@ -161,6 +165,14 @@ You should always test to see your article show up on /magazinejs after publishi
 
 ### Tooling
 We're working on several bits of tooling that'll make your publishment efforts more streamlined. Please stay tuned but don't let it stop you from getting your word out and recognized!
+
+### One Thing You _Can_ Use
+This page uses a _Markdown Helper RMD_, for what it's worth. In fact, if you're seeing this page, it works.
+
+#### Usage
+```html
+<iframe src="https://cscarlson.github.io/asxs/v2.0.0/markdown/markdown.rmd.html" is="as-frameless" data-src="{origin}/magazinejs/path/to/my/markdown.md"></iframe>
+```
 
 
 ### Anything Else?

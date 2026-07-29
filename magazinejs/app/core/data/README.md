@@ -32,3 +32,6 @@ Uses a lowercase key to prevent multiple publishers from having the same publish
 
 ## Articles
 Converts the RMD source URL into an ID to prevent duplicate entries of the same article at the same host-RMD location.
+
+### Dates
+Dates must use `new Date(YYYY, MM, DD, h, m).toISOString();` to create ISO dates.

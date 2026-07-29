@@ -1,7 +1,7 @@
 
 <body>
     <template>
-        <h1>Articles (${type}: ${query})</h1>
+        <h1>Articles by <span>"${type}"</span>: ${query}</h1>
         <ul>
             <li +for="let article of articles">
                 <a href="/magazinejs/article?id=${article.id}">${article.title}: ${article.subtitle}</a>
@@ -30,8 +30,8 @@
             'null': published,
             'all': published,
             'publisher': $publishers.get(query),
-            'authors': $authors.get(query),
-            'tags': $tags.get(query),
+            'author': $authors.get(query),
+            'tag': $tags.get(query),
         };
         
         customElement('mag-article-collection')
@@ -54,6 +54,7 @@
         });
         
         console.log('ARTICLE.COLLECTION', type, query, articles);
-        frameElement.after(content);
+        if (!articles) location.assign('/magazinejs/404');
+        else frameElement.after(content);
     </script>
 </body>

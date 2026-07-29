@@ -22,7 +22,7 @@
             "date": "2026-07-26T21:20:00.000Z",
             "title": "Import Attr vs Fetch",
             "subtitle": "Does The Import Attr Type JSON Replace Fetch GET?",
-            "rmd": "http://localhost:3000/magazinejs/content/patterns/import-attr-json-vs-fetch-get.html",
+            "rmd": "http://localhost:3000/magazinejs/content/patterns/import-attr-json-vs-fetch-get.rmd.html",
             "authors": [ "Cody Carlson" ],
             "tags": [
                 "Plugin Architecture",

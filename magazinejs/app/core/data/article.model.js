@@ -8,11 +8,12 @@ export class Article {
     subtitle = 'Article[MISSING SUBTITLE]';
     rmd = 'Article[MISSING RMD SOURCE]';
     url = new URL('https://missing.rmd');
+    thumbnail = 'Article[MISSING RMD SOURCE]';
     authors = [];
     tags = [];
     
     constructor(options = {}) {
-        const { publisher, origin, date, title, subtitle, rmd, authors, tags } = { ...this, ...options };
+        const { publisher, origin, date, title, subtitle, rmd, thumbnail, authors, tags } = { ...this, ...options };
         const { host, pathname } = new URL(rmd);
         const [ hostname, port ] = host.split(':');
         const [ empty, magazinejs, ...segments ] = pathname.split('/');
@@ -29,6 +30,7 @@ export class Article {
         this.subtitle = subtitle;
         this.rmd = rmd;
         this.url = url;
+        this.thumbnail = thumbnail;
         this.authors = authors;
         this.tags = tags;
         

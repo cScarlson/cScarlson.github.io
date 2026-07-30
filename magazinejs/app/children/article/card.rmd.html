@@ -1,0 +1,126 @@
+
+<body>
+    <template>
+        <style>
+            .article.card {
+                /* border: solid 1px tomato; */
+                display: flex;
+                gap: var(--size-px-1);
+                box-shadow: var(--shadow-3);
+                border-radius: var(--radius-2);
+                overflow: hidden;
+                text-decoration: none;
+                color: unset;
+                color: var(--yellow-6);
+                transition: background-color 250ms ease-in-out;
+                &:is(:hover, :focus) {
+                    background-color: var(--gray-8);
+                }
+                @media screen and (max-width: 640px) {
+                    flex-direction: column;
+                }
+                
+                .card.thumbnail {
+                    /* border: solid 1px tomato; */
+                    min-width: var(--size-px-11);
+                    aspect-ratio: 1;
+                    background-image: var(--url);
+                    background-size: cover;
+                    background-position: center;
+                    transition-property: scale;
+                    transition-duration: 500ms;
+                    transition-timing-function: ease-in-out;
+                    transform-origin: left;
+                    &:hover {
+                        scale: 5;
+                    }
+                }
+                
+                .card.content {
+                    /* border: solid 1px tomato; */
+                    display: flex;
+                    flex-direction: column;
+                    gap: var(--size-px-1);
+                    flex-grow: 1;
+                    padding: var(--size-px-1) var(--size-px-2);
+                    
+                    .content.header {
+                        /* border: solid 1px tomato; */
+                        display: flex;
+                        justify-content: end;
+                        align-items: center;
+                        gap: var(--size-px-1);
+                        
+                        .header.publisher, .header.author.list {
+                            margin: 0;
+                            font-size: var(--font-size-0);
+                        }
+                        
+                        .header.publisher {}
+                        
+                        .header.author.list {}
+                        
+                    }
+                    
+                    .content.body {
+                        /* border: solid 1px tomato; */
+                        display: flex;
+                        flex-direction: column;
+                        justify-items: center;
+                        gap: var(--size-px-0);
+                        
+                        .body.title, .body.subtitle {
+                            margin: 0;
+                        }
+                        
+                    }
+                    
+                    .content.footer {
+                        /* border: solid 1px firebrick; */
+                        
+                        .footer.tag.list {
+                            /* border: solid 1px tomato; */
+                            display: block;
+                            margin: 0;
+                            font-size: var(--font-size-0);
+                            font-weight: var(--font-weight-6);
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+        </style>
+        <a class="article card" href="/magazinejs/article?id=${id}">
+            <div class="card thumbnail" style="--url: url('${thumbnail}')"></div>
+            <div class="card content">
+                <header class="content header">
+                    <h3 class="header publisher">${publisher}</h3>
+                    |
+                    <h4 class="header author list">${ authors.join(', ') }</h4>
+                </header>
+                <div class="content body">
+                    <h3 class="body title">${title}</h3>
+                    <h4 class="body subtitle">${subtitle}</h4>
+                </div>
+                <footer class="content footer">
+                    <p class="footer tag list">${ tags.join(' | ') }</p>
+                </footer>
+            </div>
+        </a>
+    </template>
+    <script type="module">
+        import { utilities } from '/asxs/v2.0.0/core/utilities/utilities.js';
+        import { $published } from '/magazinejs/app/core/data/data.js';
+        
+        const { attributes } = frameElement;
+        const { article: { value: id } } = attributes;
+        const template = document.querySelector('template');
+        const article = $published.get(id);
+        const interpolated = utilities.interpolate(template.innerHTML)(article);
+        
+        template.innerHTML = interpolated;
+        frameElement.replaceWith(template.content);
+    </script>
+</body>

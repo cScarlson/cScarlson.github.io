@@ -1,0 +1,19 @@
+
+<body>
+    <template>
+        <style>
+            pre {
+                padding: var(--size-px-2);
+                color: var(--green-5);
+                background-color: var(--gray-10);
+                overflow-x: auto;
+                scrollbar-width: none;
+            }
+        </style>
+        <iframe src="/asxs/v2.0.0/markdown/markdown.rmd.html" is="as-frameless" data-src="/magazinejs/content/patterns/import-attr-json-vs-fetch-get/article.md"></iframe>
+    </template>
+    <script>
+        const { content } = document.querySelector('template');
+        frameElement.replaceWith(content);
+    </script>
+</body>

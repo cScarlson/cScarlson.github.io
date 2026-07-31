@@ -1,17 +1,89 @@
 
 <body>
     <template>
-        <h1>Articles by <span>"${type}"</span>: ${query}</h1>
-        <ul>
-            <li +for="let article of articles">
-                <a href="/magazinejs/article?id=${article.id}">${article.title}: ${article.subtitle}</a>
-            </li>
-        </ul>
+        <section class="magazinejs view article">
+            <header class="view header">
+                <h1 class="header title filtered" data-type="${type}" data-query="${query}">
+                    Articles by <span class="title type">${type}</span>: 
+                    "<span class="title query">${query}</span>"
+                </h1>
+                <h1 class="header title unfiltered" data-type="${type}" data-query="${query}">All Articles</h1>
+                <h2 class="header subtitle">Viewing ${articles.length} article(s)</h2>
+            </header>
+            <div class="view body">
+                <ul class="body article collection">
+                    <li class="article item" +for="let article of articles">
+                        <iframe src="/magazinejs/app/children/article/card.rmd.html" is="as-frameless" article="${article.id}"></iframe>
+                    </li>
+                </ul>
+            </div>
+            <footer class="view footer"></footer>
+        </section>
     </template>
     <template class="result">
         <mag-article-collection></mag-article-collection>
     </template>
-    <style></style>
+    <style>
+        mag-article-collection {
+            display: block;
+            
+            .magazinejs.view.article {
+                
+                .view.header {
+                    
+                    .header.title {
+                        font-size: var(--font-size-3);
+                        &:is([data-type="null"], [data-query="null"]) {
+                            &.filtered {
+                                display: none;
+                            }
+                            &.unfiltered {
+                                display: block;
+                            }
+                        }
+                        &.unfiltered {
+                            display: none;
+                        }
+                        
+                        .title.type {
+                            text-transform: capitalize;
+                        }
+                        
+                        .title.query {
+                            color: var(--yellow-6);
+                        }
+                        
+                    }
+                    
+                    .header.subtitle {
+                        font-size: var(--font-size-1);
+                    }
+                    
+                }
+                
+                .view.body {
+                    
+                    .body.article.collection {
+                        padding: 0;
+                        list-style-type: none;
+                        
+                        .article.item {
+                            margin-block: var(--size-3);
+                            
+                            .item.action {}
+                            
+                        }
+                        
+                    }
+                    
+                }
+                
+                .view.footer {}
+                
+            }
+            
+        }
+    </style>
     <script type="module">
         import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
         import { customElement } from '/asxs/v2.0.0/core/element/custom.js';

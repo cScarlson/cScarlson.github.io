@@ -1,20 +1,26 @@
 {
     "publisher": "MagazineJS",
-    "origin": "https://cscarlson.github.io",
+    "origin": "http://localhost:3000",
     "articles": [
         {
             "date": "2026-07-26T21:20:00.000Z",
             "title": "The Microfrontend Pattern",
             "subtitle": "Turning The Web Into A Plugin Architecture",
-            "rmd": "https://cscarlson.github.io/magazinejs/content/patterns/the-mfe-pattern.rmd.html",
+            "rmd": "http://localhost:3000/magazinejs/content/patterns/the-native-mfe-pattern/article.rmd.html",
+            "thumbnail": "http://localhost:3000/magazinejs/content/patterns/the-native-mfe-pattern/thumbnail.png",
             "authors": [ "Cody Carlson" ],
             "tags": [
+                "Frontend Development",
+                "JavaScript",
+                "CSS",
+                "HTML",
+                "RMD",
+                "Remote Module Definitions",
                 "The MFE Pattern",
                 "Plugin Architecture",
                 "Patterns",
                 "Architecture",
                 "The Web",
-                "Frontend Development",
                 "Microfrontend"
             ]
         },
@@ -22,15 +28,17 @@
             "date": "2026-07-26T21:20:00.000Z",
             "title": "Import Attr vs Fetch",
             "subtitle": "Does The Import Attr Type JSON Replace Fetch GET?",
-            "rmd": "https://cscarlson.github.io/magazinejs/content/patterns/import-attr-json-vs-fetch-get.rmd.html",
+            "rmd": "http://localhost:3000/magazinejs/content/patterns/import-attr-json-vs-fetch-get/article.rmd.html",
+            "thumbnail": "http://localhost:3000/magazinejs/content/patterns/import-attr-json-vs-fetch-get/thumbnail.png",
             "authors": [ "Cody Carlson" ],
             "tags": [
-                "Plugin Architecture",
-                "Patterns",
-                "Architecture",
-                "The Web",
                 "Frontend Development",
-                "Microfrontend"
+                "Backend Development",
+                "Servers",
+                "Database",
+                "JavaScript",
+                "Architecture",
+                "Patterns"
             ]
         }
     ]

@@ -1,0 +1,26 @@
+
+<body>
+    <template>
+        <style>
+            pre {
+                padding: var(--size-px-2);
+                color: var(--green-5);
+                background-color: var(--gray-10);
+                overflow-x: auto;
+                scrollbar-width: none;
+            }
+        </style>
+        <h1>The MFE Pattern &copy;</h1>
+        <p>
+            In this article, we simply present discussion around a possible W3C specification for The MFE Pattern that did not 
+            make the cut for the MagazineJS Book (Demystifying Frontend Toolchains and Industry Myths). If you would like to 
+            read the Gang of Four spec, it can be found from the <a href="/magazinejs/join/">Become A Publisher</a> page.
+        </p>
+        <iframe src="/asxs/v2.0.0/markdown/markdown.rmd.html" is="as-frameless" data-src="/magazinejs/book/demystified/public/discarded/040.00.3.mfepattern.w3c.md"></iframe>
+    </template>
+    <style></style>
+    <script>
+        const { content } = document.querySelector('template');
+        frameElement.replaceWith(content);
+    </script>
+</body>

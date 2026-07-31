@@ -2,13 +2,80 @@
 <body>
     <template>
         <style>
-            .magazinejs.view.footer {}
+            .magazinejs.view.footer {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: var(--size-px-5);
+                flex-grow: 1;
+                @container style(--device: mobile) {
+                    grid-template-columns: repeat(1, 1fr);
+                    /* justify-items: center; */
+                }
+                
+                .view.menu {
+                    /* border: solid 1px tomato; */
+                    margin: 0;
+                    padding: 0;
+                    list-style-type: none;
+                    min-width: 50%;
+                    &.main {}
+                    &.more {
+                        
+                        .menu.item.catagories {
+                            
+                            .item.action {
+                                border: none;
+                                padding: 0;
+                                background-color: transparent;
+                                font-size: unset;
+                                font-weight: var(--font-weight-1);
+                                text-decoration: underline;
+                                cursor: pointer;
+                            }
+                            
+                        }
+                        
+                    }
+                    &.social {}
+                    &.commerce {
+                        
+                        .menu.item {
+                            &.book.demystified {
+                                
+                                .item.action {
+                                    cursor: not-allowed;
+                                }
+                                
+                            }
+                        }
+                        
+                    }
+                }
+                
+            }
         </style>
         <div class="magazinejs view footer">
-            - main menu
-            - cScarlson@GitHub
-            - Buy The Book
-            - Catagories (CTA for sidebar menu)
+            <menu class="view menu main">
+                <iframe src="./app/children/menu/action.rmd.html" is="as-frameless" url="./articles">Articles</iframe>
+                <iframe src="./app/children/menu/action.rmd.html" is="as-frameless" url="./publishers">Publishers</iframe>
+                <iframe src="./app/children/menu/action.rmd.html" is="as-frameless" url="./join">Become A Publisher</iframe>
+                <iframe src="./app/children/menu/action.rmd.html" is="as-frameless" url="./about">About</iframe>
+            </menu>
+            <menu class="view menu more">
+                <li class="menu item catagories">
+                    <button class="item action" popovertarget="sidebar">Catagories</button>
+                </li>
+            </menu>
+            <menu class="view menu social">
+                <li class="menu item">
+                    <a class="item action" href="https://www.linkedin.com/in/cody-s-carlson-1b837259" target="_blank">cScarlson@GitHub</a>
+                </li>
+            </menu>
+            <menu class="view menu commerce">
+                <li class="menu item book demystified">
+                    <a class="item action" href="javascript:0">Buy The Book</a>
+                </li>
+            </menu>
         </div>
     </template>
     <script>

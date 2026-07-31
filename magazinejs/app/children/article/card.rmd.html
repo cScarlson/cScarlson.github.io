@@ -6,6 +6,7 @@
                 /* border: solid 1px tomato; */
                 display: flex;
                 gap: var(--size-px-1);
+                min-height: stretch;
                 box-shadow: var(--shadow-3);
                 border-radius: var(--radius-2);
                 overflow: hidden;
@@ -16,7 +17,7 @@
                 &:is(:hover, :focus) {
                     background-color: var(--gray-8);
                 }
-                @media screen and (max-width: 640px) {
+                @container style(--device: mobile) {
                     flex-direction: column;
                 }
                 

@@ -1,13 +1,13 @@
 {
     "publisher": "MagazineJS",
-    "origin": "https://cscarlson.github.io",
+    "origin": "cscarlson.github.io",
     "articles": [
         {
             "date": "2026-07-26T21:20:00.000Z",
             "title": "The Microfrontend Pattern",
             "subtitle": "Turning The Web Into A Plugin Architecture",
-            "rmd": "https://cscarlson.github.io/magazinejs/content/patterns/the-native-mfe-pattern/article.rmd.html",
-            "thumbnail": "https://cscarlson.github.io/magazinejs/content/patterns/the-native-mfe-pattern/thumbnail.png",
+            "rmd": "/magazinejs/content/patterns/the-native-mfe-pattern/article.rmd.html",
+            "thumbnail": "/magazinejs/content/patterns/the-native-mfe-pattern/thumbnail.png",
             "authors": [ "Cody Carlson" ],
             "tags": [
                 "Frontend Development",
@@ -28,8 +28,8 @@
             "date": "2026-07-26T21:20:00.000Z",
             "title": "Import Attr vs Fetch",
             "subtitle": "Does The Import Attr Type JSON Replace Fetch GET?",
-            "rmd": "https://cscarlson.github.io/magazinejs/content/patterns/import-attr-json-vs-fetch-get/article.rmd.html",
-            "thumbnail": "https://cscarlson.github.io/magazinejs/content/patterns/import-attr-json-vs-fetch-get/thumbnail.png",
+            "rmd": "/magazinejs/content/patterns/import-attr-json-vs-fetch-get/article.rmd.html",
+            "thumbnail": "/magazinejs/content/patterns/import-attr-json-vs-fetch-get/thumbnail.png",
             "authors": [ "Cody Carlson" ],
             "tags": [
                 "Frontend Development",

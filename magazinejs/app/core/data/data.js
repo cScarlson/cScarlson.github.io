@@ -9,3 +9,4 @@ export { articles as published, $articles as $published } from './by.now.js';
 export { articles as $publishers } from './by.publisher.js';
 export { articles as $authors } from './by.author.js';
 export { articles as $tags } from './by.tag.js';
+export { latest } from './latest.js';

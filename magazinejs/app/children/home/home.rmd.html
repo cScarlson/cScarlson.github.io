@@ -1,21 +1,128 @@
 
 <body>
     <template>
-        <h1>Home</h1>
+        <div class="magazinejs view home">
+            <section class="view section stats">
+                <p class="section blurb">
+                    Over <span class="blurb highlight">${publishers.length}</span> Publishers and
+                    <span class="blurb highlight">${authors.length}</span> Authors use /magazinejs to publish more than 
+                    <span class="blurb highlight">${articles.length}</span> articles across 
+                    <span class="blurb highlight">${tags.length}</span> different topics.
+                </p>
+            </section>
+            <section class="view section latest">
+                <h2 class="section title">Latest Articles</h2>
+                <ul class="section article list">
+                    <li class="article item" +for="let article of latest">
+                        <iframe src="/magazinejs/app/children/article/card.rmd.html" is="as-frameless" article="${article.id}"></iframe>
+                    </li>
+                </ul>
+            </section>
+            <section class="view section join">
+                <h2 class="section title">Join /magazinejs And Become A Publisher</h2>
+                <p class="section blurb md">
+                    /magazinejs is built on special technology that allows <span class="blurb highlight">anyone</span> 
+                    to become an author & publisher, even right from your own 
+                    <a class="blurb link" href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages" target="_blank">
+                        GitHub Pages
+                    </a>
+                    website or anywhere else on The Web. /magazinejs is a <i class="blurb highlight">first of its kind</i>, 
+                    <i>Federated Publishing Platform</i> and globally distributed application. Simply setup an <code>index.json</code> 
+                    file on your site at <code>{origin}/magazinejs</code>, send us the <code>origin</code> and you are ready to 
+                    start publishing articles that earn you <span class="blurb hightlight">Ad Revenue</span>.
+                </p>
+                <a class="section action join" is="as-button" href="./join">Become A Publisher</a>
+            </section>
+        </div>
     </template>
     <template class="result">
         <mag-page-home></mag-page-home>
     </template>
-    <style></style>
+    <style>
+        mag-page-home {
+            
+            .magazinejs.view.home {
+                
+                .view.section {
+                    margin-block: var(--size-px-8);
+                    &.stats {}
+                    &.latest {
+                        
+                        .section.article.list {
+                            display: grid;
+                            grid-template-columns: repeat(3, 1fr);
+                            gap: var(--size-px-4);
+                            padding: 0;
+                            list-style-type: none;
+                            @container style(--device: mobile) {
+                                grid-template-columns: repeat(2, 1fr);
+                            }
+                            
+                            .article.item {
+                                --device: mobile;
+                                container: --home-section-latest / inline-size;
+                            }
+                            
+                        }
+                        
+                    }
+                    &.join {}
+                    
+                    .section.title {
+                        font-size: var(--font-size-3);
+                    }
+                    
+                    .section.blurb {
+                        font-size: var(--font-size-4);
+                        &.md {
+                            font-size: var(--font-size-2);
+                            
+                            .blurb.highlight {
+                                font-size: var(--font-size-2);
+                            }
+                            
+                        }
+                        
+                        .blurb.highlight {
+                            color: var(--yellow-6);
+                            font-size: var(--font-size-5);
+                        }
+                        
+                    }
+                    
+                    .section.action {
+                        &.join {
+                            --color-bg: var(--yellow-6);
+                            --color-text: var(--gray-12);
+                            &:hover {
+                                --color-bg: var(--gray-0);
+                                --color-text: var(--yellow-9);
+                            }
+                        }
+                    }
+                    
+                }
+                
+            }
+            
+        }
+    </style>
     <script type="module">
         import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
         import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
-        import { publishers, articles, published, tags } from '/magazinejs/app/core/data/data.js';
+        import { TemplateCrawler } from '/asxs/v2.0.0/core/element/template.crawler.js';
+        import { publishers, authors, articles, tags, latest } from '/magazinejs/app/core/data/data.js';
         
         const { content } = document.querySelector('template.result');
         
         customElement('mag-page-home')
         (class MagazineJSRouterElement extends CustomElement {
+            ['crawler:template'] = new TemplateCrawler(this);
+            publishers = publishers;
+            authors = authors;
+            articles = articles;
+            tags = tags;
+            latest = latest;
             
             stabilize() {
                 this.idle();
@@ -25,9 +132,7 @@
                 return this;
             }
             
-            connectedCallback( x = super.connectedCallback() ) {
-                
-            }
+            connectedCallback( x = super.connectedCallback() ) {}
             
         });
         

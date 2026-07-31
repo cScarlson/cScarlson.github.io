@@ -31,7 +31,9 @@
                     </template>
                 </mag-router>
             </main>
-            <footer class="app footer">Footer</footer>
+            <footer class="app footer">
+                <iframe src="./app/children/footer/footer.rmd.html" is="as-frameless"></iframe>
+            </footer>
         </div>
     </template>
     <style>
@@ -44,7 +46,13 @@
         
         mag-app {
             /* border: solid 1px tomato; */
+            --device: desktop;  /* mobile (xs-sm), tablet (sm-md), desktop (md-lg), kiosk (xl+) */
             display: block;
+            container-name: --app-container;
+            container-type: inline-size;
+            @media screen and (max-width: 640px) {
+                --device: mobile;
+            }
             
             .magazinejs.app {
                 /* border: solid 1px tomato; */
@@ -95,8 +103,11 @@
                 
                 .app.footer {
                     /* border: solid 1px tomato; */
-                    box-shadow: var(--inner-shadow-2);
+                    display: flex;
+                    align-items: center;
                     min-height: 25dvh;
+                    box-shadow: var(--inner-shadow-2);
+                    padding-block: var(--size-px-5);
                     padding-inline: var(--offset);
                     background-color: var(--stone-0);
                 }

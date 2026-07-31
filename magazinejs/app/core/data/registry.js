@@ -1,3 +1,3 @@
 
-export { default as magazinejs } from 'https://cscarlson.github.io/magazinejs/index.json' with { type: 'json' };
-export { default as localhost3000 } from 'https://cscarlson.github.io/magazinejs/index.json' with { type: 'json' };
+export { default as production } from 'https://cscarlson.github.io/magazinejs/index.json' with { type: 'json' };  // test
+export { default as magazinejs } from '/magazinejs/index.json' with { type: 'json' };

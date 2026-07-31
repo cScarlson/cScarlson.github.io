@@ -14,13 +14,13 @@ export class Article {
     
     constructor(options = {}) {
         const { publisher, origin, date, title, subtitle, rmd, thumbnail, authors, tags } = { ...this, ...options };
-        const { host, pathname } = new URL(rmd);
+        const { host, pathname } = new URL(rmd, 'https://cscarlson.github.io');
         const [ hostname, port ] = host.split(':');
         const [ empty, magazinejs, ...segments ] = pathname.split('/');
         const filename = segments.pop();
         const slug = filename.split('.').join('');
         const id = [ hostname, port, ...segments, slug ].join('');  // use RMD URL to prevent duplicate entries of the same article
-        const url = new URL(rmd);
+        const url = new URL(rmd, 'https://cscarlson.github.io');
         
         this.id = id;
         this.publisher = publisher;

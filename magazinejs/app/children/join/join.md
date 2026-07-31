@@ -64,7 +64,7 @@ Contact <a href="https://www.linkedin.com/in/cody-s-carlson-1b837259" target="_b
 Send me a friendly message with your website `origin` for an existing `index.json` schema. I'll simply add it to the registry.
 
 ### Website
-Where you host your articles is completely up to you. It can be as simple as your GitHub Pages site, an AWS S3 Bucket, or anything else. You own your onw content, we just publish it.
+Where you host your articles is completely up to you. It can be as simple as your GitHub Pages site, an AWS S3 Bucket, or anything else. You own your own content, we just publish it.
 
 ### The Native MFE Pattern
 Articles must be published in RMD format, which is **easy**. Learn how to <a href="https://cscarlson.github.io/magazinejs/book/demystified/public/040.00.2.thenativemfepattern" target="_blank">implement The Microfrontend Pattern here</a>. This Gang of Four style specification shows how you can create your own microfrontend component **very easily**. In short, `window.frameElement` and `window.parent.customElements`. With that, you can easily create

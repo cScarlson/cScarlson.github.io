@@ -9,7 +9,7 @@
                 gap: var(--size-px-3);
                 padding: 0;
                 list-style-type: none;
-                @media screen and (max-width: 640px) {
+                @container style(--device: mobile) {
                     display: none;
                 }
             }
@@ -20,7 +20,7 @@
                 border: none;
                 padding: 0;
                 background-color: transparent;
-                @media screen and (max-width: 640px) {
+                @container style(--device: mobile) {
                     display: flex;
                 }
             }
@@ -37,7 +37,9 @@
                         list-style-type: none;
                         padding: 0;
                         
-                        .menu.item {}
+                        .menu.item {
+                            margin: var(--size-px-2)
+                        }
                         
                     }
                     

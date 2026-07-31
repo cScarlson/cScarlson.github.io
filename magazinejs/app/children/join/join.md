@@ -5,6 +5,16 @@ Become A Publisher
 /magazinejs (or "SlashMag", for short) is a FREE, federated publishing platform. The only barrier to entry, at this time, is having the technical knowledge to build your articles in _RMD_ (Remote Module Definition) format, which is dead simple. However, there are a few rules involved in publishing articles on /magazinejs.
 
 
+## Requirements
+There are minimal requirements to registering and publishing articles. The following are the bare minimum to getting started.
+- Own a website.
+- <a href="https://cscarlson.github.io/magazinejs/book/demystified/public/040.00.2.thenativemfepattern" target="_blank">Learn The MFE Pattern</a>.
+- Provide an `{origin}/magazinejs/index.json` file on your site.
+- Contact us on LinkedIn (see "Guidance" below).
+- Play nice.
+- Optionally, use your favorite embedded ad service in your articles to earn revenue on impressions.
+
+
 ## Rules & Regulations
 To publish on SlashMag, you must satisfy the following requirements.
 

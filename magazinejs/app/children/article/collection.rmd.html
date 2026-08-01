@@ -94,8 +94,8 @@
         const { location } = parent;
         const { searchParams } = new URL(location);
         const { content } = document.querySelector('template.result');
-        const type = searchParams.get('type');
-        const query = searchParams.get('q');
+        const type = `${ searchParams.get('type') }`;  // ensure is string
+        const query = `${ searchParams.get('q') }`;  // ensure is string
         const { [type]: articles } = {
             '': published,
             'undefined': published,
@@ -103,7 +103,7 @@
             'all': published,
             'publisher': $publishers.get(query),
             'author': $authors.get(query),
-            'tag': $tags.get(query),
+            'tag': $tags.get( query.toLowerCase() ),
         };
         
         customElement('mag-article-collection')
@@ -121,11 +121,8 @@
                 return this;
             }
             
-            connectedCallback( x = super.connectedCallback() ) {}
-            
         });
         
-        console.log('ARTICLE.COLLECTION', type, query, articles);
         if (!articles) location.assign('/magazinejs/404');
         else frameElement.after(content);
     </script>

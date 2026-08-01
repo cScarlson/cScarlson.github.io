@@ -134,15 +134,9 @@
         customElement(TAGNAME)
         (class MagazineJSAppElement extends CustomElement {
             
-            stabilize() {
-                this.idle();
-            }
-            
             createRenderRoot() {
                 return this;
             }
-            
-            connectedCallback( x = super.connectedCallback() ) {}
             
         });
     </script>

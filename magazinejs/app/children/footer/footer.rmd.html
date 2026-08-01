@@ -9,11 +9,12 @@
                 flex-grow: 1;
                 @container style(--device: mobile) {
                     grid-template-columns: repeat(1, 1fr);
-                    /* justify-items: center; */
+                }
+                @container style(--device: tablet) {
+                    grid-template-columns: repeat(2, 1fr);
                 }
                 
                 .view.menu {
-                    /* border: solid 1px tomato; */
                     margin: 0;
                     padding: 0;
                     list-style-type: none;

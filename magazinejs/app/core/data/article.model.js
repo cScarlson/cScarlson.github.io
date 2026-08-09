@@ -2,7 +2,7 @@
 export class Article {
     id = 'Article[MISSING ID]';
     publisher = 'Article[MISSING PUBLISHER]';
-    origin = 'Article[MISSING ORIGIN]';
+    host = 'Article[MISSING ORIGIN]';
     date = new Date().toISOString();  // derive dates using `new Date(YYYY, M, D, H, m).toISOString();`
     title = 'Article[MISSING TITLE]';
     subtitle = 'Article[MISSING SUBTITLE]';
@@ -13,7 +13,7 @@ export class Article {
     tags = [];
     
     constructor(options = {}) {
-        const { publisher, origin, date, title, subtitle, rmd, thumbnail, authors, tags } = { ...this, ...options };
+        const { publisher, host: origin, date, title, subtitle, rmd, thumbnail, authors, tags } = { ...this, ...options };
         const { host, pathname } = new URL(rmd, 'https://cscarlson.github.io');
         const [ hostname, port ] = host.split(':');
         const [ empty, magazinejs, ...segments ] = pathname.split('/');
@@ -24,7 +24,7 @@ export class Article {
         
         this.id = id;
         this.publisher = publisher;
-        this.origin = origin;
+        this.host = origin;
         this.date = date;
         this.title = title;
         this.subtitle = subtitle;

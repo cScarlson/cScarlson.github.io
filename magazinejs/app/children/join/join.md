@@ -93,7 +93,7 @@ All `index.json` files are assumed to be located at your website's root at `/mag
 ```json
 {
     "publisher": "{your-branding}",
-    "origin": "http://mydomain.name",
+    "host": "www.mydomain.name",
     "logo": "{some-image-that-represents-your-publisher-branding}",
     "articles": [ ... ]
 }

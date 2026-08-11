@@ -1,0 +1,76 @@
+
+<body>
+    <template>
+        <style>
+            .site.section.hero {
+                /* border: solid 1px tomato; */
+                display: flex;
+                align-items: center;
+                gap: var(--size-px-5);
+                padding-inline: 0 !important;
+                background-image: radial-gradient(circle at bottom left, var(--brown-12) 20%, var(--sand-3) 80%);
+                
+                .section.figure {
+                    /* border: solid 1px tomato; */
+                    position: relative;
+                    width: 50%;
+                    min-width: 50%;
+                    aspect-ratio: 1;
+                    /* margin: var(--size-px-7) 0; */
+                    margin: 0;
+                    /* border: solid var(--size-px-7) var(--gray-0); */
+                    border-radius: var(--size-px-9) var(--size-px-9) 0 var(--size-px-9);
+                    padding: 0;
+                    
+                    .common.image.cody {
+                        width: 100%;
+                        aspect-ratio: 1;
+                        object-fit: cover;
+                        object-position: center;
+                        filter: grayscale(0.9) blur(4px);
+                    }
+                    
+                    .figure.caption {
+                        /* border: solid 1px tomato; */
+                        position: absolute;
+                        inset: 0;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        background-color: rgba(0, 0, 0, 0.5);
+                        color: var(--gray-0);
+                    }
+                    
+                }
+                
+                .section.text {
+                    /* border: solid 1px tomato; */
+                    max-width: 50%;
+                    margin-inline-end: var(--offset);
+                    border: solid var(--size-px-1) var(--gray-0);
+                    padding: var(--size-px-3);
+                    color: var(--gray-0);
+                    
+                    .text.primary {
+                        font-size: calc(var(--font-size-fluid-2) * 2);
+                    }
+                    
+                }
+                
+            }
+        </style>
+        <div class="site section hero">
+            <figure class="section figure">
+                <iframe src="./app/children/common/me/photo.0.rmd.html" is="as-frameless"></iframe>
+                <figcaption class="figure caption">Cody S. Carlson</figcaption>
+            </figure>
+            <div class="section text">
+                <h1 class="text primary">Principal UI Architect, Author, Inventor</h1>
+            </div>
+        </div>
+    </template>
+    <script>
+        const { content } = document.querySelector('template');
+        frameElement.replaceWith(content);
+    </script>
+</body>

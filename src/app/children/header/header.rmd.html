@@ -4,12 +4,18 @@
         <style>
             .site.header {
                 /* border: solid 1px tomato; */
+                position: sticky;
+                top: 0;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
                 min-height: var(--header-height);
                 box-shadow: var(--shadow-3);
                 padding-inline: var(--offset);
+                z-index: var(--layer-important);
+                background-color: var(--choco-9);
+                /* background-image: var(--gradient-9); */
+                color: var(--gray-0);
                 
                 .header.branding {
                     /* border: solid 1px tomato; */
@@ -44,7 +50,7 @@
         <header class="site header">
             <div class="header branding">
                 <a class="branding logo" href="/"></a>
-                <h1 class="branding title">Cody Carlson</h1>
+                <h1 class="branding title">CSC</h1>
             </div>
             <iframe src="./app/children/header/children/menu/menu.rmd.html"></iframe>
         </header>

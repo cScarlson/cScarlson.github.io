@@ -4,24 +4,35 @@
         <style>
             .header.dialog.trigger {
                 display: none;
+                box-shadow: none;
+                border: none;
+                background-color: transparent;
                 @container style(--device: tablet) or style(--device: mobile) {
-                        display: block;
+                    display: flex;
                 }
             }
             .header.dialog.modal {
-                position: relative;
-                display: block;
+                border: solid 1px tomato;
+                position: static;
+                display: flex;
                 margin: 0;
                 border: none;
                 padding: 0;
                 @container style(--device: tablet) or style(--device: mobile) {
                     position: fixed;
-                    display: unset;
-                    margin: unset;
-                    padding: unset;
-                    &:popover-open {
-                        display: block;
+                    inset: 0 0 0 calc(var(--offset) * 4);
+                    width: unset;  /* override browser defaults */
+                    height: unset;  /* override browser defaults */
+                    box-shadow: 0 0 0 black, 0 0 0 black, 0 0 0 black, var(--shadow-5);
+                    padding: var(--size-px-5);
+                    &:not(:popover-open) {
+                        display: none;
                     }
+                    
+                    .dialog.menu {
+                        flex-direction: column;
+                    }
+                    
                 }
                 
                 .dialog.menu {
@@ -48,7 +59,11 @@
                 
             }
         </style>
-        <button class="header dialog trigger" popovertarget="headerMenu">&equiv;</button>
+        <iframe src="/asxs/v2.0.0/button/button.rmd.html" is="as-frameless"></iframe>
+        <iframe src="/asxs/v2.0.0/icon/icon.rmd.html" is="as-frameless"></iframe>
+        <button class="header dialog trigger" is="as-button" popovertarget="headerMenu">
+            <as-icon class="dialog toggle size lg" type="menu" strategy="bootstrap-icons"></as-icon>
+        </button>
         <dialog id="headerMenu" class="header dialog modal" popover>
             <menu class="dialog menu">
                 <li class="menu item">

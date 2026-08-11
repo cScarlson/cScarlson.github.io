@@ -48,8 +48,7 @@
             /* border: solid 1px tomato; */
             --device: mobile;  /* mobile (xs-sm), tablet (sm-md), desktop (md-lg), kiosk (xl+) */
             display: block;
-            container-name: --app-container;
-            container-type: inline-size;
+            container: --app-container / inline-size;
             @media screen and (min-width: 320px) {
                 --device: mobile;
             }

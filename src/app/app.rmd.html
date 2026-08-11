@@ -1,0 +1,35 @@
+
+<body>
+    <template>
+        <style>
+            :root {
+                --header-height: var(--size-px-9);
+            }
+            
+            .cody.carlson.site {
+                --device: mobile;  /* mobile (xs-sm), tablet (sm-md), desktop (md-lg), kiosk (xl+) */
+                container: --app-container / inline-size;
+                @media screen and (min-width: 320px) {
+                    --device: mobile;
+                }
+                @media screen and (min-width: 640px) {
+                    --device: tablet;
+                }
+                @media screen and (min-width: 1028px) {
+                    --device: desktop;
+                }
+                @media screen and (min-width: 2160px) {
+                    --device: kiosk;
+                }
+            }
+            
+        </style>
+        <div class="cody carlson site">
+            <iframe src="./app/children/header/header.rmd.html" is="as-frameless"></iframe>
+        </div>
+    </template>
+    <script>
+        const { content } = document.querySelector('template');
+        frameElement.replaceWith(content);
+    </script>
+</body>

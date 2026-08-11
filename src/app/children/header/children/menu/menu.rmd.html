@@ -1,0 +1,82 @@
+
+<body>
+    <template>
+        <style>
+            .header.dialog.trigger {
+                display: none;
+                @container style(--device: tablet) or style(--device: mobile) {
+                        display: block;
+                }
+            }
+            .header.dialog.modal {
+                position: relative;
+                display: block;
+                margin: 0;
+                border: none;
+                padding: 0;
+                @container style(--device: tablet) or style(--device: mobile) {
+                    position: fixed;
+                    display: unset;
+                    margin: unset;
+                    padding: unset;
+                    &:popover-open {
+                        display: block;
+                    }
+                }
+                
+                .dialog.menu {
+                    display: flex;
+                    gap: var(--size-px-2);
+                    padding: 0;
+                    list-style-type: none;
+                    
+                    .menu.item {
+                        /* border: solid 1px tomato; */
+                        
+                        .item.action {
+                            /* border: solid 1px tomato; */
+                            text-decoration: none;
+                            text-transform: capitalize;
+                            &.slashmag {
+                                text-transform: unset;
+                            }
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+        </style>
+        <button class="header dialog trigger" popovertarget="headerMenu">&equiv;</button>
+        <dialog id="headerMenu" class="header dialog modal" popover>
+            <menu class="dialog menu">
+                <li class="menu item">
+                    <a class="item action" href="/#/books">Books</a>
+                </li>
+                <li class="menu item">
+                    <a class="item action" href="/#/about/magazinejs/0">MagazineJS</a>
+                </li>
+                <li class="menu item">
+                    <a class="item action" href="/#/about/cody">Cody</a>
+                </li>
+                <li class="menu item">
+                    <a class="item action" href="/#/services/websites">Websites</a>
+                </li>
+                <li class="menu item">
+                    <a class="item action slashmag" href="/#/magazinejs">/magazinejs</a>
+                </li>
+                <li class="menu item">
+                    <a class="item action" href="/#/asxs">AsXS</a>
+                </li>
+                <li class="menu item">
+                    <a class="item action" href="/#/employers">Employers</a>
+                </li>
+            </menu>
+        </dialog>
+    </template>
+    <script>
+        const { content } = document.querySelector('template');
+        frameElement.replaceWith(content);
+    </script>
+</body>

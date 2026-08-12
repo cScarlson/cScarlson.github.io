@@ -1,0 +1,32 @@
+
+<body>
+    <template>
+        <style>
+            .book.list.ribbon {
+                display: block;
+                padding: 0;
+                list-style-type: none;
+                
+                .list.item {
+                    display: inline-block;
+                }
+                
+            }
+        </style>
+        <ul class="book list ribbon">
+            <li class="list item">
+                <h3>Book 1</h3>
+            </li>
+            <li class="list item">
+                <h3>Book 2</h3>
+            </li>
+            <li class="list item">
+                <h3>Book 3</h3>
+            </li>
+        </ul>
+    </template>
+    <script>
+        const { content } = document.querySelector('template');
+        frameElement.replaceWith(content);
+    </script>
+</body>

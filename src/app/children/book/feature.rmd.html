@@ -1,0 +1,73 @@
+
+<body>
+    <template>
+        <style>
+            .site.section.book.featured {
+                /* border: solid 1px tomato; */
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: var(--size-px-5);
+                
+                .section.figure {
+                    /* border: solid 1px tomato; */
+                    aspect-ratio: 7/10;
+                    flex-grow: 1;
+                    margin-inline: 0;
+                    
+                    position: relative;
+                    &::after {
+                        content: "Coming Soon";
+                        position: absolute;
+                        inset: 0;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        opacity: 0.5;
+                        background-color: black;
+                        color: white;
+                    }
+                }
+                
+                .section.content {
+                    /* border: solid 1px tomato; */
+                    max-width: 50%;
+                    
+                    .content.text {}
+                    
+                    .content.action {}
+                    
+                }
+                
+            }
+        </style>
+        <section id="/about/magazinejs/0" class="site section book featured">
+            <figure class="section figure">
+                <!-- <iframe src="./app/children/common/me/photo.0.rmd.html" is="as-frameless"></iframe> -->
+            </figure>
+            <div class="section content">
+                <h1 class="content text primary">MagazineJS</h1>
+                <h2 class="content text primary">Demystifying Frontend Toolchains and Industry Myths</h2>
+                <p class="content text tertiary">
+                    In this provocative collection of articles, Principal UI Architect Cody Carlson dismantles the myths that 
+                    keep developers dependent on unnecessary frameworks. Learn how to implement reactive stores, custom event 
+                    loops, and internationalization systems in just 25 lines of code. Discover how CSS alone can replace most 
+                    JavaScript UI libraries, and how Defensive Coding Practices can eliminate the need for rigid styleguides 
+                    and formatters.
+                </p>
+                <p class="content text tertiary">
+                    Cody doesn't just expose the problems — he provides practical solutions that give you back control over 
+                    your code. From building scalable custom frameworks to architecting Mock-Driven Development, each article 
+                    offers concrete techniques you can apply immediately.
+                </p>
+                <a class="content action primary" is="as-button" href="javascript: 0" target="_blank">Buy on Amazon</a>
+                <a class="content action primary" is="as-button" href="javascript: 0" target="_blank">Buy on Barnes & Noble</a>
+                <a class="content action primary color dark" is="as-button" href="/#/books">More books</a>
+            </div>
+        </section>
+    </template>
+    <script>
+        const { content } = document.querySelector('template');
+        frameElement.replaceWith(content);
+    </script>
+</body>

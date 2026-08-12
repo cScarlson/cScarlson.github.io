@@ -9,7 +9,12 @@
             .cody.carlson.site {
                 
                 .site.section {
+                    padding-block: var(--size-px-9);
                     padding-inline: var(--offset);
+                }
+                
+                .section.divider {
+                    margin-inline: var(--offset);
                 }
                 
             }
@@ -18,6 +23,11 @@
         <div class="cody carlson site">
             <iframe src="./app/children/header/header.rmd.html" is="as-frameless"></iframe>
             <iframe src="./app/children/hero/section.rmd.html" is="as-frameless"></iframe>
+            <iframe src="./app/children/book/feature.rmd.html" is="as-frameless"></iframe>
+            <hr class="section divider" />
+            <iframe src="./app/children/book/collection.rmd.html" is="as-frameless"></iframe>
+            <iframe src="./app/children/me/about.rmd.html" is="as-frameless"></iframe>
+            <iframe src="./app/children/services/website/website.rmd.html" is="as-frameless"></iframe>
         </div>
     </template>
     <script>

@@ -2,13 +2,31 @@
 <body>
     <template>
         <style>
-            .site.section.hero {
+            .site.section.hero.hero.hero {
                 /* border: solid 1px tomato; */
                 display: flex;
                 align-items: center;
+                justify-content: space-between;
                 gap: var(--size-px-5);
-                padding-inline: 0 !important;
-                background-image: radial-gradient(circle at bottom left, var(--brown-12) 20%, var(--sand-3) 80%);
+                padding: 0;
+                background-image: radial-gradient(circle at bottom right, var(--brown-12) 20%, var(--sand-3) 80%);
+                
+                .section.content {
+                    /* border: solid 1px tomato; */
+                    max-width: 50vw;
+                    aspect-ratio: 1;
+                    margin-inline-start: var(--offset);
+                    /* border: solid var(--size-px-1) var(--gray-0); */
+                    padding: var(--size-px-3);
+                    color: var(--gray-0);
+                    
+                    .content.text.primary {
+                        font-size: calc(var(--font-size-fluid-3) * 1);
+                    }
+                    
+                    .content.action {}
+                    
+                }
                 
                 .section.figure {
                     /* border: solid 1px tomato; */
@@ -16,9 +34,7 @@
                     width: 50%;
                     min-width: 50%;
                     aspect-ratio: 1;
-                    /* margin: var(--size-px-7) 0; */
                     margin: 0;
-                    /* border: solid var(--size-px-7) var(--gray-0); */
                     border-radius: var(--size-px-9) var(--size-px-9) 0 var(--size-px-9);
                     padding: 0;
                     
@@ -39,35 +55,25 @@
                         justify-content: center;
                         background-color: rgba(0, 0, 0, 0.5);
                         color: var(--gray-0);
-                    }
-                    
-                }
-                
-                .section.text {
-                    /* border: solid 1px tomato; */
-                    max-width: 50%;
-                    margin-inline-end: var(--offset);
-                    border: solid var(--size-px-1) var(--gray-0);
-                    padding: var(--size-px-3);
-                    color: var(--gray-0);
-                    
-                    .text.primary {
-                        font-size: calc(var(--font-size-fluid-2) * 2);
+                        font-size: var(--font-size-fluid-1);
                     }
                     
                 }
                 
             }
         </style>
-        <div class="site section hero">
+        <section class="site section hero">
+            <div class="section content">
+                <h1 class="content text primary">UI Architect, Author</h1>
+                <h2 class="content text secondary">I make websites better</h2>
+                <a class="content action primary" is="as-button" href="/#/services/websites">Get a website</a>
+                <a class="content action primary color dark" is="as-button" href="/#/books">Buy my book</a>
+            </div>
             <figure class="section figure">
                 <iframe src="./app/children/common/me/photo.0.rmd.html" is="as-frameless"></iframe>
                 <figcaption class="figure caption">Cody S. Carlson</figcaption>
             </figure>
-            <div class="section text">
-                <h1 class="text primary">Principal UI Architect, Author, Inventor</h1>
-            </div>
-        </div>
+        </section>
     </template>
     <script>
         const { content } = document.querySelector('template');

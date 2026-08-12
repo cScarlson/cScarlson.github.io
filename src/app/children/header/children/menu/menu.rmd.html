@@ -1,6 +1,8 @@
 
 <body>
     <template>
+        <iframe src="/asxs/v2.0.0/button/button.rmd.html" is="as-frameless"></iframe>
+        <iframe src="/asxs/v2.0.0/icon/icon.rmd.html" is="as-frameless"></iframe>
         <style>
             .header.dialog.trigger {
                 display: none;
@@ -10,6 +12,11 @@
                 @container style(--device: tablet) or style(--device: mobile) {
                     display: flex;
                 }
+                
+                .dialog.toggle {
+                    --color: var(--currentcolor);
+                }
+                
             }
             .header.dialog.modal {
                 border: solid 1px tomato;
@@ -65,8 +72,6 @@
                 
             }
         </style>
-        <iframe src="/asxs/v2.0.0/button/button.rmd.html" is="as-frameless"></iframe>
-        <iframe src="/asxs/v2.0.0/icon/icon.rmd.html" is="as-frameless"></iframe>
         <button class="header dialog trigger" is="as-button" popovertarget="headerMenu">
             <as-icon class="dialog toggle size lg" type="menu" strategy="bootstrap-icons"></as-icon>
         </button>

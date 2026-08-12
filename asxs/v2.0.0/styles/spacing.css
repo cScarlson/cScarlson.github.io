@@ -1,35 +1,22 @@
 
-h1, h2, h3, h4, h5, h6 {
-    &:not(:only-child) {
-        /* border: solid 1px tomato; */
-        margin-bottom: 0;
+@import "https://unpkg.com/open-props";
+
+:has( :is(h1, h2, h3, h4, h5, h6, p, q, blockquote) + [--hug] ) {
+    
+    :is(h1, h2, h3, h4, h5, h6, p, q, blockquote) {
+        margin-block-end: 0;
         
-        & ~ h2, & ~ h3, & ~ h4, & ~ h5, & ~ h6 {
-            margin-top: var(--spacing-xs);
-            
-            & ~ h3, & ~ h4, & ~ h5, & ~ h6 {
-                margin-bottom: var(--spacing-sm);
-                
-                & ~ h4, & ~ h5, & ~ h6 {
-                    margin-bottom: var(--spacing-md);
-                    
-                    & ~ h5, & ~ h6 {
-                        margin-bottom: var(--spacing-lg);
-                        
-                        & ~ h6 {
-                            margin-bottom: var(--spacing-xl);
-                        }
-                        
-                    }
-                    
-                }
-                
+        + [--hug] {
+            margin-block-start: 0;
+            &:is(p) {
+                margin-block: var(--size-px-2);
             }
-            
-        }
-        & ~ p {
-            margin-top: var(--spacing-lg);
         }
         
     }
+    
+    [--hug] ~ :is(a, button, input) {
+        margin-block-start: var(--size-5);
+    }
+    
 }

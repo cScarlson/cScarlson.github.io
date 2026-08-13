@@ -1,0 +1,35 @@
+
+<body>
+    <template>
+        <style>
+            .site.section.asxs {
+                color: var(--gray-0);
+                background-image: radial-gradient(circle at bottom right, var(--indigo-12) 80%, var(--sand-3) 100%);
+            }
+        </style>
+        <section id="/asxs" class="site section asxs">
+            <h2 class="section title">AsXS</h2>
+            <h3 class="section subtitle" --hug>The most extensible framework in the world</h3>
+            <p class="section content text">
+                As we each already know, native Web Components are well-underway to replace traditional magic frameworks. 
+                AsXS takes lessons learned from other Web Component frameworks and makes it more native. In fact, your new 
+                Microfrontend Framework uses iframes.
+            </p>
+            <ul class="section content text">
+                <li class="content item">Use as just a CSS SDK.</li>
+                <li class="content item">Bootstrap behavior onto CSS components with Custom Elements.</li>
+                <li class="content item">A lot in tiny packages.</li>
+                <li class="content item">Opt-In or Opt-Out of anything.</li>
+                <li class="content item">A full SDK for Frontend Development.</li>
+            </ul>
+            <a class="section content action" is="as-button" href="/asxs" target="_blank">Check in out</a>
+            <a class="section content action color dark" is="as-button" href="/#/employers">
+                Learn more about my work 
+            </a>
+        </section>
+    </template>
+    <script>
+        const { content } = document.querySelector('template');
+        frameElement.replaceWith(content);
+    </script>
+</body>

@@ -1,0 +1,105 @@
+
+<body>
+    <template>
+        <style>
+            .metric.catagory.frameworks {
+                margin-block: var(--size-px-2);
+                border-radius: var(--radius-3);
+                
+                .catagory.title {
+                    font-size: var(--font-size-4);
+                    font-weight: var(--font-weight-6);
+                }
+                
+                .catagory.metric {
+                    display: flex;
+                    flex-direction: column;
+                    margin-block: var(--size-px-2);
+                    cursor: help;
+                    
+                    .metric.title {
+                        font-size: var(--font-size-1);
+                        font-weight: var(--font-weight-5);
+                        
+                        .title.quote {
+                            font-size: var(--font-size-0);
+                            font-weight: var(--font-weight-5);
+                        }
+                        
+                    }
+                    
+                    .metric.rating {
+                        appearance: none;
+                        position: relative;
+                        &::before {
+                            content: "";
+                            position: absolute;
+                            display: block;
+                            inset: 46% 0 46%;
+                            border-radius: var(--size-px-1);
+                            background-image: linear-gradient(to right, red 60%, orange 70%, yellow 80%, green);
+                        }
+                    }
+                    
+                }
+                
+            }
+        </style>
+        <fieldset class="metric catagory frameworks" disabled title="2019 PluralSight Code IQ Test Scores (without preparation)">
+            <legend class="catagory title">Frameworks</legend>
+            <label class="catagory metric" title="95th percentile">
+                 <span class="metric title">
+                    Angular
+                    <span class="title quote">"Highly Expert"</span>
+                </span>
+                <input class="metric rating" type="range" min="0" max="100" value="95" />
+            </label>
+            <label class="catagory metric" title="89th percentile">
+                 <span class="metric title">
+                    React
+                    <span class="title quote">"Highly Proficient"</span>
+                </span>
+                <input class="metric rating" type="range" min="0" max="100" value="89" />
+            </label>
+            <label class="catagory metric" title="high intensity, broad, deep">
+                 <span class="metric title">
+                    Lit
+                    <span class="title quote">Self-assessment</span>
+                </span>
+                <input class="metric rating" type="range" min="0" max="100" value="95" />
+            </label>
+            <label class="catagory metric" title="2 projects">
+                 <span class="metric title">
+                    Vue(2+)
+                    <span class="title quote">Self-assessment</span>
+                </span>
+                <input class="metric rating" type="range" min="0" max="100" value="70" />
+            </label>
+            <label class="catagory metric" title="1 project">
+                 <span class="metric title">
+                    Svelte(Kit)
+                    <span class="title quote">Self-assessment</span>
+                </span>
+                <input class="metric rating" type="range" min="0" max="100" value="60" />
+            </label>
+            <label class="catagory metric" title="very many">
+                 <span class="metric title">
+                    Other (JavaScript)
+                    <span class="title quote">Self-assessment</span>
+                </span>
+                <input class="metric rating" type="range" min="0" max="100" value="99" />
+            </label>
+            <label class="catagory metric" title="many">
+                 <span class="metric title">
+                    Other (CSS/Preprocessor)
+                    <span class="title quote">Self-assessment</span>
+                </span>
+                <input class="metric rating" type="range" min="0" max="100" value="85" />
+            </label>
+        </fieldset>
+    </template>
+    <script>
+        const { content } = document.querySelector('template');
+        frameElement.replaceWith(content);
+    </script>
+</body>

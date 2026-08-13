@@ -1,0 +1,34 @@
+
+<body>
+    <template>
+        <style>
+            .site.section.slashmag {
+                color: var(--gray-0);
+                background-image: radial-gradient(circle at bottom right, var(--sand-8) 80%, var(--sand-3) 100%);
+            }
+        </style>
+        <section id="/magazinejs" class="site section slashmag">
+            <h2 class="section title">/magazinejs</h2>
+            <h3 class="section subtitle" --hug>Earn revenue by publishing articles you own</h3>
+            <p class="section content text">
+                /magazinejs is a first of its kind, Federated Publishing Platform and globally distributed application. 
+                It is built on special technology that allows anyone to become an author & publisher, even right from your own 
+                GitHub Pages website or anywhere else on The Web.
+                Simply setup an index.json file on your site at {origin}/magazinejs, send us the origin and you are ready to start 
+                publishing articles that earn you Ad Revenue.
+            </p>
+            <p class="section content text">
+                /magazinejs is powered by specific technologies, including the <i>Frameless</i>&trade; framework from the 
+                <i>AsXS</i> SDK.
+            </p>
+            <a class="section content action" is="as-button" href="/magazinejs" target="_blank">Become A Publisher</a>
+            <a class="section content action color dark" is="as-button" href="/#/asxs">
+                What's AsXS?
+            </a>
+        </section>
+    </template>
+    <script>
+        const { content } = document.querySelector('template');
+        frameElement.replaceWith(content);
+    </script>
+</body>

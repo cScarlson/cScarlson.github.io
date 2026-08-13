@@ -1,0 +1,42 @@
+
+<body>
+    <template>
+        <style>
+            .site.section.employers {
+                /* color: var(--gray-0);
+                background-image: radial-gradient(circle at bottom right, var(--sand-8) 80%, var(--sand-3) 100%); */
+                
+                .section.content.metrics {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    @container style(--device: tablet) {
+                        grid-template-columns: repeat(2, 1fr);
+                    }
+                    @container style(--device: mobile) {
+                        grid-template-columns: repeat(1, 1fr);
+                    }
+                }
+                
+            }
+        </style>
+        <section id="/employers" class="site section employers">
+            <h2 class="section title">For Employers</h2>
+            <h3 class="section subtitle" --hug>Top skills and experience</h3>
+            <div class="section content metrics">
+                <iframe src="./app/children/employers/children/metrics/languages.rmd.html"></iframe>
+                <iframe src="./app/children/employers/children/metrics/frameworks.rmd.html"></iframe>
+                <iframe src="./app/children/employers/children/metrics/fundamentals.rmd.html"></iframe>
+            </div>
+            <p class="section content text">
+                Looking for a Principal or Staff level engineer? Contact me on LinkedIn!
+            </p>
+            <a class="section content action color dark" is="as-button" href="https://www.linkedin.com/in/cody-s-carlson-1b837259" target="_blank">
+                Ask me a question
+            </a>
+        </section>
+    </template>
+    <script>
+        const { content } = document.querySelector('template');
+        frameElement.replaceWith(content);
+    </script>
+</body>

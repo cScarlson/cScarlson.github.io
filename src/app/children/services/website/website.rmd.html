@@ -3,8 +3,23 @@
     <template>
         <style>
             .site.section.services.website {
-                /* background-image: var(--gradient-6); */
-                /* color: var(--gray-0); */
+                
+                .section.subsection {
+                    
+                    .subsection.tier.collection {
+                        /* border: solid 1px tomato; */
+                        display: grid;
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: var(--size-px-3);
+                        padding: 0;
+                        list-style-type: none;
+                        @container style(--device: mobile) {
+                            grid-template-columns: repeat(1, 1fr);
+                        }
+                    }
+                    
+                }
+                
             }
         </style>
         <section id="/services/websites" class="site section services website">
@@ -20,37 +35,12 @@
             <section class="section subsection">
                 <h3 class="subsection title">Web Engineering Service Offerings</h3>
                 
-                <h4 class="subsection title">Website Maintenance & Optimization</h4>
-                <p class="subsection content text" --hug>
-                    Comprehensive technical support and maintenance solutions for existing web platforms. We address system 
-                    inefficiencies, resolve functional impediments, and optimize performance bottlenecks. Our systematic 
-                    approach ensures your digital infrastructure operates at peak efficiency while maintaining security 
-                    standards and user experience integrity.
-                </p>
-                
-                <h4 class="subsection title">Foundational Web Presence Solutions</h4>
-                <p class="subsection content text" --hug>
-                    Strategic entry-level digital presence development designed for emerging businesses. We implement 
-                    cost-effective architectures utilizing scalable third-party integrations and modular frameworks. These 
-                    solutions provide essential functionality while preserving capital resources, allowing for organic 
-                    growth and measured expansion as your business requirements evolve.
-                </p>
-                
-                <h4 class="subsection title">Professional Web Applications</h4>
-                <p class="subsection content text" --hug>
-                    Custom-designed web solutions that eliminate third-party branding and subscription dependencies. We 
-                    translate your existing brand assets, content strategy, and design specifications into sophisticated 
-                    digital experiences. These platforms incorporate revenue-generating tools and proprietary functionality, 
-                    positioning your web presence as a competitive advantage rather than a mere digital brochure.
-                </p>
-                
-                <h4 class="subsection title">Enterprise Digital Architecture</h4>
-                <p class="subsection content text" --hug>
-                    Comprehensive development of large-scale web applications and enterprise-grade platforms. We architect 
-                    robust backend systems, implement secure database structures, and facilitate complex third-party 
-                    integrations. Our solutions are engineered for high-volume traffic, extensive user bases, and 
-                    mission-critical operations, providing the technical foundation for sustained business growth.
-                </p>
+                <ul class="subsection tier collection">
+                    <iframe src="./app/children/services/website/children/tier.rmd.html" is="as-frameless" type="maintenance"></iframe>
+                    <iframe src="./app/children/services/website/children/tier.rmd.html" is="as-frameless" type="foundation"></iframe>
+                    <iframe src="./app/children/services/website/children/tier.rmd.html" is="as-frameless" type="professional"></iframe>
+                    <iframe src="./app/children/services/website/children/tier.rmd.html" is="as-frameless" type="enterprise"></iframe>
+                </ul>
                 
                 <h4 class="subsection title">Development Philosophy</h4>
                 <p class="subsection content text" --hug>

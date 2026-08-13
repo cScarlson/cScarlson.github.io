@@ -1,0 +1,19 @@
+
+<body>
+    <template>
+        <style>
+            .site.section.footer {
+                min-height: 50dvh;
+                box-shadow: var(--inner-shadow-3);
+                color: var(--gray-0);
+                /* background-color: var(--sand-4); */
+                background-image: linear-gradient(to top, var(--sand-3) 20%, var(--sand-0) 80%);
+            }
+        </style>
+        <section id="/magazinejs" class="site section footer"></section>
+    </template>
+    <script>
+        const { content } = document.querySelector('template');
+        frameElement.replaceWith(content);
+    </script>
+</body>

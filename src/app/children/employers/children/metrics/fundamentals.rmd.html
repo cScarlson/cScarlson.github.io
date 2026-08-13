@@ -1,0 +1,111 @@
+
+<body>
+    <template>
+        <style>
+            .metric.catagory.fundamentals {
+                margin-block: var(--size-px-2);
+                border-radius: var(--radius-3);
+                
+                .catagory.title {
+                    font-size: var(--font-size-4);
+                    font-weight: var(--font-weight-6);
+                }
+                
+                .catagory.metric {
+                    display: flex;
+                    flex-direction: column;
+                    margin-block: var(--size-px-2);
+                    cursor: help;
+                    
+                    .metric.title {
+                        font-size: var(--font-size-1);
+                        font-weight: var(--font-weight-5);
+                        
+                        .title.quote {
+                            font-size: var(--font-size-0);
+                            font-weight: var(--font-weight-5);
+                        }
+                        
+                    }
+                    
+                    .metric.rating {
+                        appearance: none;
+                        position: relative;
+                        &::before {
+                            content: "";
+                            position: absolute;
+                            display: block;
+                            inset: 46% 0 46%;
+                            border-radius: var(--size-px-1);
+                            background-image: linear-gradient(to right, red 60%, orange 70%, yellow 80%, green);
+                        }
+                    }
+                    
+                }
+                
+                .catagory.subcatagory {
+                    padding-inline-start: 10%;
+                }
+                
+            }
+        </style>
+        <fieldset class="metric catagory fundamentals" disabled title="Total applied">
+            <legend class="catagory title">Fundamentals</legend>
+            <label class="catagory metric" title="Total: 22/23">
+                 <span class="metric title">
+                    Software Design Patterns
+                    <span class="title quote"></span>
+                </span>
+                <input class="metric rating" type="range" min="0" max="22" value="23" />
+            </label>
+            <div class="catagory subcatagory">
+                <label class="catagory metric" title="Total: 5/5">
+                    <span class="metric title">
+                        Creational
+                        <span class="title quote">Applied</span>
+                    </span>
+                    <input class="metric rating" type="range" min="0" max="5" value="5" />
+                </label>
+                <label class="catagory metric" title="Total: 7/7">
+                    <span class="metric title">
+                        Structural
+                        <span class="title quote">Applied</span>
+                    </span>
+                    <input class="metric rating" type="range" min="0" max="7" value="7" />
+                </label>
+                <label class="catagory metric" title="Total: 10/11">
+                    <span class="metric title">
+                        Behavioral
+                        <span class="title quote">Applied</span>
+                    </span>
+                    <input class="metric rating" type="range" min="0" max="10" value="11" />
+                </label>
+                <label class="catagory metric" title="Native MFE / Partial, App Composite, MDD, CDC, Env Flag, CEL, Reactive Store, Sync Data, Element Directive, Stateful Button, Arbiter">
+                    <span class="metric title">
+                        Personal
+                        <span class="title quote">11+</span>
+                    </span>
+                    <input class="metric rating" type="range" min="0" max="10" value="11" />
+                </label>
+            </div>
+            <label class="catagory metric" title="5/5">
+                 <span class="metric title">
+                    SOLID Principles
+                    <span class="title quote">Daily Practice</span>
+                </span>
+                <input class="metric rating" type="range" min="0" max="5" value="5" />
+            </label>
+            <label class="catagory metric" title="7/7">
+                 <span class="metric title">
+                    Software Coupling
+                    <span class="title quote">Identities & strengths</span>
+                </span>
+                <input class="metric rating" type="range" min="0" max="7" value="7" />
+            </label>
+        </fieldset>
+    </template>
+    <script>
+        const { content } = document.querySelector('template');
+        frameElement.replaceWith(content);
+    </script>
+</body>

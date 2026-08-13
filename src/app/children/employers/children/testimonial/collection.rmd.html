@@ -1,0 +1,85 @@
+
+<body>
+    <template>
+        <style>
+            .employers.testimonial.wrapper {
+                position: relative;
+                &::after {
+                    content: "";
+                    position: absolute;
+                    inset: 0 0 0 95%;
+                    background-image: linear-gradient(to right, transparent, var(--gray-2) 50%);
+                }
+            }
+            
+            .employers.testimonial.ribbon {
+                /* border: solid 1px tomato; */
+                display: grid;
+                grid-auto-flow: column;
+                grid-auto-rows: 1fr;
+                grid-auto-columns: 400px;
+                gap: var(--size-px-9);
+                padding: 0;
+                list-style-type: none;
+                overflow-x: auto;
+                scrollbar-width: none;
+                
+                .testimonial.item {}
+                
+            }
+        </style>
+        <div class="employers testimonial wrapper">
+            <ul class="employers testimonial ribbon">
+                <li class="testimonial item">
+                    <iframe src="./app/children/employers/children/testimonial/testimonial.rmd.html" is="as-frameless">
+                        Cody's strengths include frontend architecture, UI development, rapid learning, and adaptability to new technologies. His combination of technical skill, strong interpersonal abilities, and commitment to continuous improvement enabled him to make meaningful contributions to his team and organization. He left a positive impression on leadership and would be considered a strong candidate for future frontend and UI-focused engineering opportunities.
+                    </iframe>
+                </li>
+                <li class="testimonial item">
+                    <iframe src="./app/children/employers/children/testimonial/testimonial.rmd.html" is="as-frameless">
+                        Recognized as a highly skilled engineer, Cody was the primary driver behind a major architectural initiative and was trusted to lead complex technical efforts. He demonstrated strong expertise in frontend technologies, architectural design, and solution development, consistently delivering high-quality results while helping shape the technical direction of the organization.
+                    </iframe>
+                </li>
+                <li class="testimonial item">
+                    <iframe src="./app/children/employers/children/testimonial/testimonial.rmd.html" is="as-frameless">
+                        Overall, Cody is viewed as a highly capable frontend architect and engineering leader with a proven ability to drive technical innovation, lead complex projects, and collaborate effectively across organizations. He would be strongly recommended for future leadership, principal engineer, and frontend architecture roles.
+                    </iframe>
+                </li>
+                <li class="testimonial item">
+                    <iframe src="./app/children/employers/children/testimonial/testimonial.rmd.html" is="as-frameless">
+                        Cody Carlson is a Software Engineer with experience developing frontend applications, API integrations, and TypeScript-based solutions. In a previous role, he contributed to projects involving insurance platform integrations and was recognized for delivering high-quality work while helping drive successful project outcomes.
+                    </iframe>
+                </li>
+                <li class="testimonial item">
+                    <iframe src="./app/children/employers/children/testimonial/testimonial.rmd.html" is="as-frameless">
+                        Cody is particularly strong in frontend development, with deep experience in React and Angular. He became a trusted resource for user interface development and consistently demonstrated the ability to learn and adopt new technologies quickly. Known for his enthusiasm and commitment to excellence, he takes pride in building thoughtful, effective solutions and delivering results.
+                    </iframe>
+                </li>
+                <li class="testimonial item">
+                    <iframe src="./app/children/employers/children/testimonial/testimonial.rmd.html" is="as-frameless">
+                        In addition to his technical expertise, Cody is highly regarded for his professionalism, reliability, and collaborative mindset. He is eager to help others, communicates respectfully, and builds strong relationships across teams. His dependable work ethic and positive attitude made him a valued contributor within a fast-paced engineering environment.
+                    </iframe>
+                </li>
+                <li class="testimonial item">
+                    <iframe src="./app/children/employers/children/testimonial/testimonial.rmd.html" is="as-frameless">
+                        Cody Carlson served as a senior frontend engineering leader, driving the modernization and transformation of frontend architecture within a large-scale software environment. He was brought in to lead frontend development efforts and played a key role in redesigning the organization's approach to frontend architecture using React and microservice-based principles. His work helped create a more modular, scalable, and interchangeable frontend framework that improved accessibility and collaboration across teams.
+                    </iframe>
+                </li>
+                <li class="testimonial item">
+                    <iframe src="./app/children/employers/children/testimonial/testimonial.rmd.html" is="as-frameless">
+                        Cody is known for his strong work ethic, reliability, and commitment to delivering results. During critical project periods, he consistently went above and beyond to help the team meet important deadlines. His leadership, technical expertise, and dedication made him a trusted contributor and a key factor in the success of major engineering initiatives.
+                    </iframe>
+                </li>
+                <li class="testimonial item">
+                    <iframe src="./app/children/employers/children/testimonial/testimonial.rmd.html" is="as-frameless">
+                        In addition to his technical contributions, Cody served as a technical leader and mentor for his team. As the most senior engineer on the team, he worked closely with developers and QA staff to support user story development, share knowledge, and ensure successful project execution. He also collaborated across multiple teams to facilitate knowledge transfer and adoption of the new architecture.
+                    </iframe>
+                </li>
+            </ul>
+        </div>
+    </template>
+    <script>
+        const { content } = document.querySelector('template');
+        frameElement.replaceWith(content);
+    </script>
+</body>

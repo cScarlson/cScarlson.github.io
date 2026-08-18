@@ -3,34 +3,45 @@
     <template>
         <style>
             .site.section.hero.hero.hero {
-                /* border: solid 1px tomato; */
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
                 gap: var(--size-px-5);
                 padding: 0;
                 background-image: radial-gradient(circle at bottom right, var(--brown-12) 20%, var(--sand-3) 80%);
+                overflow: hidden;
+                @container style(--device: mobile) {
+                    grid-template-columns: 1fr;
+                }
                 
                 .section.content {
-                    /* border: solid 1px tomato; */
-                    max-width: 50vw;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: start;
+                    justify-content: center;
+                    gap: var(--size-px-5);
                     aspect-ratio: 1;
-                    margin-inline-start: var(--offset);
+                    padding-inline-start: var(--offset);
                     color: var(--gray-0);
                     
                     .content.text.primary {
-                        font-size: calc(var(--font-size-fluid-3) * 1);
+                        margin-block: 0;
+                        font-size: calc(100vw * 0.05);
                     }
                     
-                    .content.action {}
+                    .content.actionbar {
+                        display: flex;
+                        justify-content: start;
+                        min-width: stretch;
+                        
+                        .actionbar.action {}
+                        
+                    }
                     
                 }
                 
                 .section.figure {
                     /* border: solid 1px tomato; */
                     position: relative;
-                    width: 50%;
-                    min-width: 50%;
                     aspect-ratio: 1;
                     margin: 0;
                     border-radius: var(--size-px-9) var(--size-px-9) 0 var(--size-px-9);
@@ -64,8 +75,10 @@
             <div class="section content">
                 <h1 class="content text primary">UI Architect, Author</h1>
                 <h2 class="content text secondary" --hug>I make The Web a better place for everyone.</h2>
-                <a class="content action primary" is="as-button" href="/#/services/websites">Get a website</a>
-                <a class="content action primary color dark" is="as-button" href="/#/books">Buy my book</a>
+                <div class="content actionbar">
+                    <a class="actionbar action primary" is="as-button" href="/#/services/websites">Get a website</a>
+                    <a class="actionbar action primary color dark" is="as-button" href="/#/books">Buy my book</a>
+                </div>
             </div>
             <figure class="section figure">
                 <iframe src="./app/children/common/me/photo.0.rmd.html" is="as-frameless"></iframe>

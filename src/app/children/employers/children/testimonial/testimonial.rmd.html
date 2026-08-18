@@ -45,7 +45,6 @@
         const { children: { [0]: paragraph } } = blockquote;
         
         paragraph.innerHTML = innerHTML;
-        console.log('@@@@@@@@@@@@@@@@', innerHTML, paragraph.outerHTML);
         frameElement.replaceWith(content);
     </script>
 </body>

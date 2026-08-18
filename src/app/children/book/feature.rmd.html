@@ -4,34 +4,35 @@
         <style>
             .site.section.book.featured {
                 /* border: solid 1px tomato; */
-                display: flex;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
                 align-items: center;
                 justify-content: space-between;
                 gap: var(--size-px-5);
+                @container style(--device: mobile) {
+                    grid-template-columns: 1fr;
+                }
                 
                 .section.figure {
                     /* border: solid 1px tomato; */
-                    aspect-ratio: 7/10;
-                    flex-grow: 1;
+                    display: flex;
+                    max-height: 50dvh;
                     margin-inline: 0;
-                    
-                    position: relative;
-                    &::after {
-                        content: "Coming Soon";
-                        position: absolute;
-                        inset: 0;
-                        display: flex;
-                        align-items: center;
+                    @container style(--device: mobile) {
                         justify-content: center;
-                        opacity: 0.5;
-                        background-color: black;
-                        color: white;
+                        max-height: 50dvh;
                     }
+                    
+                    .figure.image {
+                        max-height: inherit;
+                        aspect-ratio: 7/10;
+                        border: solid 1px currentColor;
+                    }
+                    
                 }
                 
                 .section.content {
                     /* border: solid 1px tomato; */
-                    max-width: 50%;
                     
                     .content.text {}
                     
@@ -43,7 +44,7 @@
         </style>
         <section id="/about/magazinejs/0" class="site section book featured">
             <figure class="section figure">
-                <!-- <iframe src="./app/children/common/me/photo.0.rmd.html" is="as-frameless"></iframe> -->
+                <img class="figure image" src="./app/children/book/magazinejs.cover-design.front.0.screenshot.0.png" is="as-frameless" />
             </figure>
             <div class="section content">
                 <h1 class="content text primary">MagazineJS</h1>

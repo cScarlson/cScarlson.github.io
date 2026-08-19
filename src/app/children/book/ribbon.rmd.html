@@ -2,28 +2,51 @@
 <body>
     <template>
         <style>
+            .ribbon.wrapper {
+                position: relative;
+                &::after {
+                    content: "";
+                    position: absolute;
+                    inset: 0 0 0 95%;
+                    background-image: linear-gradient(to right, transparent, var(--gray-2) 50%);
+                }
+            }
+            
             .book.list.ribbon {
-                display: block;
-                padding: 0;
+                display: flex;
+                gap: var(--size-px-5);
+                padding-block: 2px;
+                padding-inline: 0 var(--size-px-8);
                 list-style-type: none;
+                overflow-x: auto;
+                scrollbar-width: none;
                 
                 .list.item {
-                    display: inline-block;
+                    
+                    .item.action {
+                        display: block;
+                        text-decoration: none;
+                        color: inherit;
+                        
+                        .book.cover {
+                            zoom: 20%;
+                        }
+                        
+                    }
+                    
                 }
                 
             }
         </style>
-        <ul class="book list ribbon">
-            <li class="list item">
-                <h3>Book 1</h3>
-            </li>
-            <li class="list item">
-                <h3>Book 2</h3>
-            </li>
-            <li class="list item">
-                <h3>Book 3</h3>
-            </li>
-        </ul>
+        <div class="ribbon wrapper">
+            <ul class="book list ribbon">
+                <li class="list item">
+                    <a class="item action" href="./app/children/book/cover/design.rmd.html" target="_blank">
+                        <iframe src="./app/children/book/cover/design.rmd.html" is="as-frameless"></iframe>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </template>
     <script>
         const { content } = document.querySelector('template');

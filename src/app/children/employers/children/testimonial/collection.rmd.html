@@ -2,13 +2,25 @@
 <body>
     <template>
         <style>
+            @keyframes --testimonial-scroll {
+                from { opacity: 0.25 }
+                to { opacity: 1 }
+            }
+            
             .employers.testimonial.wrapper {
                 position: relative;
+                scroll-timeline: --testimonial-timeline inline;
                 &::after {
                     content: "";
                     position: absolute;
                     inset: 0 0 0 95%;
                     background-image: linear-gradient(to right, transparent, var(--gray-2) 50%);
+                    animation-name: --testimonial-scroll;
+                    animation-duration: auto;
+                    animation-timing-function: linear;
+                    animation-fill-mode: both;
+                    animation-timeline: scroll(nearest inline);
+                    animation-timeline: --testimonial-timeline;
                 }
             }
             
@@ -18,13 +30,15 @@
                 grid-auto-flow: column;
                 grid-auto-rows: 1fr;
                 grid-auto-columns: 400px;
-                gap: var(--size-px-9);
-                padding: 0;
+                gap: var(--size-px-5);
+                padding: 0 var(--size-px-8);
                 list-style-type: none;
                 overflow-x: auto;
                 scrollbar-width: none;
                 
-                .testimonial.item {}
+                .testimonial.item {
+                    max-width: 80vw;
+                }
                 
             }
         </style>

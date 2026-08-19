@@ -12,23 +12,62 @@
                 background-image: radial-gradient(circle at bottom right, var(--gray-12) 80%, var(--sand-3) 100%);
                 color: var(--gray-0);
                 
-                .section.content.action {
-                    max-width: fit-content;
+                .section.title {}
+                
+                .section.article {
+                    /* border: solid 1px tomato; */
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: var(--size-px-5);
+                    @container style(--device: mobile) {
+                        grid-template-columns: repeat(1, 1fr);
+                    }
+                    
+                    .article.subject {
+                        /* border: solid 1px tomato; */
+                        
+                        .subject.title {}
+                        
+                        .subject.content {}
+                        
+                    }
+                    
                 }
                 
             }
         </style>
         <section id="/about/cody" class="site section about cody">
             <h2 class="section title">About Cody Carlson</h2>
-            <p class="section content text">
-                At Accuris, we met nearly impossible deadlines -- building a suite of products that tied into the same system -- in only 3 months after establishing development standards & architectures.
-
-One of those products (the flagship product), "Universal Document Viewer" (UDV) required a highly complex UI layout that could only be accomplished (performantly) in pure CSS. UDV, itself, used **images** of the pages from the PDF or DOCx document uploaded by the user while allowing the user to [virtually] highlight [virtual] text (performantly) from the image representing a document page for annotations, export, and other features. These all tied in with Plugins written across the company, geared toward clients writing their own, and had to align with page orientations (landscape, portrait, hybrid), rotation & zoom controls, Responsive Design, Fullscreen, "Fitwidth" (Responsive Autozoom) mode, and overflow modes (such as SideBySide document comparison).
-
-Moreover, some known documents contained more than 50,000+ pages, making initial document loading and consecutive page loading (and page jumping) require performant algorithms to reduce the number of nodes in the DOM while providing a smooth UX to the end user. I directly implemented all of the above and led teams and architectural discussions around their maintenance.
-
-Guaranteed, your Aerodynamics Engineers, Fluid Dynamics Engineers, and likely others are all using the UDV system I built, especially for wingtip & engine blade design. If it was good enough for NASA, Space Force, building Small Modular Reactors, LAZAR Guided Munitions, Boom Supersonic, and many others, I probably did a decent job.
-            </p>
+            <article class="section article">
+                <section class="article subject">
+                    <h3 class="subject title">As a Person</h3>
+                    <p class="subject content">
+                        Cody is an entrepreneurial software engineer & author who lives in Denver Colorado with his wife, dog, and 
+                        two cats. Outside of work, Cody enjoys hiking and other activities in the great outdoors, playing precision 
+                        sports like Archery with his wife, watching Colorado Avalanche hockey, and attending music festivals.
+                    </p>
+                </section>
+                <section class="article subject">
+                    <h3 class="subject title">As a Grillmaster</h3>
+                    <p class="subject content">
+                        He enjoys making his own, market-competitive salsa roja, and advancing his skills in a kitchen or on the 
+                        grill. Cody maintains a mild obsession over marinated meats, making lamb stew, and boiling up a giant pot of 
+                        green tea.
+                    </p>
+                </section>
+                <section class="article subject">
+                    <h3 class="subject title">As a UI Architect and Author</h3>
+                    <p class="subject content">
+                        As a software engineer, Cody recently (in March, 2026) invented "The Native MFE Pattern" while authoring a 
+                        book about it alongside other patterns he has developed over the years. He built a new UI development 
+                        framework & SDK that employs this pattern while creating a categorically first-of-its-kind publishing 
+                        platform & website. This platform is powered by this newfound technology which advances The Web and solves a 
+                        decades long-dwelt painpoint in web technologies. In fact, the website you're on right now uses a milder 
+                        version of it. Please explore this website and reach out to Cody with any questions you may have about his 
+                        past, current or future work.
+                    </p>
+                </section>
+            </article>
             <div>
                 <a class="section content action" is="as-button" href="/#/employers">Go to Employers page</a>
                 <a class="section content action color dark" is="as-button" href="/#/services/websites">Get a Website</a>

@@ -18,6 +18,7 @@
                 }
                 
             }
+            
             .header.dialog.modal {
                 border: solid 1px tomato;
                 position: static;
@@ -29,7 +30,7 @@
                 color: inherit;
                 @container style(--device: tablet) or style(--device: mobile) {
                     position: fixed;
-                    inset: 0 0 0 calc(var(--offset) * 4);
+                    inset: 0 20vw 0 0;
                     width: unset;  /* override browser defaults */
                     height: unset;  /* override browser defaults */
                     box-shadow: 0 0 0 black, 0 0 0 black, 0 0 0 black, var(--shadow-5);
@@ -64,6 +65,16 @@
                             &.slashmag {
                                 text-transform: unset;
                             }
+                            
+                            .action.control {
+                                border: none;
+                                padding-inline: 0;
+                                background-color: unset;
+                                color: inherit;
+                                font-size: inherit;
+                                cursor: inherit;
+                            }
+                            
                         }
                         
                     }
@@ -78,25 +89,39 @@
         <dialog id="headerMenu" class="header dialog modal" popover>
             <menu class="dialog menu">
                 <li class="menu item">
-                    <a class="item action" href="/#/books">Books</a>
+                    <a class="item action" href="/#/books" popovertarget="headerMenu" popovertargetaction="hide">
+                        <button class="action control" popovertarget="headerMenu" popovertargetaction="hide">Books</button>
+                    </a>
                 </li>
                 <li class="menu item">
-                    <a class="item action" href="/#/about/magazinejs/0">MagazineJS</a>
+                    <a class="item action" href="/#/about/magazinejs/0" popovertarget="headerMenu" popovertargetaction="hide">
+                        <button class="action control" popovertarget="headerMenu" popovertargetaction="hide">MagazineJS</button>
+                    </a>
                 </li>
                 <li class="menu item">
-                    <a class="item action" href="/#/about/cody">Cody</a>
+                    <a class="item action" href="/#/about/cody" popovertarget="headerMenu" popovertargetaction="hide">
+                        <button class="action control" popovertarget="headerMenu" popovertargetaction="hide">Cody</button>
+                    </a>
                 </li>
                 <li class="menu item">
-                    <a class="item action" href="/#/services/websites">Websites</a>
+                    <a class="item action" href="/#/services/websites" popovertarget="headerMenu" popovertargetaction="hide">
+                        <button class="action control" popovertarget="headerMenu" popovertargetaction="hide">Websites</button>
+                    </a>
                 </li>
                 <li class="menu item">
-                    <a class="item action slashmag" href="/#/magazinejs">/magazinejs</a>
+                    <a class="item action slashmag" href="/#/magazinejs" popovertarget="headerMenu" popovertargetaction="hide">
+                        <button class="action control" popovertarget="headerMenu" popovertargetaction="hide">/magazinejs</button>
+                    </a>
                 </li>
                 <li class="menu item">
-                    <a class="item action" href="/#/asxs">AsXS</a>
+                    <a class="item action" href="/#/asxs" popovertarget="headerMenu" popovertargetaction="hide">
+                        <button class="action control" popovertarget="headerMenu" popovertargetaction="hide">AsXS</button>
+                    </a>
                 </li>
                 <li class="menu item">
-                    <a class="item action" href="/#/employers">Employers</a>
+                    <a class="item action" href="/#/employers">
+                        <button class="action control" popovertarget="headerMenu" popovertargetaction="hide">Employers</button>
+                    </a>
                 </li>
             </menu>
         </dialog>
@@ -104,5 +129,24 @@
     <script>
         const { content } = document.querySelector('template');
         frameElement.replaceWith(content);
+    </script>
+    <script id="behavior">
+        const { parentElement, ownerDocument } = frameElement;
+        const { defaultView: parentWindow } = ownerDocument;
+        const script = document.querySelector('[id="behavior"]');
+        const popover = content.querySelector('[id="headerMenu"]');
+        
+        function handleClick(e) {
+            parentWindow.console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@`, e.type, e);
+            parentElement.remove();
+        }
+        
+        content.appendChild(script);
+        frameElement.after(content);
+        parentElement.addEventListener('click', handleClick, true);
+        ownerDocument.addEventListener('click', handleClick, true);
+        parentElement.onclick = handleClick;
+        setTimeout(x => frameElement.remove(), 1000 * 0);
+        console.log(`@@@@@@@@@@@@----FRAME`, frameElement.inert, frameElement.isConnected);
     </script>
 </body>

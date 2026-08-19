@@ -1,0 +1,107 @@
+
+<body>
+    <template>
+        <style>
+            .site.section.footer {
+                --color: var(--sand-3);
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: var(--size-px-7);
+                min-height: 50dvh;
+                box-shadow: var(--inner-shadow-3);
+                color: var(--color);
+                background-image: linear-gradient(to top right, var(--gray-8) 90%, var(--sand-0) 90.1%);
+                @container style(--device: tablet) or style(--device: mobile) {
+                    grid-template-columns: repeat(1, 1fr);
+                    gap: var(--size-px-5);
+                }
+                
+                .section.subsection {
+                    
+                    .subsection.title {
+                        text-transform: uppercase;
+                    }
+                    
+                    .subsection.menu {
+                        padding: 0;
+                        list-style-type: none;
+                        
+                        .menu.item {
+                            margin-block: var(--size-px-2);
+                            border-bottom: solid 1px var(--color);
+                            &:has(:hover, :focus) {
+                                border-bottom: solid 1px var(--sand-5);
+                            }
+                            
+                            .item.action {
+                                text-decoration: none;
+                                color: inherit;
+                                &:hover, &:focus {
+                                    color: var(--sand-5);
+                                }
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+        </style>
+        <section id="/magazinejs" class="site section footer">
+            <div class="section subsection">
+                <h3 class="subsection title">This Page</h3>
+                <menu class="subsection menu">
+                    <li class="menu item">
+                        <a class="item action" href="/#top">Back to top</a>
+                    </li>
+                    <li class="menu item">
+                        <a class="item action" href="/#/about/magazinejs/0">Featured Book</a>
+                    </li>
+                    <li class="menu item">
+                        <a class="item action" href="/#/books">Books</a>
+                    </li>
+                    <li class="menu item">
+                        <a class="item action" href="/#/about/cody">About Cody</a>
+                    </li>
+                    <li class="menu item">
+                        <a class="item action" href="/#/services/websites">Services & Websites</a>
+                    </li>
+                    <li class="menu item">
+                        <a class="item action" href="/#/magazinejs">/magazinejs</a>
+                    </li>
+                    <li class="menu item">
+                        <a class="item action" href="/#/asxs">AsXS</a>
+                    </li>
+                    <li class="menu item">
+                        <a class="item action" href="/#/employers">Employers</a>
+                    </li>
+                </menu>
+            </div>
+            <div class="section subsection">
+                <h3 class="subsection title">Associated Websites</h3>
+                <menu class="subsection menu">
+                    <li class="menu item">
+                        <a class="item action" href="/magazinejs" target="_blank">Articles on /magazinejs</a>
+                    </li>
+                    <li class="menu item">
+                        <a class="item action" href="/asxs" target="_blank">AsXS SDK</a>
+                    </li>
+                </menu>
+            </div>
+            <div class="section subsection">
+                <h3 class="subsection title">Other</h3>
+                <menu class="subsection menu">
+                    <li class="menu item">
+                        <a class="item action" href="https://www.linkedin.com/in/cody-s-carlson-1b837259" target="_blank">Contact CodyCarlson@LinkedIn</a>
+                    </li>
+                </menu>
+            </div>
+        </section>
+    </template>
+    <script>
+        const { content } = document.querySelector('template');
+        frameElement.replaceWith(content);
+    </script>
+</body>

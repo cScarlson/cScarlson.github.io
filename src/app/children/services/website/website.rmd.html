@@ -1,0 +1,59 @@
+
+<body>
+    <template>
+        <style>
+            .site.section.services.website {
+                
+                .section.subsection {
+                    
+                    .subsection.tier.collection {
+                        /* border: solid 1px tomato; */
+                        display: grid;
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: var(--size-px-3);
+                        padding: 0;
+                        list-style-type: none;
+                        @container style(--device: mobile) {
+                            grid-template-columns: repeat(1, 1fr);
+                        }
+                    }
+                    
+                }
+                
+            }
+        </style>
+        <section id="/services/websites" class="site section services website">
+            <h2 class="section title">Services</h2>
+            <p class="section content text">
+                Reach out to see a full range of technical services I provide alongside my network. Common services include
+            </p> 
+            <ul>
+                <li>Web Presence</li>
+                <li>Lead Generation & Optimization</li>
+                <li>Enterprise Scale Websites and Applications</li>
+            </ul>
+            <section class="section subsection">
+                <h3 class="subsection title">Web Engineering Service Offerings</h3>
+                
+                <ul class="subsection tier collection">
+                    <iframe src="./app/children/services/website/children/tier.rmd.html" is="as-frameless" type="maintenance"></iframe>
+                    <iframe src="./app/children/services/website/children/tier.rmd.html" is="as-frameless" type="foundation"></iframe>
+                    <iframe src="./app/children/services/website/children/tier.rmd.html" is="as-frameless" type="professional"></iframe>
+                    <iframe src="./app/children/services/website/children/tier.rmd.html" is="as-frameless" type="enterprise"></iframe>
+                </ul>
+                
+                <h4 class="subsection title">Development Philosophy</h4>
+                <p class="subsection content text" --hug>
+                    All solutions are developed with transferability and scalability as core principles. Our deliverables 
+                    include comprehensive documentation, organized asset libraries, and modular code architecture, enabling 
+                    seamless transitions to in-house teams or alternative development partners without technical impediments 
+                    or dependency constraints.
+                </p>
+            </section>
+        </section>
+    </template>
+    <script>
+        const { content } = document.querySelector('template');
+        frameElement.replaceWith(content);
+    </script>
+</body>

@@ -1,0 +1,105 @@
+
+<body>
+    <template>
+        <style>
+            .metric.catagory.languages {
+                margin-block: var(--size-px-2);
+                border-radius: var(--radius-3);
+                
+                .catagory.title {
+                    font-size: var(--font-size-4);
+                    font-weight: var(--font-weight-6);
+                }
+                
+                .catagory.metric {
+                    display: flex;
+                    flex-direction: column;
+                    margin-block: var(--size-px-2);
+                    cursor: help;
+                    
+                    .metric.title {
+                        font-size: var(--font-size-1);
+                        font-weight: var(--font-weight-5);
+                        
+                        .title.quote {
+                            font-size: var(--font-size-0);
+                            font-weight: var(--font-weight-5);
+                        }
+                        
+                    }
+                    
+                    .metric.rating {
+                        appearance: none;
+                        position: relative;
+                        &::before {
+                            content: "";
+                            position: absolute;
+                            display: block;
+                            inset: 46% 0 46%;
+                            border-radius: var(--size-px-1);
+                            background-image: linear-gradient(to right, red 60%, orange 70%, yellow 80%, green);
+                        }
+                    }
+                    
+                }
+                
+            }
+        </style>
+        <fieldset class="metric catagory languages" disabled title="2019 PluralSight Code IQ Test Scores (without preparation)">
+            <legend class="catagory title">Languages</legend>
+            <label class="catagory metric" title="97th percentile">
+                 <span class="metric title">
+                    JavaScript
+                    <span class="title quote">"Highly Expert"</span>
+                </span>
+                <input class="metric rating" type="range" min="0" max="100" value="97" />
+            </label>
+            <label class="catagory metric" title="95th percentile">
+                 <span class="metric title">
+                    CSS
+                    <span class="title quote">"Highly Expert"</span>
+                </span>
+                <input class="metric rating" type="range" min="0" max="100" value="95" />
+            </label>
+            <label class="catagory metric" title="86th percentile">
+                 <span class="metric title">
+                    TypeScript
+                    <span class="title quote">"Highly Proficient"</span>
+                </span>
+                <input class="metric rating" type="range" min="0" max="100" value="86" />
+            </label>
+            <label class="catagory metric" title="87th percentile">
+                 <span class="metric title">
+                    Node
+                    <span class="title quote">"Highly Proficient"</span>
+                </span>
+                <input class="metric rating" type="range" min="0" max="100" value="87" />
+            </label>
+            <label class="catagory metric" title="Semantic Markup, ADA, Invoker Commands API, Popover API, etc">
+                 <span class="metric title">
+                    HTML & DOM
+                    <span class="title quote">Self-assessment</span>
+                </span>
+                <input class="metric rating" type="range" min="0" max="100" value="98" />
+            </label>
+            <label class="catagory metric" title="Python, C#/.NET/MVC/Core, Ruby, PHP, Java, SQL, NoSQL, IndexedDB">
+                 <span class="metric title">
+                    Other (Backend + Database)
+                    <span class="title quote">Self-assessment</span>
+                </span>
+                <input class="metric rating" type="range" min="0" max="100" value="75" />
+            </label>
+            <label class="catagory metric" title="JSON, Markdown, UML, XPath, etc">
+                 <span class="metric title">
+                    Other (Docs & Data)
+                    <span class="title quote">Self-assessment</span>
+                </span>
+                <input class="metric rating" type="range" min="0" max="100" value="90" />
+            </label>
+        </fieldset>
+    </template>
+    <script>
+        const { content } = document.querySelector('template');
+        frameElement.replaceWith(content);
+    </script>
+</body>

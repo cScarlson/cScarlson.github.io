@@ -1,0 +1,414 @@
+
+<!-- based on: https://codepen.io/cScarlson/pen/PwWrEqM?editors=1100 -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <base href="/src/" target="_top" />
+        <title>Cody Carlson</title>
+        <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+        <link href="/asxs/v2.0.0/styles/reset.css" rel="stylesheet" />
+        <link href="/asxs/v2.0.0/styles/variables.css" rel="stylesheet" />
+        <link href="/asxs/v2.0.0/styles/theme.css" rel="stylesheet" />
+        <link href="/asxs/v2.0.0/styles/spacing.css" rel="stylesheet" />
+        <link href="/asxs/v2.0.0/styles/frameless.css" rel="stylesheet" />
+        <link href="/asxs/v2.0.0/icon/strategies/bootstrap-icons/variables.css" rel="stylesheet" />
+        <script src="./lib/marked.min.js"></script>
+        <script src="./lib/handlebars.min-v4.7.8.js"></script>
+    </head>
+    <body>
+        <style class="development playground parent frame style">
+            @import "https://unpkg.com/open-props";
+            
+            html, body {
+                font-family: system-ui;
+                margin: 0;
+                padding: 0;
+            }
+            
+            * {
+                box-sizing: border-box;
+            }
+            
+            body {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                min-height: 100dvh;
+                padding-block: var(--size-px-2);
+                background-color: var(--gray-5);
+            }
+            
+            .design.actionbar {
+                padding: 0;
+                list-style-type: none;
+                
+                .actionbar.action {
+                    display: inline-block;
+                }
+                
+            }
+        </style>
+        <iframe src="/asxs/v2.0.0/button/button.rmd.html" is="as-frameless"></iframe>
+        <menu class="design actionbar">
+            <li class="actionbar action">
+                <a class="content action primary" is="as-button" href="javascript: 0" target="_blank">Buy on Amazon</a>
+            </li>
+            <li class="actionbar action">
+                <a class="content action primary" is="as-button" href="javascript: 0" target="_blank">Buy on Barnes & Noble</a>
+            </li>
+        </menu>
+        
+        <template>
+            <style>
+                .book.cover.magazinejs.demystified {
+                    display: grid;
+                    grid-template-columns: 7in 0.38in 7in;
+                    width: fit-content;
+                    height: 10in;
+                    background-color: white;
+                    
+                    .cover.page {
+                        
+                        .page.header {
+                            height: 3in;
+                            padding: 0.5in;
+                            background-color: var(--blue-7);
+                            color: white;
+                            
+                            .header.title, .header.subtitle {
+                                margin: 0;
+                                padding: 0;
+                            }
+                            
+                        }
+                        
+                        .page.body {
+                            height: 6in;
+                        }
+                        
+                        .page.footer {
+                            display: flex;
+                            align-items: center;
+                            height: 1in;
+                        }
+                        
+                    }
+                    
+                    .cover.page.back {
+                        border: solid 1px black;
+                        
+                        .page.header {
+                            
+                            .header.text {
+                                margin: 0;
+                                font-size: 0.25in;
+                            }
+                            
+                        }
+                        
+                        .page.body {
+                            
+                            .body.content {
+                                height: 5in;
+                                padding: 0.25in 0.5in;
+                                
+                                .content.text {
+                                    &:first-of-type {
+                                        margin-block-start: 0
+                                    }
+                                    &:last-of-type {
+                                        margin-block-end: 0
+                                    }
+                                }
+                                
+                            }
+                            
+                            .body.band {
+                                display: flex;
+                                align-items: center;
+                                height: 1in;
+                                padding-inline: 0.5in;
+                                background-color: var(--gray-1);
+                                
+                                .band.text {
+                                    font-size: 0.125in;
+                                }
+                                
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                    .cover.spine {
+                        border: solid 1px black;
+                        position: relative;
+                        container: spine / inline-size;
+                        
+                        .spine.ribbon {
+                            display: flex;
+                            align-items: stretch;
+                            inline-size: 100cqh;
+                            block-size: 100cqw;
+                            max-inline-size: 10in;
+                            rotate: 0 0 1 90deg;
+                            transform-origin: top left;
+                            translate: 100cqw 0;
+                        
+                            .ribbon.header {
+                                display: flex;
+                                align-items: center;
+                                min-width: 3in;
+                                max-width: 3in;
+                                padding-inline-start: 0.5in;
+                                background-color: var(--blue-7);
+                                color: white;
+                                
+                                .header.text {
+                                    margin: 0;
+                                    font-size: 0.2in;
+                                }
+                                
+                            }
+                            
+                            
+                            .ribbon.body {
+                                display: flex;
+                                width: 6in;
+                                
+                                .body.content {
+                                    display: flex;
+                                    align-items: center;
+                                    width: 5in;
+                                    padding-inline: 0.25in;
+                                    background-color: white;
+                                    color: var(--blue-7);
+                                
+                                    .content.text {
+                                        margin: 0;
+                                        font-size: 0.15in;
+                                    }
+                                
+                                }
+                                
+                                .body.band {
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: space-around;
+                                    width: 1in;
+                                    margin: 0;
+                                    background-color: var(--gray-1);
+                                    font-size: 0.15in;
+                                    
+                                    .band.text {
+                                        margin: 0;
+                                        font-size: 0.12in;
+                                    }
+                                
+                                }
+                                
+                            }
+                            
+                            .ribbon.footer {
+                                display: flex;
+                                align-items: center;
+                                justify-content: space-around;
+                                width: 1in;
+                                
+                            }
+                        
+                        }
+                        
+                    }
+                    
+                    .cover.page.front {
+                        border: solid 1px black;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        color: var(--blue-7);
+                        
+                        .page.header {
+                            text-align: right;
+                            
+                            .header.title {
+                                font-size: 0.75in;
+                            }
+                            
+                            .header.subtitle {
+                                padding-inline-start: 1in;
+                                font-size: 0.25in;
+                            }
+                            
+                        }
+                        
+                        .page.graphic {
+                            position: relative;
+                            flex-grow: 1;
+                            height: 6in;
+                            padding-block: 0.5in;
+                            background-color: var(--gray-1);
+
+                            .graphic.frame {
+                                --i: 0;
+                                --bstyle: solid;
+                                --bwidth: 0.1in;
+                                --bcolor: white;
+                                --color: var(--bcolor);
+                                --width: 1in;
+                                --height: 1in;
+                                --inset: 0cm;
+                                --angle: -45deg;
+                                --bgsize: 0.1in 0.1in;
+                                position: absolute;
+                                inset: var(--inset);
+                                width: var(--width);
+                                height: var(--height);
+                                border-style: var(--bstyle);
+                                border-width: var(--bwidth);
+                                border-color:  var(--bcolor);
+                                background-color: rgba(123, 123, 123, 0.25);
+                                background-image: repeating-linear-gradient(var(--angle), var(--color), var(--color) 0.01in, transparent 0, transparent 50%);
+                                background-size: var(--bgsize);
+                                z-index: 1;
+                                &.aaaa {
+                                    --i: 0;
+                                    --bstyle: solid;
+                                    --bwidth: 0.25in;
+                                    --width: unset;
+                                    --height: unset;
+                                    --inset: 0 1in 1in 0;
+                                    --angle: -45deg;
+                                    --bgsize: 0.25in 0.25in;
+                                }
+                                &.bbbb {
+                                    --i: 0;
+                                    --bstyle: solid;
+                                    --bwidth: 0.03125in;
+                                    --width: unset;
+                                    --height: unset;
+                                    --inset: 2in 0in 2in 0.5in;
+                                    --angle: 45deg;
+                                    --bgsize: 0.25in 0.25in;
+                                }
+                                &.cccc {
+                                    --i: 0;
+                                    --bstyle: solid;
+                                    --bwidth: 0.125in;
+                                    --width: unset;
+                                    --height: unset;
+                                    --inset: 2.5in 2in 1.125in 2in;
+                                    --angle: 0deg;
+                                    --bgsize: 0.25in 0.25in;
+                                }
+                                &.dddd {
+                                    --i: 0;
+                                    --bstyle: solid;
+                                    --bwidth: 0.25in;
+                                    --width: unset;
+                                    --height: unset;
+                                    --inset: 1in 0 0 1in;
+                                    --angle: 45deg;
+                                    --bgsize: 0.5in 0.5in;
+                                }
+                            }
+                            
+                            .graphic.image {
+                                position: absolute;
+                                inset: 3in 2.5in 2.25in 2.5in;
+                                background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxmQ_UEza0uv4XPru98A0LQWfR14iy861Ok2mLOWatLw&s=10");
+                                background-position: center;
+                                background-size: contain;
+                                filter: grayscale(1) opacity(1.75);
+                            }
+
+                        }
+
+                        .page.footer {
+                            
+                            .footer.author {
+                                padding-inline-start: 1in;
+                                font-size: 0.25in;
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                }
+            </style>
+            <div class="book cover magazinejs demystified">
+                <div class="cover page back">
+                    <header class="page header">
+                        <h1 class="header text">Demystifying Frontend Toolchains and Industry Myths</h1>
+                    </header>
+                    <div class="page body">
+                        <div class="body content">
+                            <p class="content text">
+                                In this provocative collection of articles, Principal UI Architect Cody Carlson dismantles the myths that 
+                                keep developers dependent on unnecessary frameworks. Learn how to implement reactive stores, custom event 
+                                loops, and internationalization systems in just 25 lines of code. Discover how CSS alone can replace most 
+                                JavaScript UI libraries, and how Defensive Coding Practices can eliminate the need for rigid styleguides 
+                                and formatters.
+                            </p>
+                            <p class="content text">
+                                Cody doesn't just expose the problems — he provides practical solutions that give you back control over 
+                                your code. From building scalable custom frameworks to architecting Mock-Driven Development, each article 
+                                offers concrete techniques you can apply immediately.
+                            </p>
+                            <p class="content text">
+                                Whether you're a Junior Developer questioning the status quo or a Senior Architect looking to simplify 
+                                your stack, MagazineJS will challenge your assumptions and empower you to build better, more maintainable 
+                                frontend applications with fewer dependencies and more control.
+                            </p>
+                        </div>
+                        <div class="body band">
+                            <p class="band text"> Warning: This book may make you angry — but it will definitely make you a better developer.</p>
+                        </div>
+                    </div>
+                    <footer class="page footer"></footer>
+                </div>
+                <div class="cover spine">
+                    <div class="spine ribbon">
+                        <header class="ribbon header">
+                            <h1 class="header text">MagazineJS</h1>
+                        </header>
+                        <div class="ribbon body">
+                            <div class="body content">
+                                <h1 class="content text">Demystifying Frontend Toolchains and Industry Myths</h1>
+                            </div>
+                            <div class="body band">
+                                <h3 class="band text">Cody Carlson</h3>
+                            </div>
+                        </div>
+                        <footer class="ribbon footer"></footer>
+                    </div>
+                </div>
+                <div class="cover page front">
+                    <header class="page header">
+                        <h1 class="header title">MagazineJS</h1>
+                        <h2 class="header subtitle">Demystifying Frontend Toolchains and Industry Myths</h2>
+                    </header>
+                    <div class="page graphic">
+                        <div class="graphic frame aaaa" style="--n: 1"></div>
+                        <div class="graphic frame bbbb" style="--n: 2"></div>
+                        <div class="graphic frame cccc" style="--n: 3"></div>
+                        <div class="graphic frame dddd" style="--n: 4"></div>
+                        <div class="graphic image"></div>
+                    </div>
+                    <footer class="page footer">
+                        <h2 class="footer author">Cody S. Carlson</h2>
+                    </footer>
+                </div>
+            </div>
+        </template>
+        <script>
+            const { content } = document.querySelector('template');
+            if (frameElement?.isConnected) frameElement.replaceWith(content);
+            else document.body.appendChild(content);
+        </script>
+    </body>
+</html>

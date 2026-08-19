@@ -1,0 +1,50 @@
+
+<body>
+    <template>
+        <style>
+            .testimonial.quote {
+                margin-inline: 0;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                height: stretch;
+                
+                .quote.text {
+                    /* border: solid 1px tomato; */
+                    position: relative;
+                    font-style: italic;
+                    &::before, &::after {
+                        /* border: solid 1px tomato; */
+                        content: '"';
+                        position: absolute;
+                        font-size: var(--font-size-5);
+                        line-height: var(--font-lineheight-00);
+                    }
+                    &::before {
+                        top: 0;
+                        right: 100%;
+                    }
+                    &::after {
+                        /* bottom: 0; */
+                        /* left: 100%; */
+                    }
+                }
+                
+            }
+        </style>
+        <blockquote class="testimonial quote">
+            <p class="quote text"></p>
+            <p class="quote citation" --hug>— [Manager]</p>
+        </blockquote>
+    </template>
+    <script>
+        const { innerHTML } = frameElement;
+        const { content } = document.querySelector('template');
+        const { children } = content;
+        const { [1]: blockquote } = children;
+        const { children: { [0]: paragraph } } = blockquote;
+        
+        paragraph.innerHTML = innerHTML;
+        frameElement.replaceWith(content);
+    </script>
+</body>

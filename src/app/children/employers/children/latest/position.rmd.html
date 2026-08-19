@@ -1,0 +1,44 @@
+
+<body>
+    <template>
+        <style>
+            .employers.latest.position {
+                
+                .latest.content.text {}
+                
+            }
+        </style>
+        <section class="employers latest position">
+            <h2 class="latest title">Recently</h2>
+            <h3 class="latest subtitle" --hug>Accuris</h3>
+            <p class="latest content text">
+                At Accuris, we met nearly impossible deadlines — building a suite of products that tied into the same system — in 
+                only 3 months after establishing development standards & architectures, which I was chiefly responsible for.
+            </p>
+            <p class="latest content text">
+                One of those products (the flagship product), "Universal Document Viewer" (UDV) required a highly complex UI layout 
+                that could only be accomplished (performantly) in pure CSS. UDV, itself, used **images** of the pages from the PDF 
+                or DOCx file uploaded by the user while allowing the user to [virtually] highlight [virtual] text (performantly) 
+                from the image representing a document page for annotations, export, and other features. These all tied in with 
+                Plugins written across the company, geared toward clients writing their own, and had to align with page orientations 
+                (landscape, portrait, hybrid), rotation & zoom controls, Responsive Design, Fullscreen, "Fitwidth" 
+                (Responsive Autozoom) mode, and overflow modes (such as SideBySide document comparison).
+            </p>
+            <p class="latest content text">
+                Moreover, some known documents contained more than 50,000+ pages, making initial document loading and consecutive 
+                page loading (and page jumping) require performant algorithms to reduce the number of nodes in the DOM while 
+                providing a smooth UX to the end user. I directly implemented all of the above and led teams and architectural 
+                discussions around their maintenance.
+            </p>
+            <p class="latest content text">
+                Almost guaranteed, your Aerodynamics Engineers, Fluid Dynamics Engineers, and likely others are all using the UDV 
+                system I built, especially for wingtip & engine blade design. If it was good enough for NASA, the US Air Force, 
+                building Small Modular Reactors, LASER Guided Munitions, and many others, I probably did a decent job.
+            </p>
+        </section>
+    </template>
+    <script>
+        const { content } = document.querySelector('template');
+        frameElement.replaceWith(content);
+    </script>
+</body>

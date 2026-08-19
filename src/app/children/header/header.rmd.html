@@ -1,0 +1,62 @@
+
+<body>
+    <template>
+        <style>
+            .site.header {
+                --currentcolor: var(--gray-0);
+                position: sticky;
+                top: 0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                min-height: var(--header-height);
+                box-shadow: var(--shadow-3);
+                padding-inline: var(--offset);
+                z-index: var(--layer-important);
+                background-color: var(--gray-9);
+                color: var(--currentcolor);
+                
+                .header.branding {
+                    /* border: solid 1px tomato; */
+                    display: flex;
+                    align-items: center;
+                    gap: var(--size-px-2);
+                    
+                    .branding.logo {
+                        /* border: solid 1px tomato; */
+                        display: inline-block;
+                        width: var(--header-height);
+                        aspect-ratio: 1;
+                        border: solid var(--size-px-2) transparent;
+                        border-left: none;
+                        background-image: url('../favicon.ico');
+                        background-position: center;
+                        background-size: cover;
+                        background-clip: content-box;
+                    }
+                    
+                    .branding.title {
+                        /* border: solid 1px tomato; */
+                        display: inline-block;
+                        margin: 0;
+                        font-size: var(--font-size-1);
+                        font-weight: var(--font-weight-5);
+                    }
+                    
+                }
+                
+            }
+        </style>
+        <header class="site header">
+            <div class="header branding">
+                <a class="branding logo" href="/"></a>
+                <h1 class="branding title">CSC</h1>
+            </div>
+            <iframe src="./app/children/header/children/menu/menu.rmd.html"></iframe>
+        </header>
+    </template>
+    <script>
+        const { content } = document.querySelector('template');
+        frameElement.replaceWith(content);
+    </script>
+</body>

@@ -1,0 +1,16 @@
+
+<body>
+    <template>
+        <style>
+            .site.section.book.collection {}
+        </style>
+        <section id="/books" class="site section book collection">
+            <h2 class="section title">All Books</h2>
+            <iframe src="./app/children/book/ribbon.rmd.html" is="as-frameless"></iframe>
+        </section>
+    </template>
+    <script>
+        const { content } = document.querySelector('template');
+        frameElement.replaceWith(content);
+    </script>
+</body>

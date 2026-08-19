@@ -110,16 +110,16 @@ Date,           Company,                                    Contact,            
 "2026-08-0X",   "{TargetEmployerName}",                     "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "{JobTitle}",                                                   "{applicationType}",    "{LinksETC}"
 
 "2026-08-10",   "Owner.com",                                "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "Staff Software Engineer, Full-Stack",                          "Applied",              "{LinksETC}"
-"2026-08-10",   "Boom Supersonic",                          "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "Any ('Dream Job')",                                            "Applied",    "{LinksETC}"
-"2026-08-13",   "Wide Open West Networks",                  "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "Senior Software Engineer",                                     "Interview",            "{LinksETC}"
+"2026-08-10",   "Boom Supersonic",                          "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "Any ('Dream Job')",                                            "Applied",              "{LinksETC}"
+"2026-08-14",   "Wide Open West Networks",                  "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "Senior Software Engineer",                                     "Interview",            "{LinksETC}"
 "2026-08-1X",   "{TargetEmployerName}",                     "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "{JobTitle}",                                                   "{applicationType}",    "{LinksETC}"
 "2026-08-1X",   "{TargetEmployerName}",                     "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "{JobTitle}",                                                   "{applicationType}",    "{LinksETC}"
 
-"2026-0X-XX",   "{TargetEmployerName}",                     "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "{JobTitle}",                                                   "{applicationType}",    "{LinksETC}"
-"2026-0X-XX",   "{TargetEmployerName}",                     "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "{JobTitle}",                                                   "{applicationType}",    "{LinksETC}"
-"2026-0X-XX",   "{TargetEmployerName}",                     "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "{JobTitle}",                                                   "{applicationType}",    "{LinksETC}"
-"2026-0X-XX",   "{TargetEmployerName}",                     "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "{JobTitle}",                                                   "{applicationType}",    "{LinksETC}"
-"2026-0X-XX",   "{TargetEmployerName}",                     "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "{JobTitle}",                                                   "{applicationType}",    "{LinksETC}"
+"2026-08-18",   "Justin Noack / Bridgeview IT",             "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "Senior Frontend Engineer / Any",                               "Outreach",             "{LinksETC}"
+"2026-08-18",   "Right Fit Advisors",                       "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "Senior Frontend Engineer",                                     "Applied",              "{LinksETC}"
+"2026-08-18",   "Hampton North",                            "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "Founding Frontend Engineer",                                   "Applied",              "{LinksETC}"
+"2026-08-XX",   "{TargetEmployerName}",                     "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "{JobTitle}",                                                   "{applicationType}",    "{LinksETC}"
+"2026-08-XX",   "{TargetEmployerName}",                     "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "{JobTitle}",                                                   "{applicationType}",    "{LinksETC}"
 
 "2026-0X-XX",   "{TargetEmployerName}",                     "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "{JobTitle}",                                                   "{applicationType}",    "{LinksETC}"
 "2026-0X-XX",   "{TargetEmployerName}",                     "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "{JobTitle}",                                                   "{applicationType}",    "{LinksETC}"

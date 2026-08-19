@@ -1,0 +1,94 @@
+
+<body>
+    <template>
+        <iframe src="/asxs/v2.0.0/icon/icon.rmd.html" is="as-frameless"></iframe>
+        <style>
+            .tier.offer {
+                /* border: solid 1px tomato; */
+                display: inline-flex;
+                flex-direction: column;
+                align-items: center;
+                gap: var(--size-px-3);
+                box-shadow: var(--shadow-3);
+                padding: var(--size-px-2);
+                /* background-color: var(--sand-3); */
+                
+                .offer.title {
+                    /* border: solid 1px tomato; */
+                }
+                
+                .offer.icon {
+                    font-size: var(--font-size-5);
+                }
+                
+            }
+        </style>
+    </template>
+    <template id="maintenance">
+        <li class="tier offer maintenance">
+            <h4 class="offer title">Website Maintenance & Optimization</h4>
+            <span class="offer icon">&clubsuit;</span>
+            <p class="offer description">
+                Comprehensive technical support and maintenance solutions for existing web platforms. We address system 
+                inefficiencies, resolve functional impediments, and optimize performance bottlenecks. Our systematic 
+                approach ensures your digital infrastructure operates at peak efficiency while maintaining security 
+                standards and user experience integrity.
+            </p>
+        </li>
+    </template>
+    <template id="foundation">
+        <li class="tier offer foundation">
+            <h4 class="offer title">Foundational Web Presence Solutions</h4>
+            
+            <span class="offer icon">&diamondsuit;</span>
+            <p class="offer description">
+                Strategic entry-level digital presence development designed for emerging businesses. We implement 
+                cost-effective architectures utilizing scalable third-party integrations and modular frameworks. These 
+                solutions provide essential functionality while preserving capital resources, allowing for organic 
+                growth and measured expansion as your business requirements evolve.
+            </p>
+        </li>
+    </template>
+    <template id="professional">
+        <li class="tier offer professional">
+            <h4 class="offer title">Professional Web Applications</h4>
+            
+            <span class="offer icon">&heartsuit;</span>
+            <p class="offer description">
+                Custom-designed web solutions that eliminate third-party branding and subscription dependencies. We 
+                translate your existing brand assets, content strategy, and design specifications into sophisticated 
+                digital experiences. These platforms incorporate revenue-generating tools and proprietary functionality, 
+                positioning your web presence as a competitive advantage rather than a mere digital brochure.
+            </p>
+        </li>
+    </template>
+    <template id="enterprise">
+        <li class="tier offer enterprise">
+            <h4 class="offer title">Enterprise Digital Architecture</h4>
+            
+            <span class="offer icon">&spadesuit;</span>
+            <p class="offer description">
+                Comprehensive development of large-scale web applications and enterprise-grade platforms. We architect 
+                robust backend systems, implement secure database structures, and facilitate complex third-party 
+                integrations. Our solutions are engineered for high-volume traffic, extensive user bases, and 
+                mission-critical operations, providing the technical foundation for sustained business growth.
+            </p>
+        </li>
+    </template>
+    <script>
+        const { attributes } = frameElement;
+        const { type: { value: type } } = attributes;
+        const { content } = document.querySelector('template');
+        const { children } = content;
+        const { [1]: li } = children;
+        const { [type]: { content: offer } } = {
+            'maintenance': document.querySelector('template#maintenance'),
+            'foundation': document.querySelector('template#foundation'),
+            'professional': document.querySelector('template#professional'),
+            'enterprise': document.querySelector('template#enterprise'),
+        };
+        
+        content.appendChild(offer);
+        frameElement.replaceWith(content);
+    </script>
+</body>

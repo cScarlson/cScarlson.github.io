@@ -1,0 +1,108 @@
+
+<body>
+    <template>
+        <iframe src="/asxs/v2.0.0/button/button.rmd.html" is="as-frameless"></iframe>
+        <iframe src="/asxs/v2.0.0/icon/icon.rmd.html" is="as-frameless"></iframe>
+        <style>
+            .header.dialog.trigger {
+                display: none;
+                box-shadow: none;
+                border: none;
+                background-color: transparent;
+                @container style(--device: tablet) or style(--device: mobile) {
+                    display: flex;
+                }
+                
+                .dialog.toggle {
+                    --color: var(--currentcolor);
+                }
+                
+            }
+            .header.dialog.modal {
+                border: solid 1px tomato;
+                position: static;
+                display: flex;
+                margin: 0;
+                border: none;
+                padding: 0;
+                background-color: inherit;
+                color: inherit;
+                @container style(--device: tablet) or style(--device: mobile) {
+                    position: fixed;
+                    inset: 0 0 0 calc(var(--offset) * 4);
+                    width: unset;  /* override browser defaults */
+                    height: unset;  /* override browser defaults */
+                    box-shadow: 0 0 0 black, 0 0 0 black, 0 0 0 black, var(--shadow-5);
+                    padding: var(--size-px-5);
+                    &:not(:popover-open) {
+                        display: none;
+                    }
+                    
+                    .dialog.menu {
+                        flex-direction: column;
+                    }
+                    
+                }
+                
+                .dialog.menu {
+                    display: flex;
+                    gap: var(--size-px-2);
+                    padding: 0;
+                    list-style-type: none;
+                    color: inherit;
+                    
+                    .menu.item {
+                        /* border: solid 1px tomato; */
+                        color: inherit;
+                        
+                        .item.action {
+                            /* border: solid 1px tomato; */
+                            /* color: var(--gray-9); */
+                            color: inherit;
+                            text-decoration: none;
+                            text-transform: capitalize;
+                            &.slashmag {
+                                text-transform: unset;
+                            }
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+        </style>
+        <button class="header dialog trigger" is="as-button" popovertarget="headerMenu">
+            <as-icon class="dialog toggle size lg" type="menu" strategy="bootstrap-icons"></as-icon>
+        </button>
+        <dialog id="headerMenu" class="header dialog modal" popover>
+            <menu class="dialog menu">
+                <li class="menu item">
+                    <a class="item action" href="/#/books">Books</a>
+                </li>
+                <li class="menu item">
+                    <a class="item action" href="/#/about/magazinejs/0">MagazineJS</a>
+                </li>
+                <li class="menu item">
+                    <a class="item action" href="/#/about/cody">Cody</a>
+                </li>
+                <li class="menu item">
+                    <a class="item action" href="/#/services/websites">Websites</a>
+                </li>
+                <li class="menu item">
+                    <a class="item action slashmag" href="/#/magazinejs">/magazinejs</a>
+                </li>
+                <li class="menu item">
+                    <a class="item action" href="/#/asxs">AsXS</a>
+                </li>
+                <li class="menu item">
+                    <a class="item action" href="/#/employers">Employers</a>
+                </li>
+            </menu>
+        </dialog>
+    </template>
+    <script>
+        const { content } = document.querySelector('template');
+        frameElement.replaceWith(content);
+    </script>
+</body>

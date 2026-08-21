@@ -1,5 +1,5 @@
 
-export * as registry from './registry.js';
+export { registry } from './registry.js';
 export { schemata } from './schemata.js';
 export { publishers } from './publishers.js';
 export { authors } from './authors.js';

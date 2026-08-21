@@ -1,0 +1,29 @@
+
+import gulp from 'gulp';
+import bs from 'browser-sync';
+
+const { log } = console;
+const browserSync = bs.create();
+
+function serve() {
+    browserSync.init({
+        port: 4000,
+        server: {
+            baseDir: './localhost',
+            middleware: function handle(req, res, next) {
+                res.setHeader('Access-Control-Allow-Origin', '*');
+                res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+                if (req.method === 'OPTIONS') return this['handle:OPTIONS'](req, res, next);
+                next();
+            },
+            ['handle:OPTIONS'](req, res, next) {
+                res.statusCode = 200;
+                return res.end();
+            }
+        },
+    });
+
+    gulp.watch('./**/*').on( 'change', (uri, stats) => browserSync.reload() );
+}
+
+gulp.task('serve', serve);

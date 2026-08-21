@@ -1,5 +1,5 @@
 
-import * as registry from './registry.js';
+import { registry } from './registry.js';
 
 const ids = Object.keys(registry);
 const entries = ids.map( id => registry[id] );

@@ -1,0 +1,53 @@
+<body>
+	<template>
+		<style></style>
+		<article class="slashmag article xdomain">
+			<h1 class="article title">Cross-Domain MFEs</h1>
+			<h2 class="article subtitle">How /magazinejs Works</h2>
+			<section class="article section ownership">
+				<h3 class="article section">You Own & Host All Your Data and Content</h3>
+				<p class="section paragraph">
+					True, you own it all. The only place it exists is your own server or webpage; really. You merely only need 
+					define three things: first, you need to define an origin, which you will convey to SlashMag. Then, you need 
+					a single article, in <i>RMD</i> format, that you wish to publish. Finally, you just need to define & provide 
+					a <code>index.json</code> file that follows the expected schema and house it at <code>/magazinejs</code> on 
+					your own server. You server can be anything, anywhere; GitHub Pages, S3, InfinityFree, SquareSpace -- 
+					anything. Literally, all you need is
+					<ol>
+						<li><code>{your-origin}/magazinejs/index.json</code></li>
+						<li><code>{your-origin}/magazinejs/content/{article-name}/article.rmd.html</code></li>
+						<li>Let us know what <code>{your-origin}</code> is</li>
+					</ol>
+				</p>
+			</section>
+			<section class="article section process">
+				<h3 class="article section">SlashMag Pulls It In</h3>
+				<p class="section paragraph">
+					SlashMag, upon loading, pulls the registry from all origins (including the one you provided). It uses the 
+					metadata from your <code>index.json</code>, alongside that from any articles you define within it, for 
+					building all links to Publishers, Authors, and Tags. Once the user navigates to one of your articles (from 
+					the <code>articles</code> collection in your <code>index.json</code> file), it loads your actual article 
+					RMD from the location provided by the <code>rmd</code> property of the article in your index file. That's it, 
+					really.
+				</p>
+			</section>
+			<section class="article section this">
+				<h3 class="article section">This Article</h3>
+				<p class="section paragraph">
+					This article doubles as a Proof Of Concept for the above as this article actually originated from a completely 
+					different server, <code>http://localhost:4000</code>. You can even inspect the source and see that it 
+					maintains its own <code>http://localhost:4000/magazinejs/index.json</code> schema alongside this very 
+					article you are reading now.
+				</p>
+			</section>
+			<section class="article section outro">
+				<p class="section paragraph">Thank you,</p>
+				<p class="section paragraph">Cody Carlson</p>
+			</section>
+		</article>
+	</template>
+	<script>
+        const { content } = document.querySelector('template');
+		frameElement.replaceWith(content);
+	</script>
+</body>

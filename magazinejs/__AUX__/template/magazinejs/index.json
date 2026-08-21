@@ -1,0 +1,28 @@
+{
+    "publisher": "Cody S Carlson",
+    "host": "{origin}",
+    "articles": [
+        {
+            "date": "2026-08-07T22:54:00.000Z",
+            "title": "Cross-Domain MFEs",
+            "subtitle": "How SlashMag Works",
+            "rmd": "{origin}/magazinejs/content/article.rmd.html",
+            "thumbnail": "{origin}/magazinejs/content/thumbnail.png",
+            "authors": [ "Cody Carlson" ],
+            "tags": [
+                "Frontend Development",
+                "JavaScript",
+                "CSS",
+                "HTML",
+                "RMD",
+                "Remote Module Definitions",
+                "The MFE Pattern",
+                "Plugin Architecture",
+                "Patterns",
+                "Architecture",
+                "The Web",
+                "Microfrontend"
+            ]
+        }
+    ]
+}

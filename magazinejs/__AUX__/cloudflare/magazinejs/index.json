@@ -1,0 +1,24 @@
+{
+    "publisher": "Cody S Carlson",
+    "host": "magazinejs.otocarlson.workers.dev",
+    "articles": [
+        {
+            "date": "2026-08-07T22:54:00.000Z",
+            "title": "Cross-Domain MFEs",
+            "subtitle": "How SlashMag Works",
+            "rmd": "https://magazinejs.otocarlson.workers.dev/magazinejs/content/article.rmd.html",
+            "thumbnail": "https://magazinejs.otocarlson.workers.dev/magazinejs/content/thumbnail.png",
+            "authors": [ "Cody Carlson" ],
+            "tags": [
+                "MagazineJS",
+                "/magazinejs",
+                "SlashMag",
+                "Tutorial",
+                "POC",
+                "Proof Of Concept",
+                "CORS",
+                "Cross Domain"
+            ]
+        }
+    ]
+}

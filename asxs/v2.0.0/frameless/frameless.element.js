@@ -3,7 +3,7 @@ const { log } = console;
 const TAGNAME = 'as-frameless';
 const has = !!customElements.get(TAGNAME);
 
-if (!has) customElements.define(TAGNAME, class CrossOriginFramelessElement extends HTMLIFrameElement {
+if (!has) customElements.define(TAGNAME, class FramelessElement extends HTMLIFrameElement {
     
     constructor() {
         super();

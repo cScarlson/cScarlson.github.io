@@ -1,6 +1,6 @@
 
 const { log } = console;
-const TAGNAME = 'as-frameless-cors';
+const TAGNAME = 'as-frameless';
 const has = !!customElements.get(TAGNAME);
 
 if (!has) customElements.define(TAGNAME, class CrossOriginFramelessElement extends HTMLIFrameElement {
@@ -8,10 +8,10 @@ if (!has) customElements.define(TAGNAME, class CrossOriginFramelessElement exten
     constructor() {
         super();
         const { src } = this;
-        const { host } = new URL(src);
+        const { host } = new URL(src, location);  // use current location fallback. why is this.src === "" sometimes???
         const { host: local } = new URL(location);
         
-        if (host !== local) this.src = 'about:blank';  // immediately prevent loading
+        if (host !== local) this.src = 'about:blank';  // immediately prevent loading before async op
         if (host !== local) this.#normalize(src);
     }
     

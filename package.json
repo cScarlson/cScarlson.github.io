@@ -6,7 +6,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "mck": "gulp serve -f ./gulpfile.mck.js",
+    "lcl": "gulp serve -f ./gulpfile.lcl.js",
     "dev": "gulp serve",
+    "stg": "gulp serve -f ./gulpfile.stg.js",
     "prod:deploy": "git add . && git commit -am 'Deploying...' && git push origin master"
   },
   "devDependencies": {

@@ -15,79 +15,126 @@ const { [type]: worker } = {
 };
 const service = new (class ServiceWorkerHandler {
     
-    #pathnames(url) {
-        const { href, origin, port, host, hostname, pathname, search, searchParams, hash } = url;
-        const segments = pathname.split('/');
-        const trimmed = segments.slice(1);  // eliminate empty space; e.g: '/'.split === [ '', '' ]
-        const refined = trimmed.reduce(refine, trimmed);
-        const grouped = Object.groupBy( refined, (s, i) =>  Math.floor(i / trimmed.length) );
-        const chunked = Object.values(grouped);
-        
-        function refine(segments, segment, i, array) {
-            const additional0 = segments.slice(segments.length - array.length);
-            const additional1 = segments.slice(segments.length - array.length);
-            
-            additional0[i] = '*';
-            additional1[array.length - 1 - i] = '*';
-            // log(`@refine`, segments.length - i, segments);
-            
-            return [ ...segments, ...additional0, ...additional1 ];
-        }
-        
-        log(`@pathnames()`, refined, grouped, chunked);
-        return [];
-    }
-    
     handle(e) {
         const { request } = e;
         const { url, method } = request;
         const { href, origin, port, host, hostname, pathname, search, searchParams, hash } = new URL(url);
-        const location = new URL(url);
-        const pathnames = this.#pathnames(location);
+        const segments = pathname.split('/').slice(1);  // trim empty entry
+        const params = Object.fromEntries(searchParams);
         
-        log(`@handle`, request, new URL(url));
+        log(`@handle`, request, new URL(url), segments, params);
         if (href in this) return this[href](request, e);
-        if ('*' in this) return this[href](request, e);
+        if ('*' in this) return this['*'](request, e);
         
-        if (origin in this) return this[href](request, e);
+        if (origin in this) return this[origin](request, e);
         
-        if (host in this) return this[href](request, e);
+        if (host in this) return this[host](request, e);
+        if (`${hostname}:*` in this) return this[`${hostname}:*`](request, e);
+        if (`*:${port}` in this) return this[`*:${port}`](request, e);
         
-        if (hostname in this) return this[href](request, e);
-        if (`${host}:*` in this) return this[href](request, e);
-        if (`*:${port}` in this) return this[href](request, e);
+        if (`[hostname]${hostname}` in this) return this[`[hostname]${hostname}`](request, e);
         
-        if (`${origin}${pathname}` in this) return this[href](request, e);
-        if (`${host}${pathname}` in this) return this[href](request, e);
-        if (`${hostname}${pathname}` in this) return this[href](request, e);
-        if (`${host}:*${pathname}` in this) return this[href](request, e);
-        if (`*:${port}${pathname}` in this) return this[href](request, e);
-        if (pathname in this) return this[href](request, e);
-        if (`/*` in this) return this[href](request, e);
-        if (`${origin}/*` in this) return this[href](request, e);
-        if (`${host}/*` in this) return this[href](request, e);
-        if (`${hostname}/*` in this) return this[href](request, e);
-        if (`${host}:*/*` in this) return this[href](request, e);
-        if (`*:${port}/*` in this) return this[href](request, e);
-        for (const pathname in pathnames) if (pathname in this) return log(`@PATHNAMES`, pathname);
+        if (`${origin}${pathname}` in this) return this[`${origin}${pathname}`](request, e);
+        if (`${host}${pathname}` in this) return this[`${host}${pathname}`](request, e);
+        if (`${hostname}:*${pathname}` in this) return this[`${hostname}:*${pathname}`](request, e);
+        if (`*:${port}${pathname}` in this) return this[`*:${port}${pathname}`](request, e);
+        if (pathname in this) return this[pathname](request, e);
+        if (`/*` in this) return this[`/*`](request, e);
+        if (`${origin}/*` in this) return this[`${origin}/*`](request, e);
+        if (`${host}/*` in this) return this[`${host}/*`](request, e);
+        if (`${hostname}:*/*` in this) return this[`${hostname}:*/*`](request, e);
+        if (`*:${port}/*` in this) return this[`*:${port}/*`](request, e);
+        if ('[...pathname]' in this) return this['[...pathname]'](request, e, segments);
         
-        if (`${origin}${search}` in this) return this[href](request, e);
-        if (`${host}${search}` in this) return this[href](request, e);
-        if (`${hostname}${search}` in this) return this[href](request, e);
-        if (`${host}:*${search}` in this) return this[href](request, e);
-        if (`*:${port}${search}` in this) return this[href](request, e);
-        if (`${origin}${pathname}${search}` in this) return this[href](request, e);
-        if (`${host}${pathname}${search}` in this) return this[href](request, e);
-        if (`${hostname}${pathname}${search}` in this) return this[href](request, e);
-        if (`${host}:*${pathname}${search}` in this) return this[href](request, e);
-        if (`*:${port}${pathname}${search}` in this) return this[href](request, e);
-        if (search in this) return this[href](request, e);
-        // more dynamic
+        if (search in this) return this[search](request, e);
+        if ('{...search}' in this) return this['{...search}'](request, e, params, searchParams);
         
-        if (hash in this) return this[href](request, e);  // don't worry about hash too much
-        
-        // if (XXXXXXXX in this) return this[href](request, e);
+        if (hash in this) return this[hash](request, e);  // don't worry about hash too much
     }
+    
+    // ['http://localhost:3000/asxs/v2.0.0/core/utilities/markdown.js?param1=test#/some/path']({ url }, e) {
+    //     log(`@href`, url);
+    // }
+    
+    // ['*']({ url }, e) {
+    //     log(`@*`, url);
+    // }
+    
+    // ['http://localhost:3000']({ url }, e) {
+    //     log(`@origin`, url);
+    // }
+    
+    // ['localhost:3000']({ url }, e) {
+    //     log(`@host`, url);
+    // }
+    
+    // ['localhost:*']({ url }, e) {
+    //     log(`@hostname:*`, url);
+    // }
+    
+    // ['*:3000']({ url }, e) {
+    //     log(`@*:port`, url);
+    // }
+    
+    // ['[hostname]localhost']({ url }, e) {
+    //     log(`@hostname`, url);
+    // }
+    
+    // ['http://localhost:3000/asxs/v2.0.0/core/utilities/markdown.js']({ url }, e) {
+    //     log(`@pathname-001`, url);
+    // }
+    
+    // ['localhost:3000/asxs/v2.0.0/core/utilities/markdown.js']({ url }, e) {
+    //     log(`@pathname-002`, url);
+    // }
+    
+    // ['localhost:*/asxs/v2.0.0/core/utilities/markdown.js']({ url }, e) {
+    //     log(`@pathname-003`, url);
+    // }
+    
+    // ['*:3000/asxs/v2.0.0/core/utilities/markdown.js']({ url }, e) {
+    //     log(`@pathname-004`, url);
+    // }
+    
+    // ['/asxs/v2.0.0/core/utilities/markdown.js']({ url }, e) {
+    //     log(`@pathname-005`, url);
+    // }
+    
+    // ['/*']({ url }, e) {
+    //     log(`@pathname-006`, url);
+    // }
+    
+    // ['http://localhost:3000/*']({ url }, e) {
+    //     log(`@pathname-007`, url);
+    // }
+    
+    // ['localhost:3000/*']({ url }, e) {
+    //     log(`@pathname-008`, url);
+    // }
+    
+    // ['localhost:*/*']({ url }, e) {
+    //     log(`@pathname-009`, url);
+    // }
+    
+    // ['*:3000/*']({ url }, e) {
+    //     log(`@pathname-010`, url);
+    // }
+    
+    // ['[...pathname]']({ url }, e, pathnames) {
+    //     log(`@[...pathname]`, pathnames);
+    // }
+    
+    // ['?param1=test']({ url }, e) {
+    //     log(`@search`, url);
+    // }
+    
+    ['{...search}']({ url }, e, params, searchParams) {
+        log(`@[...search]`, params, searchParams);
+    }
+    
+    // ['#/some/path']({ url }, e) {
+    //     log(`@hash`, url);
+    // }
     
 })();
 
@@ -95,9 +142,9 @@ service.handle({
     request: new Request('http://localhost:3000/asxs/v2.0.0/core/utilities/markdown.js?param1=test#/some/path', { method: 'GET' }),
 });
 
-service.handle({
-    request: new Request('http://magazinejs.otocarlson.workers.dev/asxs/v2.0.0/core/utilities/markdown.js?param1=test#/some/path', { method: 'GET' }),
-});
+// service.handle({
+//     request: new Request('http://magazinejs.otocarlson.workers.dev/asxs/v2.0.0/core/utilities/markdown.js?param1=test#/some/path', { method: 'GET' }),
+// });
 
 function handleServiceWorker(registration) {
     log(`@4000.registration`, registration);

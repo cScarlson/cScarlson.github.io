@@ -13,83 +13,91 @@ const { [type]: worker } = {
     'stg': undefined,
     'prd': undefined,
 };
-const root = new Route({
-    type: 'href',
-    uri: '*',
-    children: [
-        {
-            type: 'origin',
-            uri: 'http://localhost:3000',
-            children: [
-                {
-                    type: 'pathname:segment',
-                    uri: 'asxs',
-                    children: [
-                        {
-                            type: 'pathname:segment',
-                            uri: 'v2.0.0',
-                            children: [
-                                {
-                                    type: 'pathname:segment',
-                                    uri: 'core',
-                                    children: [
-                                        {
-                                            type: 'pathname:segment',
-                                            uri: 'utilities',
-                                            children: [
-                                                {
-                                                    type: 'filename',
-                                                    uri: 'markdown.js',
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    type: 'pathname:segment',
-                    uri: '*',
-                    children: [
-                        {
-                            type: 'pathname:segment',
-                            uri: 'v2.0.0',
-                            children: [
-                                {
-                                    type: 'pathname:segment',
-                                    uri: 'core',
-                                    children: [
-                                        {
-                                            type: 'pathname:segment',
-                                            uri: 'utilities',
-                                            children: [
-                                                {
-                                                    type: 'filename',
-                                                    uri: 'markdown.js',
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                },
-            ]
-        },
-        {
-            type: 'origin',
-            uri: '*',
-        },
-    ]
+const service = new (class ServiceWorkerHandler {
+    
+    #pathnames(url) {
+        const { href, origin, port, host, hostname, pathname, search, searchParams, hash } = url;
+        const segments = pathname.split('/');
+        const trimmed = segments.slice(1);  // eliminate empty space; e.g: '/'.split === [ '', '' ]
+        const refined = trimmed.reduce(refine, trimmed);
+        const grouped = Object.groupBy( refined, (s, i) =>  Math.floor(i / trimmed.length) );
+        const chunked = Object.values(grouped);
+        
+        function refine(segments, segment, i, array) {
+            const additional0 = segments.slice(segments.length - array.length);
+            const additional1 = segments.slice(segments.length - array.length);
+            
+            additional0[i] = '*';
+            additional1[array.length - 1 - i] = '*';
+            // log(`@refine`, segments.length - i, segments);
+            
+            return [ ...segments, ...additional0, ...additional1 ];
+        }
+        
+        log(`@pathnames()`, refined, grouped, chunked);
+        return [];
+    }
+    
+    handle(e) {
+        const { request } = e;
+        const { url, method } = request;
+        const { href, origin, port, host, hostname, pathname, search, searchParams, hash } = new URL(url);
+        const location = new URL(url);
+        const pathnames = this.#pathnames(location);
+        
+        log(`@handle`, request, new URL(url));
+        if (href in this) return this[href](request, e);
+        if ('*' in this) return this[href](request, e);
+        
+        if (origin in this) return this[href](request, e);
+        
+        if (host in this) return this[href](request, e);
+        
+        if (hostname in this) return this[href](request, e);
+        if (`${host}:*` in this) return this[href](request, e);
+        if (`*:${port}` in this) return this[href](request, e);
+        
+        if (`${origin}${pathname}` in this) return this[href](request, e);
+        if (`${host}${pathname}` in this) return this[href](request, e);
+        if (`${hostname}${pathname}` in this) return this[href](request, e);
+        if (`${host}:*${pathname}` in this) return this[href](request, e);
+        if (`*:${port}${pathname}` in this) return this[href](request, e);
+        if (pathname in this) return this[href](request, e);
+        if (`/*` in this) return this[href](request, e);
+        if (`${origin}/*` in this) return this[href](request, e);
+        if (`${host}/*` in this) return this[href](request, e);
+        if (`${hostname}/*` in this) return this[href](request, e);
+        if (`${host}:*/*` in this) return this[href](request, e);
+        if (`*:${port}/*` in this) return this[href](request, e);
+        for (const pathname in pathnames) if (pathname in this) return log(`@PATHNAMES`, pathname);
+        
+        if (`${origin}${search}` in this) return this[href](request, e);
+        if (`${host}${search}` in this) return this[href](request, e);
+        if (`${hostname}${search}` in this) return this[href](request, e);
+        if (`${host}:*${search}` in this) return this[href](request, e);
+        if (`*:${port}${search}` in this) return this[href](request, e);
+        if (`${origin}${pathname}${search}` in this) return this[href](request, e);
+        if (`${host}${pathname}${search}` in this) return this[href](request, e);
+        if (`${hostname}${pathname}${search}` in this) return this[href](request, e);
+        if (`${host}:*${pathname}${search}` in this) return this[href](request, e);
+        if (`*:${port}${pathname}${search}` in this) return this[href](request, e);
+        if (search in this) return this[href](request, e);
+        // more dynamic
+        
+        if (hash in this) return this[href](request, e);  // don't worry about hash too much
+        
+        // if (XXXXXXXX in this) return this[href](request, e);
+    }
+    
+})();
+
+service.handle({
+    request: new Request('http://localhost:3000/asxs/v2.0.0/core/utilities/markdown.js?param1=test#/some/path', { method: 'GET' }),
 });
 
-log(`@ROOT`, root);
-root.attach(function observer(state) {
-    log(`@observer`, this, state);
-}, false).match('http://localhost:3000/asxs/v2.0.0/core/utilities/markdown.js?param1=test');
+service.handle({
+    request: new Request('http://magazinejs.otocarlson.workers.dev/asxs/v2.0.0/core/utilities/markdown.js?param1=test#/some/path', { method: 'GET' }),
+});
 
 function handleServiceWorker(registration) {
     log(`@4000.registration`, registration);

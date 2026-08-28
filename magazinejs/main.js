@@ -12,4 +12,4 @@ const { [type]: worker } = {
     'prd': undefined,
 };
 
-if (worker) navigator.serviceWorker.register(worker, { scope: '/magazinejs/' });
+if (worker) navigator.serviceWorker.register(worker, { type: 'module', scope: '/magazinejs/' });

@@ -50,7 +50,7 @@
                 this.#outlet.innerHTML = '';
                 setTimeout(x => {
                 iframe.setAttribute('is', 'as-frameless');
-                iframe.onload = e => log(`@LOAD`, e.type, this.#outlet.innerHTML);
+                // iframe.onload = e => log(`@LOAD`, e.type, this.#outlet.innerHTML);
                 iframe.src = rmd;
                 this.#outlet.appendChild(iframe);
                 }, 1_000 * 0);

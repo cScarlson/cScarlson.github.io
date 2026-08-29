@@ -85,15 +85,20 @@
         import { schemata } from '/magazinejs/app/core/data/data.js';
         import { Publisher } from './publisher.model.js';
         
-        const { parent } = window;
-        const { location } = parent;
+        const { top } = window;
+        const { location } = top;
         const { content } = document.querySelector('template.result');
         const publishers = schemata.map( p => new Publisher(p) );
         
         customElement('mag-publisher-collection')
-        (class MagazineJSArticleElement extends CustomElement {
+        (class MagazineJSArticleCollectionElement extends CustomElement {
             ['crawler:template'] = new TemplateCrawler(this);
             publishers = publishers;
+            
+            constructor() {
+                super();
+                console.log(`INSTANTIATED PUBLISHER COLLECTION`);
+            }
             
             createRenderRoot() {
                 return this;

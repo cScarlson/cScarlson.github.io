@@ -76,8 +76,9 @@ class Route extends Subject {
         const { pathname: base } = new URL(baseURI);
         const { pathname } = new URL(location);
         const path = `${base}${id}`.replace('//', '/');
-        const is = (pathname === path) || (pathname === `${path}/`);
+        const is = (pathname === path) || (pathname === `${path}/`) || (`${pathname}/` === `${path}`) || (`${pathname}/` === `${path}/`);
         
+        log(`@Route.isMatch`, is, id, pathname, path, `${path}/`);
         return is;
     }
     

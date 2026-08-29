@@ -4,6 +4,7 @@
         <div class="magazinejs app">
             <iframe src="/asxs/v2.0.0/button/button.rmd.html" is="as-frameless"></iframe>
             <iframe src="/asxs/v2.0.0/icon/icon.rmd.html" is="as-frameless"></iframe>
+            <iframe src="/asxs/v2.0.0/anchor/pushstate.rmd.html" is="as-frameless"></iframe>
             <mag-menu-sidebar>
                 <iframe src="./app/children/menu/sidebar/sidebar.rmd.html" is="as-frameless"></iframe>
             </mag-menu-sidebar>
@@ -12,23 +13,13 @@
                     <button class="branding action menu open" is="as-button" popovertarget="sidebar">
                         <as-icon type="menu" strategy="bootstrap-icons"></as-icon>
                     </button>
-                    <a class="branding title" href="/magazinejs">/magazinejs</a>
+                    <a class="branding title" href="/magazinejs" is="as-pushstate">/magazinejs</a>
                 </span>
                 <iframe src="./app/children/menu/main/main.rmd.html" is="as-frameless"></iframe>
             </header>
             <main class="app body">
                 <mag-router>
                     <iframe src="./app/core/router/router.rmd.html" is="as-frameless"></iframe>
-                    <template>
-                        <iframe path="/magazinejs/" src="./app/children/home/home.rmd.html" is="as-frameless"></iframe>
-                        <iframe path="/magazinejs/articles/" src="./app/children/article/collection.rmd.html" is="as-frameless"></iframe>
-                        <iframe path="/magazinejs/article/" src="./app/children/article/article.rmd.html" is="as-frameless"></iframe>
-                        <iframe path="/magazinejs/publishers/" src="./app/children/publisher/collection.rmd.html" is="as-frameless"></iframe>
-                        <iframe path="/magazinejs/join/" src="./app/children/join/join.rmd.html" is="as-frameless"></iframe>
-                        <iframe path="/magazinejs/about/" src="./app/children/about/about.rmd.html" is="as-frameless"></iframe>
-                        <iframe path="/magazinejs/404/" src="./app/children/404/404.rmd.html" is="as-frameless"></iframe>
-                        <iframe path="**/404" src="./app/children/404/404.rmd.html" is="as-frameless"></iframe>
-                    </template>
                 </mag-router>
             </main>
             <footer class="app footer">

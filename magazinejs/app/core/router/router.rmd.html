@@ -1,57 +1,61 @@
 
 <body>
-    <template></template>
-    <style>
-        mag-router {
-            /* border: solid 1px tomato; */
-            display: block;
-        }
-    </style>
+    <template>
+        <rmd-outlet></rmd-outlet>
+        <style>
+            mag-router {
+                border: solid 1px tomato;
+                display: block;
+                
+                rmd-outlet {
+                    display: block;
+                }
+                
+            }
+        </style>
+    </template>
     <script type="module">
-        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
-        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
-        import { publishers, articles, published, tags } from '/magazinejs/app/core/data/data.js';
+        import { utilities } from '/asxs/v2.0.0/core/utilities/utilities.js';
+        import { Route, root } from '/magazinejs/app/routes.js';
         
-        customElement('mag-router')
-        (class MagazineJSRouterElement extends CustomElement {
+        const { log } = console;
+        const router = new (class Router {
+            #root = root;
+            #template = document.querySelector('template');
+            #content = this.#template.content;
+            #children = this.#content.children;
+            #outlet = this.#children[0];
             
-            stabilize() {
-                this.idle();
-            }
-            
-            createRenderRoot() {
-                return this;
-            }
-            
-            #getRouteNode(content, pathname, child, ...more) {
-                if (!child) return content.querySelector('*[path="**/404"]');
-                const { attributes } = child;
-                const { path: { value: path } } = attributes;
-                const matches = this.#matches(path, pathname);
+            constructor() {
+                const { top } = window;
+                const { location, history } = top;
+                const { pathname } = new URL(location);
                 
-                if (matches) return child.cloneNode(true);
-                return this.#getRouteNode(content, pathname, ...more);
+                history.replaceState({ initial: true }, '', pathname);
+                Route.attach(this);
+                setTimeout(x => this.#init(), 0);
             }
             
-            #matches(path, pathname) {
-                return (path === pathname);  // todo: sophisticate
+            async #init() {
+                // frameElement.replaceWith(this.#content);
+                frameElement.after(this.#outlet);
+                frameElement.style.setProperty('display', 'none');
             }
             
-            #reveal(clone) {
-                this.appendChild(clone);
-            }
-            
-            connectedCallback( x = super.connectedCallback() ) {
-                const { parent } = window;
-                const { location } = parent;
-                const { pathname } = location;
-                const { content } = this.querySelector('template');
-                const { children } = content;
-                const clone = this.#getRouteNode(content, pathname, ...children);
+            call(state) {
+                if (state.initial) return;
+                const { rmd } = state;
+                const iframe = document.createElement('iframe', { is: 'as-frameless' });
                 
-                if (clone) this.#reveal(clone);
+                this.#outlet.innerHTML = '';
+                setTimeout(x => {
+                iframe.setAttribute('is', 'as-frameless');
+                iframe.onload = e => log(`@LOAD`, e.type, this.#outlet.innerHTML);
+                iframe.src = rmd;
+                this.#outlet.appendChild(iframe);
+                }, 1_000 * 0);
             }
             
-        });
+        })();
     </script>
 </body>

@@ -14,15 +14,6 @@ const worker = new (class ServiceWorkerLocal extends ServiceWorkerHandler {
         this.handle(e);
     }
     
-    ['https://magazinejs.otocarlson.workers.dev']({ url, method }, e) {
-        if (method !== 'GET') return;
-        const { origin } = new URL(url);
-        const redirect = url.replace(origin, CLOUDFLARE_ORIGIN_LOCAL);
-        const response = fetch(redirect);
-        
-        e.respondWith(response);
-    }
-    
     handleEvent(e) {
         if (e.type === 'fetch') return this.#handleFetch(e);
     }

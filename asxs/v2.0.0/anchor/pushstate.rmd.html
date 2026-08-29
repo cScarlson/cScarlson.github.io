@@ -1,0 +1,50 @@
+
+<body>
+    <script type="module">
+        const { log } = console;
+        const { top } = window;
+        const { customElements, HTMLAnchorElement, history, location } = top;
+        const TAGNAME = 'as-pushstate';
+        const has = !!customElements.get(TAGNAME);
+        
+        if (!has) customElements.define(TAGNAME, class AsXSAnchorPushstateElement extends HTMLAnchorElement {
+            #url = '';
+            
+            constructor() {
+                super();
+                this.#url = new URL(this.href);
+            }
+            
+            #handleClick(e, p = e.preventDefault()) {
+                const { href } = this;
+                const { pathname } = new URL(href);
+                
+                location.hash = `${pathname}`;
+            }
+            
+            #handleHashchange(e, p = e.preventDefault()) {
+                if (new URL(e.newURL).hash !== `#${this.#url.pathname}`) return;
+                const { href } = this;
+                const { pathname } = new URL(href);
+                
+                history.pushState({ pathname }, '', pathname);
+            }
+            
+            handleEvent(e) {
+                if (e.type === 'click') return this.#handleClick(e);
+                if (e.type === 'hashchange') return this.#handleHashchange(e);
+            }
+            
+            connectedCallback() {
+                this.addEventListener('click', this, true);
+                top.addEventListener('hashchange', this, true);
+            }
+            
+            disconnectedCallback() {
+                this.removeEventListener('click', this, true);
+                top.removeEventListener('hashchange', this, true);
+            }
+            
+        }, { extends: 'a' });
+    </script>
+</body>

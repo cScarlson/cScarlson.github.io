@@ -6,10 +6,10 @@ const { type } = environment;
 const { [type]: worker } = {
     'mck': undefined,
     'lcl': './service.worker.lcl.js',
-    'dev': undefined,
+    'dev': './service.worker.dev.js',
     'ssl': undefined,
     'stg': undefined,
     'prd': undefined,
 };
 
-if (worker) navigator.serviceWorker.register(worker, { scope: '/magazinejs/' });
+if (worker) navigator.serviceWorker.register(worker, { type: 'module', scope: '/magazinejs/' });

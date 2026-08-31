@@ -119,9 +119,6 @@
             
         }
     </style>
-    <template class="result">
-        <mag-article></mag-article>
-    </template>
     <script type="module">
         import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
         import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
@@ -131,11 +128,12 @@
         const { parent } = window;
         const { location } = parent;
         const { searchParams } = new URL(location);
-        const { content } = document.querySelector('template.result');
+        const TAGNAME = 'mag-article';
+        const content = document.createElement(TAGNAME);
         const id = searchParams.get('id');
         const article = $published.get(id);
         
-        customElement('mag-article')
+        customElement(TAGNAME)
         (class MagazineJSArticleElement extends CustomElement {
             ['crawler:template'] = new TemplateCrawler(this);
             article = article;

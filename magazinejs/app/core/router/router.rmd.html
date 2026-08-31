@@ -1,58 +1,109 @@
 
 <body>
     <template>
-        <rmd-outlet></rmd-outlet>
-        <style>
-            mag-router {
-                border: solid 1px tomato;
-                display: block;
-                
-                rmd-outlet {
-                    display: block;
-                }
-                
-            }
-        </style>
+        <mag-routelet></mag-routelet>
     </template>
+    <style>
+        mag-router {
+            /* border: solid 1px tomato; */
+            display: block;
+            
+            mag-routelet {
+                display: block;
+            }
+            
+        }
+    </style>
     <script type="module">
-        import { utilities } from '/asxs/v2.0.0/core/utilities/utilities.js';
-        import { Route, root } from '/magazinejs/app/routes.js';
+        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
+        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
+        import { publishers, articles, published, tags } from '/magazinejs/app/core/data/data.js';
         
         const { log } = console;
-        const router = new (class Router {
-            #root = root;
-            #template = document.querySelector('template');
-            #content = this.#template.content;
-            #children = this.#content.children;
-            #outlet = this.#children[0];
+        const pattern_param = /\{\w+\}/i;
+        customElement('mag-router')
+        (class MagazineJSRouterElement extends CustomElement {
+            state = { initial: true };
+            get #outlet() { return this.querySelector('mag-routelet') }
+            get #routes() { return this.querySelector('template') }
+            get #content() { return this.#routes.content }
+            get #children() { return this.#content.children }
+            get #_404() { return this.#content.querySelector('.404') }
             
-            constructor() {
+            stabilize() {
+                this.idle();
+            }
+            
+            createRenderRoot() {
+                return this;
+            }
+            
+            #reveal({ id, data }) {
+                const keys = Object.keys(data);
+                const dataset = keys.map( key => ({ key, value: data[key] }) );
+                const node = this.#content.querySelector(`[id="${id}"]`);
+                const clone = node.cloneNode(!true);
+                
+                for (const { key, value } of dataset) clone.setAttribute(`data-${key}`, value);
+                this.#outlet.innerHTML = clone.outerHTML;
+            }
+            
+            #match(segments, paths, ...more) {
+                if (!paths) return { found: false };
+                if (paths.length !== segments.length) return this.#match(segments, ...more);
+                const id = paths.join('/');
+                const values = segments.reduce(determine, []);
+                const data = values.reduce(get, {});
+                
+                function determine(matches, segment, i) {
+                    const { [i]: value } = paths;
+                    const paremeter = pattern_param.test(value);
+                    const match = value.substring(1, value.length - 1);
+                    
+                    if (value === '*') return [ ...matches, `${i}:${segment}` ];
+                    if (paremeter) return [ ...matches, `${match}:${segment}` ];
+                    if (value === segment) return [ ...matches, segment ];  // exact match
+                    return matches;
+                }
+                
+                function get(data, segment) {
+                    const [key, val] = segment.split(':');
+                    if (!key) return data;
+                    if (!val) return data;
+                    return { ...data, [key]: val };
+                }
+                
+                if (!values.length) return this.#match(segments, ...more);
+                if (values.length !== segments.length) return this.#match(segments, ...more);
+                return { id, data, values, found: true };
+            }
+            
+            #handlePopstate = setTimeout.bind(window, (e) => {
                 const { top } = window;
-                const { location, history } = top;
-                const { pathname } = new URL(location);
+                const { location } = top;
+                const { pathname } = location;
+                const segments = pathname.split('/');
+                const paths = [ ...this.#children ].map( element => element.id.split('/') );
+                const match = this.#match(segments, ...paths);
                 
-                history.replaceState({ initial: true }, '', pathname);
-                Route.attach(this);
-                setTimeout(x => this.#init(), 0);
+                if (!match.found) return;
+                this.state = match;
+                this.#reveal(match);
+            }, 0);
+            
+            handleEvent(e) {
+                if (e.type === 'popstate') return this.#handlePopstate(e);
             }
             
-            async #init() {
-                // frameElement.replaceWith(this.#content);
-                frameElement.after(this.#outlet);
-                frameElement.style.setProperty('display', 'none');
+            connectedCallback( x = super.connectedCallback() ) {
+                this.#handlePopstate({ type: 'initial' });
+                top.addEventListener('popstate', this, false);
             }
             
-            call(state) {
-                if (state.initial) return;
-                const { rmd } = state;
-                const iframe = document.createElement('iframe', { is: 'as-frameless' });
-                
-                this.#outlet.innerHTML = '';
-                iframe.setAttribute('is', 'as-frameless');
-                iframe.src = rmd;
-                setTimeout(x => this.#outlet.appendChild(iframe), 1_000 * 0);
+            disonnectedCallback( x = super.disconnectedCallback() ) {
+                top.removeEventListener('popstate', this, false);
             }
             
-        })();
+        });
     </script>
 </body>

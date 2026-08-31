@@ -28,7 +28,7 @@
                 const trimmed = hash.substring(1);
                 const target = `${origin}${trimmed}`;
                 
-                if (target === href) history.pushState({ pathname }, '',`${pathname}${search}`);
+                if (target === href) history.replaceState({ pathname }, '',`${pathname}${search}`);
             }
             
             handleEvent(e) {

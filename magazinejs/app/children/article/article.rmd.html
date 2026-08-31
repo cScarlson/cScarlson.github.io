@@ -138,6 +138,10 @@
             ['crawler:template'] = new TemplateCrawler(this);
             article = article;
             
+            stabilize() {
+                this.idle();
+            }
+            
             createRenderRoot() {
                 return this;
             }

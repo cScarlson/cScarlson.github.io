@@ -17,17 +17,18 @@
             
             #handleClick(e, p = e.preventDefault()) {
                 const { href } = this;
-                const { pathname } = new URL(href);
-                
-                location.hash = `${pathname}`;
+                const { pathname, search } = new URL(href);
+                location.hash = `${pathname}${search}`;
             }
             
             #handleHashchange(e, p = e.preventDefault()) {
-                if (new URL(e.newURL).hash !== `#${this.#url.pathname}`) return;
-                const { href } = this;
-                const { pathname } = new URL(href);
+                const { newURL } = e;
+                const { href, pathname, search } = this.#url;
+                const { origin, hash } = new URL(newURL);
+                const trimmed = hash.substring(1);
+                const target = `${origin}${trimmed}`;
                 
-                history.pushState({ pathname }, '', pathname);
+                if (target === href) history.pushState({ pathname }, '',`${pathname}${search}`);
             }
             
             handleEvent(e) {

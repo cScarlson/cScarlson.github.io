@@ -14,7 +14,6 @@
     </template>
     <script src="/lib/marked.min.js"></script>
     <script>
-        console.log('MARKED?', marked);
         const template = document.querySelector('template');
         const promise = fetch('/magazinejs/app/children/join/join.md')
             .then( response => response.text() )

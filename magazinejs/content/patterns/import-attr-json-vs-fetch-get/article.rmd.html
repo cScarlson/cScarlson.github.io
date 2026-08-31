@@ -10,10 +10,17 @@
                 scrollbar-width: none;
             }
         </style>
-        <iframe src="/asxs/v2.0.0/markdown/markdown.rmd.html" is="as-frameless" data-src="/magazinejs/content/patterns/import-attr-json-vs-fetch-get/article.md"></iframe>
+        ${content}
     </template>
+    <script src="/lib/marked.min.js"></script>
     <script>
-        const { content } = document.querySelector('template');
-        frameElement.replaceWith(content);
+        const template = document.querySelector('template');
+        const promise = fetch('/magazinejs/content/patterns/import-attr-json-vs-fetch-get/article.md')
+            .then( response => response.text() )
+            .then( text => marked.parse(text) )
+            .then( readme => template.innerHTML.replace('${content}', readme) )
+            .then( innerHTML => template.innerHTML = innerHTML )
+            .then( innerHTML => frameElement.replaceWith(template.content) )
+            ;
     </script>
 </body>

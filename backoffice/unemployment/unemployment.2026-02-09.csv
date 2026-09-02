@@ -121,11 +121,11 @@ Date,           Company,                                    Contact,            
 "2026-08-XX",   "{TargetEmployerName}",                     "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "{JobTitle}",                                                   "{applicationType}",    "{LinksETC}"
 "2026-08-XX",   "{TargetEmployerName}",                     "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "{JobTitle}",                                                   "{applicationType}",    "{LinksETC}"
 
-"2026-0X-XX",   "{TargetEmployerName}",                     "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "{JobTitle}",                                                   "{applicationType}",    "{LinksETC}"
-"2026-0X-XX",   "{TargetEmployerName}",                     "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "{JobTitle}",                                                   "{applicationType}",    "{LinksETC}"
-"2026-0X-XX",   "{TargetEmployerName}",                     "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "{JobTitle}",                                                   "{applicationType}",    "{LinksETC}"
-"2026-0X-XX",   "{TargetEmployerName}",                     "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "{JobTitle}",                                                   "{applicationType}",    "{LinksETC}"
-"2026-0X-XX",   "{TargetEmployerName}",                     "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "{JobTitle}",                                                   "{applicationType}",    "{LinksETC}"
+"2026-08-24",   "Swarm Aero",                               "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "Software Engineer, Frontend Lead",                             "Applied",              "{LinksETC}"
+"2026-08-24",   "General Dynamics Information Technology",  "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "Principal Front End Engineer",                                 "Applied",              "{LinksETC}"
+"2026-08-24",   "Avochato",                                 "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "Frontend Developer (React/Typescript)",                        "Applied",              "{LinksETC}"
+"2026-08-2X",   "{TargetEmployerName}",                     "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "{JobTitle}",                                                   "{applicationType}",    "{LinksETC}"
+"2026-08-2X",   "{TargetEmployerName}",                     "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "{JobTitle}",                                                   "{applicationType}",    "{LinksETC}"
 
 "2026-0X-XX",   "{TargetEmployerName}",                     "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "{JobTitle}",                                                   "{applicationType}",    "{LinksETC}"
 "2026-0X-XX",   "{TargetEmployerName}",                     "{PhoneOrEmailOrAddress}",          "{PersonContactedIfAvailable}",     "{JobTitle}",                                                   "{applicationType}",    "{LinksETC}"

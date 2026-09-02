@@ -12,15 +12,10 @@
         </style>
         ${content}
     </template>
-    <script src="/lib/marked.min.js"></script>
-    <script>
-        const template = document.querySelector('template');
-        const promise = fetch('/magazinejs/content/patterns/import-attr-json-vs-fetch-get/article.md')
-            .then( response => response.text() )
-            .then( text => marked.parse(text) )
-            .then( readme => template.innerHTML.replace('${content}', readme) )
-            .then( innerHTML => template.innerHTML = innerHTML )
-            .then( innerHTML => frameElement.replaceWith(template.content) )
-            ;
+    <script id="markdown" type="application/json">
+        {
+            "url": "/magazinejs/content/patterns/import-attr-json-vs-fetch-get/article.md"
+        }
     </script>
+    <script src="/asxs/v2.0.0/markdown/markdown.rmd.script.js" type="module"></script>
 </body>

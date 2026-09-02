@@ -21,7 +21,7 @@
                 location.hash = `${pathname}${search}`;
             }
             
-            #handleHashchange(e, p = e.preventDefault()) {
+            #handleHashchange(e, p = e.preventDefault()) {  // todo: prevent all pushstate elements (including duplicates) from running
                 const { newURL } = e;
                 const { href, pathname, search } = this.#url;
                 const { origin, hash } = new URL(newURL);

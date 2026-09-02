@@ -1,14 +1,13 @@
 
 <body>
     <template>
-        <mag-routelet></mag-routelet>
+        <as-routelet></as-routelet>
     </template>
     <style>
-        mag-router {
-            /* border: solid 1px tomato; */
+        as-router {
             display: block;
             
-            mag-routelet {
+            as-routelet {
                 display: block;
             }
             
@@ -17,26 +16,19 @@
     <script type="module">
         import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
         import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
-        import { publishers, articles, published, tags } from '/magazinejs/app/core/data/data.js';
         
         const { log } = console;
+        const { top } = window;
         const pattern_param = /\{\w+\}/i;
-        customElement('mag-router')
+        
+        customElement('as-router')
         (class MagazineJSRouterElement extends CustomElement {
             state = { initial: true };
-            get #outlet() { return this.querySelector('mag-routelet') }
+            get #outlet() { return this.querySelector('as-routelet') }
             get #routes() { return this.querySelector('template') }
             get #content() { return this.#routes.content }
             get #children() { return this.#content.children }
             get #_404() { return this.#content.querySelector('.404') }
-            
-            stabilize() {
-                this.idle();
-            }
-            
-            createRenderRoot() {
-                return this;
-            }
             
             #reveal({ id, data }) {
                 const keys = Object.keys(data);
@@ -93,6 +85,14 @@
             
             handleEvent(e) {
                 if (e.type === 'popstate') return this.#handlePopstate(e);
+            }
+            
+            stabilize() {
+                this.idle();
+            }
+            
+            createRenderRoot() {
+                return this;
             }
             
             connectedCallback( x = super.connectedCallback() ) {

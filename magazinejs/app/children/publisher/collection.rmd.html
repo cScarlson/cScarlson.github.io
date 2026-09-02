@@ -9,18 +9,15 @@
                 <ul class="body publisher list">
                     <li class="publisher item" +for="let publisher of publishers">
                         <div class="publisher card">
-                            <a class="card name" href="./articles?type=publisher&q=${publisher.name}">${publisher.name}</a>
+                            <a class="card name" href="./articles/?type=publisher&q=${publisher.name}" is="as-pushstate">${publisher.name}</a>
                             <span class="card authors">${ publisher.authors.join(', ') }</span>
-                            <a class="card articles" href="./articles?type=publisher&q=${publisher.name}">Aricles Published: ${publisher.articles.length}</a>
+                            <a class="card articles" href="./articles/?type=publisher&q=${publisher.name}" is="as-pushstate">Aricles Published: ${publisher.articles.length}</a>
                         </div>
                     </li>
                 </ul>
             </div>
             <footer class="view footer"></footer>
         </div>
-    </template>
-    <template class="result">
-        <mag-publisher-collection></mag-publisher-collection>
     </template>
     <style>
         mag-publisher-collection {
@@ -85,19 +82,17 @@
         import { schemata } from '/magazinejs/app/core/data/data.js';
         import { Publisher } from './publisher.model.js';
         
-        const { top } = window;
-        const { location } = top;
-        const { content } = document.querySelector('template.result');
+        const TAGNAME = 'mag-publisher-collection';
+        const content = document.createElement(TAGNAME);
         const publishers = schemata.map( p => new Publisher(p) );
         
-        customElement('mag-publisher-collection')
+        customElement(TAGNAME)
         (class MagazineJSArticleCollectionElement extends CustomElement {
             ['crawler:template'] = new TemplateCrawler(this);
             publishers = publishers;
             
-            constructor() {
-                super();
-                console.log(`INSTANTIATED PUBLISHER COLLECTION`);
+            stabilize() {
+                this.idle();
             }
             
             createRenderRoot() {

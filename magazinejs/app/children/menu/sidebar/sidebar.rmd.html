@@ -11,11 +11,11 @@
             <form id="sidebarbody" class="menu body dialog" method="dialog">
                 <menu class="body menu">
                     <li class="menu item heading">Publishers</li>
-                    <iframe src="./app/children/menu/action.rmd.html" is="as-frameless" +for="let publisher of publishers" url="./articles?type=publisher&q=${publisher}">${publisher}</iframe>
+                    <iframe src="./app/children/menu/action.rmd.html" is="as-frameless" +for="let publisher of publishers" url="./articles/?type=publisher&q=${publisher}">${publisher}</iframe>
                     <li class="menu item heading">Authors</li>
-                    <iframe src="./app/children/menu/action.rmd.html" is="as-frameless" +for="let author of authors" url="./articles?type=author&q=${author}">${author}</iframe>
+                    <iframe src="./app/children/menu/action.rmd.html" is="as-frameless" +for="let author of authors" url="./articles/?type=author&q=${author}">${author}</iframe>
                     <li class="menu item heading">Tags</li>
-                    <iframe src="./app/children/menu/action.rmd.html" is="as-frameless" +for="let tag of tags" url="./articles?type=tag&q=${tag}">${tag}</iframe>
+                    <iframe src="./app/children/menu/action.rmd.html" is="as-frameless" +for="let tag of tags" url="./articles/?type=tag&q=${tag}">${tag}</iframe>
                 </menu>
             </form>
             <footer class="dialog footer">

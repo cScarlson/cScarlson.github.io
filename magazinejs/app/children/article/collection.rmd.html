@@ -20,9 +20,6 @@
             <footer class="view footer"></footer>
         </section>
     </template>
-    <template class="result">
-        <mag-article-collection></mag-article-collection>
-    </template>
     <style>
         mag-article-collection {
             display: block;
@@ -93,7 +90,8 @@
         const { parent } = window;
         const { location } = parent;
         const { searchParams } = new URL(location);
-        const { content } = document.querySelector('template.result');
+        const TAGNAME = 'mag-article-collection';
+        const content = document.createElement(TAGNAME);
         const type = `${ searchParams.get('type') }`;  // ensure is string
         const query = `${ searchParams.get('q') }`;  // ensure is string
         const { [type]: articles } = {
@@ -106,7 +104,7 @@
             'tag': $tags.get( query.toLowerCase() ),
         };
         
-        customElement('mag-article-collection')
+        customElement(TAGNAME)
         (class MagazineJSRouterElement extends CustomElement {
             ['crawler:template'] = new TemplateCrawler(this);
             type = type;

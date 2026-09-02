@@ -1,6 +1,12 @@
 
 <body>
     <template>
+        <link href="/asxs/v2.0.0/styles/reset.css" rel="stylesheet" />
+        <link href="/asxs/v2.0.0/styles/variables.css" rel="stylesheet" />
+        <link href="/asxs/v2.0.0/styles/theme.css" rel="stylesheet" />
+        <link href="/asxs/v2.0.0/styles/spacing.css" rel="stylesheet" />
+        <link href="/asxs/v2.0.0/styles/frameless.css" rel="stylesheet" />
+        <link href="/asxs/v2.0.0/icon/strategies/bootstrap-icons/variables.css" rel="stylesheet" />
         <div class="magazinejs app">
             <iframe src="/asxs/v2.0.0/button/button.rmd.html" is="as-frameless"></iframe>
             <iframe src="/asxs/v2.0.0/icon/icon.rmd.html" is="as-frameless"></iframe>
@@ -22,8 +28,6 @@
                     <iframe src="/asxs/v2.0.0/router/router.rmd.html" is="as-frameless"></iframe>
                     <template>
                         <iframe id="/magazinejs/" src="./app/children/home/home.rmd.html" is="as-frameless"></iframe>
-                        <!-- <iframe id="/magazinejs/{page}/" src="./app/children/about/about.rmd.html" is="as-frameless"></iframe> -->
-                        <!-- <iframe id="/magazinejs/*/" src="./app/children/about/about.rmd.html" is="as-frameless"></iframe> -->
                         <iframe id="/magazinejs/articles/" src="./app/children/article/collection.rmd.html" is="as-frameless"></iframe>
                         <iframe id="/magazinejs/article/" src="./app/children/article/article.rmd.html" is="as-frameless"></iframe>
                         <iframe id="/magazinejs/publishers/" src="./app/children/publisher/collection.rmd.html" is="as-frameless"></iframe>
@@ -114,22 +118,35 @@
             
         }
     </style>
+    <script type="text/javascript">
+        const { protocol: p, hostname } = location;
+        console.log(`#########################`, new URL(location));
+        const { [`${p}//${hostname}`]: origin } = {
+            'https://cscarlson.github.io': `${p}//${hostname}`,
+            'http://localhost': `${p}//${hostname}:3000`,
+            'blob://undefined': `http://localhost:3000`,
+            'blob://': `http://localhost:3000`,
+        };
+    </script>
     <script type="module">
-        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
-        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
-        import { TemplateCrawler } from '/asxs/v2.0.0/core/element/template.crawler.js';
-        
-        const { parent, frameElement } = window;
-        const { customElements, HTMLElement } = parent;
-        const TAGNAME = 'mag-app';
-        
-        customElement(TAGNAME)
-        (class MagazineJSAppElement extends CustomElement {
+        ;(async function apprmd() {
+            console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', p, `"${hostname}"`, `"${origin}"`);
+            const { CustomElement } = await import(`${origin}/asxs/v2.0.0/core/element/element.js`);
+            const { customElement } = await import(`${origin}/asxs/v2.0.0/core/element/custom.js`);
+            const { TemplateCrawler } = await import(`${origin}/asxs/v2.0.0/core/element/template.crawler.js`);
             
-            createRenderRoot() {
-                return this;
-            }
+            const { parent, frameElement } = window;
+            const { customElements, HTMLElement } = parent;
+            const TAGNAME = 'mag-app';
             
-        });
+            customElement(TAGNAME)
+            (class MagazineJSAppElement extends CustomElement {
+                
+                createRenderRoot() {
+                    return this;
+                }
+                
+            });
+        })();
     </script>
 </body>

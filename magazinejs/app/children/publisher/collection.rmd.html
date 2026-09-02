@@ -9,9 +9,9 @@
                 <ul class="body publisher list">
                     <li class="publisher item" +for="let publisher of publishers">
                         <div class="publisher card">
-                            <a class="card name" href="./articles?type=publisher&q=${publisher.name}">${publisher.name}</a>
+                            <a class="card name" href="./articles/?type=publisher&q=${publisher.name}" is="as-pushstate">${publisher.name}</a>
                             <span class="card authors">${ publisher.authors.join(', ') }</span>
-                            <a class="card articles" href="./articles?type=publisher&q=${publisher.name}">Aricles Published: ${publisher.articles.length}</a>
+                            <a class="card articles" href="./articles/?type=publisher&q=${publisher.name}" is="as-pushstate">Aricles Published: ${publisher.articles.length}</a>
                         </div>
                     </li>
                 </ul>

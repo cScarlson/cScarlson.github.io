@@ -95,8 +95,29 @@
                 return this;
             }
             
-            connectedCallback( x = super.connectedCallback() ) {
+            initialize() {
+                const { top } = window;
+                const { location } = top;
+                const { searchParams } = new URL(location);
+                const has = searchParams.has('redirect');
+                const redirect = searchParams.get('redirect');
+                const decoded = decodeURIComponent(redirect);
+                
+                if (has) return this.#redirect(decoded);
                 this.#handlePopstate({ type: 'initial' });
+            }
+            
+            #redirect(redirect) {
+                const { top } = window;
+                const { history } = top;
+                
+                log(`@REDIRECTED TO POPSTATE`, redirect);
+                history.replaceState({ redirect }, '', redirect);
+                this.#handlePopstate({ type: 'initial' });
+            }
+            
+            connectedCallback( x = super.connectedCallback() ) {
+                this.initialize();
                 top.addEventListener('popstate', this, false);
             }
             

@@ -10,7 +10,7 @@ const template = document.querySelector('template');
 const promise = fetch(url)
     .then( response => response.text() )
     .then( text => markdown.parse(text) )
-    .then( parsed => utilities.interpolate(parsed)(scope) )
+    // .then( parsed => utilities.interpolate(parsed)(scope) )  TODO: determine error when md has ```[code]```
     .then( readme => utilities.interpolate(template.innerHTML)({ content: readme }) )
     .then( innerHTML => template.innerHTML = innerHTML )
     .then( innerHTML => frameElement.replaceWith(template.content) )

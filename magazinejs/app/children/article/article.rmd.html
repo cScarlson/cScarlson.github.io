@@ -4,18 +4,18 @@
         <div class="magazinejs view article">
             <h1 class="view publisher">
                 Publisher: 
-                <a class="publisher action" href="/magazinejs/articles?type=publisher&q=${article.publisher}">${article.publisher}</a>
+                <a class="publisher action" href="/magazinejs/articles/?type=publisher&q=${article.publisher}" is="as-pushstate">${article.publisher}</a>
             </h1>
             <ul class="view author list">
                 <li class="author item heading">Authors</li>
                 <li class="author item data" +for="let author of article.authors">
-                    <a class="item action" href="/magazinejs/articles?type=author&q=${author}">${author}</a>
+                    <a class="item action" href="/magazinejs/articles/?type=author&q=${author}" is="as-pushstate">${author}</a>
                 </li>
             </ul>
             <ul class="view tag list">
                 <li class="tag item heading">Tags</li>
                 <li class="tag item data" +for="let tag of article.tags">
-                    <a class="item action" href="/magazinejs/articles?type=tag&q=${tag}">${tag}</a>
+                    <a class="item action" href="/magazinejs/articles/?type=tag&q=${tag}" is="as-pushstate">${tag}</a>
                 </li>
             </ul>
             <div class="view thumbnail" style="--url: url('${article.thumbnail}')"></div>
@@ -112,6 +112,7 @@
                     transform-origin: left;
                     &:hover {
                         scale: 5;
+                        box-shadow: 0 0 2px 0 black;
                     }
                 }
                 

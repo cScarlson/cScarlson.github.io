@@ -5,8 +5,8 @@ import '/asxs/v2.0.0/frameless/frameless.element.js';
 const { type } = environment;
 const { [type]: worker } = {
     'mck': undefined,
-    'lcl': './service.worker.lcl.js',
-    'dev': './service.worker.dev.js',
+    'lcl': '/magazinejs/service.worker.lcl.js',
+    'dev': '/magazinejs/service.worker.dev.js',
     'ssl': undefined,
     'stg': undefined,
     'prd': undefined,

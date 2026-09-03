@@ -12,10 +12,10 @@
         </style>
         ${content}
     </template>
-    <script src="/lib/marked.min.js"></script>
+    <script src="/lib/marked.min.js?platform=magazinejs&type=asset&host=cscarlson.github.io"></script>
     <script>
         const template = document.querySelector('template');
-        const promise = fetch('/magazinejs/app/children/join/join.md')
+        const promise = fetch('/magazinejs/app/children/join/join.md?platform=magazinejs&type=asset&host=cscarlson.github.io')
             .then( response => response.text() )
             .then( text => marked.parse(text) )
             .then( readme => template.innerHTML.replace('${content}', readme) )

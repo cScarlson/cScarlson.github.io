@@ -8,7 +8,19 @@ const browserSync = bs.create();
 function serve() {
     browserSync.init({
         port: 3001,
-        server: { baseDir: './' },
+        server: {
+            baseDir: './',
+            middleware: function handle(req, res, next) {
+                res.setHeader('Access-Control-Allow-Origin', '*');
+                res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+                if (req.method === 'OPTIONS') return this['handle:OPTIONS'](req, res, next);
+                next();
+            },
+            ['handle:OPTIONS'](req, res, next) {
+                res.statusCode = 200;
+                return res.end();
+            }
+        },
     });
 
     gulp.watch('./**/*').on( 'change', (uri, stats) => browserSync.reload() );

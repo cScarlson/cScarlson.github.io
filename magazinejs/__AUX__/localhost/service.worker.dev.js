@@ -1,24 +1,16 @@
 
 import { ServiceWorkerHandler } from './service.handler.env.js';
+import { default as manifest } from './host.manifest.json' with { type: 'json' };
 
 const { log } = console;
 const CLOUDFLARE_ORIGIN_LOCAL = 'http://localhost:4000';
+log(`:::::::::::::::::`, manifest, manifest);
 const worker = new (class ServiceWorkerLocal extends ServiceWorkerHandler {
     
     constructor(self) {
         super();
+        self.addEventListener('activate', this, true);
         self.addEventListener('fetch', this, true);
-    }
-    
-    ['/asxs/v2.0.0/frameless/frameless.element.js'](e) {
-        const { request } = e;
-        const { url } = request;
-        const { origin } = new URL(url);
-        const redirect = url.replace(origin, 'http://localhost:3000');
-        log(`@#@#@#@#@#@#@#@#@#@#`, redirect);
-        const response = fetch(redirect);
-        
-        e.respondWith(response);
     }
     
     ['[...pathname]'](request, e, [ root, ...more ]) {
@@ -27,12 +19,11 @@ const worker = new (class ServiceWorkerLocal extends ServiceWorkerHandler {
     }
     
     ['[...pathname]/asxs/*'](request, e, [ asxs, version, domain ]) {
-        log(`@...*`, asxs, version, domain);
         const { url } = request;
         const { origin } = new URL(url);
         const sub = url.replace(origin, 'http://localhost:3000');
         
-        log(`@CAUGHT:4000`, request, sub);
+        // log(`@CAUGHT:4000`, request.url, sub);
         e.respondWith( fetch(sub) );
     }
     
@@ -40,6 +31,33 @@ const worker = new (class ServiceWorkerLocal extends ServiceWorkerHandler {
         const { url } = request;
         const { origin } = new URL(url);
         const sub = url.replace(origin, 'http://localhost:4000');
+        
+        // log(`@CAUGHT:4000`, request, sub);
+        e.respondWith( fetch(sub) );
+    }
+    
+    ['?origin=http://localhost:3000'](request, e) {
+        const { url } = request;
+        const { origin } = new URL(url);
+        const sub = url.replace(origin, 'http://localhost:3000');
+        
+        log(`@CAUGHT:4000?WTF`, request, sub);
+        e.respondWith( fetch(sub) );
+    }
+    
+    ['?platform=localhost4000'](request, e) {
+        const { url } = request;
+        const { origin } = new URL(url);
+        const sub = url.replace(origin, 'http://localhost:3000');
+        
+        // log(`@CAUGHT:4000`, request, sub);
+        e.respondWith( fetch(sub) );
+    }
+    
+    ['http://localhost:4000/asxs/v2.0.0/button/button.rmd.html'](request, e) {
+        const { url } = request;
+        const { origin } = new URL(url);
+        const sub = url.replace(origin, 'http://localhost:3000');
         
         // log(`@CAUGHT:4000`, request, sub);
         e.respondWith( fetch(sub) );
@@ -99,6 +117,33 @@ const worker = new (class ServiceWorkerLocal extends ServiceWorkerHandler {
         e.respondWith( fetch(sub) );
     }
     
+    ['http://localhost:4000/magazinejs/app/children/menu/sidebar/sidebar.rmd.html'](request, e) {
+        const { url } = request;
+        const { origin } = new URL(url);
+        const sub = url.replace(origin, 'http://localhost:3000/magazinejs');
+        
+        // log(`@CAUGHT:4000`, request, sub);
+        e.respondWith( fetch(sub) );
+    }
+    
+    ['http://localhost:4000/magazinejs/app/children/menu/main/main.rmd.html'](request, e) {
+        const { url } = request;
+        const { origin } = new URL(url);
+        const sub = url.replace(origin, 'http://localhost:3000/magazinejs');
+        
+        // log(`@CAUGHT:4000`, request, sub);
+        e.respondWith( fetch(sub) );
+    }
+    
+    ['http://localhost:4000/magazinejs/app/children/footer/footer.rmd.html'](request, e) {
+        const { url } = request;
+        const { origin } = new URL(url);
+        const sub = url.replace(origin, 'http://localhost:3000/magazinejs');
+        
+        // log(`@CAUGHT:4000`, request, sub);
+        e.respondWith( fetch(sub) );
+    }
+    
     ['http://localhost:4000/app/children/404/404.rmd.html'](request, e) {
         const { url } = request;
         const { origin } = new URL(url);
@@ -122,64 +167,13 @@ const worker = new (class ServiceWorkerLocal extends ServiceWorkerHandler {
         this.handle(e);
     }
     
-    // ['[...pathname]'](request, e, pathnames) {
-    //     const { url } = request;
-    //     const { origin } = new URL(url);
-    //     const sub = url.replace(origin, 'http://localhost:3000');
-        
-    //     log(`@CAUGHT`, sub, request, pathnames);
-    //     e.respondWith( fetch(sub) );
-    // }
-    
-    // ['/asxs/v2.0.0/core/element/element.js'](request, e) {
-    //     const { url } = request;
-    //     const { origin } = new URL(url);
-    //     log(`@CAUGHT`, request);
-    //     e.respondWith( fetch( url.replace(origin, 'http://localhost:3000') ) );
-    // }
-    
-    // ['GET:https://magazinejs.otocarlson.workers.dev'](e) {
-    //     const { request } = e;
-    //     const { url } = request;
-    //     const { origin } = new URL(url);
-    //     const redirect = url.replace(origin, CLOUDFLARE_ORIGIN_LOCAL);
-    //     const response = fetch(redirect);
-        
-    //     e.respondWith(response);
-    // }
-    
-    // ['GET:http://localhost:3000/app/app.rmd.html'](e) {
-    //     console.log(`@GET:http://localhost:3000/app/app.rmd.html`, e.request.url);
-    //     // const { request } = e;
-    //     // const { url } = request;
-    //     // const { origin } = new URL(url);
-    //     // const redirect = url.replace(origin, 'http://localhost:3000');
-    //     // const response = fetch(redirect);
-        
-    //     // e.respondWith(response);
-    // }
-    
-    // ['GET:http://localhost:4000/asxs/v2.0.0/frameless/frameless.element.js'](e) {
-    //     const { request } = e;
-    //     const { url } = request;
-    //     const { origin } = new URL(url);
-    //     const redirect = url.replace(origin, 'http://localhost:3000');
-    //     const response = fetch(redirect);
-        
-    //     e.respondWith(response);
-    // }
-    
-    // ['GET:http://localhost:4000/asxs/v2.0.0/core/element/element.js'](e) {
-    //     const { request } = e;
-    //     const { url } = request;
-    //     const { origin } = new URL(url);
-    //     const redirect = url.replace(origin, 'http://localhost:3000');
-    //     const response = fetch(redirect);
-        
-    //     e.respondWith(response);
-    // }
+    #handleActivation(e) {
+        log(`@activation:4000`, e);
+        e.waitUntil( self.clients.claim() );
+    }
     
     handleEvent(e) {
+        if (e.type === 'activate') return this.#handleActivation(e);
         if (e.type === 'fetch') return this.#handleFetch(e);
     }
     

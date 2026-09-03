@@ -14,7 +14,7 @@
                 <h2 class="section title">Latest Articles</h2>
                 <ul class="section article list">
                     <li class="article item" +for="let article of latest">
-                        <iframe src="/magazinejs/app/children/article/card.rmd.html" is="as-frameless" article="${article.id}"></iframe>
+                        <iframe src="/magazinejs/app/children/article/card.rmd.html?platform=magazinejs&type=asset&host=cscarlson.github.io" is="as-frameless" article="${article.id}"></iframe>
                     </li>
                 </ul>
             </section>
@@ -31,7 +31,7 @@
                     file on your site at <code>{origin}/magazinejs</code>, send us the <code>origin</code> and you are ready to 
                     start publishing articles that earn you <span class="blurb hightlight">Ad Revenue</span>.
                 </p>
-                <a class="section action join" is="as-button" href="./join">Become A Publisher</a>
+                <a class="section action join" is="as-button" href="/magazinejs/join">Become A Publisher</a>
             </section>
         </div>
     </template>
@@ -111,10 +111,10 @@
         }
     </style>
     <script type="module">
-        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
-        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
-        import { TemplateCrawler } from '/asxs/v2.0.0/core/element/template.crawler.js';
-        import { publishers, authors, articles, tags, latest } from '/magazinejs/app/core/data/data.js';
+        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
+        import { customElement } from '/asxs/v2.0.0/core/element/custom.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
+        import { TemplateCrawler } from '/asxs/v2.0.0/core/element/template.crawler.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
+        import { publishers, authors, articles, tags, latest } from '/magazinejs/app/core/data/data.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
         
         const { content } = document.querySelector('template.result');
         

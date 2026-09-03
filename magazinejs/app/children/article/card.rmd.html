@@ -97,7 +97,7 @@
             }
         </style>
         <a class="article card" href="/magazinejs/article/?id=${id}" is="as-pushstate">
-            <div class="card thumbnail" style="--url: url('${thumbnail}')"></div>
+            <div class="card thumbnail" style="--url: url('${thumbnail}?platform=magazinejs&type=asset&host=cscarlson.github.io')"></div>
             <div class="card content">
                 <header class="content header">
                     <h3 class="header publisher">${publisher}</h3>
@@ -115,8 +115,8 @@
         </a>
     </template>
     <script type="module">
-        import { utilities } from '/asxs/v2.0.0/core/utilities/utilities.js';
-        import { $published } from '/magazinejs/app/core/data/data.js';
+        import { utilities } from '/asxs/v2.0.0/core/utilities/utilities.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
+        import { $published } from '/magazinejs/app/core/data/data.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
         
         const { attributes } = frameElement;
         const { article: { value: id } } = attributes;

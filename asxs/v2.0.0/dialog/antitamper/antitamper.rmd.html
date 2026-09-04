@@ -4,10 +4,9 @@
     <style></style>
     <script type="module">
         import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
-        import { root } from '/asxs/v2.0.0/core/element/window.js';
         
-        const { setTimeout, console } = window;
-        const { HTMLDialogElement, document } = root;
+        const { top, setTimeout, console } = window;
+        const { HTMLDialogElement, document } = top;
         const { head } = document;
         
         customElement('as-dialog-antitamper', { extends: 'dialog' })

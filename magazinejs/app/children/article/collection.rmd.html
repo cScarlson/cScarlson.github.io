@@ -82,6 +82,58 @@
         }
     </style>
     <script type="module">
+        const { top } = window;
+        const TAGNAME = 'tag-name';
+        const content = document.createElement(TAGNAME);  // candidate
+        
+        console.log(`RAN!`, top.test);
+        customElements.define(TAGNAME, class TestElement extends HTMLElement {
+            
+            constructor() {
+                super();
+                console.log(`CONSTRUCTED!`);
+                this.innerHTML = `<h1>Test Element - ${new Date().toISOString()}</h1>`;
+            }
+            
+            handleEvent(e) {
+                console.log(`@EVENT`, e.type, e);
+                throw e.type;
+            }
+            
+            connectedCallback() {
+                console.log( `@connectedCallback`, frameElement);
+                this.addEventListener('click', this, true);
+                // this.parentElement.addEventListener('click', this, true);
+            }
+            
+            disconnectedCallback() {
+                console.log( `@disconnectedCallback`, frameElement);
+                this.removeEventListener('click', this, true);
+            }
+            
+            adoptedCallback() {
+                console.log(`@adoptedCallback`, this.ownerDocument === top.document, frameElement.parentElement);
+                // frameElement.parentElement.parentElement.addEventListener('click', this, true);
+                // // this.addEventListener('click', this, true);
+                // // this.ownerDocument.addEventListener('click', this, true);
+                // // top.document.addEventListener('click', this, true);
+                // // document.addEventListener('click', this, true);
+                // frameElement.parentElement.insertBefore(this, null);
+                // // frameElement.remove();
+                // // frameElement.replaceWith(content);
+            }
+            
+        });
+        
+        console.log(`RAN2`, content);
+        // document.body.appendChild(content);
+        // top.document.importNode(content);
+        // top.document.adoptNode(content);
+        // frameElement.replaceWith(content);  // still does not receive events
+        // frameElement.after(document.body.appendChild(content));  // still receives events
+        frameElement.replaceWith( top.document.adoptNode( document.body.appendChild(content) ) );  // still does not receive events
+    </script>
+    <script type="module-x">
         import { CustomElement } from '/asxs/v2.0.0/core/element/element.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
         import { customElement } from '/asxs/v2.0.0/core/element/custom.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
         import { TemplateCrawler } from '/asxs/v2.0.0/core/element/template.crawler.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
@@ -90,6 +142,8 @@
         const TAGNAME = 'mag-article-collection';
         const content = document.createElement(TAGNAME);
         
+        window.top.console.log(`window.top.console.log`, content);
+        console.log(`console.log`, content);
         customElement(TAGNAME)
         (class MagazineJSRouterElement extends CustomElement {
             x = console.log(`@THIS`, this);
@@ -116,7 +170,6 @@
                 };
                 
                 if (!articles) location.assign('/magazinejs/404');  // todo: this should just be a message of zero results found
-                console.log(`@ARTICLE COLLECTION...`, type, query, $tags, articles, this.articles);
                 this.type = type;
                 this.query = query;
                 this.articles = articles;
@@ -129,9 +182,11 @@
             createRenderRoot() {
                 return this;
             }
-            
-            disconnectedCallback(x = super.disconnectedCallback()) {
-                // frameElement.remove();
+    
+            disconnectedCallback( x = super.disconnectedCallback ) {
+                console.log(`@collection.disconnectedCallback#frameElement.isConnected`, frameElement.isConnected, frameElement.parentElement);
+                if (frameElement.isConnected) frameElement.remove();
+                super.disconnectedCallback();
             }
             
         });

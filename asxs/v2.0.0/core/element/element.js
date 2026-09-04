@@ -1,9 +1,8 @@
 
 import { utilities } from '/asxs/v2.0.0/core/utilities/utilities.js';
-import { root } from './window.js';
 
-const { frameElement } = window;
-const { HTMLElement, console, document: { head } } = root;
+const { top, frameElement } = window;
+const { HTMLElement, console, document: { head } } = top;
 const { log } = console;
 
 frameElement.style.setProperty('box-sizing', 'border-box', 'important');
@@ -45,6 +44,11 @@ class Basic extends Nativeish {
     root = this.createRenderRoot();
     template = document.querySelector('template').cloneNode(true);
     style = Basic.styles.getOrInsert( location.href, document.querySelector('style') );
+    
+    constructor() {
+        super();
+        if (this.tagName === 'mag-article-collection') console.log(`@element`, this.tagName);
+    }
     
     handleEvent(e) {  // e.g: <input data-(focus)="handleFocus" /> & { 'focus:handleFocus': (e) => e }
         const { type, target } = e;

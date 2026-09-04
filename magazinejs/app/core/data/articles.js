@@ -11,8 +11,8 @@ function reduce($, entity) {
 }
 
 function refine($, article) {
-    const { publisher, origin } = this;
-    const model = new Article({ ...article, publisher, origin });
+    const { publisher, host } = this;
+    const model = new Article({ ...article, publisher, host });
     return $.set(model.id, model);
 }
 

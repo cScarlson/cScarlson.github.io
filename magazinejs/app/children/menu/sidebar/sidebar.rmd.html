@@ -1,8 +1,8 @@
 
 <body>
     <template>
-        <iframe src="/asxs/v2.0.0/dialog/dialog.rmd.html" is="as-frameless"></iframe>
-        <iframe src="/asxs/v2.0.0/dialog/quickview/quickview.rmd.html" is="as-frameless"></iframe>
+        <iframe src="/asxs/v2.0.0/dialog/dialog.rmd.html?platform=magazinejs&type=asset&host=cscarlson.github.io" is="as-frameless"></iframe>
+        <iframe src="/asxs/v2.0.0/dialog/quickview/quickview.rmd.html?platform=magazinejs&type=asset&host=cscarlson.github.io" is="as-frameless"></iframe>
         <dialog id="sidebar" class="header menu sidebar backdrop clear" is="as-dialog" modus="quickview" position="inline-start" popover>
             <header class="dialog header">
                 <h1 class="header title">Browse Articles By</h1>
@@ -11,11 +11,11 @@
             <form id="sidebarbody" class="menu body dialog" method="dialog">
                 <menu class="body menu">
                     <li class="menu item heading">Publishers</li>
-                    <iframe src="./app/children/menu/action.rmd.html" is="as-frameless" +for="let publisher of publishers" url="./articles?type=publisher&q=${publisher}">${publisher}</iframe>
+                    <iframe src="/magazinejs/app/children/menu/action.rmd.html?platform=magazinejs&type=asset&host=cscarlson.github.io" is="as-frameless" +for="let publisher of publishers" url="/magazinejs/articles/?type=publisher&q=${publisher}">${publisher}</iframe>
                     <li class="menu item heading">Authors</li>
-                    <iframe src="./app/children/menu/action.rmd.html" is="as-frameless" +for="let author of authors" url="./articles?type=author&q=${author}">${author}</iframe>
+                    <iframe src="/magazinejs/app/children/menu/action.rmd.html?platform=magazinejs&type=asset&host=cscarlson.github.io" is="as-frameless" +for="let author of authors" url="/magazinejs/articles/?type=author&q=${author}">${author}</iframe>
                     <li class="menu item heading">Tags</li>
-                    <iframe src="./app/children/menu/action.rmd.html" is="as-frameless" +for="let tag of tags" url="./articles?type=tag&q=${tag}">${tag}</iframe>
+                    <iframe src="/magazinejs/app/children/menu/action.rmd.html?platform=magazinejs&type=asset&host=cscarlson.github.io" is="as-frameless" +for="let tag of tags" url="/magazinejs/articles/?type=tag&q=${tag}">${tag}</iframe>
                 </menu>
             </form>
             <footer class="dialog footer">
@@ -64,10 +64,10 @@
         }
     </style>
     <script type="module">
-        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
-        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
-        import { TemplateCrawler } from '/asxs/v2.0.0/core/element/template.crawler.js';
-        import { publishers, tags, authors } from '/magazinejs/app/core/data/data.js';
+        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
+        import { customElement } from '/asxs/v2.0.0/core/element/custom.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
+        import { TemplateCrawler } from '/asxs/v2.0.0/core/element/template.crawler.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
+        import { publishers, tags, authors } from '/magazinejs/app/core/data/data.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
         
         const { parent, frameElement } = window;
         const { customElements, HTMLElement } = parent;

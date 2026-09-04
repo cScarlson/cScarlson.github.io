@@ -1,0 +1,51 @@
+
+<body>
+    <script type="module">
+        const { log } = console;
+        const { top } = window;
+        const { customElements, HTMLAnchorElement, history, location } = top;
+        const TAGNAME = 'as-pushstate';
+        const has = !!customElements.get(TAGNAME);
+        
+        if (!has) customElements.define(TAGNAME, class AsXSAnchorPushstateElement extends HTMLAnchorElement {
+            #url = '';
+            
+            constructor() {
+                super();
+                this.#url = new URL(this.href);
+            }
+            
+            #handleClick(e, p = e.preventDefault()) {
+                const { href } = this;
+                const { pathname, search } = new URL(href);
+                location.hash = `${pathname}${search}`;
+            }
+            
+            #handleHashchange(e, p = e.preventDefault()) {  // todo: prevent all pushstate elements (including duplicates) from running
+                const { newURL } = e;
+                const { href, pathname, search } = this.#url;
+                const { origin, hash } = new URL(newURL);
+                const trimmed = hash.substring(1);
+                const target = `${origin}${trimmed}`;
+                
+                if (target === href) history.replaceState({ pathname }, '',`${pathname}${search}`);
+            }
+            
+            handleEvent(e) {
+                if (e.type === 'click') return this.#handleClick(e);
+                if (e.type === 'hashchange') return this.#handleHashchange(e);
+            }
+            
+            connectedCallback() {
+                this.addEventListener('click', this, true);
+                top.addEventListener('hashchange', this, true);
+            }
+            
+            disconnectedCallback() {
+                this.removeEventListener('click', this, true);
+                top.removeEventListener('hashchange', this, true);
+            }
+            
+        }, { extends: 'a' });
+    </script>
+</body>

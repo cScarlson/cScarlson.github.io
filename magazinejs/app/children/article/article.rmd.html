@@ -4,22 +4,22 @@
         <div class="magazinejs view article">
             <h1 class="view publisher">
                 Publisher: 
-                <a class="publisher action" href="/magazinejs/articles?type=publisher&q=${article.publisher}">${article.publisher}</a>
+                <a class="publisher action" href="/magazinejs/articles/?type=publisher&q=${article.publisher}" is="as-pushstate">${article.publisher}</a>
             </h1>
             <ul class="view author list">
                 <li class="author item heading">Authors</li>
                 <li class="author item data" +for="let author of article.authors">
-                    <a class="item action" href="/magazinejs/articles?type=author&q=${author}">${author}</a>
+                    <a class="item action" href="/magazinejs/articles/?type=author&q=${author}" is="as-pushstate">${author}</a>
                 </li>
             </ul>
             <ul class="view tag list">
                 <li class="tag item heading">Tags</li>
                 <li class="tag item data" +for="let tag of article.tags">
-                    <a class="item action" href="/magazinejs/articles?type=tag&q=${tag}">${tag}</a>
+                    <a class="item action" href="/magazinejs/articles/?type=tag&q=${tag}" is="as-pushstate">${tag}</a>
                 </li>
             </ul>
-            <div class="view thumbnail" style="--url: url('${article.thumbnail}')"></div>
-            <iframe src="${article.rmd}" is="as-frameless"></iframe>
+            <div class="view thumbnail" style="--url: url('${article.thumbnail}?platform=magazinejs&type=asset&target=article#${article.origin}')"></div>
+            <iframe src="${article.rmd}?platform=magazinejs&type=asset&target=article#${article.origin}" is="as-frameless"></iframe>
         </div>
     </template>
     <style>
@@ -112,6 +112,7 @@
                     transform-origin: left;
                     &:hover {
                         scale: 5;
+                        box-shadow: 0 0 2px 0 black;
                     }
                 }
                 
@@ -119,26 +120,29 @@
             
         }
     </style>
-    <template class="result">
-        <mag-article></mag-article>
-    </template>
     <script type="module">
-        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
-        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
-        import { TemplateCrawler } from '/asxs/v2.0.0/core/element/template.crawler.js';
-        import { $published } from '/magazinejs/app/core/data/data.js';
+        import { environment } from '/env/env.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
+        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
+        import { customElement } from '/asxs/v2.0.0/core/element/custom.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
+        import { TemplateCrawler } from '/asxs/v2.0.0/core/element/template.crawler.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
+        import { $published } from '/magazinejs/app/core/data/data.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
         
         const { parent } = window;
         const { location } = parent;
         const { searchParams } = new URL(location);
-        const { content } = document.querySelector('template.result');
+        const TAGNAME = 'mag-article';
+        const content = document.createElement(TAGNAME);
         const id = searchParams.get('id');
         const article = $published.get(id);
         
-        customElement('mag-article')
+        customElement(TAGNAME)
         (class MagazineJSArticleElement extends CustomElement {
             ['crawler:template'] = new TemplateCrawler(this);
             article = article;
+            
+            stabilize() {
+                this.idle();
+            }
             
             createRenderRoot() {
                 return this;

@@ -5,11 +5,11 @@ import '/asxs/v2.0.0/frameless/frameless.element.js';
 const { type } = environment;
 const { [type]: worker } = {
     'mck': undefined,
-    'lcl': './service.worker.lcl.js',
-    'dev': undefined,
+    'lcl': '/magazinejs/service.worker.lcl.js',
+    'dev': '/magazinejs/service.worker.dev.js',
     'ssl': undefined,
     'stg': undefined,
     'prd': undefined,
 };
 
-if (worker) navigator.serviceWorker.register(worker, { scope: '/magazinejs/' });
+if (worker) navigator.serviceWorker.register(worker, { type: 'module', scope: '/magazinejs/' });

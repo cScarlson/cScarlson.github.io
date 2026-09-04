@@ -41,9 +41,10 @@ class Nativeish extends HTMLElement {
 }
 
 class Basic extends Nativeish {
+    static styles = Basic.styles || new Map();  // @footnotes#styles
     root = this.createRenderRoot();
     template = document.querySelector('template');
-    style = document.querySelector('style');
+    style = Basic.styles.getOrInsert( location.href, document.querySelector('style') );
     
     handleEvent(e) {  // e.g: <input data-(focus)="handleFocus" /> & { 'focus:handleFocus': (e) => e }
         const { type, target } = e;
@@ -118,3 +119,22 @@ export {
     Autorender as Heroic,
     Sandbox as Legendary
 };
+
+/* ================================================================================================================================
+@footnotes#styles
+NOTE: this line has the potential to incur a Memory Leak as there is no obvious way to perform cache invalidation on its 
+collection.
+
+When using an RMD router (or perhaps any navigation that repeatedly reloads the same RMD), the HTMLStyleElement instance 
+(this.style) became null on consecutive reloads of the given RMD after the Custom Element instance (Basic) was disconnected and 
+destroyed from the Heap. After such, reloading the Custom Element reinstantiated the instance from the static class, which 
+thereafter existed only in the top frame (window.top); this is because window.top.customElements.define was never called again 
+(as it's behind an if-statement for error prevention). Therefore, calling [the child frame's] document.querySelector no longer 
+retrieved a style node from the child frame's document/body but simply could not find one because the child frame's `document` 
+object queried a separate Browsing Context, which had already been destroyed after the first load of the RMD. That is, it was 
+using something of a "Ghost Browsing Context" to call document.querySelector. In other words: {ghost}.querySelector returns null.
+
+
+@footnotes#{template}
+...
+================================================================================================================================ */

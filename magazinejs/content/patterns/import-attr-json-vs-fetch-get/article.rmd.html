@@ -10,10 +10,12 @@
                 scrollbar-width: none;
             }
         </style>
-        <iframe src="/asxs/v2.0.0/markdown/markdown.rmd.html" is="as-frameless" data-src="/magazinejs/content/patterns/import-attr-json-vs-fetch-get/article.md"></iframe>
+        ${content}
     </template>
-    <script>
-        const { content } = document.querySelector('template');
-        frameElement.replaceWith(content);
+    <script id="markdown" type="application/json">
+        {
+            "url": "/magazinejs/content/patterns/import-attr-json-vs-fetch-get/article.md?platform=magazinejs&type=asset&host=cscarlson.github.io"
+        }
     </script>
+    <script src="/asxs/v2.0.0/markdown/markdown.rmd.script.js?platform=magazinejs&type=asset&host=cscarlson.github.io" type="module"></script>
 </body>

@@ -1,38 +1,45 @@
 
 <body>
     <template>
+        <link href="/asxs/v2.0.0/styles/reset.css?platform=magazinejs&type=asset&host=cscarlson.github.io" rel="stylesheet" />
+        <link href="/asxs/v2.0.0/styles/variables.css?platform=magazinejs&type=asset&host=cscarlson.github.io" rel="stylesheet" />
+        <link href="/asxs/v2.0.0/styles/theme.css?platform=magazinejs&type=asset&host=cscarlson.github.io" rel="stylesheet" />
+        <link href="/asxs/v2.0.0/styles/spacing.css?platform=magazinejs&type=asset&host=cscarlson.github.io" rel="stylesheet" />
+        <link href="/asxs/v2.0.0/styles/frameless.css?platform=magazinejs&type=asset&host=cscarlson.github.io" rel="stylesheet" />
+        <link href="/asxs/v2.0.0/icon/strategies/bootstrap-icons/variables.css?platform=magazinejs&type=asset&host=cscarlson.github.io" rel="stylesheet" />
         <div class="magazinejs app">
-            <iframe src="/asxs/v2.0.0/button/button.rmd.html" is="as-frameless"></iframe>
-            <iframe src="/asxs/v2.0.0/icon/icon.rmd.html" is="as-frameless"></iframe>
+            <iframe src="/asxs/v2.0.0/button/button.rmd.html?platform=magazinejs&type=asset&host=cscarlson.github.io" is="as-frameless"></iframe>
+            <iframe src="/asxs/v2.0.0/icon/icon.rmd.html?platform=magazinejs&type=asset&host=cscarlson.github.io" is="as-frameless"></iframe>
+            <iframe src="/asxs/v2.0.0/anchor/pushstate.rmd.html?platform=magazinejs&type=asset&host=cscarlson.github.io" is="as-frameless"></iframe>
             <mag-menu-sidebar>
-                <iframe src="./app/children/menu/sidebar/sidebar.rmd.html" is="as-frameless"></iframe>
+                <iframe src="/magazinejs/app/children/menu/sidebar/sidebar.rmd.html?platform=magazinejs&type=asset&host=cscarlson.github.io" is="as-frameless"></iframe>
             </mag-menu-sidebar>
             <header class="app header">
                 <span class="header branding">
                     <button class="branding action menu open" is="as-button" popovertarget="sidebar">
-                        <as-icon type="menu" strategy="bootstrap-icons"></as-icon>
+                        <as-icon class="action icon" type="menu" strategy="bootstrap-icons"></as-icon>
                     </button>
-                    <a class="branding title" href="/magazinejs">/magazinejs</a>
+                    <a class="branding title" href="/magazinejs/" is="as-pushstate">/magazinejs</a>
                 </span>
-                <iframe src="./app/children/menu/main/main.rmd.html" is="as-frameless"></iframe>
+                <iframe src="/magazinejs/app/children/menu/main/main.rmd.html?platform=magazinejs&type=asset&host=cscarlson.github.io" is="as-frameless"></iframe>
             </header>
             <main class="app body">
-                <mag-router>
-                    <iframe src="./app/core/router/router.rmd.html" is="as-frameless"></iframe>
+                <as-router>
+                    <iframe src="/asxs/v2.0.0/router/router.rmd.html?platform=magazinejs&type=asset&host=cscarlson.github.io" is="as-frameless"></iframe>
                     <template>
-                        <iframe path="/magazinejs/" src="./app/children/home/home.rmd.html" is="as-frameless"></iframe>
-                        <iframe path="/magazinejs/articles/" src="./app/children/article/collection.rmd.html" is="as-frameless"></iframe>
-                        <iframe path="/magazinejs/article/" src="./app/children/article/article.rmd.html" is="as-frameless"></iframe>
-                        <iframe path="/magazinejs/publishers/" src="./app/children/publisher/collection.rmd.html" is="as-frameless"></iframe>
-                        <iframe path="/magazinejs/join/" src="./app/children/join/join.rmd.html" is="as-frameless"></iframe>
-                        <iframe path="/magazinejs/about/" src="./app/children/about/about.rmd.html" is="as-frameless"></iframe>
-                        <iframe path="/magazinejs/404/" src="./app/children/404/404.rmd.html" is="as-frameless"></iframe>
-                        <iframe path="**/404" src="./app/children/404/404.rmd.html" is="as-frameless"></iframe>
+                        <iframe id="/magazinejs/" src="/magazinejs/app/children/home/home.rmd.html?platform=magazinejs&type=asset&host=cscarlson.github.io" is="as-frameless"></iframe>
+                        <iframe id="/magazinejs/articles/" src="/magazinejs/app/children/article/collection.rmd.html?platform=magazinejs&type=asset&host=cscarlson.github.io" is="as-frameless"></iframe>
+                        <iframe id="/magazinejs/article/" src="/magazinejs/app/children/article/article.rmd.html?platform=magazinejs&type=asset&host=cscarlson.github.io" is="as-frameless"></iframe>
+                        <iframe id="/magazinejs/publishers/" src="/magazinejs/app/children/publisher/collection.rmd.html?platform=magazinejs&type=asset&host=cscarlson.github.io" is="as-frameless"></iframe>
+                        <iframe id="/magazinejs/join/" src="/magazinejs/app/children/join/join.rmd.html?platform=magazinejs&type=asset&host=cscarlson.github.io" is="as-frameless"></iframe>
+                        <iframe id="/magazinejs/about/" src="/magazinejs/app/children/about/about.rmd.html?platform=magazinejs&type=asset&host=cscarlson.github.io" is="as-frameless"></iframe>
+                        <iframe id="/magazinejs/404/" src="/magazinejs/app/children/404/404.rmd.html?platform=magazinejs&type=asset&host=cscarlson.github.io" is="as-frameless"></iframe>
+                        <iframe id="/magazinejs/*/" class="404" src="/magazinejs/app/children/404/404.rmd.html?platform=magazinejs&type=asset&host=cscarlson.github.io" is="as-frameless"></iframe>
                     </template>
-                </mag-router>
+                </as-router>
             </main>
             <footer class="app footer">
-                <iframe src="./app/children/footer/footer.rmd.html" is="as-frameless"></iframe>
+                <iframe src="/magazinejs/app/children/footer/footer.rmd.html?platform=magazinejs&type=asset&host=cscarlson.github.io" is="as-frameless"></iframe>
             </footer>
         </div>
     </template>
@@ -76,13 +83,19 @@
                             border: none;
                             padding: 0;
                             background-color: transparent;
+                            
+                            .action.icon {
+                                --color: var(--blue-7);
+                            }
+                            
                         }
                         
                         .branding.title {
                             /* border: solid 1px tomato; */
                             margin: 0;
-                            color: var(--color-primary);
+                            color: var(--blue-7);
                             font-size: var(--font-size-2);
+                            font-weight: var(--font-weight-7);
                             text-decoration: none;
                         }
                         
@@ -112,9 +125,9 @@
         }
     </style>
     <script type="module">
-        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
-        import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
-        import { TemplateCrawler } from '/asxs/v2.0.0/core/element/template.crawler.js';
+        import { CustomElement } from '/asxs/v2.0.0/core/element/element.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
+        import { customElement } from '/asxs/v2.0.0/core/element/custom.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
+        import { TemplateCrawler } from '/asxs/v2.0.0/core/element/template.crawler.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
         
         const { parent, frameElement } = window;
         const { customElements, HTMLElement } = parent;

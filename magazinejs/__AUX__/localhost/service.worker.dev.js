@@ -18,7 +18,17 @@ const worker = new (class ServiceWorkerLocal extends ServiceWorkerHandler {
         const { origin } = new URL(url);
         const sub = url.replace(origin, HOST);
         
-        // log(`@CAUGHT:4000?platform...`, request, sub);s
+        // log(`@CAUGHT:4000?platform...`, request, sub);
+        e.respondWith( fetch(sub) );
+    }
+    
+    ['?platform=magazinejs&type=asset&target=article'](request, e) {
+        const { url } = request;
+        const { origin, hash } = new URL(url);
+        const host = hash.substring(1);
+        const sub = url.replace(origin, host);
+        
+        log(`@CAUGHT:4000#{host}...`, request, sub);
         e.respondWith( fetch(sub) );
     }
     

@@ -18,8 +18,8 @@
                     <a class="item action" href="/magazinejs/articles/?type=tag&q=${tag}" is="as-pushstate">${tag}</a>
                 </li>
             </ul>
-            <div class="view thumbnail" style="--url: url('${article.thumbnail}?platform=magazinejs&type=asset&host=cscarlson.github.io')"></div>
-            <iframe src="${article.rmd}?platform=magazinejs&type=asset&host=cscarlson.github.io" is="as-frameless"></iframe>
+            <div class="view thumbnail" style="--url: url('${article.thumbnail}?platform=magazinejs&type=asset&target=article#${article.origin}')"></div>
+            <iframe src="${article.rmd}?platform=magazinejs&type=asset&target=article#${article.origin}" is="as-frameless"></iframe>
         </div>
     </template>
     <style>
@@ -121,6 +121,7 @@
         }
     </style>
     <script type="module">
+        import { environment } from '/env/env.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
         import { CustomElement } from '/asxs/v2.0.0/core/element/element.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
         import { customElement } from '/asxs/v2.0.0/core/element/custom.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
         import { TemplateCrawler } from '/asxs/v2.0.0/core/element/template.crawler.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
@@ -134,6 +135,7 @@
         const id = searchParams.get('id');
         const article = $published.get(id);
         
+        console.log(`@ARTICLE`, article, environment);
         customElement(TAGNAME)
         (class MagazineJSArticleElement extends CustomElement {
             ['crawler:template'] = new TemplateCrawler(this);

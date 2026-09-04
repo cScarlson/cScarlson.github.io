@@ -2,7 +2,8 @@
 export class Article {
     id = 'Article[MISSING ID]';
     publisher = 'Article[MISSING PUBLISHER]';
-    host = 'Article[MISSING ORIGIN]';
+    origin = 'Article[MISSING ORIGIN]';
+    host = 'Article[MISSING HOST]';
     date = new Date().toISOString();  // derive dates using `new Date(YYYY, M, D, H, m).toISOString();`
     title = 'Article[MISSING TITLE]';
     subtitle = 'Article[MISSING SUBTITLE]';
@@ -13,18 +14,19 @@ export class Article {
     tags = [];
     
     constructor(options = {}) {
-        const { publisher, host: origin, date, title, subtitle, rmd, thumbnail, authors, tags } = { ...this, ...options };
-        const { host, pathname } = new URL(rmd, 'https://cscarlson.github.io');
+        const { publisher, host: HOST, date, title, subtitle, rmd, thumbnail, authors, tags } = { ...this, ...options };
+        const { origin, host, pathname } = new URL(rmd, 'http://localhost:3000');
         const [ hostname, port ] = host.split(':');
         const [ empty, magazinejs, ...segments ] = pathname.split('/');
         const filename = segments.pop();
         const slug = filename.split('.').join('');
         const id = [ hostname, port, ...segments, slug ].join('');  // use RMD URL to prevent duplicate entries of the same article
-        const url = new URL(rmd, 'https://cscarlson.github.io');
+        const url = new URL(rmd, 'http://localhost:3000');
         
         this.id = id;
         this.publisher = publisher;
-        this.host = origin;
+        this.origin = origin;
+        this.host = HOST;
         this.date = date;
         this.title = title;
         this.subtitle = subtitle;

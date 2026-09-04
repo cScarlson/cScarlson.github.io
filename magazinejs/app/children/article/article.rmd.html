@@ -135,7 +135,6 @@
         const id = searchParams.get('id');
         const article = $published.get(id);
         
-        console.log(`@ARTICLE`, article, environment);
         customElement(TAGNAME)
         (class MagazineJSArticleElement extends CustomElement {
             ['crawler:template'] = new TemplateCrawler(this);

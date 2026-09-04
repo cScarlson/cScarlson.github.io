@@ -14,4 +14,4 @@ export const { [type]: registry } = {
     'prd': prd,
 };
 
-console.log(`@ENVIRONMENT`, type, environment, registry.magazinejs);
+console.log(`@ENVIRONMENT`, type, environment);

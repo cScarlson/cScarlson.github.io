@@ -43,7 +43,7 @@ class Nativeish extends HTMLElement {
 class Basic extends Nativeish {
     static styles = Basic.styles || new Map();  // @footnotes#styles
     root = this.createRenderRoot();
-    template = document.querySelector('template');
+    template = document.querySelector('template').cloneNode(true);
     style = Basic.styles.getOrInsert( location.href, document.querySelector('style') );
     
     handleEvent(e) {  // e.g: <input data-(focus)="handleFocus" /> & { 'focus:handleFocus': (e) => e }
@@ -61,7 +61,8 @@ class Basic extends Nativeish {
     }
     
     connectedCallback( x = super.connectedCallback() ) {
-        if ('crawler:template' in this) this['crawler:template'].execute();
+        const { template } = this;
+        if ('crawler:template' in this) this['crawler:template'].execute(template);
     }
     
     update() {

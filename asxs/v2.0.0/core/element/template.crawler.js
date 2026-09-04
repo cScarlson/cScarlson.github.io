@@ -2,11 +2,12 @@
 import { utilities } from '/asxs/v2.0.0/core/utilities/utilities.js';
 
 export class TemplateCrawler {
-    template = document.querySelector('template');
     receiver = null;
+    template = document.querySelector('template');
     
     constructor(receiver) {
         this.receiver = receiver;
+        // this.receiver.template = this.template = this.template.cloneNode(true);
     }
     
     #crawl(element, ...more) {
@@ -67,8 +68,7 @@ export class TemplateCrawler {
         return interpolated;
     };
     
-    execute() {
-        const { template } = this;
+    execute(template) {
         const { content } = template;
         const { children } = content;
         

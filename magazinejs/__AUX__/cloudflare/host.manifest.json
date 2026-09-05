@@ -1,8 +1,8 @@
 {
-    "host": "http://localhost:4000",
+    "host": "https://magazinejs.otocarlson.workers.dev",
     "platform": "magazinejs",
     "version": "v1.0.0",
     "source": {
-        "host": "http://localhost:3000"
+        "host": "https://cscarlson.github.io"
     }
 }

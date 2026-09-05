@@ -97,7 +97,7 @@
             }
         </style>
         <a class="article card" href="/magazinejs/article/?id=${id}" is="as-pushstate">
-            <div class="card thumbnail" style="--url: url('${thumbnail}?platform=magazinejs&type=asset&target=article#${origin}')"></div>
+            <div class="card thumbnail" style="--url: url('${thumbnail}?platform=magazinejs&type=asset&target=article#${article.origin}')"></div>
             <div class="card content">
                 <header class="content header">
                     <h3 class="header publisher">${publisher}</h3>
@@ -122,8 +122,10 @@
         const { article: { value: id } } = attributes;
         const template = document.querySelector('template');
         const article = $published.get(id);
-        const interpolated = utilities.interpolate(template.innerHTML)(article);
+        const data = Object.assign({}, article, { article: { origin: 'fake!' } });
+        const interpolated = utilities.interpolate(template.innerHTML)(data);
         
+        console.log(`@CARD#article`, data.article.origin);
         template.innerHTML = interpolated;
         frameElement.replaceWith(template.content);
     </script>

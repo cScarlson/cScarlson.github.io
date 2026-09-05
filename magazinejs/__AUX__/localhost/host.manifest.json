@@ -1,8 +1,0 @@
-{
-    "host": "http://localhost:4000",
-    "platform": "magazinejs",
-    "version": "v1.0.0",
-    "source": {
-        "host": "http://localhost:3000"
-    }
-}

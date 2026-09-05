@@ -45,11 +45,6 @@ class Basic extends Nativeish {
     template = document.querySelector('template').cloneNode(true);
     style = Basic.styles.getOrInsert( location.href, document.querySelector('style') );
     
-    constructor() {
-        super();
-        if (this.tagName === 'mag-article-collection') console.log(`@element`, this.tagName);
-    }
-    
     handleEvent(e) {  // e.g: <input data-(focus)="handleFocus" /> & { 'focus:handleFocus': (e) => e }
         const { type, target } = e;
         const { dataset } = target;

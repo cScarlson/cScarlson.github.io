@@ -9,7 +9,7 @@ function serve() {
     browserSync.init({
         port: 4000,
         server: {
-            baseDir: './localhost',
+            baseDir: './cloudflare',
             middleware: function handle(req, res, next) {
                 res.setHeader('Access-Control-Allow-Origin', '*');
                 res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');

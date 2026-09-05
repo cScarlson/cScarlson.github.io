@@ -122,10 +122,10 @@
         const { article: { value: id } } = attributes;
         const template = document.querySelector('template');
         const article = $published.get(id);
-        const data = Object.assign({}, article, { article: { origin: 'fake!' } });
+        const data = Object.assign({}, article, { article });
         const interpolated = utilities.interpolate(template.innerHTML)(data);
         
-        console.log(`@CARD#article`, data.article.origin);
+        console.log(`@CARD#article`, article, data.article.origin);
         template.innerHTML = interpolated;
         frameElement.replaceWith(template.content);
     </script>

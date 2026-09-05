@@ -12,7 +12,7 @@ const { location } = top;
 const { origin, searchParams } = new URL(location);
 const env = searchParams.get('--env') || '';
 
-export const { [`${origin}/${env}`]: environment } = {
+export const { [`${origin}/${env}`]: environment, [`${origin}/${env}`]: { type } } = {
     'http://localhost:4000/mck': mck,
     'http://localhost:4000/lcl': lcl,
     'http://localhost:4000/dev': dev,
@@ -26,4 +26,4 @@ export const { [`${origin}/${env}`]: environment } = {
     'https://magazinejs.otocarlson.workers.dev/': prd,
 };
 
-log(`@ENV`, origin, env, `${origin}/${env}`);
+log(`@ENV`, origin, env, `${origin}/${env}`, type);

@@ -1,13 +1,15 @@
 
 class Environment {
     type = 'prd';
+    origin = 'file://localhost:-1/error/sentinel';
     worker = '';
     manifest = new Manifest();
     
     constructor(options = {}) {
-        const { type, worker, manifest } = { ...this, ...options };
+        const { type, origin, worker, manifest } = { ...this, ...options };
         
         this.type = type;
+        this.origin = origin;
         this.worker = worker;
         this.manifest = new Manifest(manifest);
         

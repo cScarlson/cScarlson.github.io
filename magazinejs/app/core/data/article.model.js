@@ -1,4 +1,8 @@
 
+import { environment } from '/env/env.js';
+
+const { origin: hostmaster } = environment;
+        
 export class Article {
     id = 'Article[MISSING ID]';
     publisher = 'Article[MISSING PUBLISHER]';
@@ -15,13 +19,13 @@ export class Article {
     
     constructor(options = {}) {
         const { publisher, host: HOST, date, title, subtitle, rmd, thumbnail, authors, tags } = { ...this, ...options };
-        const { origin, host, pathname } = new URL(rmd, 'http://localhost:9000');
+        const { origin, host, pathname } = new URL(rmd, hostmaster);
         const [ hostname, port ] = host.split(':');
         const [ empty, magazinejs, ...segments ] = pathname.split('/');
         const filename = segments.pop();
         const slug = filename.split('.').join('');
         const id = [ hostname, port, ...segments, slug ].join('');  // use RMD URL to prevent duplicate entries of the same article
-        const url = new URL(rmd, 'http://localhost:8000');
+        const url = new URL(rmd, hostmaster);
         
         this.id = id;
         this.publisher = publisher;

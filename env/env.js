@@ -12,8 +12,6 @@ const { location } = top;
 const { origin, searchParams } = new URL(location);
 const env = searchParams.get('--env') || '';
 
-log(`@ENV`, origin, env, `${origin}/${env}`);
-
 export const { [`${origin}/${env}`]: environment } = {
     'http://localhost:3000/mck': mck,
     'http://localhost:3000/lcl': lcl,
@@ -27,3 +25,5 @@ export const { [`${origin}/${env}`]: environment } = {
     'http://localhost:3001/': stg,
     'https://cscarlson.github.io/': prd,
 };
+
+log(`@ENV`, origin, env, `${origin}/${env}`);

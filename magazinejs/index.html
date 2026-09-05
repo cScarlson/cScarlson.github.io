@@ -13,4 +13,11 @@
 		<iframe src="/magazinejs/app/app.rmd.html?platform=magazinejs&type=asset&host=cscarlson.github.io" is="as-frameless"></iframe>
 	</mag-app>
 </body>
+<script>
+	window.test = 'test.....................';
+	window.__register = function registerElement(...args) {
+		console.log(`@__register`, args, this === window.top);
+		this.customElements.define(...args);
+	};
+</script>
 </html>

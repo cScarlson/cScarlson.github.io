@@ -26,4 +26,4 @@ export const { [`${origin}/${env}`]: environment } = {
     'https://magazinejs.otocarlson.workers.dev/': prd,
 };
 
-log(`@ENV`, origin, env, `${origin}/${env}`, environment);
+log(`@ENV`, origin, env, `${origin}/${env}`);

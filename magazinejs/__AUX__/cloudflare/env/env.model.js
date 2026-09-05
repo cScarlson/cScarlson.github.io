@@ -1,7 +1,7 @@
 
 class Environment {
     type = 'prd';
-    worker = './service.worker.js';
+    worker = '';
     manifest = new Manifest();
     
     constructor(options = {}) {

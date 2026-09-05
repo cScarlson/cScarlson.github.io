@@ -2,14 +2,6 @@
 import { environment } from '/env/env.js';
 import '/asxs/v2.0.0/frameless/frameless.element.js';
 
-const { type } = environment;
-const { [type]: worker } = {
-    'mck': undefined,
-    'lcl': '/magazinejs/service.worker.lcl.js',
-    'dev': '/magazinejs/service.worker.dev.js',
-    'ssl': undefined,
-    'stg': undefined,
-    'prd': undefined,
-};
+const { type, worker } = environment;
 
 if (worker) navigator.serviceWorker.register(worker, { type: 'module', scope: '/magazinejs/' });

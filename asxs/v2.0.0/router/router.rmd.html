@@ -34,7 +34,7 @@
                 const keys = Object.keys(data);
                 const dataset = keys.map( key => ({ key, value: data[key] }) );
                 const node = this.#content.querySelector(`[id="${id}"]`);
-                const clone = node.cloneNode(!true);
+                const clone = node.cloneNode(true);
                 
                 for (const { key, value } of dataset) clone.setAttribute(`data-${key}`, value);
                 this.#outlet.innerHTML = clone.outerHTML;

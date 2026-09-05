@@ -85,11 +85,10 @@
     </script>
     <script type="module">
         import { customElement } from '/asxs/v2.0.0/core/element/custom.js';
-        import { root } from '/asxs/v2.0.0/core/element/window.js';
         import { Queue } from '/asxs/v2.0.0/core/utilities/patterns/ds/queue.js';
         
-        const { frameElement } = window;
-        const { HTMLDialogElement, document } = root;
+        const { top, frameElement } = window;
+        const { HTMLDialogElement, document } = top;
         const { head } = document;
         const DEFAULT_MESSAGE = { type: '' };
         

@@ -1,7 +1,6 @@
 
-import { root } from '/asxs/v2.0.0/core/element/window.js';
-
-const { location } = root;
+const { top } = window;
+const { location } = top;
 const LANGUAGE_EN_US = 'en-US';
 const LANGUAGE_ES_MX = 'es-MX';
 const DIALECT_EN = 'en';

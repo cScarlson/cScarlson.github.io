@@ -313,19 +313,18 @@
     <script type="module">
         import { CustomElement } from '/asxs/v2.0.0/core/element/element.js';
         import { customElement, customElements } from '/asxs/v2.0.0/core/element/custom.js';
-        import { root } from '/asxs/v2.0.0/core/element/window.js';
         
-        const { frameElement } = window;
-        const { setTimeout, console } = root;
+        const { top, frameElement } = window;
+        const { setTimeout, console } = top;
         const { log } = console;
-        const timeout = setTimeout.bind(root);
+        const timeout = setTimeout.bind(top);
         
         customElement('at-home-hero')
         (class HomeHeroElement extends CustomElement {
             DELAY = (1000 * 1);
             wrapper = document.createElement('error');
             
-            #cycle = setTimeout.bind(root, (targets, target, ...more) => {
+            #cycle = setTimeout.bind(top, (targets, target, ...more) => {
                 if (this.wrapper.matches(':hover')) return this.#cycle(targets, target, ...more);
                 if (!target) return this.#cycle(targets, ...targets);
                 const { log } = console;

@@ -87,29 +87,38 @@
         import { TemplateCrawler } from '/asxs/v2.0.0/core/element/template.crawler.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
         import { published, $publishers, $authors, $tags } from '/magazinejs/app/core/data/data.js?platform=magazinejs&type=asset&host=cscarlson.github.io';
         
-        const { parent } = window;
-        const { location } = parent;
-        const { searchParams } = new URL(location);
         const TAGNAME = 'mag-article-collection';
         const content = document.createElement(TAGNAME);
-        const type = `${ searchParams.get('type') }`;  // ensure is string
-        const query = `${ searchParams.get('q') }`;  // ensure is string
-        const { [type]: articles } = {
-            '': published,
-            'undefined': published,
-            'null': published,
-            'all': published,
-            'publisher': $publishers.get(query),
-            'author': $authors.get(query),
-            'tag': $tags.get( query.toLowerCase() ),
-        };
         
         customElement(TAGNAME)
         (class MagazineJSRouterElement extends CustomElement {
             ['crawler:template'] = new TemplateCrawler(this);
-            type = type;
-            query = query;
-            articles = articles;
+            type = '';
+            query = '';
+            articles = [];
+            
+            constructor() {
+                super();
+                const { top } = window;
+                const { location } = top;
+                const { searchParams } = new URL(location);
+                const type = `${ searchParams.get('type') }`;  // ensure is string
+                const query = `${ searchParams.get('q') }`;  // ensure is string
+                const { [type]: articles } = {
+                    '': published,
+                    'undefined': published,
+                    'null': published,
+                    'all': published,
+                    'publisher': $publishers.get(query),
+                    'author': $authors.get(query),
+                    'tag': $tags.get( query.toLowerCase() ),
+                };
+                
+                if (!articles) location.assign('/magazinejs/404');  // todo: this should just be a message of zero results found
+                this.type = type;
+                this.query = query;
+                this.articles = articles;
+            }
             
             stabilize() {
                 this.idle();
@@ -121,7 +130,6 @@
             
         });
         
-        if (!articles) location.assign('/magazinejs/404');
-        else frameElement.after(content);
+        frameElement.after(content);
     </script>
 </body>

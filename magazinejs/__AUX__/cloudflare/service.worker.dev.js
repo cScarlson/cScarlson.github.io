@@ -18,7 +18,6 @@ const worker = new (class ServiceWorkerLocal extends ServiceWorkerHandler {
         const { origin } = new URL(url);
         const sub = url.replace(origin, HOST);
         
-        // log(`@CAUGHT:4000?platform...`, request, sub);
         e.respondWith( fetch(sub) );
     }
     
@@ -28,7 +27,6 @@ const worker = new (class ServiceWorkerLocal extends ServiceWorkerHandler {
         const host = hash.substring(1);
         const sub = url.replace(origin, host);
         
-        log(`@CAUGHT:4000#{host}...`, request, sub);
         e.respondWith( fetch(sub) );
     }
     
@@ -42,21 +40,18 @@ const worker = new (class ServiceWorkerLocal extends ServiceWorkerHandler {
         const { origin } = new URL(url);
         const sub = url.replace(origin, HOST);
         
-        // log(`@CAUGHT:4000`, request.url, sub);
         e.respondWith( fetch(sub) );
     }
     
     ['[...pathname]/env/*'](request, e, [ root ]) {
         const { url } = request;
         const { origin } = new URL(url);
-        const sub = url.replace(origin, 'http://localhost:4000');
+        const sub = url.replace(origin, location.origin);
         
-        // log(`@CAUGHT:4000`, request, sub);
         e.respondWith( fetch(sub) );
     }
     
     #handleFetch(e) {
-        // log(`@4000?whoDoneIt`, e.request);
         this.handle(e);
     }
     

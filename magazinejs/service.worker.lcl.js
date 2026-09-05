@@ -1,24 +1,16 @@
 
+import { ServiceWorkerHandler } from './service.handler.env.js';
+
 const CLOUDFLARE_ORIGIN_LOCAL = 'http://localhost:4000';
-const worker = new (class ServiceWorkerLocal {
+const worker = new (class ServiceWorkerLocal extends ServiceWorkerHandler {
     
     constructor(self) {
+        super();
+        self.addEventListener('activate', this, true);
         self.addEventListener('fetch', this, true);
     }
     
-    #handleFetch(e) {
-        const { request } = e;
-        const { url, method } = request;
-        const { href, origin, pathname } = new URL(url);
-        const { [`${method}:${href}`]: handleHREF, [`${method}:${origin}`]: handleOrigin, [`${method}:${pathname}`]: handlePathname } = this;
-        
-        if (handleHREF) handleHREF.call(this, e);
-        if (handleOrigin) handleOrigin.call(this, e);
-        if (handlePathname) handlePathname.call(this, e);
-    }
-    
-    ['GET:https://magazinejs.otocarlson.workers.dev'](e) {
-        const { request } = e;
+    ['https://magazinejs.otocarlson.workers.dev'](request, e) {
         const { url } = request;
         const { origin } = new URL(url);
         const redirect = url.replace(origin, CLOUDFLARE_ORIGIN_LOCAL);
@@ -27,7 +19,16 @@ const worker = new (class ServiceWorkerLocal {
         e.respondWith(response);
     }
     
+    #handleFetch(e) {
+        this.handle(e);
+    }
+    
+    #handleActivation(e) {
+        e.waitUntil( self.clients.claim() );
+    }
+    
     handleEvent(e) {
+        if (e.type === 'activate') return this.#handleActivation(e);
         if (e.type === 'fetch') return this.#handleFetch(e);
     }
     

@@ -1,0 +1,84 @@
+{
+    "publisher": "MagazineJS",
+    "host": "cscarlson.github.io",
+    "articles": [
+        {
+            "date": "2026-07-26T21:20:00.000Z",
+            "title": "(DEV) The Microfrontend Pattern",
+            "subtitle": "Turning The Web Into A Plugin Architecture",
+            "rmd": "http://localhost:3000/magazinejs/content/patterns/the-native-mfe-pattern/article.rmd.html",
+            "thumbnail": "http://localhost:3000/magazinejs/content/patterns/the-native-mfe-pattern/thumbnail.png",
+            "authors": [ "Cody Carlson" ],
+            "tags": [
+                "Frontend Development",
+                "JavaScript",
+                "CSS",
+                "HTML",
+                "RMD",
+                "Remote Module Definitions",
+                "The MFE Pattern",
+                "Plugin Architecture",
+                "Patterns",
+                "Architecture",
+                "The Web",
+                "Microfrontend"
+            ]
+        },
+        {
+            "date": "2026-07-26T21:20:00.000Z",
+            "title": "(DEV) Import Attr vs Fetch",
+            "subtitle": "Does The Import Attr Type JSON Replace Fetch GET?",
+            "rmd": "http://localhost:3000/magazinejs/content/patterns/import-attr-json-vs-fetch-get/article.rmd.html",
+            "thumbnail": "http://localhost:3000/magazinejs/content/patterns/import-attr-json-vs-fetch-get/thumbnail.png",
+            "authors": [ "Cody Carlson" ],
+            "tags": [
+                "Frontend Development",
+                "Backend Development",
+                "Servers",
+                "Database",
+                "JavaScript",
+                "Architecture",
+                "Patterns"
+            ]
+        },
+        {
+            "date": "2026-07-26T21:20:00.000Z",
+            "title": "(DEV) The Microfrontend Pattern",
+            "subtitle": "Turning The Web Into A Plugin Architecture",
+            "rmd": "http://localhost:3000/magazinejs/content/patterns/the-native-mfe-pattern/article.rmd.html?duplicate",
+            "thumbnail": "http://localhost:3000/magazinejs/content/patterns/the-native-mfe-pattern/thumbnail.png",
+            "authors": [ "Cody Carlson" ],
+            "tags": [
+                "Frontend Development",
+                "JavaScript",
+                "CSS",
+                "HTML",
+                "RMD",
+                "Remote Module Definitions",
+                "The MFE Pattern",
+                "Plugin Architecture",
+                "Patterns",
+                "Architecture",
+                "The Web",
+                "Microfrontend"
+            ]
+        },
+        {
+            "date": "2026-07-26T21:20:00.000Z",
+            "title": "(DEV) Import Attr vs Fetch",
+            "subtitle": "Does The Import Attr Type JSON Replace Fetch GET?",
+            "rmd": "http://localhost:3000/magazinejs/content/patterns/import-attr-json-vs-fetch-get/article.rmd.html?duplicate",
+            "thumbnail": "http://localhost:3000/magazinejs/content/patterns/import-attr-json-vs-fetch-get/thumbnail.png",
+            "authors": [ "Cody Carlson" ],
+            "tags": [
+                "Frontend Development",
+                "Backend Development",
+                "Servers",
+                "Database",
+                "JavaScript",
+                "Architecture",
+                "Patterns"
+            ]
+        }
+    ]
+}

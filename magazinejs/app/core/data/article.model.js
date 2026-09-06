@@ -17,12 +17,13 @@ export class Article {
     
     constructor(options = {}) {
         const { publisher, host: HOST, date, title, subtitle, rmd, thumbnail, authors, tags } = { ...this, ...options };
-        const { origin, host, pathname } = new URL(rmd, ORIGIN);
+        const { origin, host, pathname, search } = new URL(rmd, ORIGIN);
         const [ hostname, port ] = host.split(':');
         const [ empty, magazinejs, ...segments ] = pathname.split('/');
         const filename = segments.pop();
         const slug = filename.split('.').join('');
-        const id = [ hostname, port, ...segments, slug ].join('');  // use RMD URL to prevent duplicate entries of the same article
+        const cache = search.replace('?', '').replaceAll('&', '.').replaceAll('=', '-');
+        const id = [ hostname, port, ...segments, slug, cache ].join('');  // use RMD URL to prevent duplicate entries of the same article
         const url = new URL(rmd, ORIGIN);
         
         this.id = id;

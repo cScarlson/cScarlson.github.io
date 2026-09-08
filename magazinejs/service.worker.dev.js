@@ -1,6 +1,7 @@
 
 import { ServiceWorkerHandler } from './service.handler.env.js';
 
+const { log } = console;
 const CLOUDFLARE_ORIGIN_LOCAL = 'http://localhost:4000';
 const worker = new (class ServiceWorkerLocal extends ServiceWorkerHandler {
     
@@ -10,9 +11,9 @@ const worker = new (class ServiceWorkerLocal extends ServiceWorkerHandler {
         self.addEventListener('fetch', this, true);
     }
     
-    ['http://localhost:4000/magazinejs/index.lcl.json'](request, e) {
+    ['http://localhost:5000/magazinejs/index.lcl.json'](request, e) {
         const headers = new Headers({ 'Content-Type': 'application/json' });
-        const response = new Response('{ "publisher": "MagazineJS", "host": "cscarlson.github.io", "articles": [] }', { status: 200, headers });
+        const response = new Response('{ "publisher": "noop", "host": "noop", "articles": [] }', { status: 200, headers });
         log(`@WORKER`, request, response);
         e.respondWith(response);
     }

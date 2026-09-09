@@ -18,8 +18,8 @@
                     <a class="item action" href="/magazinejs/articles/?type=tag&q=${tag}" is="as-pushstate">${tag}</a>
                 </li>
             </ul>
-            <div class="view thumbnail" style="--url: url('${article.thumbnail}?platform=magazinejs&type=asset&target=article#${article.origin}')"></div>
-            <iframe src="${article.rmd}?platform=magazinejs&type=asset&target=article#${article.origin}" is="as-frameless"></iframe>
+            <div class="view thumbnail" style="--url: url('${article.thumbnail}')"></div>
+            <iframe src="${article.rmd}" is="as-frameless"></iframe>
         </div>
     </template>
     <style>

@@ -21,15 +21,6 @@ const worker = new (class ServiceWorkerLocal extends ServiceWorkerHandler {
         e.respondWith( fetch(sub) );
     }
     
-    ['?platform=magazinejs&type=asset&target=article'](request, e) {
-        const { url } = request;
-        const { origin, hash } = new URL(url);
-        const host = hash.substring(1);
-        const sub = url.replace(origin, host);
-        
-        e.respondWith( fetch(sub) );
-    }
-    
     ['[...pathname]'](request, e, [ root, ...more ]) {
         if (root === 'asxs') return this['[...pathname]/asxs/*'](request, e, [ root, ...more ]);
         if (root === 'env') return this['[...pathname]/env/*'](request, e, [ root, ...more ]);

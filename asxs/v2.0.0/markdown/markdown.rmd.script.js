@@ -1,5 +1,5 @@
 
-import { utilities } from '/asxs/v2.0.0/core/utilities/utilities.js';
+import { utilities } from 'https://cscarlson.github.io/asxs/v2.0.0/core/utilities/utilities.js';
 
 const { markdown } = utilities;
 const { innerText } = document.querySelector('script[type="application/json"][id="markdown"]');

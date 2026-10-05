@@ -1,0 +1,1 @@
+UI architect & author of MagazineJS. Built NASA-grade systems at Accuris. Now launching Tieback Technologies to re-engineer the web via native architectures. Denver outdoorsman, husband and pet dad to 3. https://github.com/cScarlson

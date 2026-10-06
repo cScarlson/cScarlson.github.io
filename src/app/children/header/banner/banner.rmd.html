@@ -1,0 +1,55 @@
+
+<body>
+    <template></template>
+    <template id="local">
+        <div class="header banner nwf">
+            <p class="banner message">
+                <span class="message emphasis">Breaking the Framework Treadmill</span>: 
+                We are extracting our production-proven alpha layout primitives into Sovereign Commons Distributed (SCD) — an open, zero-dependency technical architecture standard from 
+                the Native Web Federation. The Remote Module Definition (RMD) paradigm enables browsers to securely stream, isolate, and update decentralized web components natively 
+                without third-party compilation tools, framework bloat, or single-points-of-failure.
+            </p>
+            <p class="banner message">
+                👉 <a class="message emphasis cta" href="#todo">Support the Independent Open Web: Back Our Indiegogo Campaign Today!</a> 
+            </p>
+        </div>
+        <style>
+            .header.banner.nwf {
+                box-shadow: inset 0 0 var(--size-px-3) 0 var(--gray-12);
+                padding: var(--size-px-8) var(--offset);
+                background-color: var(--sand-1);
+                color: var(--gray-8);
+                
+                .banner.message {
+                    &:first-child {
+                        margin-block-start: 0;
+                    }
+                    &:last-child {
+                        margin-block-end: 0;
+                    }
+                    
+                    .message.emphasis {
+                        font-weight: var(--font-weight-6);
+                        &.cta {
+                            color: var(--purple-8);
+                            text-decoration: none;
+                            &:hover, &:focus {
+                                filter: brightness(75%);
+                            }
+                        }
+                    }
+                    
+                }
+                
+            }
+        </style>
+    </template>
+    <script>
+        const { hostname } = location;
+        const { content } = document.querySelector('template');
+        const { content: local } = document.querySelector('template#local');
+        
+        if (hostname === 'localhost') frameElement.replaceWith(local);
+        else frameElement.replaceWith(content);
+    </script>
+</body>

@@ -1,0 +1,2 @@
+GENERAL
+If you can pass this message onto anyone you know, or even know someone who knows someone who might be interested — please do! Family, friends, coworkers now & past, tech people, clients, or others, even on other platforms (social media, LinkedIn, Slack, etc) — we'd like to go viral — simply copy this entire message! Your generosity will not go overlooked.

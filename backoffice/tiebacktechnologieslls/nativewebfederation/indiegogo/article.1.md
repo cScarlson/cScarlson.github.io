@@ -142,7 +142,7 @@ The strength of the Remote Module Definition (RMD) pattern lies in its architect
 #### 1. What happens on runtime or network execution errors?
 Because the pattern relies on native browser primitives, network and execution failures trigger standard error lifecycle events automatically. Engineers retain complete programmatic authority to intercept and manage these exceptions according to their application requirements. This can be handled cleanly by unmounting the node from the Document Object Model (DOM) or executing a fallback strategy using a standard inline handler:
 ```html
-<iframe onerror="e => this.src='404.html'">
+<iframe onerror="e => this.src='404.rmd.html'">
 ```
 #### 2. How are delayed loading and asynchronous hydration states managed?
 Asynchronous state orchestration is handled gracefully via standardized visual states. The architecture provides two validated methodologies to manage network latency and layout shifts using native Skeleton UI subpatterns. These patterns ensure a fluid user experience during remote layout fetching without depending on heavy client-side state machines.
@@ -159,7 +159,7 @@ Continued optimization of this script lifecycle boundaries represents a major mi
 ## Part 3: The Framework Wars & The Broken State of the Web
 
 ### The Version Treadmill
-Corporate tech giants lock developers into a perpetual loop of framework version wars, forcing engineering teams to waste millions of hours just to keep up with trivial updates. These traditional frameworks war on each other while the developer is caught in the crossfire so that the eveloper can never truly claim mastery over one framework, move onto mastering or picking up another one or, much less, advancing their skill in the underlying languages that make the framework less important in the first place – all because they are busy chasing new versions with menial advancements.
+Corporate tech giants lock developers into a perpetual loop of framework version wars, forcing engineering teams to waste millions of hours just to keep up with trivial updates. These traditional frameworks war on each other while the developer is caught in the crossfire so that the developer can never truly claim mastery over one framework, move onto mastering or picking up another one or, much less, advancing their skill in the underlying languages that make the framework less important in the first place – all because they are busy chasing new versions with menial advancements.
 
 ### The Consequences & Damage
 Other than the risk of stalling out their career when the next best framework comes along, all of the artificial state of crisis leads to much worse outcomes that impact the bottom line for both the developer and the organization caught in the crossfire with them. Eventually engineers begin to see some level of burnout, if only from managing the heavy tooling-bloat inherent to the frameworks so they can actually live up to their full promise. Organizations end up having to pay for man-hours to grapple with such unmanageable technical debt and, still, are looking forward to higher enterprise cloud bills and artificial churn on their employees. It's an artificial _Product Stickiness_, and we plan to unstick it to allow native, Open Standards to compete with and overcome the quicksand of proprietary frameworks.
@@ -170,13 +170,23 @@ We haven't just solved the native partial constraint; we have used the RMD bluep
 - **Native Microfrontends (Phase 2)**: Consuming MFEs across a single origin's network with zero heavy infrastructure or orchestration tools, alongside consuming MFEs across nodes in a cross-domain network and effectively turning the entire web into an open, globally competing Plugin Architecture.
 - **True Data Sovereignty (Phase 3)**: Reversing the database monopoly. Users entirely own, house, and govern their content natively on their own storage boundary, allowing corporate systems to consume user content in a simple way even before the need to stack a server behind it to write directly to the user’s host, based on simple conventions or input.
 - **Federated Networks (Phase 4)**: A new type of Web Architecture that, in part, realizes Ward Cunningham’s Smallest Federated Wiki concept across any platform layout. Websites can natively point back to, mirror, or selectively edit layers of each other's content & components for their own flavor of what those should be.
-- **The Content Domain Name Server (CDNS) (Phase 5)**: A simple, new type of web architecture acting as a source of truth and a hybrid between a CDN (Content Delivery Network) and a DNS (Domain Name Server) for individual web component lookup — allowing for stabile URLs to be inspected and dynamically route geographically closer, localized, or internationalized components from stabile, immutable addresses. Organizations can create their own CDNS systems for their own commercial purposes.
-- **The Open WebSDK (Phase 6)**: An incredibly extensible, native SDK framework built to bridge proprietary legacy apps directly into native browser velocities.
+- **The Content Domain Name Server (CDNS) (Phase 5)**: A simple, new type of web architecture acting as a source of truth and a hybrid between a CDN (Content Delivery Network) and a DNS (Domain Name Server) for individual web component lookup — allowing for stabile URLs to be inspected and dynamically route geographically closer, localized, or internationalized components from stabile, immutable addresses. Organizations can create their own CDNS systems for their own commercial purposes. This milestone brings incredible value to the entire ecosystem, fostering community trust by ensuring that verified content and components are thoroughly vetted and fully backed by the Native Web Federation for safe use inside a thriving, open component marketplace.
+- **The Open WebSDK (Phase 6)**: An incredibly extensible, native SDK framework built to bridge proprietary legacy apps directly into native browser velocities. This phase significantly accelerates the entire effort, building structural trust by providing absolute assurance that our foundational development toolchains are entirely vetted and fully backed by the Native Web Federation for clean, safe application building. Developments of this phase can feasibly become a testbed for candidate patterns that graduate from SDK Web Components to a hardened, native browser core tagName that simplifies development and facilitates coding efficiency.
 - **Native W3C Specification Proposal (Phase 7)**: With our demonstrations, tests, specifications & documentation and benchmark data in hand, we are empowered to work with other Open Standards bodies like the W3C to propose specifications they can adopt and facilitate browser manufacturers to implement native elements that provide such functionality in the most streamlined ways. We plan to prototype all of this into a real native Webkit or Blink tagName that allows all the functionality & discovery to exist as a working W3C element that can be easily handed over to browsers to be implemented. We are HTML and JavaScript experts – not experts in WebIDL (Interface Definition Language), the bridge between JavaScript and C++. Funding for this phase will go into AI and employment for a head specialist to help us literally make all of the above come completely true with a single tagName for the `<service>` element. We can make this happen for once and for literally all. The Web deserves better. Developers deserve better. The world has been waiting long enough for this and more.
 
 In anticipation of Phase 7 we are confident that, as a highly comfortable stretch goal, we can solve all these with pure HTML/JS & Open Standards and, at most, a tiny set of Custom Elements that will be part of the Open Standard _and_ be fully & freely available for any use; they will be accessible even by pointing to the raw file on GitHub. Any & all Custom Elements will be part of our Phase 7 W3C Specification proposal, rolled into a single native element.
 
-Additionally, our research will cover whether or not the foundational pattern naturally works as an active signal-jammer to unwanted bots and crawlers, potentially making CAPTCHA a thing of the past and solving the Dead Internet dilemma in defense of content authors & creators. More to come of that but, suffice to say, the Native Web Federation believes new frameworks, new businesses & markets will form on top of our Open Standards once funding has supported the necessary development, specifications & documentation and benchmarking necessary to facilitate this new paradigm.
+Additionally, our current research suggests the foundational pattern naturally works as an active signal-jammer to unwanted bots and crawlers, potentially making CAPTCHA a thing of the past and solving the Dead Internet dilemma in defense of content authors & creators.
+
+Successfully mitigating automated network scavenging delivers critical operational, legal, and security protections to both individuals and enterprise organizations:
+
+* **Prevention of Personal Data Loss**: It prevents the automated mining and exposure of sensitive credentials, safeguarding individual digital identity, Personally Identifiable Information (PII), and Protected Health Information (PHI) under strict compliance frameworks like **HIPAA**.
+* **Regulatory Readiness**: It introduces an infrastructure-level barrier against automated exfiltration, significantly streamlining organizational compliance reports and audits for frameworks such as **GDPR, SOC2, ISO/IEC 27001**, and the **EU AI Act**.
+* **Intellectual Property Protection**: It defends digital assets against un-consented, uncompensated scraping loops used to train proprietary, centralized generative models, securing the sovereign distribution rights of authors and creators.
+* **Overhead and Cost Reduction**: It blocks relentless, non-human traffic cycles before they hit centralized infrastructure, drastically lowering compounding bandwidth costs and server processing bills.
+* **Secure Layout Handshakes**: To add an unprecedented layer of trust, the architecture facilitates secure, lightweight validation directly at the layout frame layer. By leveraging native interfaces, the system can parse dynamic inputs passed via **URL parameters, iframe attributes, or iframe inner text (structured as raw JSON)**. These payload-driven inputs can securely verify a mutual handshake to handle multi-tiered authentication and context-aware authorization. Because these handshakes process natively rather than relying on interceptable session tokens, they eliminate traditional single-points-of-failure—making the entire web experience safer while potentially making intrusive human/bot tests like **CAPTCHA a thing of the past**.
+
+While automated script engines will inevitably engage in an ongoing, adversarial "cat-and-mouse game" to adapt to this architecture, this pattern establishes the foundational data and benchmarking matrices required to ensure the web remains a free, open, and performant utility for human creators.
 
 Again, all phases have been proofed out already; we are simply seeking Open Standards funding to build out formal specs & docs, reference implementations and variants, tests and benchmarks. But we need _your_ help with preparation for that funding.
 
@@ -191,32 +201,32 @@ Again, all phases have been proofed out already; we are simply seeking Open Stan
 <br />
 <br />
 
-# 👉 [Back the Indiegogo Campaign: Protect the Team & Secure your Book](XXXXXXXX-TODO-XXXXXXXX)
-# 🧪 [Inspect the RMD Phase 0 Reference Code Live inside Sovereign Commons Distributed](https://github.com/nativewebfederation/sovereigncommonsdistributed/tree/main/v1.0.0/phase0)
+## 👉 [Back the Indiegogo Campaign: Protect the Team & Secure your Book](XXXXXXXX-TODO-XXXXXXXX)
+## 🧪 [Inspect the RMD Phase 0 Reference Code Live inside Sovereign Commons Distributed](https://github.com/nativewebfederation/sovereigncommonsdistributed/tree/main/v1.0.0/phase0)
 
 ## More Resources
 - [HTML Imports Specification](https://www.w3.org/TR/html-imports/)
 - [(2011) "How To Include One HTML File Into Another"](https://stackoverflow.com/questions/7542872/how-to-include-one-html-file-into-another)
 
-#### Respository
+### Respository
 - https://github.com/nativewebfederation/sovereigncommonsdistributed
 
-#### Alpha Architecture / Playground
+### Alpha Architecture / Playground
 - https://cscarlson.github.io/magazinejs
 
-#### MagazineJS
+### MagazineJS
 - https://cscarlson.github.io/src/app/children/book/cover/design.rmd.html
 
-#### Cody Carlson
+### Cody Carlson
 - Website: https://cscarlson.github.io
 - LinkedIn: https://www.linkedin.com/in/cody-s-carlson-1b837259
 - GitHub: https://github.com/cScarlson
 
-#### Julio Parra Sanchez
+### Julio Parra Sanchez
 - Website: https://japs-dev.cloud
 - LinkedIn: https://www.linkedin.com/in/julio-parra-sanchez
 - GitHub: https://github.com/parrajulio33
 
-#### Mike Savino
+### Mike Savino
 - LinkedIn: https://www.linkedin.com/in/mike-savino-24579b76
 - GitHub: https://github.com/mikesavino85

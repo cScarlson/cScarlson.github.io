@@ -331,10 +331,15 @@
                             .graphic.image {
                                 position: absolute;
                                 inset: 3in 2.5in 2.25in 2.5in;
-                                background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxmQ_UEza0uv4XPru98A0LQWfR14iy861Ok2mLOWatLw&s=10");
-                                background-position: center;
-                                background-size: contain;
-                                filter: grayscale(1) opacity(1.75);
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                font-size: 0.5in;
+                                color: var(--blue-7);
+                                color: white;
+                                font-family: monospace;
+                                font-weight: bolder;
+                                z-index: 1;
                             }
 
                         }
@@ -409,7 +414,7 @@
                         <div class="graphic frame bbbb" style="--n: 2"></div>
                         <div class="graphic frame cccc" style="--n: 3"></div>
                         <div class="graphic frame dddd" style="--n: 4"></div>
-                        <div class="graphic image"></div>
+                        <div class="graphic image">&lt;/&gt;</div>
                     </div>
                     <footer class="page footer">
                         <h2 class="footer author">Cody S. Carlson</h2>

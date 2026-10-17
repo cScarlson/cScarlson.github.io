@@ -1,0 +1,3 @@
+Hi Joseph, it’s Cody Carlson. This might be a blast from the past, but 15+ years ago I found your wallet in Larimer Square, drove it down to Littleton, and we later grabbed coffee right where I found it. You were teaching at CU Downtown at the time. I hope you’re doing great!
+
+I’m reaching out because I finally launched an independent technology venture we’ve been developing for months. I actually have a small favor to ask of a CU professor if you have a quick second?

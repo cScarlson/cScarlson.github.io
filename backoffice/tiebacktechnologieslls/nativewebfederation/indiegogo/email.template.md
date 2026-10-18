@@ -20,4 +20,4 @@ If you believe in a freer, faster, and truly open web, please back the campaign 
 With gratitude,
 Cody S. Carlson
 Principal UI Architect, Tieback Technologies
-[campaignURL]
+https://www.indiegogo.com/en/projects/tiebacktechnologies/nwf?nwfid=preview

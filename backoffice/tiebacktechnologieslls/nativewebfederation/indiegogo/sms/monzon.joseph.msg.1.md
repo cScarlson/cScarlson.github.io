@@ -2,4 +2,4 @@ Thanks Joseph! We just went live on Indiegogo to fund our new open-source web st
 
 Here is the exact text we’re sending out today if you can pass it along:
 
-The Native Web Federation is officially live on Indiegogo! Help our team launch Open Standards algorithms. Support the book, stand up for a free internet, and watch our progress live: [campaignURL]
+The Native Web Federation is officially live on Indiegogo! Help our team launch Open Standards algorithms. Support the book, stand up for a free internet, and watch our progress live: https://www.indiegogo.com/en/projects/tiebacktechnologies/nwf?nwfid=preview

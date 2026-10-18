@@ -1,6 +1,5 @@
 
 <body>
-    <template></template>
     <template id="local">
         <div class="header banner nwf">
             <p class="banner message">
@@ -10,7 +9,7 @@
                 without third-party compilation tools, framework bloat, or single-points-of-failure.
             </p>
             <p class="banner message">
-                👉 <a class="message emphasis cta" href="#todo">Support the Independent Open Web: Back Our Indiegogo Campaign Today!</a> 
+                👉 <a class="message emphasis cta" href="https://www.indiegogo.com/en/projects/tiebacktechnologies/nwf?nwfid=preview" target="_blank">Support the Independent Open Web: Back Our Indiegogo Campaign Today!</a> 
             </p>
         </div>
         <style>
@@ -45,11 +44,7 @@
         </style>
     </template>
     <script>
-        const { hostname } = location;
         const { content } = document.querySelector('template');
-        const { content: local } = document.querySelector('template#local');
-        
-        if (hostname === 'localhost') frameElement.replaceWith(local);
-        else frameElement.replaceWith(content);
+        frameElement.replaceWith(content);
     </script>
 </body>
